@@ -197,7 +197,10 @@ export class AlgorithmInfo{
     path: string;
     description:string;
 }
-export class ChainInfo{
-
+export class appManageInfo{
+  applicationId: number;
+  applicationName: string;
+  createTime: string;
+  icon: string;
 }
 
