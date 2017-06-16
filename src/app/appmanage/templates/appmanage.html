@@ -49,7 +49,8 @@
         <form>
           <div class="createInfo">
             <label><span class="symbol">*</span>应用名称:</label>
-            <input type="text" required name="appName" [(ngModel)]="appName"/>
+            <input type="text" required="required" name="appName" [(ngModel)]="appName"/>
+            <span class="must" [style.display]="required==1?'':'none'">必填字段</span>
           </div>
           <div class="createInfo">
             <label><span class="symbol">*</span>应用类别:</label>

@@ -26,6 +26,7 @@ export class AppManageComponent {
   sceneGather:string;
   sceneGatherArr:any[]=[];
   systemShow:number=0;
+  required:number=0;
   sceneArr:any[]=[{"name":"道路识别",'flag':1}, {"name":"故障检测"}, {"name":"字母图形分类"}, {"name":"图形识别"}, {"name":"雷暴检测"}, {"name":"神经区域分割"}, {"name":"大数据回归"}];
   systemArr:any[]=[{"name":"ios",'flag':1},{"name":"Android"},{"name":"Windows"},{"name":"HTML5"},{"name":"Linux"},{"name":"其他"}];
   constructor(private appManageService: AppManageService,) {
@@ -54,6 +55,7 @@ export class AppManageComponent {
       });
   }
   create(){
+    if(this.appName){
     let appName = this.appName;
     this.appManageService.createApp(appName)
       .subscribe(result=>{
@@ -63,6 +65,10 @@ export class AppManageComponent {
 /*    this.uploader.queue[0].onSuccess = (response: any, status: any, headers: any) => {
     }*/
     //this.uploader.queue[0].upload(); // 开始上传
+   }else{
+      this.required = 1;
+      return false;
+    }
   }
   dia(id){
     this.showDialog=1;
