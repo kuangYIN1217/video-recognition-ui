@@ -7,66 +7,98 @@ a{
   text-decoration: none;
   color: #ff7c35;
 }
-.appManage{
-  background: #ffffff;
-  margin:1.56vw 1.56vw 0 1.56vw;
-  overflow: hidden;
+.container{
+  width:100% !important;
 }
-.appManage h3{
+.header{
+  height:40px;
+}
+.header .home{
+  display: inline-block;
+  float: left;
+  margin-left: 1.56vw;
+  margin-right: 20px;
+  margin-top: 8px;
+}
+.header h3{
   font-size: 16px;
-  font-weight: normal;
-  margin: 1.85vh 0 3.7vh 1.56vw;
+  margin:0;
+  color: #333333;
+  line-height: 40px;
+  margin-left: 20px;
+  font-weight: bold;
   float: left;
 }
+.header .xian{
+  display: inline-block;
+  border-left: 1px solid #eeeeee;
+  float: left;
+  margin-top: 10px;
+}
 .createBtn{
-  margin: 1.85vh 1.56vw 3.7vh 0px;
   float: right;
+}
+.appManage,.header,.appmanagespace{
+  background: #ffffff;
+  margin:30px 1.56vw 0 1.56vw;
+  overflow: hidden;
 }
 .addicon {
   display: inline;
   float: left;
-  margin-top: 3px;
-  margin-left: 10px;
-  margin-right: -13px;
+  margin-top: 9px;
+  margin-left: 15px;
+  margin-right: -6px;
 }
 .back{
   text-decoration:none;
   width: 114px;
   float: right;
-  height: 28px;
+  height: 30px;
+  margin-top: 5px;
+  margin-right: 1.56vw;
   border-radius: 5px;
-  background-color: #ff7c35;
+  color: #ff7c35;
   text-align: center;
-  color: #fff;
-  line-height: 28px;
+  border:1px solid #ff7c35;
+  line-height: 30px;
   font-size: 14px;
   font-style: normal;
+}
+.appManage h3{
+  font-size: 16px;
+  color: #333333;
+  margin:20px 0 34px 30px;
+  font-weight: bold;
 }
 .appBody{
   clear: both;
   margin:0 1.56vw;
   overflow: hidden;
+  padding-bottom: 60px;
 }
 .appModel{
   border:2px solid #ccc;
   -webkit-box-shadow:0 0 10px #ccc;
   -moz-box-shadow:0 0 10px #ccc;
   box-shadow:0 0 10px #ccc;
-  width:23.75vw;
+  width:26.5vw;
   float: left;
   font-size: 14px;
   border-radius: 8px;
-  margin-bottom: 3.1vh;
+  margin-top: 30px;
   margin-right: 3.3vw;
 }
 .appModel_header{
   overflow: hidden;
+  margin: 0 1.56vw;
+  border-bottom: 1px solid #eeeeee;
 }
 .appModel_header img{
   display: inline-block;
   width:72px;
   height:69px;
-  margin:1.56vw 2.4vh 2.4vw;
+  margin:26px 3.4vw 26px 0;
   float: left;
 }
 .appModel_header span{
@@ -77,9 +109,16 @@ a{
   margin-top: 1.56vw;
   font-size: 14px;
   color: #333333;
+  font-weight: bold;
 }
 .appModel_content{
   margin-left: 1.56vw;
+  margin-right: 1.56vw;
+  margin-top: 4.26vh;
+  display: block;
+}
+.appModel_content tbody{
+  display: block;
 }
 .appModel_content tr{
   display: block;
@@ -87,9 +126,16 @@ a{
 }
 .appModel_content tr td{
   display: inline-block;
+
+  word-break: break-all;
+}
+.appModel_content tr td:nth-of-type(1){
+  width:29%;
+  color: #333333;
 }
 .appModel_content tr td:nth-of-type(2){
-  padding-left: 26px;
+  color: #555555;
+  width:68%;
 }
 .sceneInput{
   text-indent: 6px;
@@ -97,8 +143,9 @@ a{
 }
 
 .option{
-  margin-top: 4.6vh;
+  margin-top: 2.7vh;
   margin-right: 1.56vw;
+  margin-bottom: 2.22vh;
   float: right;
   overflow: hidden;
 }
@@ -106,7 +153,7 @@ a{
   float: left;
 }
 .option li a{
-  padding:10px;
+  padding:0 0.9vw;
 }
 .option li:after{
   content: '|';
@@ -123,11 +170,11 @@ a{
 .createLeft{
   clear: both;
   float: left;
-  margin-left: 4.5vw;
+  margin-left: 102px;
 }
 .createInfo{
-  margin-bottom: 30px;
-  height:30px;
+  margin-bottom: 26px;
+  height:36px;
 }
 .createInfo:nth-of-type(6){
   height:146px;
@@ -137,6 +184,18 @@ a{
   color: #333333;
   display: inline-block;
   margin-right: 30px;
+}
+.image{
+  background: url('../../../assets/appmanage/upload.png');
+  width:68px;
+  height:68px;
+}
+.image input{
+  display: none;
+}
+#image{
+  width:68px;
+  height:68px;
 }
 .symbol{
   font-size: 12px;
@@ -174,8 +233,8 @@ a{
 
 }
 .createLeft input{
-  width:360px;
-  height:26px;
+  width:490px;
+  height:30px;
   text-indent: 4px;
 }
 .createLeft textarea{
@@ -185,15 +244,43 @@ a{
   margin-left: 4px;
 }
 .createLeft select{
-  width:362px;
-  height:30px;
+  width:494px;
+  height:34px;
   margin-left: 4px;
   position: absolute;
-  background: url("../../../assets/appmanage/rightArrow.png") no-repeat right 6px center;
+  background: url("../../../assets/appmanage/rightArrow.png") no-repeat right center;
   appearance:none;
   -moz-appearance:none;
   -webkit-appearance:none;
   outline: none;
+  border-right: none;
+}
+.createLeft select option{
+  color: #666666;
+}
+.channel{
+  display: inline-block;
+  font-size: 14px;
+  color: #666666;
+}
+.channelContent{
+  margin-bottom: 26px;
+}
+.channelContent input{
+  width: 230px;
+  margin-left: 14px;
+  border-radius: 0;
+}
+.channelContent span:nth-of-type(2){
+  margin-left: 36px;
+}
+.channelContent select{
+  border-radius: 0;
+  width:140px;
+  margin-left: 14px;
+  border-right: 1px solid #d3d3d3;
+  background: url("../../../assets/appmanage/rightArrow1.png") no-repeat right 6px center;
+
 }
 .tip{
   position: relative;
@@ -210,8 +297,8 @@ a{
 
 .btn{
   margin-left: 99px;
-  margin-top: 130px;
-  margin-bottom: 154px;
+  margin-top: 150px;
+  margin-bottom: 294px;
 }
 .crtBtn{
   width:106px;
@@ -235,6 +322,9 @@ a{
   line-height: 26px;
   border:1px solid #d3d3d3;
   margin-left: 16px;
+}
+.appManageSpace{
+
 }
 .createRight{
   width:460px;
@@ -281,6 +371,10 @@ a{
   vertical-align: middle;
   color: #333333;
   padding-left: 4px;
+}
+.delete,.add{
+  margin-left: 164px;
+  vertical-align: middle;
 }
 .scene span{
   display: inline-block;
@@ -402,3 +496,30 @@ a{
   font-size: 14px;
   color: #fe1c1c;
 }
+.spaceContent{
+  text-align: center;
+}
+.spaceText{
+  font-size: 30px;
+  color: #333333;
+  display: inline-block;
+  margin-left: 30px;
+  line-height: 142px;
+}
+
+@media (min-width:1200px) and (max-width:1366px) {
+  .appModel{
+    width:25.5vw;
+  }
+}
+@media (min-width:1366px) and (max-width:1440px) {
+  .appModel{
+    width:25.7vw;
+  }
+}
+@media (min-width:1440px) and (max-width:1680px) {
+  .appModel{
+    width:26.2vw;
+  }
+}
+

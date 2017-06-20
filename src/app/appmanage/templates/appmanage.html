@@ -1,14 +1,22 @@
-<div class="container">
-  <div class="appManage" [style.display]="createApp=='manage'?'':'none'">
+<div class="container-no-nav">
+  <div class="header">
+    <img src="../assets/appmanage/home.png" class="home"/>
+    <span class="xian">&nbsp;</span>
     <h3>应用管理</h3>
     <div class="createBtn" (click)="createJob()"> <a href="javascript:void(0)"  class="back"><img src="../assets/appmanage/jiahao.png" class="addicon" alt="">新建应用</a></div>
+  </div>
+  <div class="appManage" [style.display]="createApp=='manage'?'':'none'">
     <div class="appBody">
-      <div class="appModel" *ngFor="let item of appManageInfo">
+      <div class="appModel" *ngFor="let item of appManageInfo" let i = index;>
         <div class="appModel_header">
           <img src="../assets/appmanage/tupian.png"/>
           <span>{{item.applicationName}}</span>
         </div>
         <table class="appModel_content">
+          <tr>
+            <td>应用类型:</td>
+            <td>视频应用</td>
+          </tr>
           <tr>
             <td>APIkey:</td>
             <td>420a5932a8a0f</td>
@@ -23,26 +31,17 @@
           </tr>
         </table>
         <ul class="option">
-          <li><a href="javascript:void(0)">暂停</a></li>
+          <li>
+            <a href="javascript:void(0)" *ngIf="(item.stop==1)||(item.stop==undefined)" (click)="start(item)">暂停</a>
+            <a href="javascript:void(0)" *ngIf="item.stop==0" (click)="start(item)">开始</a>
+          </li>
           <li><a href="javascript:void(0)" (click)="update(item.applicationId,item.applicationName,item.createTime)">修改</a></li>
           <li><a href="javascript:void(0)" (click)="dia(item.applicationId)">删除</a></li>
         </ul>
       </div>
     </div>
   </div>
-  <!-- 删除弹框 -->
-  <div class="dialog" [style.display]="showDialog==1?'':'none'">
-    <div class="dialogContainer delDialogContainer">
-      <div class="dialogHeader">
-        <span style="margin-left: 140px">删除用户</span>
-      </div>
-      <div class="dialogContent" style="margin-left: 80px">
-        <p style="margin-left: 30px">确定要删除此用户吗？</p>
-        <a href="javascript:void(0)" class="btn1 marg" (click)="delete()">确定</a>
-        <a href="javascript:void(0)" class="btn1 marg" (click)="cancelDel()">取消</a>
-      </div>
-    </div>
-  </div>
+
   <div class="appManage" [style.display]="createApp=='create'?'':'none'">
       <h3>新建应用</h3>
       <div class="createLeft">
@@ -58,11 +57,36 @@
               <option></option>
             </select>
           </div>
+          <div class="createInfo" style="height: 68px">
+            <label style="float: left;"><span class="symbol">*</span>应用图标:</label>
+            <div class="image" onclick="document.getElementById('file').click()">
+              <input type="file" id="file" name="file" multiple ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)"/>
+              <img src="" id="image"/>
+            </div>
+          </div>
           <div class="createInfo">
+            <label style="float: left;">通道配置:</label>
+            <div class="channel">
+              <div class="channelContent" [style.display]="arr.length==0">
+                <span>地址</span><input type="text"/>
+                <span>协议</span><select></select>
+                <img src="../assets/appmanage/delete.png" (click)="del(i)" class="delete"/>
+                <img src="../assets/appmanage/addChannel.png" (click)="add()" class="add"/>
+              </div>
+              <div class="channelContent" [style.display]="arr.length>0" *ngFor="let item of arr" let i=index>
+                <span>地址</span><input type="text"/>
+                <span>协议</span><select></select>
+                <img src="../assets/appmanage/delete.png" (click)="del(i)" class="delete"/>
+                <img src="../assets/appmanage/addChannel.png" (click)="add()" [style.display]="(i+1)==arr.length?'':'none'" class="add" style="margin-left: 14px"/>
+              </div>
+            </div>
+            </div>
+
+<!--          <div class="createInfo">
             <label><span class="symbol">*</span>场景选择:</label>
             <input type="text" required class="sceneInput" id="sceneInput" (click)="buyScene()" readonly name="sceneGather" [(ngModel)]="sceneGather"/>
-          </div>
-          <div class="createInfo" style="height: 70px;">
+          </div>-->
+<!--          <div class="createInfo" style="height: 70px;">
             <label style="float: left"><span class="symbol">*</span>终端平台:</label>
             <ul class="checkSystem">
               <li  *ngFor="let sy of systemArr">
@@ -72,18 +96,18 @@
                 </a>
               </li>
             </ul>
-          </div>
-          <div class="createInfo">
+          </div>-->
+<!--          <div class="createInfo">
             <label><span class="symbol">*</span>应用包名:</label>
             <input type="text" required/>
-          </div>
-          <div class="createInfo">
+          </div>-->
+<!--          <div class="createInfo">
             <label style="float: left"><span class="symbol">*</span>应用描述:</label>
             <div class="tip">
             <textarea maxlength="200"></textarea>
               <p>不超过200字</p>
             </div>
-          </div>
+          </div>-->
           <div class="btn">
             <a href="javascript:void(0)"  class="crtBtn" (click)="create()" [style.display]="btnIndex==0?'':'none'">创建</a>
             <a href="javascript:void(0)"  class="crtBtn" (click)="updateSave()" [style.display]="btnIndex==1?'':'none'">保存</a>
@@ -91,13 +115,13 @@
           </div>
         </form>
       </div>
-      <div class="createRight" [style.display]="scene==1?'':'none'">
+<!--      <div class="createRight" [style.display]="scene==1?'':'none'">
         <div>
           <h4>已购场景</h4>
           <div class="sceneContent">
             <div class="scene">
               <span *ngFor="let item of sceneArr">
-                <!--<input type="checkbox"/>-->
+                &lt;!&ndash;<input type="checkbox"/>&ndash;&gt;
                 <img src="../assets/appmanage/unchecked.png" (click)="check(item)" *ngIf="!item.flag||item.flag==2"/>
                 <img src="../assets/appmanage/checked.png" (click)="check(item)" *ngIf="item.flag==1"/>
                 <a>{{item.name}}</a>
@@ -109,6 +133,25 @@
             </div>
           </div>
         </div>
+      </div>-->
+  </div>
+  <div class="appManageSpace" [style.display]="createApp=='space'?'':'none'">
+    <div class="spaceContent">
+      <img src="../assets/appmanage/addApp.png"/>
+      <span class="spaceText">暂无应用，请添加应用</span>
+    </div>
+  </div>
+  <!-- 删除弹框 -->
+  <div class="dialog" [style.display]="showDialog==1?'':'none'">
+    <div class="dialogContainer delDialogContainer">
+      <div class="dialogHeader">
+        <span style="margin-left: 140px">删除用户</span>
       </div>
+      <div class="dialogContent" style="margin-left: 80px">
+        <p style="margin-left: 30px">确定要删除此用户吗？</p>
+        <a href="javascript:void(0)" class="btn1 marg" (click)="delete()">确定</a>
+        <a href="javascript:void(0)" class="btn1 marg" (click)="cancelDel()">取消</a>
+      </div>
+    </div>
   </div>
 </div>
