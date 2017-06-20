@@ -1,6 +1,10 @@
     <ng-header [username]="username" [focusTab]="focusTab"></ng-header>
     <div class="detail-header" [style.display]="focusTab<=0?'none':''">
-
+      <img title="返回应用管理" (click) = "gotoAppmanage()" src="../../../assets/appdetail/home.png" />
+      <div class="detail-header-info">
+        <label class="divider">|</label>
+        <label class="title">视频应用-江苏省南京市栖霞区道路识别</label>
+      </div>
     </div>
     <nav [style.display]="(focusTab>0)?'':'none'">
         <div class="nav_element" [class.focusTab] = "focusTab==1" routerLinkActive="active" routerLink="/videoanalysis" (click)="changeTab(1);focusCollapse='0'">
@@ -8,15 +12,15 @@
             <a href="#" onclick="return false">视频识别</a>
         </div>
         <div class="nav_element" [class.focusTab] = "focusTab==2" routerLinkActive="active" routerLink="/waymanage" (click)="changeTab(2);focusCollapse='0'">
-            <img [src]="focusTab!=2?'assets/navigation/icon_cj_02_n.png':'assets/navigation/icon_cj_02_h.png'">
+            <img [src]="focusTab!=2?'assets/appdetail/icon_way_n.png':'assets/appdetail/icon_way_h.png'">
             <a href="#" onclick="return false">通道管理</a>
         </div>
-        <div class="nav_element" [class.focusTab] = "focusTab==3" routerLinkActive="active" routerLink="/technologysupport" (click)="changeTab(3);focusCollapse='0'">
-          <img [src]="focusTab!=1?'assets/navigation/icon_xxzl_01_n.png':'assets/navigation/icon_xxzl_01_h.png'">
+        <div class="nav_element" [class.focusTab] = "focusTab==3" routerLinkActive="active" routerLink="/monitorreport" (click)="changeTab(3);focusCollapse='0'">
+          <img [src]="focusTab!=3?'assets/appdetail/icon_monitor_n.png':'assets/appdetail/icon_monitor_h.png'">
           <a href="#" onclick="return false">监控报表</a>
         </div>
-        <div class="nav_element" [class.focusTab] = "focusTab==4" routerLinkActive="active" routerLink="/monitorreport" (click)="changeTab(4);focusCollapse='0'">
-          <img [src]="focusTab!=2?'assets/navigation/icon_cj_02_n.png':'assets/navigation/icon_cj_02_h.png'">
+        <div class="nav_element" [class.focusTab] = "focusTab==4" routerLinkActive="active" routerLink="/technologysupport" (click)="changeTab(4);focusCollapse='0'">
+          <img [src]="focusTab!=4?'assets/appdetail/icon_technology_n.png':'assets/appdetail/icon_technology_h.png'">
           <a href="#" onclick="return false">技术支持</a>
         </div>
    </nav>
