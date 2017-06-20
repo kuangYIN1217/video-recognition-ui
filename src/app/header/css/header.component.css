@@ -25,6 +25,7 @@
 }*/
 .logo-wrapper {
   width: 9% !important;
+  min-width: 120px;
   height: 100%;
 }
 .logo{

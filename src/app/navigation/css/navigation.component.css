@@ -11,8 +11,9 @@
 
 .detail-header img {
   position: absolute;
+  width: 23px;
   top: 12px;
-  left: 13px;
+  left: 15px;
   cursor: pointer;
 }
 .detail-header-info {
@@ -21,7 +22,6 @@
   top: 0;
 }
 .detail-header label {
-
   display: inline-block;
   color: white;
   height: 100%;
@@ -36,6 +36,7 @@
 }
 nav {
   width: 9%;
+  min-width: 120px;
   float: left;
   overflow: hidden;
   background-color: #232323;
