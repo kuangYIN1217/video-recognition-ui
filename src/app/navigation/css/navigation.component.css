@@ -36,10 +36,9 @@
 }
 nav {
   width: 9%;
-  min-width: 120px;
   float: left;
   overflow: hidden;
-  background-color: #232323;
+  background-color: #212121;
   position: fixed;
   top: 115px;
   left: 0;
