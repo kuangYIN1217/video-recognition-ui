@@ -1,0 +1,19 @@
+<div class="header" [style.display]="focusTab==0?'none':''">
+  <!--        <div class="logo">
+              <img src="assets/navigation/logo.png">
+          </div>-->
+  <p>DeepTAC智能算法一体机</p>
+  <div class="entry user">
+    <img src="assets/navigation/admin.png">
+    <span>{{username}}</span>
+  </div>
+  <div class="entry logout">
+    <img (click)="logout()" src="assets/navigation/out.png">
+    <span (click)="logout()">退出</span>
+  </div>
+
+  <div class="logo-wrapper" >
+    <img src="assets/navigation/logo1.png" class="logo">
+  </div>
+
+</div>

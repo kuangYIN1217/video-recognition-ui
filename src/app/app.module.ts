@@ -12,7 +12,11 @@ import { StompService } from 'ng2-stomp-service-fixed';
 import {ToastyModule} from 'ng2-toasty';
 import {NavigationComponent} from "./navigation/navigation.component";
 import {AppManageComponent} from './appmanage/appmanage.compontent';
-import {AppTestComponent} from './apptest/apptest.compontent';
+import {MonitorReportComponent} from './appdetail/monitor-report/monitor.report.component'
+import {TechnologySupportComponent} from './appdetail/technology-support/technology.support.component'
+import {WayManageComponent} from './appdetail/way-manage/way.manage.component'
+import {VideoAnalysisComoponent} from './appdetail/video-analysis/video.analysis.component'
+import {HeaderComponent} from './header/header.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +24,11 @@ import {AppTestComponent} from './apptest/apptest.compontent';
     LoginComponent,
     TestComponent,
     AppManageComponent,
-    AppTestComponent
+    VideoAnalysisComoponent,
+    WayManageComponent,
+    TechnologySupportComponent,
+    MonitorReportComponent,
+    HeaderComponent
     //InputReadonlyDirective
   ],
   imports: [
