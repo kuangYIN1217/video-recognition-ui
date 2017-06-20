@@ -27,6 +27,7 @@ export class AppManageComponent {
   sceneGatherArr:any[]=[];
   systemShow:number=0;
   required:number=0;
+  arr:any[]=[];
   sceneArr:any[]=[{"name":"道路识别",'flag':1}, {"name":"故障检测"}, {"name":"字母图形分类"}, {"name":"图形识别"}, {"name":"雷暴检测"}, {"name":"神经区域分割"}, {"name":"大数据回归"}];
   systemArr:any[]=[{"name":"ios",'flag':1},{"name":"Android"},{"name":"Windows"},{"name":"HTML5"},{"name":"Linux"},{"name":"其他"}];
   constructor(private appManageService: AppManageService,) {
@@ -52,8 +53,28 @@ export class AppManageComponent {
     this.appManageService.getAppInfo()
       .subscribe(result=>{
         this.appManageInfo = result;
+        if(result==null){
+          this.createApp = 'space';
+        }
       });
   }
+  start(item){
+    if(item.stop==1||item.stop==undefined){
+      item.stop = 0;
+    }else if(item.stop==0){
+      item.stop = 1;
+    }
+    console.log(item.stop);
+  }
+  add(){
+    let obj={};
+    this.arr.push(obj);
+  }
+  del(index){
+    this.arr.splice(index,1);
+  }
+
+
   create(){
     if(this.appName){
     let appName = this.appName;
@@ -62,9 +83,9 @@ export class AppManageComponent {
         this.createApp='manage';
         this.getAllInfo();
       });
-/*    this.uploader.queue[0].onSuccess = (response: any, status: any, headers: any) => {
-    }*/
-    //this.uploader.queue[0].upload(); // 开始上传
+    this.uploader.queue[0].onSuccess = (response: any, status: any, headers: any) => {
+    }
+    this.uploader.queue[0].upload(); // 开始上传
    }else{
       this.required = 1;
       return false;

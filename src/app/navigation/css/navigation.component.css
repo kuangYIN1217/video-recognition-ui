@@ -24,10 +24,13 @@
   z-index: 100;
 }*/
 .logo{
-  width: 80% !important;
+  width: 100% !important;
   height:auto !important;
-  margin:30px auto 0 !important;
+  margin:0 auto !important;
   display: block;
+}
+.logo img{
+
 }
 .header p{
     position: absolute;
