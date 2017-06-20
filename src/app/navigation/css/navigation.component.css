@@ -2,22 +2,47 @@
 .detail-header {
   width: 100%;
   height: 45px;
-  background: #333;
+  background: #313131;
   position: fixed;
   top: 70px;
   left: 0px;
   z-index: 999;
 }
-nav{
-    width: 9%;
-    float: left;
 
-    overflow: hidden;
-    background-color: #232323;
+.detail-header img {
+  position: absolute;
+  top: 12px;
+  left: 13px;
+  cursor: pointer;
+}
+.detail-header-info {
+  position: absolute;
+  left: 43px;
+  top: 0;
+}
+.detail-header label {
+
+  display: inline-block;
+  color: white;
+  height: 100%;
+  font-size: 14px;
+  line-height: 45px;
+}
+.detail-header .divider {
+ margin: 0 8px;
+}
+.detail-header .title {
+
+}
+nav {
+  width: 9%;
+  float: left;
+  overflow: hidden;
+  background-color: #232323;
   position: fixed;
   top: 115px;
   left: 0;
-  bottom:0;
+  bottom: 0;
   z-index: 1112;
 }
 
@@ -27,81 +52,93 @@ nav{
 }
 */
 
-.nav_element{
-    width: 100%;
-    height: 50px;
-    position: relative;
+.nav_element {
+  width: 100%;
+  height: 50px;
+  position: relative;
   display: flex;
   /*justify-content: center;*/
   align-items: center;
   cursor: pointer;
-  border-left:4px solid #232323;
+  border-left: 4px solid #232323;
   outline: none;
 
 }
-.nav_element img{
-    width: 18px;
-    height:18px;
-  margin:22px 12px 22px 12px;
-    float: left;
+
+.nav_element img {
+  width: 18px;
+  height: 18px;
+  margin: 22px 12px 22px 12px;
+  float: left;
 }
-.collapseImgDiv{
-    position: relative;
-    top: 0px;
-    width: 25px;
-    height: 25px;
-    float: right;
-    cursor: pointer;
+
+.collapseImgDiv {
+  position: relative;
+  top: 0px;
+  width: 25px;
+  height: 25px;
+  float: right;
+  cursor: pointer;
 }
-#collapseImg{
-    top: 10px;
-    left: 5px;
-    position: relative;
-    width: 10px;
-    height: 10px;
-    margin: 0px auto;
+
+#collapseImg {
+  top: 10px;
+  left: 5px;
+  position: relative;
+  width: 10px;
+  height: 10px;
+  margin: 0px auto;
 }
-.nav_element a{
-    display: block;
-    float: left;
-    text-decoration: none;
-    font-family: "MicrosoftYaHei";
-    font-size: 14px;
-    color: #999999;
+
+.nav_element a {
+  display: block;
+  float: left;
+  text-decoration: none;
+  font-family: "MicrosoftYaHei";
+  font-size: 14px;
+  color: #999999;
 }
-.sceneCollapse_item{
-    margin-left: 60px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+
+.sceneCollapse_item {
+  margin-left: 60px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
-.sceneCollapse_item a{
-    font-family: "MicrosoftYaHei";
-    color: #f4f4f4;
-    font-size: 15px;
-    text-decoration: none;
-    font-weight: normal;
+
+.sceneCollapse_item a {
+  font-family: "MicrosoftYaHei";
+  color: #f4f4f4;
+  font-size: 15px;
+  text-decoration: none;
+  font-weight: normal;
 }
-.focusCollapse a{
+
+.focusCollapse a {
 }
-.focusTab{
-   background-color: #333333;
-   border-left:solid 4px #ee8348;
+
+.focusTab {
+  background-color: #333333;
+  border-left: solid 4px #ee8348;
 }
-.focusTab a{
+
+.focusTab a {
   color: #ffffff;
 }
-@media (min-width:1200px) and (max-width:1366px) {
-  .logout{
+
+@media (min-width: 1200px) and (max-width: 1366px) {
+  .logout {
     right: 25px;
   }
 }
-@media (min-width:1366px) and (max-width:1440px) {
-  .logout{
+
+@media (min-width: 1366px) and (max-width: 1440px) {
+  .logout {
     right: 35px;
   }
 }
-@media (min-width:1440px) and (max-width:1600px) {
-  .logout{
+
+@media (min-width: 1440px) and (max-width: 1600px) {
+  .logout {
     right: 32px;
   }
 }

@@ -9,5 +9,6 @@ declare var $:any;
   templateUrl: './template/video.analysis.component.html'
 })
 export class VideoAnalysisComoponent {
-
+  ngOnInit() {
+  }
 }

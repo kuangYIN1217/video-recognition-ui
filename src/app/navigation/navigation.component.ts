@@ -81,4 +81,7 @@ export class NavigationComponent {
 
     // window.location.href = "/login";
   }
+  gotoAppmanage () {
+    this.router.navigate(['/appmanage'])
+  }
 }
