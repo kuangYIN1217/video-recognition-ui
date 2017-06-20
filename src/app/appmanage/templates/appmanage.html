@@ -7,15 +7,15 @@
   </div>
   <div class="appManage" [style.display]="createApp=='manage'?'':'none'">
     <div class="appBody">
-      <div class="appModel" *ngFor="let item of appManageInfo" let i = index;>
-        <div class="appModel_header">
+      <div class="appModel" *ngFor="let item of appManageInfo">
+        <div class="appModel_header" routerLinkActive="active" routerLink="/videoanalysis">
           <img src="../assets/appmanage/tupian.png"/>
           <span>{{item.applicationName}}</span>
         </div>
-        <table class="appModel_content">
+        <table class="appModel_content" routerLinkActive="active" routerLink="/videoanalysis">
           <tr>
             <td>应用类型:</td>
-            <td>视频应用</td>
+            <td>{{item.applicationType}}</td>
           </tr>
           <tr>
             <td>APIkey:</td>
@@ -35,7 +35,7 @@
             <a href="javascript:void(0)" *ngIf="(item.stop==1)||(item.stop==undefined)" (click)="start(item)">暂停</a>
             <a href="javascript:void(0)" *ngIf="item.stop==0" (click)="start(item)">开始</a>
           </li>
-          <li><a href="javascript:void(0)" (click)="update(item.applicationId,item.applicationName,item.createTime)">修改</a></li>
+          <li><a href="javascript:void(0)" (click)="update(item)">修改</a></li>
           <li><a href="javascript:void(0)" (click)="dia(item.applicationId)">删除</a></li>
         </ul>
       </div>
@@ -45,16 +45,16 @@
   <div class="appManage" [style.display]="createApp=='create'?'':'none'">
       <h3>新建应用</h3>
       <div class="createLeft">
-        <form>
+        <div class="form">
           <div class="createInfo">
             <label><span class="symbol">*</span>应用名称:</label>
-            <input type="text" required="required" name="appName" [(ngModel)]="appName"/>
+            <input type="text" name="appName" [(ngModel)]="appName"/>
             <span class="must" [style.display]="required==1?'':'none'">必填字段</span>
           </div>
           <div class="createInfo">
             <label><span class="symbol">*</span>应用类别:</label>
-            <select>
-              <option></option>
+            <select [(ngModel)]="appCate" (ngModelChange)="appCate=$event;changeCate()">
+              <option value="{{i}}" *ngFor="let i of appCates">{{i}}</option>
             </select>
           </div>
           <div class="createInfo" style="height: 68px">
@@ -64,24 +64,24 @@
               <img src="" id="image"/>
             </div>
           </div>
-          <div class="createInfo">
-            <label style="float: left;">通道配置:</label>
+          <div class="createInfo" style="height: auto">
+            <label class="channelConfig">通道配置:</label>
             <div class="channel">
-              <div class="channelContent" [style.display]="arr.length==0">
-                <span>地址</span><input type="text"/>
-                <span>协议</span><select></select>
-                <img src="../assets/appmanage/delete.png" (click)="del(i)" class="delete"/>
-                <img src="../assets/appmanage/addChannel.png" (click)="add()" class="add"/>
+              <div class="channelContent" *ngIf="arr.length==0">
+                <img src="../assets/appmanage/addChannel.png" (click)="add()" style="vertical-align: middle"/>
               </div>
-              <div class="channelContent" [style.display]="arr.length>0" *ngFor="let item of arr" let i=index>
-                <span>地址</span><input type="text"/>
-                <span>协议</span><select></select>
+              <div class="channelContent" [style.display]="arr.length>0" *ngFor="let item of arr let i=index" >
+                <span>通道名称</span><input type="text" name="channelName" [(ngModel)]="channelName"/>
+                <span>地址</span><input type="text" name="channelAddress" [(ngModel)]="channelAddress"/>
+                <span>协议</span>
+                <select [(ngModel)]="protocol" (ngModelChange)="protocol=$event;changePro()">
+                  <option value="{{i}}" *ngFor="let i of protocols">{{i}}</option>
+                </select>
                 <img src="../assets/appmanage/delete.png" (click)="del(i)" class="delete"/>
-                <img src="../assets/appmanage/addChannel.png" (click)="add()" [style.display]="(i+1)==arr.length?'':'none'" class="add" style="margin-left: 14px"/>
+                <img src="../assets/appmanage/addChannel.png" (click)="add()" *ngIf="(i+1)==arr.length" class="add" style="margin-left: 14px"/>
               </div>
             </div>
             </div>
-
 <!--          <div class="createInfo">
             <label><span class="symbol">*</span>场景选择:</label>
             <input type="text" required class="sceneInput" id="sceneInput" (click)="buyScene()" readonly name="sceneGather" [(ngModel)]="sceneGather"/>
@@ -113,7 +113,7 @@
             <a href="javascript:void(0)"  class="crtBtn" (click)="updateSave()" [style.display]="btnIndex==1?'':'none'">保存</a>
             <a href="javascript:void(0)" class="backBtn" (click)="back()">返回</a>
           </div>
-        </form>
+        </div>
       </div>
 <!--      <div class="createRight" [style.display]="scene==1?'':'none'">
         <div>
@@ -137,7 +137,7 @@
   </div>
   <div class="appManageSpace" [style.display]="createApp=='space'?'':'none'">
     <div class="spaceContent">
-      <img src="../assets/appmanage/addApp.png"/>
+      <img src="../assets/appmanage/addAPP.png"/>
       <span class="spaceText">暂无应用，请添加应用</span>
     </div>
   </div>

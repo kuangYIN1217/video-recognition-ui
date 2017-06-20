@@ -246,6 +246,7 @@ a{
 .createLeft select{
   width:494px;
   height:34px;
+  color: #666666;
   margin-left: 4px;
   position: absolute;
   background: url("../../../assets/appmanage/rightArrow.png") no-repeat right center;
@@ -254,10 +255,9 @@ a{
   -webkit-appearance:none;
   outline: none;
   border-right: none;
+  text-indent: 6px;
 }
-.createLeft select option{
-  color: #666666;
-}
+
 .channel{
   display: inline-block;
   font-size: 14px;
@@ -265,22 +265,28 @@ a{
 }
 .channelContent{
   margin-bottom: 26px;
+  margin-left: 6px;
 }
 .channelContent input{
   width: 230px;
   margin-left: 14px;
   border-radius: 0;
 }
-.channelContent span:nth-of-type(2){
+.channelContent span:nth-of-type(2),.channelContent span:nth-of-type(3){
   margin-left: 36px;
 }
 .channelContent select{
   border-radius: 0;
   width:140px;
+  text-indent: 6px;
   margin-left: 14px;
   border-right: 1px solid #d3d3d3;
   background: url("../../../assets/appmanage/rightArrow1.png") no-repeat right 6px center;
 
+}
+.channelConfig{
+  float: left;
+  margin-top: 7px;
 }
 .tip{
   position: relative;
@@ -296,30 +302,30 @@ a{
 }
 
 .btn{
-  margin-left: 99px;
+  margin-left: 100px;
   margin-top: 150px;
   margin-bottom: 294px;
 }
 .crtBtn{
-  width:106px;
-  height:26px;
+  width:114px;
+  height:30px;
   border-radius: 5px;
   display: inline-block;
   color: #fff;
   background:#ff7e35 ;
   font-size: 14px;
   text-align: center;
-  line-height: 26px;
+  line-height:30px;
 }
 .backBtn{
-  width:104px;
-  height:24px;
+  width:112px;
+  height:28px;
   border-radius: 5px;
   display: inline-block;
   color: #747474;
   font-size: 14px;
   text-align: center;
-  line-height: 26px;
+  line-height: 28px;
   border:1px solid #d3d3d3;
   margin-left: 16px;
 }
@@ -408,6 +414,7 @@ a{
   display: inline-block;
   width:68px;
   height:68px;
+  margin-left: 4px;
 }
 #file{
   display: none;
@@ -451,16 +458,16 @@ a{
   font-size: 18px;
   padding-top: 20px;
 }
-.dialogContent form div{
+.dialogContent .form div{
   margin-bottom: 30px;
 }
-.dialogContent form div label{
+.dialogContent .form div label{
   width:80px;
   text-align: right;
   display: inline-block;
   font-size: 14px;
 }
-.dialogContent form div input{
+.dialogContent .form div input{
   height:28px;
   width:260px;
   border-radius: 5px;
@@ -497,7 +504,15 @@ a{
   color: #fe1c1c;
 }
 .spaceContent{
-  text-align: center;
+  position: fixed;
+  top:50%;
+  left:50%;
+  margin-top: -75px;
+  margin-left: -238.5px;
+}
+.spaceContent img{
+  display: inline-block;
+  vertical-align: middle;
 }
 .spaceText{
   font-size: 30px;
@@ -511,15 +526,33 @@ a{
   .appModel{
     width:25.5vw;
   }
+  .appModel_content tr td:nth-of-type(1){
+    width:37%;
+  }
+  .appModel_content tr td:nth-of-type(2){
+    width:60%;
+  }
 }
-@media (min-width:1366px) and (max-width:1440px) {
+@media (min-width:1367px) and (max-width:1440px) {
   .appModel{
     width:25.7vw;
   }
+  .appModel_content tr td:nth-of-type(1){
+    width:34%;
+  }
+  .appModel_content tr td:nth-of-type(2){
+    width:63%;
+  }
 }
-@media (min-width:1440px) and (max-width:1680px) {
+@media (min-width:1441px) and (max-width:1680px) {
   .appModel{
     width:26.2vw;
+  }
+  .appModel_content tr td:nth-of-type(1){
+    width:32%;
+  }
+  .appModel_content tr td:nth-of-type(2){
+    width:65%;
   }
 }
 

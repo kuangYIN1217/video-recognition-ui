@@ -202,5 +202,7 @@ export class appManageInfo{
   applicationName: string;
   createTime: string;
   icon: string;
+  applicationType:string;
+  applicationChannels:any;
 }
 

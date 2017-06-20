@@ -24,14 +24,27 @@ export class AppManageService {
     headers.append('Authorization',this.getAuthorization());
     return headers;
   }
-  createApp(appName){
+  createApp(appName,appCate,icon,channelName,channelAddress,protocol){
     let path = "/api/appllication";
     let body = JSON.stringify({
+      "applicationChannels": [
+        {
+          "channelAddress":channelAddress,
+          "channelId": 0,
+          "channelName": channelName,
+          "channelOrder": null,
+          "channelProtocol": protocol,
+          "channelStatus": null
+        }
+      ],
       "applicationId": 0,
       "applicationName": appName,
+      "applicationType": appCate,
       "createTime": null,
-      "icon": null
+      "icon": icon
     });
+    debugger
+    console.log(body);
     let headers = this.getHeaders();
     return this.http.post(this.SERVER_URL+path,body,{ headers: headers })
       .map((response: Response) => {
@@ -67,17 +80,40 @@ export class AppManageService {
         }
       });
   }
-  updateApp(id,name,time){
+  updateApp(id,time,appName,appCate,channelName,channelAddress,protocol){
     let path = "/api/appllication";
     let body = JSON.stringify({
+      "applicationChannels": [
+        {
+          "channelAddress":channelAddress,
+          "channelId": 0,
+          "channelName": channelName,
+          "channelOrder": null,
+          "channelProtocol": protocol,
+          "channelStatus": null
+        }
+      ],
       "applicationId": id,
-      "applicationName": name,
+      "applicationName": appName,
+      "applicationType": appCate,
       "createTime": time,
       "icon": null
     });
     console.log(body);
     let headers = this.getHeaders();
     return this.http.put(this.SERVER_URL+path,body,{ headers: headers })
+      .map((response: Response) => {
+        if (response && response.json()) {
+          if(response.status==200){
+            return response.json();
+          }
+        }
+      });
+  }
+  getCategory(){
+    let path = "/api/applicationType";
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers} )
       .map((response: Response) => {
         if (response && response.json()) {
           if(response.status==200){
