@@ -1,8 +1,8 @@
 @charset "UTF-8";
 .detail-header {
   width: 100%;
-  height: 45px;
-  background: #313131;
+  height: 50px;
+  background: #333;
   position: fixed;
   top: 70px;
   left: 0px;
@@ -12,7 +12,7 @@
 .detail-header img {
   position: absolute;
   width: 23px;
-  top: 12px;
+  top: 15px;
   left: 15px;
   cursor: pointer;
 }
@@ -26,7 +26,7 @@
   color: white;
   height: 100%;
   font-size: 14px;
-  line-height: 45px;
+  line-height: 50px;
 }
 .detail-header .divider {
  margin: 0 8px;
@@ -40,7 +40,7 @@ nav {
   overflow: hidden;
   background-color: #212121;
   position: fixed;
-  top: 115px;
+  top: 120px;
   left: 0;
   bottom: 0;
   z-index: 1112;

@@ -23,7 +23,4 @@ export class HeaderComponent {
     sessionStorage.removeItem("username");
     this.router.navigate(['/login'])
   }
-  goDetail() {
-    this.router.navigate(['/videoanalysis'] )
-  }
 }
