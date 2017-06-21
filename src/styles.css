@@ -2,7 +2,7 @@
 /* Master Styles */
 @import "app/common/css/toasty.css";
 *{
-  font-family: "Microsoft YaHei" !important;
+  font-family: "Microsoft YaHei" ! important;
 }
 body{
   margin: 0px;

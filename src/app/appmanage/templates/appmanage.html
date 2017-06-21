@@ -1,6 +1,6 @@
 <div class="container-no-nav">
   <div class="header">
-    <img src="../assets/appmanage/home.png" class="home"/>
+    <img src="../assets/appmanage/home.png" class="home" (click)="gotoAppmanage()" />
     <span class="xian">&nbsp;</span>
     <h3>应用管理</h3>
     <div class="createBtn" (click)="createJob()"> <a href="javascript:void(0)"  class="back"><img src="../assets/appmanage/jiahao.png" class="addicon" alt="">新建应用</a></div>
@@ -8,11 +8,12 @@
   <div class="appManage" [style.display]="createApp=='manage'?'':'none'">
     <div class="appBody">
       <div class="appModel" *ngFor="let item of appManageInfo">
-        <div class="appModel_header" routerLinkActive="active" routerLink="/videoanalysis">
-          <img src="../assets/appmanage/tupian.png"/>
+        <div  routerLinkActive="active" routerLink="/videoanalysis">
+        <div class="appModel_header">
+          <img src="{{SERVER_URL}}/api/file?filePath={{item.icon}}"/>
           <span>{{item.applicationName}}</span>
         </div>
-        <table class="appModel_content" routerLinkActive="active" routerLink="/videoanalysis">
+        <table class="appModel_content">
           <tr>
             <td>应用类型:</td>
             <td>{{item.applicationType}}</td>
@@ -30,13 +31,14 @@
             <td>{{item.createTime}}</td>
           </tr>
         </table>
+        </div>
         <ul class="option">
           <li>
             <a href="javascript:void(0)" *ngIf="(item.stop==1)||(item.stop==undefined)" (click)="start(item)">暂停</a>
             <a href="javascript:void(0)" *ngIf="item.stop==0" (click)="start(item)">开始</a>
           </li>
-          <li><a href="javascript:void(0)" (click)="update(item)">修改</a></li>
-          <li><a href="javascript:void(0)" (click)="dia(item.applicationId)">删除</a></li>
+          <li><a href="javascript:void(0)" (click)="update(item)" [ngClass]="{unchange: item.stop==0}">修改</a></li>
+          <li><a href="javascript:void(0)" (click)="dia(item)" [ngClass]="{unchange: item.stop==0}">删除</a></li>
         </ul>
       </div>
     </div>

@@ -34,7 +34,7 @@ export class AppManageService {
           "channelName": channelName,
           "channelOrder": null,
           "channelProtocol": protocol,
-          "channelStatus": null
+          "channelStatus": 0
         }
       ],
       "applicationId": 0,
@@ -43,8 +43,6 @@ export class AppManageService {
       "createTime": null,
       "icon": icon
     });
-    debugger
-    console.log(body);
     let headers = this.getHeaders();
     return this.http.post(this.SERVER_URL+path,body,{ headers: headers })
       .map((response: Response) => {
@@ -80,7 +78,7 @@ export class AppManageService {
         }
       });
   }
-  updateApp(id,time,appName,appCate,channelName,channelAddress,protocol){
+  updateApp(id,time,appName,appCate,channelName,channelAddress,protocol,icon){
     let path = "/api/appllication";
     let body = JSON.stringify({
       "applicationChannels": [
@@ -97,7 +95,7 @@ export class AppManageService {
       "applicationName": appName,
       "applicationType": appCate,
       "createTime": time,
-      "icon": null
+      "icon": icon
     });
     console.log(body);
     let headers = this.getHeaders();
@@ -112,6 +110,18 @@ export class AppManageService {
   }
   getCategory(){
     let path = "/api/applicationType";
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers} )
+      .map((response: Response) => {
+        if (response && response.json()) {
+          if(response.status==200){
+            return response.json();
+          }
+        }
+      });
+  }
+  getProtocol(){
+    let path = "/api/applicationProtocol";
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path, { headers : headers} )
       .map((response: Response) => {

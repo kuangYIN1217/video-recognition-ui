@@ -1,0 +1,190 @@
+.channel{
+  margin:20px 30px;
+  background: #ffffff;
+  overflow: hidden;
+}
+a{
+  text-decoration: none;
+}
+input{
+  outline: none;
+}
+.search{
+  float: left;
+  margin:20px 0 20px 20px;
+}
+.search input{
+  background: url("../../../../assets/appdetail/search.png") no-repeat right 6px center;
+  border:1px solid #d3d3d3;
+  width:260px;
+  height:30px;
+  border-radius: 5px;
+  text-indent: 16px;
+}
+.headerBtn{
+  float: right;
+  margin-right: 20px;
+  margin-top: 20px;
+}
+.btn{
+  display: inline-block;
+  color: #333333;
+  font-size: 14px;
+  width:114px;
+  height:30px;
+  text-align: center;
+  line-height: 30px;
+  background: #eeeeee;
+  border-radius: 5px;
+  border:1px solid #d3d3d3;
+  margin-left: 14px;
+}
+.channelTable{
+  clear: both;
+  margin:0 20px;
+  border:1px solid #d3d3d3;
+  width:97.5%;
+  color: #333333;
+}
+.channelTable tr{
+  height:36px;
+  text-align: left;
+  font-size: 14px;
+}
+.channelTable tr:nth-child(even){
+  background: #eeeeee;
+}
+.check{
+  display: inline-block;
+  vertical-align: middle;
+}
+.operationBtn {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 10px;
+  /*margin: 0 auto;*/
+}
+.stop {
+  background: url('../../../../assets/appdetail/zanting.png') no-repeat center;
+
+}
+.start {
+  background: url('../../../../assets/appdetail/qidong.png') no-repeat center;
+}
+.edit{
+  background: url('../../../../assets/appdetail/edit.png') no-repeat center;
+}
+.unedit{
+  background: url('../../../../assets/appdetail/unedit.png') no-repeat center;
+}
+.up{
+  background: url('../../../../assets/appdetail/up.png') no-repeat center;
+}
+.down{
+  background: url('../../../../assets/appdetail/down.png') no-repeat center;
+}
+.dialog{
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(94, 110, 141, 0.7);
+  opacity: 1;
+}
+.dialogContainer{
+  position: absolute;
+  width: 800px;
+  height:auto;
+  top: 80px;
+  left: 50%;
+  margin-left: -400px;
+  background: #fff;
+  color: #FFF;
+  border-radius: 5px;
+  border:1px solid #d3d3d3;
+  -webkit-box-shadow:0 0 10px #d3d3d3;
+  -moz-box-shadow:0 0 10px #d3d3d3;
+  box-shadow:0 0 10px #d3d3d3;
+}
+.addDialogContainer{
+  top:50%;
+  width:506px;
+  left:50%;
+  margin-left: -253px;
+  margin-top: -195px;
+  font-size: 14px;
+}
+.dialogHeader{
+  background: #eeeeee;
+  color: #333333;
+  border-top-left-radius :5px;
+  border-top-right-radius:5px;
+}
+.dialogHeader,.dialogContent{
+  position: relative;
+  color: #000;
+  left:0;
+}
+.dialogHeader span{
+  display: block;
+  height:40px;
+  line-height: 40px;
+  padding-left: 34px;
+  margin-bottom: 20px;
+}
+.dialogContent{
+  padding-left: 34px;
+}
+.dialogContent .info{
+  margin-bottom: 24px;
+}
+.dialogContent .info input,.dialogContent .info select{
+  width:280px;
+  height:30px;
+  border:1px solid #d3d3d3;
+  border-radius: 5px;
+  margin-left: 32px;
+  text-indent: 6px;
+  color: #333333;
+}
+.dialogContent .info select{
+  background: url("../../../../assets/appmanage/rightArrow1.png") no-repeat right 6px center;
+  color: #666666;
+  height:34px !important;
+}
+.infoBtn{
+  padding-top: 26px;
+  padding-left: 80px;
+  padding-bottom: 28px;
+}
+.radio{
+  display: inline-block;
+  padding-left: 34px;
+}
+.radio img{
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+@media (min-width:1441px) and (max-width:1680px) {
+  .channelContent{
+    width:97.2%;
+  }
+}
+@media (min-width:1367px) and (max-width:1440px) {
+  .channelContent{
+    width:96.8%;
+  }
+}
+@media (min-width:1200px) and (max-width:1366px) {
+  .channelContent{
+    width:96.4%;
+  }
+}
+
+
+
+

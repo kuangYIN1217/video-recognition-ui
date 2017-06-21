@@ -521,7 +521,9 @@ a{
   margin-left: 30px;
   line-height: 142px;
 }
-
+.unchange{
+  color: #666666;
+}
 @media (min-width:1200px) and (max-width:1366px) {
   .appModel{
     width:25.5vw;

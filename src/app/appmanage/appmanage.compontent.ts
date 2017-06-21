@@ -6,6 +6,7 @@ import {AppManageService} from "app/common/services/appmanage.service";
 import {FileUploader} from "ng2-file-upload";
 import {SERVER_URL} from "app/app.constants";
 import {appManageInfo} from "../common/defs/resources";
+import {Router} from "@angular/router";
 declare var $:any;
 @Component({
   selector: 'app-manage',
@@ -32,18 +33,20 @@ export class AppManageComponent {
   appCate:string;
   channelName:string;
   channelAddress:string
-  protocols:any[]=['RTMP','HLS'];
+  protocols:any[]=[];
   protocol:string;
   icon:string;
   sceneArr:any[]=[{"name":"道路识别",'flag':1}, {"name":"故障检测"}, {"name":"字母图形分类"}, {"name":"图形识别"}, {"name":"雷暴检测"}, {"name":"神经区域分割"}, {"name":"大数据回归"}];
   systemArr:any[]=[{"name":"ios",'flag':1},{"name":"Android"},{"name":"Windows"},{"name":"HTML5"},{"name":"Linux"},{"name":"其他"}];
-  constructor(private appManageService: AppManageService,) {
+  constructor(private appManageService: AppManageService) {
     this.getAllInfo();
     this.appManageService.getCategory()
       .subscribe(result=>{
-        for(let i in result){
-          this.appCates.push(result[i]);
-        }
+          this.appCates=result;
+      });
+    this.appManageService.getProtocol()
+      .subscribe(protocols=>{
+        this.protocols=protocols;
       });
   }
   Headers:Headers = this.appManageService.getHeaders();
@@ -66,7 +69,6 @@ export class AppManageComponent {
     this.appManageService.getAppInfo()
       .subscribe(result=>{
         this.appManageInfo = result;
-        console.log(result);
         if(this.appManageInfo.length==0){
           this.createApp = 'space';
         }
@@ -89,33 +91,36 @@ export class AppManageComponent {
 
 
   create(){
-    debugger
     this.uploader.queue[0].onSuccess = (response: any, status: any, headers: any) => {
       this.icon = response;
-      console.log(this.icon);
+      if(this.appName){
+        let appName = this.appName;
+        let appCate = this.appCate;
+        let icon = this.icon;
+        let channelName = this.channelName;
+        let channelAddress = this.channelAddress;
+        let protocol = this.protocol;
+        console.log(this.icon);
+        this.appManageService.createApp(appName,appCate,icon,channelName,channelAddress,protocol)
+          .subscribe(result=>{
+            this.createApp='manage';
+            this.getAllInfo();
+          });
+      }else{
+        this.required = 1;
+        return false;
+      }
     }
     this.uploader.queue[0].upload(); // 开始上传
-    if(this.appName){
-    let appName = this.appName;
-    let appCate = this.appCate;
-    let icon = this.icon;
-    let channelName = this.channelName;
-    let channelAddress = this.channelAddress;
-    let protocol = this.protocol;
-    console.log(this.icon);
-    this.appManageService.createApp(appName,appCate,icon,channelName,channelAddress,protocol)
-      .subscribe(result=>{
-        this.createApp='manage';
-        this.getAllInfo();
-      });
-   }else{
-      this.required = 1;
-      return false;
-    }
+
   }
-  dia(id){
-    this.showDialog=1;
-    this.delId = id;
+  dia(item){
+    if(item.stop==0){
+      return false;
+    }else {
+      this.showDialog = 1;
+      this.delId = item.applicationId;
+    }
   }
   cancelDel(){
     this.showDialog=0;
@@ -128,20 +133,25 @@ export class AppManageComponent {
       });
   }
   update(item){
-    debugger
-    console.log(item);
-    this.createApp = 'create';
-    this.btnIndex = 1;
-    this.appName = item.applicationName;
-    this.createTime = item.createTime;
-    this.appId = item.applicationId;
-    this.appCate = item.applicationType;
-    this.channelAddress =item.applicationChannels[0].channelAddress;
-    this.channelName =item.applicationChannels[0].channelName;
-    this.protocol =item.applicationChannels[0].channelProtocol;
+    if(item.stop==0){
+      return false;
+    }else{
+      console.log(item);
+      this.createApp = 'create';
+      this.btnIndex = 1;
+      this.appName = item.applicationName;
+      this.createTime = item.createTime;
+      this.appId = item.applicationId;
+      this.appCate = item.applicationType;
+      this.channelAddress =item.applicationChannels[0].channelAddress;
+      this.channelName =item.applicationChannels[0].channelName;
+      this.protocol =item.applicationChannels[0].channelProtocol;
+      this.icon = item.icon;
+      console.log(this.appId,this.appName,this.createTime,this.appCate,this.channelAddress,this.channelName,this.protocol,this.icon);
+    }
   }
   updateSave(){
-    this.appManageService.updateApp(this.appId,this.appName,this.createTime,this.appCate,this.channelAddress,this.channelName,this.protocol)
+    this.appManageService.updateApp(this.appId,this.appName,this.createTime,this.appCate,this.channelAddress,this.channelName,this.protocol,this.icon)
       .subscribe(result=>{
         this.createApp='manage';
         this.getAllInfo();
@@ -186,5 +196,8 @@ export class AppManageComponent {
       }
     }
     this.sceneGather = this.sceneGatherArr.toString();
+  }
+  gotoAppmanage () {
+    this.createApp = 'manage';
   }
 }
