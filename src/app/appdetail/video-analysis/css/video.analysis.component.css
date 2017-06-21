@@ -88,18 +88,23 @@
 }
 .player-item.fullscreen {
   position: absolute;
-  top: 26px;
-  left: 26px;
-  bottom: 26px;
-  right: 26px;
+  top: 26px !important;
+  left: 26px !important;
+  bottom: 26px !important;
+  right: 26px !important;
   height: auto !important;
+  width: auto !important;
   z-index: 4;
   border: none !important;
 }
+.player-item.fullscreen .item-fullscreen {
+  bottom: 20px !important;
+  right: 20px !important;
+}
 .player-item .item-screenshot {
   position: absolute;
-  bottom: 15px;
-  right: 50px;
+  bottom: 18px;
+  right: 55px;
   z-index: 3;
   cursor: pointer;
 }
