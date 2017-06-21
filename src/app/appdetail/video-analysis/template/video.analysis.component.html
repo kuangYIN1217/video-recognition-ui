@@ -1,11 +1,87 @@
 <div class="container">
   <div class="video-wrapper">
-    <div class="left-bar"></div>
-    <div class="right-content">
-      <div class="player-item"></div>
-      <div class="player-item"></div>
-      <div class="player-item"></div>
-      <div class="player-item"></div>
+    <div class="left-bar" *ngIf="s_fullscreen_grid === 0">
+      <img title="人机识别" (click)="$popup_toggle()" [src]="s_popup_show ? 'assets/appdetail/video-analysis/icon_analysis_h.png' :'assets/appdetail/video-analysis/icon_analysis_n.png'">
+      <div class="divider"></div>
+      <img title="屏幕截图" [src]="'assets/appdetail/video-analysis/icon_screenshot.png'">
+      <div class="divider"></div>
+      <img title="单格视图" (click) = "$grid_icon_click(1)" [src]="s_grid_number === 1 ? 'assets/appdetail/video-analysis/icon_1_h.png' : 'assets/appdetail/video-analysis/icon_1_n.png'">
+      <img title="四格视图" (click) = "$grid_icon_click(4)" [src]="s_grid_number === 4 ? 'assets/appdetail/video-analysis/icon_4_h.png' : 'assets/appdetail/video-analysis/icon_4_n.png'">
+      <img title="六格视图" (click) = "$grid_icon_click(6)" [src]="s_grid_number === 6 ? 'assets/appdetail/video-analysis/icon_6_h.png' : 'assets/appdetail/video-analysis/icon_6_n.png'">
+      <img title="八格视图" (click) = "$grid_icon_click(8)" [src]="s_grid_number === 8 ? 'assets/appdetail/video-analysis/icon_8_h.png' : 'assets/appdetail/video-analysis/icon_8_n.png'">
+      <img title="九格视图" (click) = "$grid_icon_click(9)" [src]="s_grid_number === 9 ? 'assets/appdetail/video-analysis/icon_9_h.png' : 'assets/appdetail/video-analysis/icon_9_n.png'">
     </div>
+    <!-- 视频区域 -->
+    <div class="right-content">
+      <div (mousedown)="$grid_click(1)" [ngStyle]="ngStyle_grid_selected(1)" class="player-item index1" [ngClass]="ngClass_grid(1)">
+        <label class="item-title">01</label>
+        <img *ngIf="s_fullscreen_grid === 1" class="item-screenshot" src="assets/appdetail/video-analysis/icon_screenshot_h.png" alt="" title="屏幕截图">
+        <img (mousedown)="$fullscreen_click(1)" [src]="s_grid_number === 4? 'assets/appdetail/video-analysis/icon_fullscreen_20.png' : s_grid_number === 9 ? 'assets/appdetail/video-analysis/icon_fullscreen_18.png' :'assets/appdetail/video-analysis/icon_fullscreen_22.png'" alt="" class="item-fullscreen" title="全屏">
+        <ckplayer *ngIf="get_ckplayer_exist(1)" class="ck-player" [mediaType]="get_ckplayer_type(1)" [url]="get_ckplayer_url(1)"></ckplayer>
+      </div>
+      <div (mousedown)="$grid_click(2)" [ngStyle]="ngStyle_grid_selected(2)" class="player-item index2" [ngClass]="ngClass_grid(2)" *ngIf="s_grid_number > 1">
+        <label class="item-title">02</label>
+        <img *ngIf="s_fullscreen_grid === 2" class="item-screenshot" src="assets/appdetail/video-analysis/icon_screenshot_h.png" alt="" title="屏幕截图">
+        <img (mousedown)="$fullscreen_click(2)" [src]="s_grid_number === 8? 'assets/appdetail/video-analysis/icon_fullscreen_18.png' : 'assets/appdetail/video-analysis/icon_fullscreen_20.png'" alt="" class="item-fullscreen" title="全屏">
+        <ckplayer *ngIf="get_ckplayer_exist(2)" class="ck-player" [mediaType]="get_ckplayer_type(2)" [url]="get_ckplayer_url(2)"></ckplayer>
+      </div>
+      <div (mousedown)="$grid_click(3)"  class="player-item index3" [ngStyle]="ngStyle_grid_index3()" [ngClass]="ngClass_grid(3)" *ngIf="s_grid_number > 1">
+        <label  class="item-title">03</label>
+        <img *ngIf="s_fullscreen_grid === 3" class="item-screenshot" src="assets/appdetail/video-analysis/icon_screenshot_h.png" alt="" title="屏幕截图">
+        <img (mousedown)="$fullscreen_click(3)" [src]="s_grid_number === 8? 'assets/appdetail/video-analysis/icon_fullscreen_18.png' : 'assets/appdetail/video-analysis/icon_fullscreen_20.png'" alt="" class="item-fullscreen" title="全屏">
+        <ckplayer *ngIf="get_ckplayer_exist(3)" class="ck-player" [mediaType]="get_ckplayer_type(3)" [url]="get_ckplayer_url(3)"></ckplayer>
+      </div>
+      <div (mousedown)="$grid_click(4)"  class="player-item index4" [ngStyle]="ngStyle_grid_index4()" [ngStyle]="" [ngClass]="ngClass_grid(4)" *ngIf="s_grid_number > 1">
+        <label class="item-title">04</label>
+        <img *ngIf="s_fullscreen_grid === 4" class="item-screenshot" src="assets/appdetail/video-analysis/icon_screenshot_h.png" alt="" title="屏幕截图">
+        <img (mousedown)="$fullscreen_click(4)" [src]="s_grid_number === 8? 'assets/appdetail/video-analysis/icon_fullscreen_18.png' : 'assets/appdetail/video-analysis/icon_fullscreen_20.png'" alt="" class="item-fullscreen" title="全屏">
+        <ckplayer *ngIf="get_ckplayer_exist(4)" class="ck-player" [mediaType]="get_ckplayer_type(4)" [url]="get_ckplayer_url(4)"></ckplayer>
+      </div>
+      <div (mousedown)="$grid_click(5)" [ngStyle]="ngStyle_grid_selected(5)" class="player-item index5" [ngClass]="ngClass_grid(5)"  *ngIf="s_grid_number > 4">
+        <label class="item-title">05</label>
+        <img *ngIf="s_fullscreen_grid === 5" class="item-screenshot" src="assets/appdetail/video-analysis/icon_screenshot_h.png" alt="" title="屏幕截图">
+        <img (mousedown)="$fullscreen_click(5)" [src]="s_grid_number === 8? 'assets/appdetail/video-analysis/icon_fullscreen_18.png' : 'assets/appdetail/video-analysis/icon_fullscreen_20.png'" alt="" class="item-fullscreen" title="全屏">
+        <ckplayer *ngIf="get_ckplayer_exist(5)" class="ck-player" [mediaType]="get_ckplayer_type(8)" [url]="get_ckplayer_url(8)"></ckplayer>
+      </div>
+      <div (mousedown)="$grid_click(6)" [ngStyle]="ngStyle_grid_selected(6)" class="player-item index6" [ngClass]="ngClass_grid(6)" *ngIf="s_grid_number > 4">
+        <label class="item-title">06</label>
+        <img *ngIf="s_fullscreen_grid === 6" class="item-screenshot" src="assets/appdetail/video-analysis/icon_screenshot_h.png" alt="" title="屏幕截图">
+        <img (mousedown)="$fullscreen_click(6)" [src]="s_grid_number === 8? 'assets/appdetail/video-analysis/icon_fullscreen_18.png' : 'assets/appdetail/video-analysis/icon_fullscreen_20.png'" alt="" class="item-fullscreen" title="全屏">
+        <ckplayer  *ngIf="get_ckplayer_exist(6)" class="ck-player" [mediaType]="get_ckplayer_type(6)" [url]="get_ckplayer_url(6)"></ckplayer>
+      </div>
+      <div (mousedown)="$grid_click(7)" [ngStyle]="ngStyle_grid_selected(7)" class="player-item index7" [ngClass]="ngClass_grid(7)" *ngIf="s_grid_number > 6">
+        <label class="item-title">07</label>
+        <img *ngIf="s_fullscreen_grid === 7" class="item-screenshot" src="assets/appdetail/video-analysis/icon_screenshot_h.png" alt="" title="屏幕截图">
+        <img (mousedown)="$fullscreen_click(7)" [src]="s_grid_number === 8? 'assets/appdetail/video-analysis/icon_fullscreen_18.png' : 'assets/appdetail/video-analysis/icon_fullscreen_20.png'" alt="" class="item-fullscreen" title="全屏">
+        <ckplayer *ngIf="get_ckplayer_exist(7)" class="ck-player" [mediaType]="get_ckplayer_type(7)" [url]="get_ckplayer_url(7)"></ckplayer>
+      </div>
+      <div (mousedown)="$grid_click(8)" [ngStyle]="ngStyle_grid_selected(8)" class="player-item index8" [ngClass]="ngClass_grid(8)"  *ngIf="s_grid_number > 6">
+        <label class="item-title">08</label>
+        <img *ngIf="s_fullscreen_grid === 8" class="item-screenshot" src="assets/appdetail/video-analysis/icon_screenshot_h.png" alt="" title="屏幕截图">
+        <img (mousedown)="$fullscreen_click(8)" [src]="s_grid_number === 8? 'assets/appdetail/video-analysis/icon_fullscreen_18.png' : 'assets/appdetail/video-analysis/icon_fullscreen_20.png'" alt="" class="item-fullscreen" title="全屏">
+        <ckplayer *ngIf="get_ckplayer_exist(8)" class="ck-player" [mediaType]="get_ckplayer_type(8)" [url]="get_ckplayer_url(8)"></ckplayer>
+      </div>
+      <div (mousedown)="$grid_click(9)" [ngStyle]="ngStyle_grid_selected(9)" class="player-item index9" [ngClass]="ngClass_grid(9)" *ngIf="s_grid_number > 8">
+        <label class="item-title">09</label>
+        <img *ngIf="s_fullscreen_grid === 9" class="item-screenshot" src="assets/appdetail/video-analysis/icon_screenshot_h.png" alt="" title="屏幕截图">
+        <img (mousedown)="$fullscreen_click(9)" [src]="s_grid_number === 8? 'assets/appdetail/video-analysis/icon_fullscreen_18.png' : 'assets/appdetail/video-analysis/icon_fullscreen_20.png'" alt="" class="item-fullscreen" title="全屏">
+        <ckplayer *ngIf="get_ckplayer_exist(9)" class="ck-player" [mediaType]="get_ckplayer_type(9)" [url]="get_ckplayer_url(9)"></ckplayer>
+      </div>
+
+    </div>
+
+    <!-- 人机识别 popup -->
+    <div class="analysis-popup" *ngIf="s_popup_show">
+      <div class="popup-item all">
+        <img (click)="$popup_select_all_toggle()" [src]="s_popup_allselect ? 'assets/appdetail/video-analysis/icon_select_h.png' : 'assets/appdetail/video-analysis/icon_select_n.png'">
+        <label [ngStyle]="ngStyle_popup_allselect()" class="popup-title">全选</label>
+      </div>
+
+      <div class="popup-item" *ngFor="let item of d_analysis_options; let i = index">
+        <img (click)="$popup_select_toggle(i)" [src]="(item.selected && !s_popup_allselect) ? 'assets/appdetail/video-analysis/icon_select_h.png' : 'assets/appdetail/video-analysis/icon_select_n.png'">
+        <label [ngStyle]="ngStyle_popup_select(item.selected)" class="popup-title">{{item.des}}</label>
+      </div>
+    </div>
+
   </div>
 </div>
