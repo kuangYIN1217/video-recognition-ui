@@ -36,9 +36,11 @@ export class AppManageComponent {
   protocols:any[]=[];
   protocol:string;
   icon:string;
+  channel:number=0;
+  applicationChannels:any[]=[];
   sceneArr:any[]=[{"name":"道路识别",'flag':1}, {"name":"故障检测"}, {"name":"字母图形分类"}, {"name":"图形识别"}, {"name":"雷暴检测"}, {"name":"神经区域分割"}, {"name":"大数据回归"}];
   systemArr:any[]=[{"name":"ios",'flag':1},{"name":"Android"},{"name":"Windows"},{"name":"HTML5"},{"name":"Linux"},{"name":"其他"}];
-  constructor(private appManageService: AppManageService) {
+  constructor(private appManageService: AppManageService,private router:Router) {
     this.getAllInfo();
     this.appManageService.getCategory()
       .subscribe(result=>{
@@ -84,6 +86,8 @@ export class AppManageComponent {
   add(){
     let obj={};
     this.arr.push(obj);
+/*    this.channelName = '';
+    this.channelAddress='';*/
   }
   del(index){
     this.arr.splice(index,1);
@@ -97,12 +101,13 @@ export class AppManageComponent {
         let appName = this.appName;
         let appCate = this.appCate;
         let icon = this.icon;
-        let channelName = this.channelName;
-        let channelAddress = this.channelAddress;
-        let protocol = this.protocol;
-        console.log(this.icon);
-        this.appManageService.createApp(appName,appCate,icon,channelName,channelAddress,protocol)
+        console.log(this.arr);
+         /* let channelName = this.channelName;
+          let channelAddress = this.channelAddress;*/
+          let protocol = this.protocol;
+        this.appManageService.createApp(appName,appCate,icon,this.arr)
           .subscribe(result=>{
+            console.log(result);
             this.createApp='manage';
             this.getAllInfo();
           });
@@ -136,22 +141,18 @@ export class AppManageComponent {
     if(item.stop==0){
       return false;
     }else{
-      console.log(item);
       this.createApp = 'create';
       this.btnIndex = 1;
+      this.channel = 1;
       this.appName = item.applicationName;
       this.createTime = item.createTime;
       this.appId = item.applicationId;
       this.appCate = item.applicationType;
-      this.channelAddress =item.applicationChannels[0].channelAddress;
-      this.channelName =item.applicationChannels[0].channelName;
-      this.protocol =item.applicationChannels[0].channelProtocol;
       this.icon = item.icon;
-      console.log(this.appId,this.appName,this.createTime,this.appCate,this.channelAddress,this.channelName,this.protocol,this.icon);
     }
   }
   updateSave(){
-    this.appManageService.updateApp(this.appId,this.appName,this.createTime,this.appCate,this.channelAddress,this.channelName,this.protocol,this.icon)
+    this.appManageService.updateApp(this.appId,this.appName,this.appCate,this.createTime,this.icon)
       .subscribe(result=>{
         this.createApp='manage';
         this.getAllInfo();
@@ -161,18 +162,14 @@ export class AppManageComponent {
     this.createApp='manage';
   }
   createJob(){
+    this.appName = '';
+    this.icon = '';
+    this.channelName = '';
+    this.channelAddress = '';
     this.btnIndex = 0;
     this.createApp = 'create';
     this.appCate = this.appCates[0];
-    this.changeCate();
     this.protocol = this.protocols[0];
-    this.changePro();
-  }
-  changeCate(){
-  //console.log(this.appCate);
-}
-  changePro(){
-    //console.log(this.protocol);
   }
   buyScene(){
     this.scene = 1;
@@ -199,5 +196,10 @@ export class AppManageComponent {
   }
   gotoAppmanage () {
     this.createApp = 'manage';
+  }
+  jump(item){
+    if(item){
+      localStorage.setItem("application",item);
+    }
   }
 }

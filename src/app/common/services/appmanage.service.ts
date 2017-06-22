@@ -24,19 +24,10 @@ export class AppManageService {
     headers.append('Authorization',this.getAuthorization());
     return headers;
   }
-  createApp(appName,appCate,icon,channelName,channelAddress,protocol){
+  createApp(appName,appCate,icon,applicationChannels){
     let path = "/api/appllication";
     let body = JSON.stringify({
-      "applicationChannels": [
-        {
-          "channelAddress":channelAddress,
-          "channelId": 0,
-          "channelName": channelName,
-          "channelOrder": null,
-          "channelProtocol": protocol,
-          "channelStatus": 0
-        }
-      ],
+      "applicationChannels":applicationChannels ,
       "applicationId": 0,
       "applicationName": appName,
       "applicationType": appCate,
@@ -58,6 +49,7 @@ export class AppManageService {
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path, { headers : headers} )
       .map((response: Response) => {
+      console.log(response);
         if (response && response.json()) {
           return plainToClass(appManageInfo, response.json());
         }
@@ -78,19 +70,9 @@ export class AppManageService {
         }
       });
   }
-  updateApp(id,time,appName,appCate,channelName,channelAddress,protocol,icon){
+  updateApp(id,appName,appCate,time,icon){
     let path = "/api/appllication";
     let body = JSON.stringify({
-      "applicationChannels": [
-        {
-          "channelAddress":channelAddress,
-          "channelId": 0,
-          "channelName": channelName,
-          "channelOrder": null,
-          "channelProtocol": protocol,
-          "channelStatus": null
-        }
-      ],
       "applicationId": id,
       "applicationName": appName,
       "applicationType": appCate,

@@ -3,7 +3,7 @@
  */
 import { Component } from '@angular/core';
 import {ChannelService} from "../../common/services/channel.service";
-import {channelInfo} from "../../common/defs/resources";
+import {channelInfo, Page} from "../../common/defs/resources";
 import {AppManageService} from "../../common/services/appmanage.service";
 declare var $:any;
 @Component({
@@ -19,13 +19,20 @@ export class WayManageComponent {
   protocol:string;
   chanName:string;
   chanAddr:string;
-  radioIndex:number=0;
+  radioIndex:number;
   allFlag:boolean=false;
   btnIndex:number=0;
   chanId:number;
+  chanOrder:number;
   chanStatus:string;
   flag:number;
+  delSysDialog:number=0;
+  delDialog:number=0;
+  order:number=0;
+  appInfo: any[] = [];
+  asc:boolean=false;
   constructor(private appManageService: AppManageService,private channelService: ChannelService) {
+
     this.getAllChannel();
     this.appManageService.getProtocol()
       .subscribe(protocols=>{
@@ -52,6 +59,22 @@ export class WayManageComponent {
       }
     }
   }
+/*  getPageData(paraParam) {
+    this.getAlljobs(id,paraParam.curPage-1,paraParam.pageMaxItem);
+    //console.log('触发', paraParam);
+  }
+  getAlljobs(id,page,size){
+    this.channelService.getPage(id,page,size)
+      .subscribe(result => {
+        this.appInfo = result.content;
+        let page = new Page();
+        page.pageMaxItem = result.size;
+        page.curPage = result.number+1;
+        page.totalPage = result.totalPages;
+        page.totalNum = result.totalElements;
+        this.pageParams = page;
+      });
+  }*/
   allSel(){
     for(var i in this.channelInfo){
       if(this.allFlag==false){
@@ -66,6 +89,9 @@ export class WayManageComponent {
       this.allFlag=false;
     }
   }
+  dia(){
+    this.delDialog = 1;
+  }
   delete(){
     for(let i in this.channelInfo){
       if(this.channelInfo[i]['flag'] == 1){
@@ -76,6 +102,7 @@ export class WayManageComponent {
   delChannel(id){
     this.channelService.delChannel(id)
       .subscribe(result=>{
+        this.delDialog = 0;
         this.getAllChannel();
       })
   }
@@ -88,12 +115,12 @@ export class WayManageComponent {
     this.protocol = this.protocols[0];
     this.chanName = '';
     this.chanAddr = '';
-    this.protocol = '';
-    this.chanId = 0;
-    this.chanStatus = '';
+    //this.chanOrder = 0;
+    this.chanStatus = '1';
+    this.radioIndex = 1;
   }
   output(index){
-    if(index==0){
+    if(index==1){
       return '开';
     }else{
       return '关';
@@ -112,6 +139,7 @@ export class WayManageComponent {
   }
   edit(item){
     if(item.channelStatus==0){
+        this.delSysDialog =1;
         return false;
     }else{
       this.addDialog = 1;
@@ -120,15 +148,20 @@ export class WayManageComponent {
       this.chanAddr = item.channelAddress;
       this.protocol = item.channelProtocol;
       this.chanId = item.channelId;
+      this.chanOrder = item.channelOrder;
       this.chanStatus = item.channelStatus;
-      console.log(this.chanStatus);
-    }
+      if(this.chanStatus=='1'){
+        this.radioIndex = 1;
+      }else{
+        this.radioIndex = 0;
+      }
+  }
 
   }
   editSave(){
     this.addDialog = 0;
     console.log(this.chanStatus);
-    this.channelService.updateChannel(this.chanId,this.chanName,this.chanAddr,this.protocol,this.chanStatus)
+    this.channelService.updateChannel(this.chanId,this.chanOrder,this.chanName,this.chanAddr,this.protocol,this.chanStatus)
       .subscribe(result=>{
         this.getAllChannel();
       })
@@ -152,6 +185,8 @@ export class WayManageComponent {
   }
   cancel(){
     this.addDialog = 0;
+    this.delSysDialog = 0;
+    this.delDialog = 0;
   }
   upRecord(i){
     if(i == 0) {
@@ -169,5 +204,15 @@ export class WayManageComponent {
     this.channelInfo[index1] = this.channelInfo.splice(index2, 1, this.channelInfo[index1])[0];
     return this.channelInfo;
   }
-
+  sortByType(){
+    if(this.order==0){
+      this.order=1;
+    }else if(this.order==1){
+      this.order=2;
+    }else if(this.order==2){
+      this.order=1;
+    }
+   var sort='status';
+    this.asc=!this.asc;
+  }
 }

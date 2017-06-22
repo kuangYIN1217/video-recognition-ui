@@ -34,17 +34,32 @@ export class ChannelService {
         }
       });
   }
-
-  createChannel(chanName,chanAddr,protocol,status){
+/*  getPage(applicationId,page=0,size=10){
+    let path = "/api/applicationChannelByApplication/"+applicationId+"?page="+page+"&size="+size;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers})
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }*/
+  createChannel(chanAddr,chanName,protocol,status){
     let path = "/api/applicationChannel";
     let body = JSON.stringify({
+      "application": {
+        "applicationId": 0,
+      },
       "channelAddress": chanAddr,
       "channelId": 0,
       "channelName": chanName,
       "channelOrder": null,
-      "channelProtocol": "RTMP",
-      "channelStatus": status
+      "channelOut": null,
+      "channelProtocol": protocol,
+      "channelStatus":status,
+      "recognitionCategory": null
     });
+    console.log(body);
     let headers = this.getHeaders();
     return this.http.post(this.SERVER_URL+path,body,{ headers: headers })
       .map((response: Response) => {
@@ -55,13 +70,13 @@ export class ChannelService {
         }
       });
   }
-  updateChannel(id,chanName,chanAddr,protocol,status){
+  updateChannel(id,order,chanName,chanAddr,protocol,status){
     let path = "/api/applicationChannel";
     let body = JSON.stringify({
       "channelAddress": chanAddr,
       "channelId": id,
       "channelName": chanName,
-      "channelOrder": null,
+      "channelOrder": order,
       "channelProtocol": protocol,
       "channelStatus": status
     });

@@ -14,7 +14,7 @@ input{
   margin:20px 0 20px 20px;
 }
 .search input{
-  background: url("../../../../assets/appdetail/search.png") no-repeat right 6px center;
+  background: url("../../../../assets/appdetail/way.manage/search.png") no-repeat right 6px center;
   border:1px solid #d3d3d3;
   width:260px;
   height:30px;
@@ -54,10 +54,6 @@ input{
 .channelTable tr:nth-child(even){
   background: #eeeeee;
 }
-.check{
-  display: inline-block;
-  vertical-align: middle;
-}
 .operationBtn {
   width: 20px;
   height: 20px;
@@ -67,23 +63,47 @@ input{
   /*margin: 0 auto;*/
 }
 .stop {
-  background: url('../../../../assets/appdetail/zanting.png') no-repeat center;
+  background: url('../../../../assets/appdetail/way.manage/zanting.png') no-repeat center;
 
 }
 .start {
-  background: url('../../../../assets/appdetail/qidong.png') no-repeat center;
+  background: url('../../../../assets/appdetail/way.manage/qidong.png') no-repeat center;
 }
 .edit{
-  background: url('../../../../assets/appdetail/edit.png') no-repeat center;
+  background: url('../../../../assets/appdetail/way.manage/edit.png') no-repeat center;
 }
 .unedit{
-  background: url('../../../../assets/appdetail/unedit.png') no-repeat center;
+  background: url('../../../../assets/appdetail/way.manage/unedit.png') no-repeat center;
 }
 .up{
-  background: url('../../../../assets/appdetail/up.png') no-repeat center;
+  background: url('../../../../assets/appdetail/way.manage/up.png') no-repeat center;
 }
 .down{
-  background: url('../../../../assets/appdetail/down.png') no-repeat center;
+  background: url('../../../../assets/appdetail/way.manage/down.png') no-repeat center;
+}
+.pad{
+  padding-left: 20px;
+}
+.checked{
+  width:12%;
+}
+.order{
+  width:12%;
+}
+.channelName{
+  width:16%;
+}
+.channelAddr{
+  width:16%;
+}
+.protocol{
+  width:14%;
+}
+.switch{
+  width:10%;
+}
+.operation{
+  width:20%;
 }
 .dialog{
   position: fixed;
@@ -125,7 +145,7 @@ input{
 }
 .dialogHeader,.dialogContent{
   position: relative;
-  color: #000;
+  color: #333333;
   left:0;
 }
 .dialogHeader span{
@@ -133,7 +153,13 @@ input{
   height:40px;
   line-height: 40px;
   padding-left: 34px;
-  margin-bottom: 20px;
+  margin-bottom: 42px;
+}
+.span{
+  display: block;
+  height:40px;
+  font-size: 18px;
+  padding-top: 20px;
 }
 .dialogContent{
   padding-left: 34px;
@@ -165,9 +191,15 @@ input{
   padding-left: 34px;
 }
 .radio img{
+  margin-right: 10px;
+}
+.middle{
   display: inline-block;
   vertical-align: middle;
-  margin-right: 10px;
+}
+.delSys{
+  text-align: center;
+  padding:50px 0 42px;
 }
 @media (min-width:1441px) and (max-width:1680px) {
   .channelContent{

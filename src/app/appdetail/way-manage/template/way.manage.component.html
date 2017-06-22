@@ -3,32 +3,37 @@
     <div class="search"><input type="text" placeholder="搜索通道"/></div>
     <div class="headerBtn">
       <a href="javascript:void(0)" class="btn" (click)="addChannel()">添加</a>
-      <a href="javascript:void(0)" class="btn" (click)="delete()">删除</a>
+      <a href="javascript:void(0)" class="btn" (click)="dia()">删除</a>
     </div>
     <table class="channelTable" cellspacing="0">
       <tr>
-        <th>
-          <img src="../assets/appdetail/unchecked.png" *ngIf="allFlag==false" class="check" (click)="allSel()"/>
-          <img src="../assets/appdetail/checked.png" *ngIf="allFlag==true" class="check" (click)="allSel()"/>
+        <th class="checked">
+          <img src="../assets/appdetail/way.manage/unchecked.png" *ngIf="allFlag==false" class="middle pad" (click)="allSel()"/>
+          <img src="../assets/appdetail/way.manage/checked.png" *ngIf="allFlag==true" class="middle pad" (click)="allSel()"/>
         </th>
-        <th>画面顺序</th>
-        <th>通道名称</th>
-        <th>通道地址</th>
-        <th>协议</th>
-        <th>开启状态</th>
-        <th>操作</th>
+        <th class="order pad">画面顺序</th>
+        <th class="channelName pad">通道名称</th>
+        <th class="channelAddr pad">通道地址</th>
+        <th class="protocol pad">协议</th>
+        <th class="switch pad">
+          <span class="middle">开启状态</span>
+          <img src="../assets/appdetail/way.manage/init.png" class="middle" *ngIf="order==0" (click)="sortByType()"/>
+          <img src="../assets/appdetail/way.manage/shang.png" class="middle" *ngIf="order==1" (click)="sortByType()"/>
+          <img src="../assets/appdetail/way.manage/xia.png" class="middle" *ngIf="order==2" (click)="sortByType()"/>
+        </th>
+        <th class="operation pad">操作</th>
       </tr>
       <tr *ngFor="let item of channelInfo let i=index;">
         <td>
-          <img src="../assets/appdetail/unchecked.png" class="check" (click)="check(item)" *ngIf="item.flag!=1"/>
-          <img src="../assets/appdetail/checked.png" class="check" (click)="check(item)" *ngIf="item.flag==1"/>
+          <img src="../assets/appdetail/way.manage/unchecked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag!=1"/>
+          <img src="../assets/appdetail/way.manage/checked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag==1"/>
         </td>
-        <td>{{item.channelId}}</td>
-        <td>{{item.channelName}}</td>
-        <td>{{item.channelAddress}}</td>
-        <td>{{item.channelProtocol}}</td>
-        <td>{{output(item.channelStatus)}}</td>
-        <td class="operation">
+        <td class="pad">{{item.channelOrder}}</td>
+        <td class="pad">{{item.channelName}}</td>
+        <td class="pad">{{item.channelAddress}}</td>
+        <td class="pad">{{item.channelProtocol}}</td>
+        <td class="pad">{{output(item.channelStatus)}}</td>
+        <td class="operation pad">
           <a class="operationBtn stop" *ngIf="item.channelStatus==1" (click)="runChannel(item)"></a>
           <a class="operationBtn start" *ngIf="item.channelStatus==0" (click)="runChannel(item)"></a>
           <a class="operationBtn edit" *ngIf="item.channelStatus==1" (click)="edit(item)"></a>
@@ -38,6 +43,7 @@
         </td>
       </tr>
     </table>
+   <!-- <page [pageParams]="pageParams" (changeCurPage)="getPageData($event)" class="page"></page>-->
   </div>
   <div class="dialog" [style.display]="addDialog==1?'':'none'">
     <div class="dialogContainer addDialogContainer">
@@ -62,10 +68,10 @@
         <div class="info">
           <label>是否开启：</label>
           <span class="radio">
-            <img src="../assets/appdetail/unradio.png" *ngIf="radioIndex!=0" (click)="radio(0)"/>
-            <img src="../assets/appdetail/radio.png" *ngIf="radioIndex==0" (click)="radio(0)"/>开启
-            <img src="../assets/appdetail/unradio.png" *ngIf="radioIndex!=1" (click)="radio(1)" style="margin-left: 20px"/>
-            <img src="../assets/appdetail/radio.png" *ngIf="radioIndex==1" (click)="radio(1)" style="margin-left: 20px"/>关闭
+            <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=1" (click)="radio(1)"/>
+            <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==1" (click)="radio(1)"/><span class="middle">开启</span>
+            <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=0" (click)="radio(0)" style="margin-left: 20px"/>
+            <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==0" (click)="radio(0)" style="margin-left: 20px"/><span class="middle">关闭</span>
           </span>
         </div>
         <div class="infoBtn">
@@ -73,6 +79,35 @@
           <a href="javascript:void(0)" class="btn" style="margin-left: 28px" (click)="editSave()" [style.display]="btnIndex==1?'':'none'">保存</a>
           <a href="javascript:void(0)" class="btn" style="margin-left: 28px" (click)="cancel()">取消</a>
         </div>
+      </div>
+    </div>
+  </div>
+  <div class="dialog" [style.display]="delSysDialog==1?'':'none'">
+    <div class="dialogContainer addDialogContainer">
+      <div class="dialogHeader">
+        <span>系统信息</span>
+      </div>
+      <div class="dialogContent" style="text-align: center">
+        <img src="../assets/appdetail/way.manage/warnning.png" class="middle"/>
+        <span class="middle" style="padding-left: 10px">对不起，通道开启中，不可删除！</span>
+      </div>
+      <div class="delSys">
+        <a href="javascript:void(0)" class="btn" (click)="cancel()">确定</a>
+      </div>
+    </div>
+  </div>
+  <div class="dialog" [style.display]="delDialog==1?'':'none'">
+    <div class="dialogContainer addDialogContainer">
+      <div class="dialogHeader">
+        <span>删除</span>
+      </div>
+      <div class="dialogContent" style="text-align: center">
+        <img src="../assets/appdetail/way.manage/warnning.png" class="middle"/>
+        <span class="middle" style="padding-left: 10px">删除所选通道？</span>
+      </div>
+      <div class="delSys">
+        <a href="javascript:void(0)" class="btn" (click)="delete()">确定</a>
+        <a href="javascript:void(0)" class="btn" (click)="cancel()">取消</a>
       </div>
     </div>
   </div>

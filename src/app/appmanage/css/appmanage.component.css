@@ -440,12 +440,11 @@ a{
   border-radius: 8px;
 }
 .delDialogContainer{
-  height:200px;
   top:50%;
-  width:550px;
+  width:506px;
   left:50%;
-  margin-left: -275px;
-  margin-top: -100px;
+  margin-left: -253px;
+  margin-top: -195px;
 }
 .dialogHeader,.dialogContent{
   position: relative;
@@ -492,16 +491,42 @@ a{
   color: #333;
   font-size: 14px;
   text-align: center;
-  line-height: 34px;
-  width: 92px;
-  height:34px;
-  background: #eee;
+  line-height: 30px;
+  width: 114px;
+  height:30px;
+  background: #eeeeee;
   border-radius: 5px;
+  border:1px solid #d3d3d3;
   margin-left: 8px;
 }
 .must{
   font-size: 14px;
   color: #fe1c1c;
+}
+.del{
+  text-align: center;
+  padding:50px 0 42px;
+}
+.middle{
+  display: inline-block;
+  vertical-align: middle;
+}
+.dialogDelHeader{
+  background: #eeeeee;
+  border-top-left-radius :5px;
+  border-top-right-radius:5px;
+}
+.dialogDelHeader span{
+  color: #333333;
+  display: block;
+  height:40px;
+  line-height: 40px;
+  padding-left: 34px;
+  margin-bottom: 42px;
+}
+.dialogDelContent{
+  text-align: center;
+  color:#333333;
 }
 .spaceContent{
   position: fixed;
