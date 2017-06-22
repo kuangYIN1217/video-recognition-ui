@@ -42,9 +42,6 @@ export class VideoAnalysisComoponent {
   },{
     url: 'rtmp://live.hkstv.hk.lxdns.com/live/hks',
     type: 'rtmp'
-  }, {
-    url: 'http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8',
-    type: 'hls'
   }];
   /* 生命周期 */
   ngAfterViewInit() {
