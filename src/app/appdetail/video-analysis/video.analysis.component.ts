@@ -13,10 +13,14 @@ declare var $:any;
 })
 export class VideoAnalysisComoponent {
   constructor (private channelService: ChannelService , private recognitionService: RecognitionService) {
-    /* 初始化recognition */
+    this.d_applicationId = parseInt(window.sessionStorage.getItem('applicationId'));
+     /* 初始化recognition */
     this.initRecognitions();
     /* 初始化channel */
     this.initChannels();
+  }
+  ngAfterViewInit() {
+    $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'))
   }
   // 状态机命名 s_xxx-------------------------------------------------------------
   s_fullscreen_grid: number = 0;
@@ -25,14 +29,11 @@ export class VideoAnalysisComoponent {
   s_popup_show: boolean = false;
   s_popup_allselect: boolean = false;
   // 数据命名 d_xxx-----------------------------------------------------------------
-  d_applicationId: number = 1;
+  d_applicationId: number;
   d_analysis_options = [];
   /* http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8 */
   /* rtmp://live.hkstv.hk.lxdns.com/live/hks */
   d_video_list = [];
-  /* 生命周期 */
-  ngAfterViewInit() {
-  }
   /* ngStyle_xx 样式--------------------------------------------------------- */
   ngStyle_popup_allselect () {
     if  (this.s_popup_allselect) {
@@ -205,10 +206,15 @@ export class VideoAnalysisComoponent {
   initChannels() {
     this.channelService.getOpenChannelById(this.d_applicationId).subscribe(rep => {
       this.d_video_list = rep;
-      this.d_video_list.push({
+      var test = {
         channelOut: 'rtmp://live.hkstv.hk.lxdns.com/live/hks',
         recognitionCategory: '148,153,150,151'
-      })
+      }
+      this.d_video_list.push(test)
+      this.d_video_list.push(test)
+      this.d_video_list.push(test)
+      this.d_video_list.push(test)
+      this.d_video_list.push(test)
       console.log(this.d_video_list)
     });
   }

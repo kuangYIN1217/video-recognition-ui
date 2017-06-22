@@ -7,6 +7,7 @@ import {FileUploader} from "ng2-file-upload";
 import {SERVER_URL} from "app/app.constants";
 import {appManageInfo} from "../common/defs/resources";
 import {Router} from "@angular/router";
+import {stringify} from "querystring";
 declare var $:any;
 @Component({
   selector: 'app-manage',
@@ -199,7 +200,8 @@ export class AppManageComponent {
   }
   jump(item){
     if(item){
-      sessionStorage.setItem("applicationId",item.channelId);
+      sessionStorage.setItem("applicationId" , item.applicationId);
+      sessionStorage.setItem("applicationName" , item.applicationName);
     }
   }
 }
