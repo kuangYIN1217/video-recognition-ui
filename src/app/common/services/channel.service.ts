@@ -44,14 +44,13 @@ export class ChannelService {
         }
       });
   }*/
-  createChannel(chanAddr,chanName,protocol,status){
+  createChannel(id,chanAddr,chanName,protocol,status){
     let path = "/api/applicationChannel";
     let body = JSON.stringify({
       "application": {
-        "applicationId": 0,
+        "applicationId": id,
       },
       "channelAddress": chanAddr,
-      "channelId": 0,
       "channelName": chanName,
       "channelOrder": null,
       "channelOut": null,
@@ -59,7 +58,6 @@ export class ChannelService {
       "channelStatus":status,
       "recognitionCategory": null
     });
-    console.log(body);
     let headers = this.getHeaders();
     return this.http.post(this.SERVER_URL+path,body,{ headers: headers })
       .map((response: Response) => {
@@ -114,7 +112,19 @@ export class ChannelService {
         }
       });
   }
-
+  getDirection(id,direction){
+    console.log(id,direction);
+    let path = "/api/changeChannelOrder/"+ id+"/"+ direction ;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL + path, {headers: headers})
+      .map((response: Response) => {
+        if (response && response.json()){
+          if(response.status==200){
+            return response.json();
+          }
+        }
+      });
+  }
   getOpenChannelById(id) {
     let path = "/api/openApplicationChannelByApplication/"+ id ;
     let headers = this.getHeaders();

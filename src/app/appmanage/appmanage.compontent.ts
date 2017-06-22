@@ -199,7 +199,7 @@ export class AppManageComponent {
   }
   jump(item){
     if(item){
-      localStorage.setItem("application",item);
+      sessionStorage.setItem("applicationId",item.channelId);
     }
   }
 }

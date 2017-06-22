@@ -31,8 +31,12 @@ export class WayManageComponent {
   order:number=0;
   appInfo: any[] = [];
   asc:boolean=false;
+  appId:string;
+  moveIndex:number;
+  dire:string;
   constructor(private appManageService: AppManageService,private channelService: ChannelService) {
-
+    this.appId = window.sessionStorage.getItem("applicationId");
+    console.log(this.appId);
     this.getAllChannel();
     this.appManageService.getProtocol()
       .subscribe(protocols=>{
@@ -131,14 +135,14 @@ export class WayManageComponent {
       let chanAddr = this.chanAddr;
       let protocol = this.protocol;
       let status =  this.radioIndex;
-      this.channelService.createChannel(chanName,chanAddr,protocol,status)
+      this.channelService.createChannel(this.appId,chanName,chanAddr,protocol,status)
         .subscribe(result=>{
           this.addDialog = 0;
           this.getAllChannel();
         })
   }
   edit(item){
-    if(item.channelStatus==0){
+    if(item.channelStatus==1){
         this.delSysDialog =1;
         return false;
     }else{
@@ -188,13 +192,20 @@ export class WayManageComponent {
     this.delSysDialog = 0;
     this.delDialog = 0;
   }
-  upRecord(i){
-    if(i == 0) {
-      return;
+  dirRecord(id,direction){
+    debugger
+    console.log(id);
+    if(direction == 1){
+      this.dire='up';
+    }else if(direction == 2){
+      this.dire='down';
     }
-    this.swapItems(i, i - 1);
+    this.channelService.getDirection(id,this.dire)
+      .subscribe(result=>{
+
+      });
   }
-  downRecord(i){
+/*  downRecord(i){
     if(i == this.channelInfo.length -1) {
       return;
     }
@@ -203,7 +214,7 @@ export class WayManageComponent {
   swapItems(index1,index2){
     this.channelInfo[index1] = this.channelInfo.splice(index2, 1, this.channelInfo[index1])[0];
     return this.channelInfo;
-  }
+  }*/
   sortByType(){
     if(this.order==0){
       this.order=1;

@@ -34,12 +34,12 @@
         <td class="pad">{{item.channelProtocol}}</td>
         <td class="pad">{{output(item.channelStatus)}}</td>
         <td class="operation pad">
-          <a class="operationBtn stop" *ngIf="item.channelStatus==1" (click)="runChannel(item)"></a>
-          <a class="operationBtn start" *ngIf="item.channelStatus==0" (click)="runChannel(item)"></a>
-          <a class="operationBtn edit" *ngIf="item.channelStatus==1" (click)="edit(item)"></a>
-          <a class="operationBtn unedit" *ngIf="item.channelStatus==0" (click)="edit(item)"></a>
-          <a class="operationBtn up" *ngIf="i!=0" (click)="upRecord(i)"></a>
-          <a class="operationBtn down" *ngIf="i!=channelInfo.length-1" (click)="downRecord(i)"></a>
+          <a class="operationBtn stop" *ngIf="item.channelStatus==0" (click)="runChannel(item)"></a>
+          <a class="operationBtn start" *ngIf="item.channelStatus==1" (click)="runChannel(item)"></a>
+          <a class="operationBtn edit" *ngIf="item.channelStatus==0" (click)="edit(item)"></a>
+          <a class="operationBtn unedit" *ngIf="item.channelStatus==1" (click)="edit(item)"></a>
+          <a class="operationBtn up" (click)="dirRecord(item.channelId,1)"></a>
+          <a class="operationBtn down" (click)="dirRecord(item.channelId,2)"></a>
         </td>
       </tr>
     </table>
