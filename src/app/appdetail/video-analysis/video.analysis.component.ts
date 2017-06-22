@@ -2,13 +2,24 @@
  * Created by Administrator on 2017/6/20 0020.
  */
 import { Component } from '@angular/core';
+import {ChannelService} from "../../common/services/channel.service";
 declare var $:any;
 @Component({
   selector: 'video-analysis',
   styleUrls: ['./css/video.analysis.component.css'],
-  templateUrl: './template/video.analysis.component.html'
+  templateUrl: './template/video.analysis.component.html',
+  providers: [ChannelService]
 })
 export class VideoAnalysisComoponent {
+  constructor (private channelService: ChannelService) {
+    channelService.getOpenChannelById(this.d_applicationId).subscribe(rep => {
+     this.d_video_list = rep;
+     this.d_video_list.push({
+       ChannelAddress: 'rtmp://live.hkstv.hk.lxdns.com/live/hks'
+     })
+      console.log(this.d_video_list)
+    });
+  }
   // 状态机命名 s_xxx-------------------------------------------------------------
   s_fullscreen_grid: number = 0;
   s_selected_grid: number = 0;
@@ -16,6 +27,7 @@ export class VideoAnalysisComoponent {
   s_popup_show: boolean = false;
   s_popup_allselect: boolean = false;
   // 数据命名 d_xxx-----------------------------------------------------------------
+  d_applicationId: number = 1;
   d_analysis_options = [{
     des: '人物',
     selected: false
@@ -36,13 +48,8 @@ export class VideoAnalysisComoponent {
     selected: false
   }];
   /* http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8 */
-  d_video_list = [{
-    url: 'rtmp://live.hkstv.hk.lxdns.com/live/hks',
-    type: 'rtmp'
-  },{
-    url: 'rtmp://live.hkstv.hk.lxdns.com/live/hks',
-    type: 'rtmp'
-  }];
+  /* rtmp://live.hkstv.hk.lxdns.com/live/hks */
+  d_video_list = [];
   /* 生命周期 */
   ngAfterViewInit() {
   }
@@ -163,7 +170,7 @@ export class VideoAnalysisComoponent {
   //------
   get_ckplayer_url (index: number) {
     if (this.d_video_list && this.d_video_list.length >= index) {
-      return this.d_video_list[index-1].url
+      return this.d_video_list[index-1].ChannelAddress
     }
     return null;
   }
