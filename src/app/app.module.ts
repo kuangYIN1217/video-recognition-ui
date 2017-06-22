@@ -17,8 +17,8 @@ import {TechnologySupportComponent} from './appdetail/technology-support/technol
 import {WayManageComponent} from './appdetail/way-manage/way.manage.component'
 import {VideoAnalysisComoponent} from './appdetail/video-analysis/video.analysis.component'
 import {HeaderComponent} from './header/header.component'
-import { CkplayerComponent } from './ckplayer/ckplayer.component'
-
+/* import { CkplayerComponent } from './ckplayer/ckplayer.component' */
+import { JWplayerComponent } from './jwplayer/jwplayer.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +31,8 @@ import { CkplayerComponent } from './ckplayer/ckplayer.component'
     TechnologySupportComponent,
     MonitorReportComponent,
     HeaderComponent,
-    CkplayerComponent
+    /* CkplayerComponent, */
+    JWplayerComponent
     //InputReadonlyDirective
   ],
   imports: [

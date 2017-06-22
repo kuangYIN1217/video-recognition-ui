@@ -114,4 +114,17 @@ export class ChannelService {
         }
       });
   }
+
+  getOpenChannelById(id) {
+    let path = "/api/openApplicationChannelByApplication/"+ id ;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL + path, {headers: headers})
+      .map((response: Response) => {
+        if (response && response.json()) {
+          if(response.status==200){
+            return response.json();
+          }
+        }
+      });
+  }
 }
