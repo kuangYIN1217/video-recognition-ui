@@ -19,6 +19,7 @@ import {VideoAnalysisComoponent} from './appdetail/video-analysis/video.analysis
 import {HeaderComponent} from './header/header.component'
 /* import { CkplayerComponent } from './ckplayer/ckplayer.component' */
 import { JWplayerComponent } from './jwplayer/jwplayer.component'
+import {PageComponent} from "./page/page.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +32,7 @@ import { JWplayerComponent } from './jwplayer/jwplayer.component'
     TechnologySupportComponent,
     MonitorReportComponent,
     HeaderComponent,
+    PageComponent,
     /* CkplayerComponent, */
     JWplayerComponent
     //InputReadonlyDirective

@@ -8,6 +8,7 @@ import {MonitorReportComponent} from './appdetail/monitor-report/monitor.report.
 import {TechnologySupportComponent} from './appdetail/technology-support/technology.support.component'
 import {WayManageComponent} from './appdetail/way-manage/way.manage.component'
 import {VideoAnalysisComoponent} from './appdetail/video-analysis/video.analysis.component'
+import {PageComponent} from "./page/page.component";
 const routes: Routes = [
   //{ path: '', component: NavigationComponent },
   {path: 'login', component: LoginComponent},
@@ -18,6 +19,7 @@ const routes: Routes = [
   {path: 'waymanage', component: WayManageComponent},
   {path: 'technologysupport', component: TechnologySupportComponent},
   {path: 'monitorreport', component: MonitorReportComponent},
+  {path: 'page', component: PageComponent},
   {path: '', redirectTo: '/appmanage', pathMatch: 'full'},
   // { path: 'detail/:id', component: HeroDetailComponent },
 

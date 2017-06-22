@@ -13,7 +13,7 @@ declare var $:any;
   providers: [AppManageService,ChannelService]
 })
 export class WayManageComponent {
-  channelInfo: channelInfo[] = [];
+  //channelInfo: channelInfo[] = [];
   addDialog:number=0;
   protocols:any[]=[];
   protocol:string;
@@ -29,24 +29,30 @@ export class WayManageComponent {
   delSysDialog:number=0;
   delDialog:number=0;
   order:number=0;
-  appInfo: any[] = [];
+  channelInfo: any[] = [];
   asc:boolean=false;
   appId:string;
   moveIndex:number;
   dire:string;
+  pageParams = new Page();
+  page: number = 1;
+  pageMaxItem: number = 10;
+  switchArr1:any[]=[];
+  switchArr2:any[]=[];
   constructor(private appManageService: AppManageService,private channelService: ChannelService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     console.log(this.appId);
-    this.getAllChannel();
+    //this.getAllChannel();
+    this.getPages(this.appId,this.page-1,this.pageMaxItem);
     this.appManageService.getProtocol()
       .subscribe(protocols=>{
         this.protocols=protocols;
       });
   }
-  getAllChannel(){
+/*  getAllChannel(){
     this.channelService.getAllChannel()
       .subscribe(result=>this.channelInfo=result);
-  }
+  }*/
   check(item){
     if(item.flag!=1){
       item.flag=1;
@@ -63,14 +69,13 @@ export class WayManageComponent {
       }
     }
   }
-/*  getPageData(paraParam) {
-    this.getAlljobs(id,paraParam.curPage-1,paraParam.pageMaxItem);
-    //console.log('触发', paraParam);
+  getPageData(paraParam) {
+    this.getPages(this.appId,paraParam.curPage-1,paraParam.pageMaxItem);
   }
-  getAlljobs(id,page,size){
+  getPages(id,page,size){
     this.channelService.getPage(id,page,size)
       .subscribe(result => {
-        this.appInfo = result.content;
+        this.channelInfo = result.content;
         let page = new Page();
         page.pageMaxItem = result.size;
         page.curPage = result.number+1;
@@ -78,7 +83,7 @@ export class WayManageComponent {
         page.totalNum = result.totalElements;
         this.pageParams = page;
       });
-  }*/
+  }
   allSel(){
     for(var i in this.channelInfo){
       if(this.allFlag==false){
@@ -94,7 +99,17 @@ export class WayManageComponent {
     }
   }
   dia(){
-    this.delDialog = 1;
+    for(let i in this.channelInfo){
+      if(this.channelInfo[i]['flag'] == '1'&&this.channelInfo[i].channelStatus=='1'){
+        console.log(this.channelInfo[i].channelStatus);
+        this.delSysDialog =1;
+        return false;
+
+      }else if(this.channelInfo[i]['flag'] == '1'&&this.channelInfo[i].channelStatus=='0'){
+        console.log(this.channelInfo[i].channelStatus);
+        this.delDialog =1;
+      }
+    }
   }
   delete(){
     for(let i in this.channelInfo){
@@ -107,7 +122,8 @@ export class WayManageComponent {
     this.channelService.delChannel(id)
       .subscribe(result=>{
         this.delDialog = 0;
-        this.getAllChannel();
+        //this.getAllChannel();
+        this.getPages(this.appId,this.page-1,this.pageMaxItem);
       })
   }
   radio(i){
@@ -138,12 +154,12 @@ export class WayManageComponent {
       this.channelService.createChannel(this.appId,chanName,chanAddr,protocol,status)
         .subscribe(result=>{
           this.addDialog = 0;
-          this.getAllChannel();
+          //this.getAllChannel();
+          this.getPages(this.appId,this.page-1,this.pageMaxItem);
         })
   }
   edit(item){
     if(item.channelStatus==1){
-        this.delSysDialog =1;
         return false;
     }else{
       this.addDialog = 1;
@@ -163,11 +179,13 @@ export class WayManageComponent {
 
   }
   editSave(){
+    debugger
     this.addDialog = 0;
     console.log(this.chanStatus);
     this.channelService.updateChannel(this.chanId,this.chanOrder,this.chanName,this.chanAddr,this.protocol,this.chanStatus)
       .subscribe(result=>{
-        this.getAllChannel();
+        //this.getAllChannel();
+        this.getPages(this.appId,this.page-1,this.pageMaxItem);
       })
   }
   runChannel(item){
@@ -185,7 +203,8 @@ export class WayManageComponent {
     }else{
       console.log("Start Failed!");
     }
-    this.getAllChannel();
+    //this.getAllChannel();
+    this.getPages(this.appId,this.page-1,this.pageMaxItem);
   }
   cancel(){
     this.addDialog = 0;
@@ -193,7 +212,6 @@ export class WayManageComponent {
     this.delDialog = 0;
   }
   dirRecord(id,direction){
-    debugger
     console.log(id);
     if(direction == 1){
       this.dire='up';
@@ -215,15 +233,37 @@ export class WayManageComponent {
     this.channelInfo[index1] = this.channelInfo.splice(index2, 1, this.channelInfo[index1])[0];
     return this.channelInfo;
   }*/
+findStatus(){
+  this.switchArr1=[];
+  this.switchArr2=[];
+  for(let i in this.channelInfo){
+    if(this.channelInfo[i].channelStatus==0){
+      this.switchArr1.push(this.channelInfo[i]);
+    }else{
+      this.switchArr2.push(this.channelInfo[i]);
+    }
+  }
+  return this.switchArr1,this.switchArr2;
+}
   sortByType(){
     if(this.order==0){
       this.order=1;
+      this.findStatus();
+      this.channelInfo=[];
+      this.channelInfo=this.switchArr2.concat(this.switchArr1);
+      console.log(this.channelInfo);
     }else if(this.order==1){
       this.order=2;
+      this.findStatus();
+      this.channelInfo=[];
+      this.channelInfo=this.switchArr1.concat(this.switchArr2);
+      console.log(this.channelInfo);
     }else if(this.order==2){
       this.order=1;
+      this.findStatus();
+      this.channelInfo=[];
+      this.channelInfo=this.switchArr2.concat(this.switchArr1);
+      console.log(this.channelInfo);
     }
-   var sort='status';
-    this.asc=!this.asc;
   }
 }

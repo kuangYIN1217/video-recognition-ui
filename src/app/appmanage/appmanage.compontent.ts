@@ -102,10 +102,11 @@ export class AppManageComponent {
         let appName = this.appName;
         let appCate = this.appCate;
         let icon = this.icon;
-        console.log(this.arr);
          /* let channelName = this.channelName;
           let channelAddress = this.channelAddress;*/
-          let protocol = this.protocol;
+        for(let i in this.arr){
+          this.arr[i].channelProtocol = "RTMP";
+        }
         this.appManageService.createApp(appName,appCate,icon,this.arr)
           .subscribe(result=>{
             console.log(result);
@@ -165,6 +166,7 @@ export class AppManageComponent {
   createJob(){
     this.appName = '';
     this.icon = '';
+    this.arr=[{}];
     this.channelName = '';
     this.channelAddress = '';
     this.btnIndex = 0;
