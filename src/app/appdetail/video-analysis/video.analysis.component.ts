@@ -3,22 +3,20 @@
  */
 import { Component } from '@angular/core';
 import {ChannelService} from "../../common/services/channel.service";
+import {RecognitionService} from "../../common/services/recognition.service";
 declare var $:any;
 @Component({
   selector: 'video-analysis',
   styleUrls: ['./css/video.analysis.component.css'],
   templateUrl: './template/video.analysis.component.html',
-  providers: [ChannelService]
+  providers: [ChannelService , RecognitionService]
 })
 export class VideoAnalysisComoponent {
-  constructor (private channelService: ChannelService) {
-    channelService.getOpenChannelById(this.d_applicationId).subscribe(rep => {
-     this.d_video_list = rep;
-     this.d_video_list.push({
-       ChannelAddress: 'rtmp://live.hkstv.hk.lxdns.com/live/hks'
-     })
-      console.log(this.d_video_list)
-    });
+  constructor (private channelService: ChannelService , private recognitionService: RecognitionService) {
+    /* 初始化recognition */
+    this.initRecognitions();
+    /* 初始化channel */
+    this.initChannels();
   }
   // 状态机命名 s_xxx-------------------------------------------------------------
   s_fullscreen_grid: number = 0;
@@ -28,25 +26,7 @@ export class VideoAnalysisComoponent {
   s_popup_allselect: boolean = false;
   // 数据命名 d_xxx-----------------------------------------------------------------
   d_applicationId: number = 1;
-  d_analysis_options = [{
-    des: '人物',
-    selected: false
-  } , {
-    des: '信号灯',
-    selected: true
-  } , {
-    des: '猫',
-    selected: true
-  }, {
-    des: '树',
-    selected: false
-  }, {
-    des: '车辆',
-    selected: true
-  }, {
-    des: '文字',
-    selected: false
-  }];
+  d_analysis_options = [];
   /* http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8 */
   /* rtmp://live.hkstv.hk.lxdns.com/live/hks */
   d_video_list = [];
@@ -63,7 +43,7 @@ export class VideoAnalysisComoponent {
     return {}
   }
   ngStyle_popup_select (selected) {
-    if (!selected || this.s_popup_allselect) {
+    if (this.s_popup_allselect) {
       return {
         'color': 'rgba(0,0,0,0.4)'
       }
@@ -136,13 +116,19 @@ export class VideoAnalysisComoponent {
     /* 切换视图模式 是否清楚选中项 */
     if (this.s_selected_grid > number) {
       this.s_selected_grid = 0;
+      this.clearSelected();
     }
   }
   $grid_click (index: number , $event) {
+    if (this.s_selected_grid === index) {
+      return;
+    }
     $event = $event || window.event;
     $event.preventDefault();
     $event.stopPropagation();
     this.s_selected_grid = index;
+    this.changePopupOptions(this.d_video_list[index - 1].recognitionCategory);
+
   }
   $popup_toggle () {
     this.s_popup_show = !this.s_popup_show;
@@ -151,6 +137,7 @@ export class VideoAnalysisComoponent {
     if (this.s_popup_allselect) {
       return;
     }
+    // todo 修改order
     this.d_analysis_options[index].selected = !this.d_analysis_options[index].selected;
   }
   $popup_select_all_toggle () {
@@ -170,7 +157,7 @@ export class VideoAnalysisComoponent {
   //------
   get_ckplayer_url (index: number) {
     if (this.d_video_list && this.d_video_list.length >= index) {
-      return this.d_video_list[index-1].ChannelAddress
+      return this.d_video_list[index-1].channelOut
     }
     return null;
   }
@@ -187,6 +174,43 @@ export class VideoAnalysisComoponent {
       return true
     }
     return false;
+  }
+
+  changePopupOptions(str) {
+    this.clearSelected();
+    if (str) {
+      let recognitions = str.split(',');
+      for (let i = 0 ; i < recognitions.length ; i ++) {
+        for (let j = 0 ; j < this.d_analysis_options.length ; j++) {
+          if (this.d_analysis_options[j].cateId == recognitions[i]) {
+            this.d_analysis_options[j].selected = true;
+          }
+        }
+      }
+    }
+  }
+
+  clearSelected() {
+    for (let i = 0 ; i < this.d_analysis_options.length ; i++) {
+      this.d_analysis_options[i].selected = false;
+    }
+  }
+
+  initRecognitions() {
+    this.recognitionService.getRecognitions().subscribe(rep => {
+      console.log(rep)
+      this.d_analysis_options = rep;
+    })
+  }
+  initChannels() {
+    this.channelService.getOpenChannelById(this.d_applicationId).subscribe(rep => {
+      this.d_video_list = rep;
+      this.d_video_list.push({
+        channelOut: 'rtmp://live.hkstv.hk.lxdns.com/live/hks',
+        recognitionCategory: '148,153,150,151'
+      })
+      console.log(this.d_video_list)
+    });
   }
 
 }
