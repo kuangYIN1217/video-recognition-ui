@@ -13,12 +13,14 @@ declare var $:any;
 })
 export class VideoAnalysisComoponent {
   constructor (private channelService: ChannelService , private recognitionService: RecognitionService) {
-    console.log(window.sessionStorage.getItem('applicationId'))
-    console.log(window.sessionStorage.getItem('applicationName'))
+    this.d_applicationId = parseInt(window.sessionStorage.getItem('applicationId'));
      /* 初始化recognition */
     this.initRecognitions();
     /* 初始化channel */
     this.initChannels();
+  }
+  ngAfterViewInit() {
+    $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'))
   }
   // 状态机命名 s_xxx-------------------------------------------------------------
   s_fullscreen_grid: number = 0;
@@ -32,9 +34,6 @@ export class VideoAnalysisComoponent {
   /* http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8 */
   /* rtmp://live.hkstv.hk.lxdns.com/live/hks */
   d_video_list = [];
-  /* 生命周期 */
-  ngAfterViewInit() {
-  }
   /* ngStyle_xx 样式--------------------------------------------------------- */
   ngStyle_popup_allselect () {
     if  (this.s_popup_allselect) {
