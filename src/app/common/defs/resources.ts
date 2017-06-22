@@ -205,4 +205,12 @@ export class appManageInfo{
   applicationType:string;
   applicationChannels:any;
 }
+export class channelInfo{
+  channelAddress: string;
+  channelId: number;
+  channelName: string;
+  channelOrder: string;
+  channelProtocol: string;
+  channelStatus: string;
+}
 
