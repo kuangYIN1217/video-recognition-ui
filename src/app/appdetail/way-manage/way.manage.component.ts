@@ -148,11 +148,12 @@ export class WayManageComponent {
     }
   }
   create(){
-      let chanName = this.chanName;
       let chanAddr = this.chanAddr;
+      let chanName = this.chanName;
       let protocol = this.protocol;
       let status =  this.radioIndex;
-      this.channelService.createChannel(this.appId,chanName,chanAddr,protocol,status)
+      console.log(chanName,chanAddr);
+      this.channelService.createChannel(this.appId,chanAddr,chanName,protocol,status)
         .subscribe(result=>{
           this.addDialog = 0;
           //this.getAllChannel();

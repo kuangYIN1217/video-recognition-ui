@@ -45,6 +45,7 @@ export class ChannelService {
       });
   }
   createChannel(id,chanAddr,chanName,protocol,status){
+    debugger
     let path = "/api/applicationChannel";
     let body = JSON.stringify({
       "application": id,
@@ -52,7 +53,7 @@ export class ChannelService {
       "channelName": chanName,
       "channelOrder": null,
       "channelOut": null,
-      "channelProtocol": "RTMP",
+      "channelProtocol": protocol,
       "channelStatus":status,
       "recognitionCategory": null
     });
