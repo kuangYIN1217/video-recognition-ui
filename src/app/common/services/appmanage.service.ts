@@ -49,7 +49,6 @@ export class AppManageService {
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path, { headers : headers} )
       .map((response: Response) => {
-      console.log(response);
         if (response && response.json()) {
           return plainToClass(appManageInfo, response.json());
         }

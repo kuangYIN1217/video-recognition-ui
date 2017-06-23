@@ -38,7 +38,7 @@ a{
 .createBtn{
   float: right;
 }
-.appManage,.header,.appmanagespace{
+.appManage,.header{
   background: #ffffff;
   margin:30px 1.56vw 0 1.56vw;
   overflow: hidden;
@@ -317,6 +317,7 @@ a{
   text-align: center;
   line-height:30px;
 }
+
 .backBtn{
   width:112px;
   height:28px;
@@ -330,7 +331,12 @@ a{
   margin-left: 16px;
 }
 .appManageSpace{
-
+  position: fixed;
+  top: 170px;
+  bottom:0;
+  left:1.56vw;
+  right:1.56vw;
+  background: #ffffff;
 }
 .createRight{
   width:460px;
@@ -529,11 +535,11 @@ a{
   color:#333333;
 }
 .spaceContent{
-  position: fixed;
+  position: absolute;
   top:50%;
   left:50%;
-  margin-top: -75px;
-  margin-left: -238.5px;
+  margin-left: -235px;
+  margin-top: -175px;
 }
 .spaceContent img{
   display: inline-block;
@@ -541,7 +547,7 @@ a{
 }
 .spaceText{
   font-size: 30px;
-  color: #333333;
+  color: #999999;
   display: inline-block;
   margin-left: 30px;
   line-height: 142px;

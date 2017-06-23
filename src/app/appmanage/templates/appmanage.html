@@ -11,6 +11,7 @@
         <div routerLinkActive="active" routerLink="/videoanalysis" (click)="jump(item)">
         <div class="appModel_header">
           <img src="{{SERVER_URL}}/api/file?filePath={{item.icon}}"/>
+          <!--<img src="{{SERVER_URL}}/api/file?filePath={{icon}}" *ngIf="btnIndex==1"/>-->
           <span>{{item.applicationName}}</span>
         </div>
         <table class="appModel_content">
@@ -63,7 +64,8 @@
             <label style="float: left;"><span class="symbol">*</span>应用图标:</label>
             <div class="image" onclick="document.getElementById('file').click()">
               <input type="file" id="file" name="file" multiple ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)"/>
-              <img src="" id="image"/>
+              <img src="" id="image" *ngIf="btnIndex==0"/>
+              <img src="{{SERVER_URL}}/api/file?filePath={{this.icon}}" *ngIf="btnIndex==1" style="width: 68px; height: 68px;" id="updateImage"/>
             </div>
           </div>
           <div class="createInfo" style="height: auto" [style.display]="channel==0?'':'none'">

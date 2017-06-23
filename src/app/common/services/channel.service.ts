@@ -35,7 +35,7 @@ export class ChannelService {
       });
   }
   getPage(applicationId,page=0,size=10){
-    let path = "/api/applicationChannelByApplication/"+applicationId+"?page="+page+"&size="+size;
+    let path = "/api/applicationChannelByApplication/"+applicationId+"?page="+page+"&size="+size+"&sort=channelOrder,asc";
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path, { headers : headers})
       .map((response: Response) => {
@@ -47,14 +47,12 @@ export class ChannelService {
   createChannel(id,chanAddr,chanName,protocol,status){
     let path = "/api/applicationChannel";
     let body = JSON.stringify({
-      "application": {
-        "applicationId": id,
-      },
+      "application": id,
       "channelAddress": chanAddr,
       "channelName": chanName,
       "channelOrder": null,
       "channelOut": null,
-      "channelProtocol": protocol,
+      "channelProtocol": "RTMP",
       "channelStatus":status,
       "recognitionCategory": null
     });

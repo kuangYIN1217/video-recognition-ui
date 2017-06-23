@@ -99,6 +99,7 @@ export class WayManageComponent {
     }
   }
   dia(){
+    debugger
     for(let i in this.channelInfo){
       if(this.channelInfo[i]['flag'] == '1'&&this.channelInfo[i].channelStatus=='1'){
         console.log(this.channelInfo[i].channelStatus);
@@ -220,7 +221,7 @@ export class WayManageComponent {
     }
     this.channelService.getDirection(id,this.dire)
       .subscribe(result=>{
-
+        this.getPages(this.appId,this.page-1,this.pageMaxItem);
       });
   }
 /*  downRecord(i){

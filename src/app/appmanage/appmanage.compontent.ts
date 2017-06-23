@@ -16,6 +16,7 @@ declare var $:any;
   providers: [AppManageService]
 })
 export class AppManageComponent {
+  SERVER_URL = SERVER_URL;
   createApp: string = "manage";
   scene:number=0;
   appName:string;
@@ -58,12 +59,25 @@ export class AppManageComponent {
     method: "POST",
     itemAlias: "file",
   });
+
   selectedFileOnChanged(event:any) {
-    let file = this.uploader.queue[0]._file;
+    if(this.btnIndex==0){
+      $('#image').attr('src','');
+    }else if(this.btnIndex==1){
+      $('#updateImage').attr('src','');
+    }
+    let len = this.uploader.queue.length-1;
+    let file = this.uploader.queue[len]._file;
     let reader  = new FileReader();
+    if(this.btnIndex==0){
     reader.addEventListener("load", function () {
       $('#image').attr('src',reader.result);
     }, false);
+    }else if(this.btnIndex==1){
+      reader.addEventListener("load", function () {
+        $('#updateImage').attr('src',reader.result);
+      }, false);
+    }
     if (file) {
       reader.readAsDataURL(file);
     }
@@ -97,6 +111,7 @@ export class AppManageComponent {
 
   create(){
     this.uploader.queue[0].onSuccess = (response: any, status: any, headers: any) => {
+      this.uploader.queue[0].remove();
       this.icon = response;
       if(this.appName){
         let appName = this.appName;
@@ -154,11 +169,16 @@ export class AppManageComponent {
     }
   }
   updateSave(){
-    this.appManageService.updateApp(this.appId,this.appName,this.appCate,this.createTime,this.icon)
-      .subscribe(result=>{
-        this.createApp='manage';
-        this.getAllInfo();
-      })
+    this.uploader.queue[0].onSuccess = (response: any, status: any, headers: any) => {
+      this.uploader.queue[0].remove();
+      this.icon = response;
+      this.appManageService.updateApp(this.appId,this.appName,this.appCate,this.createTime,this.icon)
+        .subscribe(result=>{
+          this.createApp='manage';
+          this.getAllInfo();
+        })
+    }
+    this.uploader.queue[0].upload(); // 开始上传
   }
   back(){
     this.createApp='manage';
@@ -167,10 +187,10 @@ export class AppManageComponent {
     this.appName = '';
     this.icon = '';
     this.arr=[{}];
-    this.channelName = '';
-    this.channelAddress = '';
+    $('#image').attr('src','');
     this.btnIndex = 0;
     this.createApp = 'create';
+    this.channel = 0;
     this.appCate = this.appCates[0];
     this.protocol = this.protocols[0];
   }
