@@ -192,6 +192,7 @@ export class VideoAnalysisComoponent {
   }
 
   clearSelected() {
+    this.s_popup_allselect = false;
     for (let i = 0 ; i < this.d_analysis_options.length ; i++) {
       this.d_analysis_options[i].selected = false;
     }
@@ -206,15 +207,14 @@ export class VideoAnalysisComoponent {
   initChannels() {
     this.channelService.getOpenChannelById(this.d_applicationId).subscribe(rep => {
       this.d_video_list = rep;
-      var test = {
+     /* var test = {
         channelOut: 'rtmp://live.hkstv.hk.lxdns.com/live/hks',
         recognitionCategory: '148,153,150,151'
       }
       this.d_video_list.push(test)
       this.d_video_list.push(test)
       this.d_video_list.push(test)
-      this.d_video_list.push(test)
-      this.d_video_list.push(test)
+      this.d_video_list.push(test)*/
       console.log(this.d_video_list)
     });
   }
