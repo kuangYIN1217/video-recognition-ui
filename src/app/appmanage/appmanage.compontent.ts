@@ -135,10 +135,8 @@ export class AppManageComponent {
           this.icon = response;
           this.createMethod(this.icon);
       }
-
       }
     }
-
   }
   dia(item){
     if(item.stop==0){

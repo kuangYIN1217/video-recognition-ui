@@ -40,7 +40,7 @@ a{
 }
 .appManage,.header{
   background: #ffffff;
-  margin:30px 1.56vw 0 1.56vw;
+  margin:30px 30px 0 30px;
   overflow: hidden;
 }
 .addicon {
@@ -73,21 +73,27 @@ a{
 }
 .appBody{
   clear: both;
-  margin:0 1.56vw;
+  margin:0 auto;
   overflow: hidden;
   padding-bottom: 60px;
 }
+.app{
+  max-width: 1564px;
+  margin: 0 auto;
+  overflow: hidden;
+}
 .appModel{
-  border:2px solid #ccc;
+  border:1px solid #ccc;
   -webkit-box-shadow:0 0 10px #ccc;
   -moz-box-shadow:0 0 10px #ccc;
   box-shadow:0 0 10px #ccc;
-  width:26.5vw;
+  width:454px;
   float: left;
   font-size: 14px;
   border-radius: 8px;
   margin-top: 30px;
-  margin-right: 3.3vw;
+  margin-right: 32px;
+  margin-left: 32px;
 }
 .appModel_header{
   overflow: hidden;
@@ -96,17 +102,18 @@ a{
 }
 .appModel_header img{
   display: inline-block;
-  width:70px;
-  height:70px;
-  margin:26px 3.4vw 26px 0;
+  width:58px;
+  height:58px;
+  margin:26px 0 26px 0;
   float: left;
 }
 .appModel_header span{
   display: inline-block;
   float: left;
-  height:70px;
-  line-height: 70px;
+  height:58px;
+  line-height: 58px;
   margin-top: 1.56vw;
+  margin-left: 66px;
   font-size: 14px;
   color: #333333;
   font-weight: bold;
@@ -568,36 +575,38 @@ input:focus{
   border:1px solid #23a880 !important;
 }
 @media (min-width:1200px) and (max-width:1366px) {
-  .appModel{
-    width:25.5vw;
+  .app{
+    width:1040px;
   }
   .appModel_content tr td:nth-of-type(1){
-    width:37%;
+    width:28%;
   }
   .appModel_content tr td:nth-of-type(2){
-    width:60%;
+    width:69%;
   }
 }
 @media (min-width:1367px) and (max-width:1440px) {
-  .appModel{
-    width:25.7vw;
+  .app{
+    width:1040px;
   }
   .appModel_content tr td:nth-of-type(1){
-    width:34%;
+    width:28%;
   }
   .appModel_content tr td:nth-of-type(2){
-    width:63%;
+    width:69%;
   }
 }
-@media (min-width:1441px) and (max-width:1680px) {
-  .appModel{
-    width:26.2vw;
+@media (min-width:1440px) and (max-width:1650px){
+  .app{
+    width:1040px;
   }
+}
+@media (min-width:1440px) and (max-width:1680px) {
   .appModel_content tr td:nth-of-type(1){
-    width:32%;
+    width:29%;
   }
   .appModel_content tr td:nth-of-type(2){
-    width:65%;
+    width:68%;
   }
 }
 

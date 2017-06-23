@@ -7,6 +7,7 @@
   </div>
   <div class="appManage" [style.display]="createApp=='manage'?'':'none'">
     <div class="appBody">
+      <div class="app">
       <div class="appModel" *ngFor="let item of appManageInfo">
         <div routerLinkActive="active" routerLink="/videoanalysis" (click)="jump(item)">
         <div class="appModel_header">
@@ -41,6 +42,7 @@
           <li><a href="javascript:void(0)" (click)="update(item)" [ngClass]="{unchange: item.stop==0}">修改</a></li>
           <li><a href="javascript:void(0)" (click)="dia(item)" [ngClass]="{unchange: item.stop==0}">删除</a></li>
         </ul>
+      </div>
       </div>
     </div>
   </div>
