@@ -66,15 +66,18 @@ export class ChannelService {
         }
       });
   }
-  updateChannel(id,order,chanName,chanAddr,protocol,status){
+  updateChannel(appId,id,order,chanName,chanAddr,protocol,status){
     let path = "/api/applicationChannel";
     let body = JSON.stringify({
+      "application": appId,
       "channelAddress": chanAddr,
       "channelId": id,
       "channelName": chanName,
       "channelOrder": order,
-      "channelProtocol": protocol,
-      "channelStatus": status
+      "channelOut": null,
+      "channelProtocol": "RTMP",
+      "channelStatus": status,
+      "recognitionCategory": null
     });
     let headers = this.getHeaders();
     return this.http.put(this.SERVER_URL+path,body,{ headers: headers })

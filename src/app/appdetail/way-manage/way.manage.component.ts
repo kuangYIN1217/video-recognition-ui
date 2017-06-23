@@ -180,10 +180,9 @@ export class WayManageComponent {
 
   }
   editSave(){
-    debugger
     this.addDialog = 0;
     console.log(this.chanStatus);
-    this.channelService.updateChannel(this.chanId,this.chanOrder,this.chanName,this.chanAddr,this.protocol,this.chanStatus)
+    this.channelService.updateChannel(this.appId,this.chanId,this.chanOrder,this.chanName,this.chanAddr,this.protocol,this.chanStatus)
       .subscribe(result=>{
         //this.getAllChannel();
         this.getPages(this.appId,this.page-1,this.pageMaxItem);
