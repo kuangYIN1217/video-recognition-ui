@@ -121,7 +121,7 @@ export class VideoAnalysisComoponent {
     }
   }
   $grid_click (index: number , $event) {
-    if (this.s_selected_grid === index) {
+    if (this.s_selected_grid === index || index > this.d_video_list.length) {
       return;
     }
     $event = $event || window.event;
