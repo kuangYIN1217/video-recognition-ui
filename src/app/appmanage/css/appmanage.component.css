@@ -96,16 +96,16 @@ a{
 }
 .appModel_header img{
   display: inline-block;
-  width:72px;
-  height:69px;
+  width:70px;
+  height:70px;
   margin:26px 3.4vw 26px 0;
   float: left;
 }
 .appModel_header span{
   display: inline-block;
   float: left;
-  height:69px;
-  line-height: 69px;
+  height:70px;
+  line-height: 70px;
   margin-top: 1.56vw;
   font-size: 14px;
   color: #333333;

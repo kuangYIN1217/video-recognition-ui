@@ -13,7 +13,6 @@ declare var $:any;
   providers: [AppManageService,ChannelService]
 })
 export class WayManageComponent {
-  //channelInfo: channelInfo[] = [];
   addDialog:number=0;
   protocols:any[]=[];
   protocol:string;
@@ -30,29 +29,23 @@ export class WayManageComponent {
   delDialog:number=0;
   order:number=0;
   channelInfo: any[] = [];
-  asc:boolean=false;
   appId:string;
-  moveIndex:number;
   dire:string;
   pageParams = new Page();
   page: number = 1;
   pageMaxItem: number = 10;
   switchArr1:any[]=[];
   switchArr2:any[]=[];
+  chanRequired:number=0;
   constructor(private appManageService: AppManageService,private channelService: ChannelService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     console.log(this.appId);
-    //this.getAllChannel();
     this.getPages(this.appId,this.page-1,this.pageMaxItem);
     this.appManageService.getProtocol()
       .subscribe(protocols=>{
         this.protocols=protocols;
       });
   }
-/*  getAllChannel(){
-    this.channelService.getAllChannel()
-      .subscribe(result=>this.channelInfo=result);
-  }*/
   check(item){
     if(item.flag!=1){
       item.flag=1;
@@ -99,7 +92,6 @@ export class WayManageComponent {
     }
   }
   dia(){
-    debugger
     for(let i in this.channelInfo){
       if(this.channelInfo[i]['flag'] == '1'&&this.channelInfo[i].channelStatus=='1'){
         console.log(this.channelInfo[i].channelStatus);
@@ -123,7 +115,6 @@ export class WayManageComponent {
     this.channelService.delChannel(id)
       .subscribe(result=>{
         this.delDialog = 0;
-        //this.getAllChannel();
         this.getPages(this.appId,this.page-1,this.pageMaxItem);
       })
   }
@@ -136,7 +127,6 @@ export class WayManageComponent {
     this.protocol = this.protocols[0];
     this.chanName = '';
     this.chanAddr = '';
-    //this.chanOrder = 0;
     this.chanStatus = '1';
     this.radioIndex = 1;
   }
@@ -152,11 +142,22 @@ export class WayManageComponent {
       let chanName = this.chanName;
       let protocol = this.protocol;
       let status =  this.radioIndex;
+      if(!chanName){
+        this.chanRequired = 1;
+        return false;
+      }else{
+        this.chanRequired = 0;
+      }
+    if(!chanAddr){
+      this.chanRequired = 1;
+      return false;
+    }else{
+      this.chanRequired = 0;
+    }
       console.log(chanName,chanAddr);
       this.channelService.createChannel(this.appId,chanAddr,chanName,protocol,status)
         .subscribe(result=>{
           this.addDialog = 0;
-          //this.getAllChannel();
           this.getPages(this.appId,this.page-1,this.pageMaxItem);
         })
   }
@@ -182,10 +183,8 @@ export class WayManageComponent {
   }
   editSave(){
     this.addDialog = 0;
-    console.log(this.chanStatus);
-    this.channelService.updateChannel(this.appId,this.chanId,this.chanOrder,this.chanName,this.chanAddr,this.protocol,this.chanStatus)
+    this.channelService.updateChannel(this.appId,this.chanId,this.chanOrder,this.chanName,this.chanAddr,this.protocol,this.radioIndex)
       .subscribe(result=>{
-        //this.getAllChannel();
         this.getPages(this.appId,this.page-1,this.pageMaxItem);
       })
   }
@@ -204,7 +203,6 @@ export class WayManageComponent {
     }else{
       console.log("Start Failed!");
     }
-    //this.getAllChannel();
     this.getPages(this.appId,this.page-1,this.pageMaxItem);
   }
   cancel(){
@@ -213,7 +211,6 @@ export class WayManageComponent {
     this.delDialog = 0;
   }
   dirRecord(id,direction){
-    console.log(id);
     if(direction == 1){
       this.dire='up';
     }else if(direction == 2){
@@ -224,16 +221,6 @@ export class WayManageComponent {
         this.getPages(this.appId,this.page-1,this.pageMaxItem);
       });
   }
-/*  downRecord(i){
-    if(i == this.channelInfo.length -1) {
-      return;
-    }
-    this.swapItems(i, i + 1);
-  }
-  swapItems(index1,index2){
-    this.channelInfo[index1] = this.channelInfo.splice(index2, 1, this.channelInfo[index1])[0];
-    return this.channelInfo;
-  }*/
 findStatus(){
   this.switchArr1=[];
   this.switchArr2=[];

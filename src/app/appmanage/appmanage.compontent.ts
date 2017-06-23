@@ -39,6 +39,7 @@ export class AppManageComponent {
   protocol:string;
   icon:string;
   channel:number=0;
+  photoRequired:number=0;
   applicationChannels:any[]=[];
   sceneArr:any[]=[{"name":"道路识别",'flag':1}, {"name":"故障检测"}, {"name":"字母图形分类"}, {"name":"图形识别"}, {"name":"雷暴检测"}, {"name":"神经区域分割"}, {"name":"大数据回归"}];
   systemArr:any[]=[{"name":"ios",'flag':1},{"name":"Android"},{"name":"Windows"},{"name":"HTML5"},{"name":"Linux"},{"name":"其他"}];
@@ -101,39 +102,42 @@ export class AppManageComponent {
   add(){
     let obj={};
     this.arr.push(obj);
-/*    this.channelName = '';
-    this.channelAddress='';*/
   }
   del(index){
     this.arr.splice(index,1);
   }
-
-
+  createMethod(photo){
+    let appName = this.appName;
+    let appCate = this.appCate;
+    let icon = photo;
+    for(let i in this.arr){
+      this.arr[i].channelProtocol = "RTMP";
+    }
+    this.appManageService.createApp(appName,appCate,icon,this.arr)
+      .subscribe(result=>{
+        console.log(result);
+        this.createApp='manage';
+        this.getAllInfo();
+      });
+  }
   create(){
-    this.uploader.queue[0].onSuccess = (response: any, status: any, headers: any) => {
-      this.uploader.queue[0].remove();
-      this.icon = response;
-      if(this.appName){
-        let appName = this.appName;
-        let appCate = this.appCate;
-        let icon = this.icon;
-         /* let channelName = this.channelName;
-          let channelAddress = this.channelAddress;*/
-        for(let i in this.arr){
-          this.arr[i].channelProtocol = "RTMP";
-        }
-        this.appManageService.createApp(appName,appCate,icon,this.arr)
-          .subscribe(result=>{
-            console.log(result);
-            this.createApp='manage';
-            this.getAllInfo();
-          });
+    if(!this.appName){
+      this.required = 1;
+      return false;
+    }else{
+      if(this.uploader.queue.length==0){
+        this.createMethod("/home/ligang/dataset/1498202223509moren.png");
       }else{
-        this.required = 1;
-        return false;
+        this.required = 0;
+        this.uploader.queue[0].upload(); // 开始上传
+        this.uploader.queue[0].onSuccess = (response: any, status: any, headers: any) => {
+          this.uploader.queue[0].remove();
+          this.icon = response;
+          this.createMethod(this.icon);
+      }
+
       }
     }
-    this.uploader.queue[0].upload(); // 开始上传
 
   }
   dia(item){

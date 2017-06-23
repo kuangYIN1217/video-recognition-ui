@@ -61,7 +61,7 @@
             </select>
           </div>
           <div class="createInfo" style="height: 68px">
-            <label style="float: left;"><span class="symbol">*</span>应用图标:</label>
+            <label style="float: left;"><span class="symbol">&nbsp;&nbsp;</span>应用图标:</label>
             <div class="image" onclick="document.getElementById('file').click()">
               <input type="file" id="file" name="file" multiple ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)"/>
               <img src="" id="image" *ngIf="btnIndex==0"/>

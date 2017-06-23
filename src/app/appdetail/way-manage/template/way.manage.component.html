@@ -1,6 +1,9 @@
 <div class="container">
   <div class="channel">
-    <div class="search"><input type="text" placeholder="搜索通道"/></div>
+    <div class="search">
+      <input type="text" placeholder="搜索通道"/>
+      <img src="../assets/appdetail/way.manage/search.png"/>
+    </div>
     <div class="headerBtn">
       <a href="javascript:void(0)" class="btn" (click)="addChannel()">添加</a>
       <a href="javascript:void(0)" class="btn" (click)="dia()">删除</a>
@@ -38,8 +41,8 @@
           <a class="operationBtn start" *ngIf="item.channelStatus==1" (click)="runChannel(item)"></a>
           <a class="operationBtn edit" *ngIf="item.channelStatus==0" (click)="edit(item)"></a>
           <a class="operationBtn unedit" *ngIf="item.channelStatus==1" (click)="edit(item)"></a>
-          <a class="operationBtn up" (click)="dirRecord(item.channelId,1)"></a>
-          <a class="operationBtn down" (click)="dirRecord(item.channelId,2)"></a>
+          <a class="operationBtn up" (click)="dirRecord(item.channelId,1)" *ngIf="i!=0"></a>
+          <a class="operationBtn down" (click)="dirRecord(item.channelId,2)" *ngIf="i!=channelInfo.length-1"></a>
         </td>
       </tr>
     </table>
@@ -54,10 +57,12 @@
         <div class="info">
           <label>通道名称：</label>
           <input type="text" name="chanName" [(ngModel)]="chanName"/>
+          <span class="must" [style.display]="chanRequired==1?'':'none'">必填字段</span>
         </div>
         <div class="info">
           <label>通道地址：</label>
           <input type="text" name="chanAddr" [(ngModel)]="chanAddr"/>
+          <span class="must" [style.display]="chanRequired==1?'':'none'">必填字段</span>
         </div>
         <div class="info">
           <label>通道协议：</label>

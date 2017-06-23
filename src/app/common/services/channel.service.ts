@@ -45,7 +45,6 @@ export class ChannelService {
       });
   }
   createChannel(id,chanAddr,chanName,protocol,status){
-    debugger
     let path = "/api/applicationChannel";
     let body = JSON.stringify({
       "application": id,

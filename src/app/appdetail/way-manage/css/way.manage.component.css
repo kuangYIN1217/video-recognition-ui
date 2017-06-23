@@ -11,10 +11,16 @@ input{
 }
 .search{
   float: left;
+  position: relative;
+  width:260px;
   margin:20px 0 20px 20px;
 }
+.search img{
+  position: absolute;
+  right:6px;
+  top:8px;
+}
 .search input{
-  background: url("../../../../assets/appdetail/way.manage/search.png") no-repeat right 6px center;
   border:1px solid #d3d3d3;
   width:260px;
   height:30px;
@@ -25,6 +31,10 @@ input{
   float: right;
   margin-right: 20px;
   margin-top: 20px;
+}
+.must{
+  font-size: 14px;
+  color: #fe1c1c;
 }
 .btn{
   display: inline-block;
@@ -63,11 +73,11 @@ input{
   /*margin: 0 auto;*/
 }
 .stop {
-  background: url('../../../../assets/appdetail/way.manage/zanting.png') no-repeat center;
+  background: url('../../../../assets/appdetail/way.manage/qidong.png') no-repeat center;
 
 }
 .start {
-  background: url('../../../../assets/appdetail/way.manage/qidong.png') no-repeat center;
+  background: url('../../../../assets/appdetail/way.manage/zanting.png') no-repeat center;
 }
 .edit{
   background: url('../../../../assets/appdetail/way.manage/edit.png') no-repeat center;
@@ -213,19 +223,20 @@ input{
 input:focus{
   border:1px solid #23a880 !important;
 }
-@media (min-width:1441px) and (max-width:1680px) {
-  .channelContent{
-    width:97.2%;
+
+@media (min-width:1200px) and (max-width:1366px) {
+  .channelTable{
+    width:96.4%;
   }
 }
 @media (min-width:1367px) and (max-width:1440px) {
-  .channelContent{
+  .channelTable{
     width:96.8%;
   }
 }
-@media (min-width:1200px) and (max-width:1366px) {
-  .channelContent{
-    width:96.4%;
+@media (min-width:1441px) and (max-width:1680px) {
+  .channelTable{
+    width:97.2%;
   }
 }
 
