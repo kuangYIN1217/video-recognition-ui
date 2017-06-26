@@ -12,6 +12,34 @@ declare var $:any;
   providers: [ChannelService , RecognitionService]
 })
 export class VideoAnalysisComoponent {
+  ngOnInit() {
+    function flashChecker() {
+      var hasFlash = 0;　　　　 //是否安装了flash
+      var flashVersion = 0;　　 //flash版本
+
+      if(navigator.plugins && navigator.plugins.length > 0) {
+        var swf = navigator.plugins["Shockwave Flash"];
+        if(swf) {
+          hasFlash = 1;
+          var words = swf.description.split(" ");
+          for(var i = 0; i < words.length; ++i) {
+            if(isNaN(parseInt(words[i]))) continue;
+            flashVersion = parseInt(words[i]);
+          }
+        }
+      }
+      return { f: hasFlash, v: flashVersion };
+    }
+
+    var fls = flashChecker();
+    var s = "";
+    if(!fls.f) {
+      if(confirm("您的浏览器未安装Flash插件，现在安装？")) {
+        window.location.href = "http://get.adobe.com/cn/flashplayer/";
+      }
+    }
+
+  }
   constructor (private channelService: ChannelService , private recognitionService: RecognitionService) {
     this.d_applicationId = parseInt(window.sessionStorage.getItem('applicationId'));
      /* 初始化recognition */
@@ -207,6 +235,11 @@ export class VideoAnalysisComoponent {
   initChannels() {
     this.channelService.getOpenChannelById(this.d_applicationId).subscribe(rep => {
       this.d_video_list = rep;
+     /* var test = {
+        channelOut: 'rtmp://live.hkstv.hk.lxdns.com/live/hks',
+        recognitionCategory: '148,153,150,151'
+      }
+      this.d_video_list.push(test) */
       /* this.d_video_list.push(test)
       this.d_video_list.push(test)
       this.d_video_list.push(test)*/
