@@ -77,6 +77,7 @@ export class VideoAnalysisComoponent {
     }
     if (this.s_selected_grid === 3) {
       result['border'] = '3px solid #23a880';
+      result['box-shadow'] = '0px 0px 30px #000';
     }
     return result;
   }
@@ -95,13 +96,15 @@ export class VideoAnalysisComoponent {
     }
     if (this.s_selected_grid === 4) {
       result['border'] = '3px solid #23a880';
+      result['box-shadow'] = '0px 0px 30px #000';
     }
     return result;
   }
   ngStyle_grid_selected (index: number) {
     if (index === this.s_selected_grid) {
       return {
-        'border': '3px solid #23a880'
+        'border': '3px solid #23a880',
+        'box-shadow':　'0px 0px 30px #000'
       }
     }
   }
@@ -127,6 +130,7 @@ export class VideoAnalysisComoponent {
     if (this.s_selected_grid === index || index > this.d_video_list.length) {
       return;
     }
+    console.log($event)
     $event = $event || window.event;
     $event.preventDefault();
     $event.stopPropagation();

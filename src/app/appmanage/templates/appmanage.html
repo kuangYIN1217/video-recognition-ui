@@ -1,16 +1,23 @@
 <div class="container-no-nav">
-  <div class="header">
-    <img src="../assets/appmanage/home.png" class="home" (click)="gotoAppmanage()" />
+  <div class="header top">
+    <!--<img src="../assets/appmanage/home.png" class="home" (click)="gotoAppmanage()" />
     <span class="xian">&nbsp;</span>
     <h3>应用管理</h3>
+    <div class="createBtn" (click)="createJob()" [style.display]="createApp=='create'?'none':''"> <a href="javascript:void(0)"  class="back"><img src="../assets/appmanage/jiahao.png" class="addicon" alt="">新建应用</a></div>-->
+
+    <img class="home" (click)="gotoAppmanage()" src="../../../assets/appdetail/way.manage/home.png" />
+    <div class="info">
+      <label class="divider">|</label>
+      <label class="title">应用管理</label>
+    </div>
     <div class="createBtn" (click)="createJob()" [style.display]="createApp=='create'?'none':''"> <a href="javascript:void(0)"  class="back"><img src="../assets/appmanage/jiahao.png" class="addicon" alt="">新建应用</a></div>
   </div>
   <div class="appManage" [style.display]="createApp=='manage'?'':'none'">
     <div class="appBody">
       <div class="app">
       <div class="appModel" *ngFor="let item of appManageInfo">
-        <div routerLinkActive="active" routerLink="/videoanalysis" (click)="jump(item)">
-        <div class="appModel_header">
+        <div routerLinkActive="active" class="appModel-wrapper" routerLink="/videoanalysis" (click)="jump(item)">
+        <div class="appModel_header" >
           <img src="{{SERVER_URL}}/api/file?filePath={{item.icon}}"/>
           <!--<img src="{{SERVER_URL}}/api/file?filePath={{icon}}" *ngIf="btnIndex==1"/>-->
           <span>{{item.applicationName}}</span>
