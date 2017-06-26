@@ -16,12 +16,12 @@ export class JWplayerComponent {
     var playerInstance = jwplayer(this.ckID);
     //初始化视频
     playerInstance.setup({
+      file: this.url,
       playlist: [
         {
           sources: [
             {
-              file: this.url,
-              preload: "none"
+              file: this.url
             }
           ]
         }
