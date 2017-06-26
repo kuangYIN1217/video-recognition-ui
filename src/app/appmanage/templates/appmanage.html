@@ -3,7 +3,7 @@
     <img src="../assets/appmanage/home.png" class="home" (click)="gotoAppmanage()" />
     <span class="xian">&nbsp;</span>
     <h3>应用管理</h3>
-    <div class="createBtn" (click)="createJob()"> <a href="javascript:void(0)"  class="back"><img src="../assets/appmanage/jiahao.png" class="addicon" alt="">新建应用</a></div>
+    <div class="createBtn" (click)="createJob()" [style.display]="createApp=='create'?'none':''"> <a href="javascript:void(0)"  class="back"><img src="../assets/appmanage/jiahao.png" class="addicon" alt="">新建应用</a></div>
   </div>
   <div class="appManage" [style.display]="createApp=='manage'?'':'none'">
     <div class="appBody">
@@ -36,11 +36,13 @@
         </div>
         <ul class="option">
           <li>
-            <a href="javascript:void(0)" *ngIf="(item.stop==1)||(item.stop==undefined)" (click)="start(item)">暂停</a>
-            <a href="javascript:void(0)" *ngIf="item.stop==0" (click)="start(item)">开始</a>
+            <a href="javascript:void(0)"  (click)="start(item)" *ngIf="item.stop==0">暂停</a>
+            <a href="javascript:void(0)" (click)="start(item)" *ngIf="(item.stop==1)||(item.stop==undefined)">开始</a>
           </li>
-          <li><a href="javascript:void(0)" (click)="update(item)" [ngClass]="{unchange: item.stop==0}">修改</a></li>
-          <li><a href="javascript:void(0)" (click)="dia(item)" [ngClass]="{unchange: item.stop==0}">删除</a></li>
+          <li class="open"  [ngClass]="{close: item.stop==0}">|</li>
+          <li><a href="javascript:void(0)" (click)="update(item)" [ngClass]="{ unchange: item.stop==0}">修改</a></li>
+          <li class="open"  [ngClass]="{close: item.stop==0}">|</li>
+          <li><a href="javascript:void(0)" (click)="dia(item)" [ngClass]="{ unchange: item.stop==0}">删除</a></li>
         </ul>
       </div>
       </div>
@@ -52,18 +54,18 @@
       <div class="createLeft">
         <div class="form">
           <div class="createInfo">
-            <label><span class="symbol">*</span>应用名称:</label>
+            <label><span class="symbol">*</span>应用名称：</label>
             <input type="text" name="appName" [(ngModel)]="appName"/>
             <span class="must" [style.display]="required==1?'':'none'">必填字段</span>
           </div>
           <div class="createInfo">
-            <label><span class="symbol">*</span>应用类别:</label>
+            <label><span class="symbol">*</span>应用类别：</label>
             <select [(ngModel)]="appCate" (ngModelChange)="appCate=$event">
               <option value="{{i}}" *ngFor="let i of appCates">{{i}}</option>
             </select>
           </div>
           <div class="createInfo" style="height: 68px">
-            <label style="float: left;"><span class="symbol">&nbsp;&nbsp;</span>应用图标:</label>
+            <label style="float: left;"><span class="symbol">&nbsp;&nbsp;</span>应用图标：</label>
             <div class="image" onclick="document.getElementById('file').click()">
               <input type="file" id="file" name="file" multiple ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)"/>
               <img src="" id="image" *ngIf="btnIndex==0"/>
@@ -71,7 +73,7 @@
             </div>
           </div>
           <div class="createInfo" style="height: auto" [style.display]="channel==0?'':'none'">
-            <label class="channelConfig">通道配置:</label>
+            <label class="channelConfig" style="padding-left: 8px; margin-right: 24px">通道配置：</label>
             <div class="channel">
               <div class="channelContent" *ngIf="arr.length==0">
                 <img src="../assets/appmanage/addChannel.png" (click)="add()" style="vertical-align: middle"/>

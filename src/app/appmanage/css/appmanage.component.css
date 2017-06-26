@@ -16,16 +16,16 @@ a{
 .header .home{
   display: inline-block;
   float: left;
-  margin-left: 1.56vw;
-  margin-right: 20px;
+  margin-left: 30px;
+  margin-right: 18px;
   margin-top: 8px;
 }
 .header h3{
   font-size: 16px;
   margin:0;
-  color: #333333;
+  color: #666666;
   line-height: 40px;
-  margin-left: 20px;
+  margin-left: 18px;
   font-weight: bold;
   float: left;
 }
@@ -151,7 +151,7 @@ a{
 
 .option{
   margin-top: 2.7vh;
-  margin-right: 1.56vw;
+  margin-right: 10px;
   margin-bottom: 2.22vh;
   float: right;
   overflow: hidden;
@@ -162,12 +162,28 @@ a{
 .option li a{
   padding:0 0.9vw;
 }
-.option li:after{
+.open{
+  font-size: 12px;
+  color: #ff7c35;
+  font-weight: bold;
+}
+.close{
+  font-size: 12px;
+  color: #999999;
+  font-weight: bold;
+}
+/*.option li:after{
   content: '|';
   font-size: 12px;
   color: #ff7c35;
   font-weight: bold;
 }
+.option li:after{
+  content: '|';
+  font-size: 12px;
+  color: #999999;
+  font-weight: bold;
+}*/
 .option li:nth-of-type(3):after{
   content: '';
 }
@@ -190,7 +206,7 @@ a{
   font-size: 14px;
   color: #333333;
   display: inline-block;
-  margin-right: 30px;
+  margin-right: 22px;
 }
 .image{
   background: url('../../../assets/appmanage/upload.png');
@@ -272,7 +288,6 @@ a{
 }
 .channelContent{
   margin-bottom: 26px;
-  margin-left: 6px;
 }
 .channelContent input{
   width: 230px;
@@ -560,7 +575,7 @@ a{
   line-height: 142px;
 }
 .unchange{
-  color: #666666;
+  color: #999999;
 }
 select:focus{
   border:1px solid #23a880 !important;

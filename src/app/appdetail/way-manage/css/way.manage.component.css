@@ -54,12 +54,21 @@ input{
   margin:0 20px;
   border:1px solid #d3d3d3;
   width:97.5%;
+}
+.channelTable th{
   color: #333333;
+  font-weight: normal;
+}
+.channelTable,.channelTable tr{
+  border-collapse: collapse;
+  border-top:1px solid #d3d3d3;
 }
 .channelTable tr{
   height:36px;
   text-align: left;
   font-size: 14px;
+  color: #666666;
+
 }
 .channelTable tr:nth-child(even){
   background: #eeeeee;
@@ -95,22 +104,22 @@ input{
   padding-left: 20px;
 }
 .checked{
-  width:12%;
+  width:6%;
 }
 .order{
   width:12%;
 }
 .channelName{
-  width:16%;
+  width:12%;
 }
 .channelAddr{
-  width:16%;
+  width:24%;
 }
 .protocol{
   width:14%;
 }
 .switch{
-  width:10%;
+  width:16%;
 }
 .operation{
   width:20%;

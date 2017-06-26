@@ -10,7 +10,6 @@ import {Router} from "@angular/router";
   styleUrls: ['./css/navigation.component.css'],
   templateUrl: './templates/navigation.html',
   providers: [ResourcesService, SceneService],
-
 })
 export class NavigationComponent {
   // needhide = 0;
