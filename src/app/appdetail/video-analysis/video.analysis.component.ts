@@ -215,6 +215,9 @@ export class VideoAnalysisComoponent {
   initChannels() {
     this.channelService.getOpenChannelById(this.d_applicationId).subscribe(rep => {
       this.d_video_list = rep;
+      this.d_video_list.sort(function(a,b){
+        return parseInt(a.channelOrder) - parseInt(b.channelOrder)
+      })
      /* var test = {
         channelOut: 'rtmp://live.hkstv.hk.lxdns.com/live/hks',
         recognitionCategory: '148,153,150,151'
