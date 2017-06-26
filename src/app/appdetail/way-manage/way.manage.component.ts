@@ -13,6 +13,7 @@ declare var $:any;
   providers: [AppManageService,ChannelService]
 })
 export class WayManageComponent {
+  popup_title: string = '新增通道';
   addDialog:number=0;
   protocols:any[]=[];
   protocol:string;
@@ -45,6 +46,9 @@ export class WayManageComponent {
       .subscribe(protocols=>{
         this.protocols=protocols;
       });
+  }
+  ngAfterViewInit() {
+    $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'))
   }
   check(item){
     if(item.flag!=1){
@@ -122,6 +126,7 @@ export class WayManageComponent {
     this.radioIndex = i;
   }
   addChannel(){
+    this.popup_title = '新增通道';
     this.addDialog = 1;
     this.btnIndex = 0;
     this.protocol = this.protocols[0];
@@ -165,6 +170,7 @@ export class WayManageComponent {
     if(item.channelStatus==1){
         return false;
     }else{
+      this.popup_title = '修改通道';
       this.addDialog = 1;
       this.btnIndex = 1;
       this.chanName = item.channelName;
