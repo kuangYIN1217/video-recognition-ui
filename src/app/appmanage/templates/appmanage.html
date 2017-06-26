@@ -66,13 +66,13 @@
             <span class="must" [style.display]="required==1?'':'none'">必填字段</span>
           </div>
           <div class="createInfo">
-            <label><span class="symbol">*</span>应用类别：</label>
+            <label><span class="symbol" style="line-height: 36px">*</span>应用类别：</label>
             <select [(ngModel)]="appCate" (ngModelChange)="appCate=$event">
               <option value="{{i}}" *ngFor="let i of appCates">{{i}}</option>
             </select>
           </div>
           <div class="createInfo" style="height: 68px">
-            <label style="float: left;"><span class="symbol">&nbsp;&nbsp;</span>应用图标：</label>
+            <label style="float: left;line-height: 68px"><span class="symbol">&nbsp;&nbsp;</span>应用图标：</label>
             <div class="image" onclick="document.getElementById('file').click()">
               <input type="file" id="file" name="file" multiple ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)"/>
               <img src="" id="image" *ngIf="btnIndex==0"/>
