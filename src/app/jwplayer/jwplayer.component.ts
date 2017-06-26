@@ -12,6 +12,7 @@ export class JWplayerComponent {
   @Input() url: string ;
   @Input() ckID: string = this.uuid(8 , 16); // 产生随机uuid
   ngAfterViewInit() {
+    console.log(this.url)
     var playerInstance = jwplayer(this.ckID);
     //初始化视频
     playerInstance.setup({
