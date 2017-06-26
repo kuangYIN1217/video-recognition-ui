@@ -179,7 +179,12 @@ export class VideoAnalysisComoponent {
     }
     return false;
   }
-
+  get_ckplayer_index (index: number) {
+    if (this.d_video_list && this.d_video_list.length >= index) {
+      return this.d_video_list[index-1].channelOrder
+    }
+    return null;
+  }
   changePopupOptions(str) {
     this.clearSelected();
     if (str) {
