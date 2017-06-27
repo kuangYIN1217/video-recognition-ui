@@ -126,7 +126,7 @@ export class AppManageComponent {
       return false;
     }else{
       if(this.uploader.queue.length==0){
-        this.createMethod("/home/ligang/dataset/1498202223509moren.png");
+        this.createMethod("/home/ligang/dataset/1498548481858moren.png");
       }else{
         this.required = 0;
         this.uploader.queue[0].upload(); // 开始上传

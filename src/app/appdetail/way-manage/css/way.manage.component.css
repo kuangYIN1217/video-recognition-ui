@@ -130,7 +130,7 @@ input{
   top: 0;
   height: 100%;
   width: 100%;
-  background-color: rgba(94, 110, 141, 0.7);
+  background-color: rgba(111, 111, 111, 0.3);
   opacity: 1;
 }
 .dialogContainer{
@@ -143,10 +143,10 @@ input{
   background: #fff;
   color: #FFF;
   border-radius: 5px;
-  border:1px solid #d3d3d3;
-  -webkit-box-shadow:0 0 10px #d3d3d3;
-  -moz-box-shadow:0 0 10px #d3d3d3;
-  box-shadow:0 0 10px #d3d3d3;
+  border:1px solid #ccc;
+  -webkit-box-shadow:0 0 10px #999999;
+  -moz-box-shadow:0 0 10px #999999;
+  box-shadow:0 0 10px #999999;
 }
 .addDialogContainer{
   top:50%;
