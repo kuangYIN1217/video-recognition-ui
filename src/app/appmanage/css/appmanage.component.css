@@ -103,14 +103,14 @@ a{
 }
 .appModel_header{
   overflow: hidden;
-  margin: 0 1.56vw;
+  margin: 0 30px;
   border-bottom: 1px solid #eeeeee;
 }
 .appModel_header img{
   display: inline-block;
-  width:58px;
+  width:72px;
   height:58px;
-  margin:26px 0 26px 0;
+  margin:26px 0;
   float: left;
 }
 .appModel_header span{
@@ -125,9 +125,7 @@ a{
   font-weight: bold;
 }
 .appModel_content{
-  margin-left: 1.56vw;
-  margin-right: 1.56vw;
-  margin-top: 4.26vh;
+  margin:26px 30px 46px 30px;
   display: block;
 }
 .appModel_content tbody{
@@ -135,7 +133,7 @@ a{
 }
 .appModel_content tr{
   display: block;
-  margin-bottom: 3.25vh;
+  margin-bottom: 38px;
 }
 .appModel_content tr td{
   display: inline-block;
@@ -156,9 +154,9 @@ a{
 }
 
 .option{
-  margin-top: 2.7vh;
+  margin-top: 0px;
   margin-right: 10px;
-  margin-bottom: 2.22vh;
+  margin-bottom: 24px;
   float: right;
   overflow: hidden;
 }
@@ -166,7 +164,7 @@ a{
   float: left;
 }
 .option li a{
-  padding:0 0.9vw;
+  padding:0 18px;
 }
 .open{
   font-size: 12px;

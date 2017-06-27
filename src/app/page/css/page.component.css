@@ -10,7 +10,7 @@
 .bottom_menu .label{
   position: relative;
   height: 21px;
-  width: 50%;
+  width: 70%;
   font-family: "MicrosoftYaHei";
   float: left;
 
@@ -29,7 +29,7 @@
 }*/
 .bottom_menu .selectDiv{
   position: relative;
-  width: 20%;
+  width: 15%;
   height: 50px;
   float: left;
   outline: none;
@@ -44,7 +44,7 @@
   position: relative;
   float: right;
   display: table-cell;
-  width:30%;
+  width:15%;
 
   text-align: right;
 }
