@@ -263,6 +263,7 @@ export class VideoAnalysisComoponent {
       this.d_video_list.sort(function(a,b){
         return parseInt(a.channelOrder) - parseInt(b.channelOrder)
       })
+      this.init_grid_number(rep.length ? rep.length : 0);
      /* var test = {
         channelOut: 'rtmp://live.hkstv.hk.lxdns.com/live/hks',
         recognitionCategory: '148,153,150,151'
@@ -274,5 +275,17 @@ export class VideoAnalysisComoponent {
       console.log(this.d_video_list)
     });
   }
-
+  init_grid_number(number) {
+    if (number <= 1) {
+      this.s_grid_number = 1
+    } else if (number <= 4) {
+      this.s_grid_number = 4
+    } else if (number <= 6) {
+      this.s_grid_number = 6
+    } else if (number <= 8) {
+      this.s_grid_number = 8
+    } else {
+      this.s_grid_number = 9
+    }
+  }
 }
