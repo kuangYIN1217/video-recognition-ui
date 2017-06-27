@@ -4,6 +4,8 @@
 import { Component } from '@angular/core';
 import {ChannelService} from "../../common/services/channel.service";
 import {RecognitionService} from "../../common/services/recognition.service";
+import {ToastyService} from 'ng2-toasty';
+import {addWarningToast} from '../../common/ts/toast';
 declare var $:any;
 @Component({
   selector: 'video-analysis',
@@ -15,7 +17,7 @@ export class VideoAnalysisComoponent {
   ngOnInit() {
     console.log(window.navigator.plugins)
   }
-  constructor (private channelService: ChannelService , private recognitionService: RecognitionService) {
+  constructor (private channelService: ChannelService , private recognitionService: RecognitionService, private toastyService:ToastyService) {
     this.d_applicationId = parseInt(window.sessionStorage.getItem('applicationId'));
      /* 初始化recognition */
     this.initRecognitions();
@@ -23,7 +25,13 @@ export class VideoAnalysisComoponent {
     this.initChannels();
   }
   ngAfterViewInit() {
-    $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'))
+    $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
+    if (navigator.plugins && navigator.plugins.length > 0) {
+      var swf = navigator.plugins["Shockwave Flash"];
+      if (!swf) {
+        addWarningToast(this.toastyService ,"请确保安装并开启Flash权限: <a href='https://get.adobe.com/cn/flashplayer/'>https://get.adobe.com/cn/flashplayer/</a>" , "未检测到Flash插件");
+      }
+    }
   }
   // 状态机命名 s_xxx-------------------------------------------------------------
   s_fullscreen_grid: number = 0;
@@ -127,13 +135,13 @@ export class VideoAnalysisComoponent {
     }
   }
   $grid_click (index: number , $event) {
-    if (this.s_selected_grid === index || index > this.d_video_list.length) {
+   if (this.s_selected_grid === index || index > this.d_video_list.length) {
       return;
     }
     console.log($event)
-    $event = $event || window.event;
+   /* $event = $event || window.event;
     $event.preventDefault();
-    $event.stopPropagation();
+    $event.stopPropagation(); */
     this.s_selected_grid = index;
     this.changePopupOptions(this.d_video_list[index - 1].recognitionCategory);
 
@@ -188,6 +196,39 @@ export class VideoAnalysisComoponent {
       return this.d_video_list[index-1].channelOrder
     }
     return null;
+  }
+
+  get_fullscreen_url (index: number) {
+    let size_22 = 'assets/appdetail/video-analysis/icon_fullscreen_22.png';
+    let size_20 = 'assets/appdetail/video-analysis/icon_fullscreen_20.png'
+    let size_18 = 'assets/appdetail/video-analysis/icon_fullscreen_18.png'
+    if (this.s_fullscreen_grid === index) {
+      console.log('close fullscreen icon')
+      return 'assets/appdetail/video-analysis/icon_fullscreen_close.png'
+    }
+    switch (this.s_grid_number) {
+      case 1: {
+        return size_22;
+      }
+      case 4: {
+        return size_20;
+      }
+      case 6: {
+        if (index === 1) {
+          return size_22;
+        }
+        return size_20;
+      }
+      case 8: {
+        if (index === 1) {
+          return size_22;
+        }
+        return size_18;
+      }
+      case 9: {
+        return size_18;
+      }
+    }
   }
   changePopupOptions(str) {
     this.clearSelected();

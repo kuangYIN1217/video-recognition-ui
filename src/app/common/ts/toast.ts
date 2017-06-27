@@ -13,7 +13,7 @@ export const addToast = (toastyService: ToastyService, msg: string , flag: strin
     title: title,
     msg: msg,
     showClose: true,
-    timeout: 3000,
+    timeout: 5000,
     theme: 'default',
     onAdd: (toast:ToastData) => {
     },
