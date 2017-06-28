@@ -166,6 +166,9 @@ export class VideoAnalysisComoponent {
     if (this.s_fullscreen_grid > 0) {
       this.s_fullscreen_grid = 0;
     } else {
+      if (this.d_video_list.length < index) {
+        return;
+      }
       this.s_fullscreen_grid = index;
       this.s_selected_grid = index;
     }
