@@ -71,7 +71,7 @@ export class VideoAnalysisComoponent {
       result = {
         'width': this_width + 'px',
         'height': this_height + 'px',
-        'top': 26 + parent_height * 0.3345 + 'px'
+        'top': 16 + parent_height * 0.3345 + 'px'
       }
     }
     if (this.s_grid_number === 8) {
@@ -80,7 +80,7 @@ export class VideoAnalysisComoponent {
       result = {
         'width': this_width + 'px',
         'height': this_height + 'px',
-        'top': 26 + parent_height * 0.251 + 'px'
+        'top': 16 + parent_height * 0.251 + 'px'
       }
     }
     if (this.s_selected_grid === 3) {
@@ -99,7 +99,7 @@ export class VideoAnalysisComoponent {
       result = {
         'width': this_width + 'px',
         'height': this_height + 'px',
-        'top': 26 + parent_height * 0.502 + 'px'
+        'top': 16 + parent_height * 0.502 + 'px'
       }
     }
     if (this.s_selected_grid === 4) {
