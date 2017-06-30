@@ -44,6 +44,16 @@ export class ChannelService {
         }
       });
   }
+  searchChannel(applicationId,channelName,page=0,size=10){
+    let path = "/api/applicationChannelByApplicationAndChannelName/"+applicationId+"/"+channelName+"?page="+page+"&size="+size+"&sort=channelOrder,asc";
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers})
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
   createChannel(id,chanAddr,chanName,protocol,status){
     let path = "/api/applicationChannel";
     let body = JSON.stringify({

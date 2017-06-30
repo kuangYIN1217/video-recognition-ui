@@ -1,8 +1,8 @@
 <div class="container">
   <div class="channel">
     <div class="search">
-      <input type="text" placeholder="搜索通道"/>
-      <img src="../assets/appdetail/way.manage/search.png"/>
+      <input type="text" placeholder="搜索通道" name="search" [(ngModel)]="search"/>
+      <img src="../assets/appdetail/way.manage/search.png" (click)="searchChannel()"/>
     </div>
     <div class="headerBtn">
       <a href="javascript:void(0)" class="btn" (click)="addChannel()">添加</a>

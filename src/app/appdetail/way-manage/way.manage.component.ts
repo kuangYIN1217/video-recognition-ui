@@ -38,6 +38,7 @@ export class WayManageComponent {
   switchArr1:any[]=[];
   switchArr2:any[]=[];
   chanRequired:number=0;
+  search:string;
   constructor(private appManageService: AppManageService,private channelService: ChannelService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     console.log(this.appId);
@@ -48,7 +49,7 @@ export class WayManageComponent {
       });
   }
   ngAfterViewInit() {
-    $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'))
+    $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
   }
   check(item){
     if(item.flag!=1){
@@ -65,6 +66,19 @@ export class WayManageComponent {
         this.allFlag=true;
       }
     }
+  }
+  searchChannel(){
+    this.channelService.searchChannel(this.appId,this.search,this.page-1,this.pageMaxItem)
+      .subscribe(result=>{
+        console.log(result);
+        this.channelInfo = result.content;
+        let page = new Page();
+        page.pageMaxItem = result.size;
+        page.curPage = result.number+1;
+        page.totalPage = result.totalPages;
+        page.totalNum = result.totalElements;
+        this.pageParams = page;
+      });
   }
   getPageData(paraParam) {
     this.getPages(this.appId,paraParam.curPage-1,paraParam.pageMaxItem);
