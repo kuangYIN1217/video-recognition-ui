@@ -71,7 +71,7 @@ export class VideoAnalysisComoponent {
       result = {
         'width': this_width + 'px',
         'height': this_height + 'px',
-        'top': 26 + parent_height * 0.3345 + 'px'
+        'top': 16 + parent_height * 0.3345 + 'px'
       }
     }
     if (this.s_grid_number === 8) {
@@ -80,7 +80,7 @@ export class VideoAnalysisComoponent {
       result = {
         'width': this_width + 'px',
         'height': this_height + 'px',
-        'top': 26 + parent_height * 0.251 + 'px'
+        'top': 16 + parent_height * 0.251 + 'px'
       }
     }
     if (this.s_selected_grid === 3) {
@@ -99,7 +99,7 @@ export class VideoAnalysisComoponent {
       result = {
         'width': this_width + 'px',
         'height': this_height + 'px',
-        'top': 26 + parent_height * 0.502 + 'px'
+        'top': 16 + parent_height * 0.502 + 'px'
       }
     }
     if (this.s_selected_grid === 4) {
@@ -166,6 +166,9 @@ export class VideoAnalysisComoponent {
     if (this.s_fullscreen_grid > 0) {
       this.s_fullscreen_grid = 0;
     } else {
+      if (this.d_video_list.length < index) {
+        return;
+      }
       this.s_fullscreen_grid = index;
       this.s_selected_grid = index;
     }
@@ -263,6 +266,7 @@ export class VideoAnalysisComoponent {
       this.d_video_list.sort(function(a,b){
         return parseInt(a.channelOrder) - parseInt(b.channelOrder)
       })
+      this.init_grid_number(rep.length ? rep.length : 0);
      /* var test = {
         channelOut: 'rtmp://live.hkstv.hk.lxdns.com/live/hks',
         recognitionCategory: '148,153,150,151'
@@ -274,5 +278,17 @@ export class VideoAnalysisComoponent {
       console.log(this.d_video_list)
     });
   }
-
+  init_grid_number(number) {
+    if (number <= 1) {
+      this.s_grid_number = 1
+    } else if (number <= 4) {
+      this.s_grid_number = 4
+    } else if (number <= 6) {
+      this.s_grid_number = 6
+    } else if (number <= 8) {
+      this.s_grid_number = 8
+    } else {
+      this.s_grid_number = 9
+    }
+  }
 }
