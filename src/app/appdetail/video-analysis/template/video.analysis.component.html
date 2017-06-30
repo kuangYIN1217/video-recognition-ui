@@ -72,17 +72,22 @@
 
     <!-- 人机识别 popup -->
     <div class="analysis-popup" *ngIf="s_popup_show">
-      <div class="popup-item all">
-        <img (click)="$popup_select_all_toggle()" [src]="s_popup_allselect ? 'assets/appdetail/video-analysis/icon_select_h.png' : 'assets/appdetail/video-analysis/icon_select_n.png'">
-        <label [ngStyle]="ngStyle_popup_allselect()" class="popup-title">全选</label>
+      <div class="scroll-wrapper">
+        <div class="popup-item all">
+          <img (click)="$popup_select_all_toggle()" [src]="s_popup_allselect ? 'assets/appdetail/video-analysis/icon_select_h.png' : 'assets/appdetail/video-analysis/icon_select_n.png'">
+          <label [ngStyle]="ngStyle_popup_allselect()" class="popup-title">全选</label>
+        </div>
+
+        <div class="popup-item" *ngFor="let item of d_analysis_options; let i = index">
+          <img (click)="$popup_select_toggle(i)" [src]="(item.selected && !s_popup_allselect) ? 'assets/appdetail/video-analysis/icon_select_h.png' : 'assets/appdetail/video-analysis/icon_select_n.png'">
+          <label [ngStyle]="ngStyle_popup_select(item.selected)" class="popup-title">{{item.name}}</label>
+        </div>
+      </div>
+      <div class="analysis-submit-wrapper">
+        <div (click)="$change_analysis_submit()" class="submit-btn">保 存</div>
       </div>
 
-      <div class="popup-item" *ngFor="let item of d_analysis_options; let i = index">
-        <img (click)="$popup_select_toggle(i)" [src]="(item.selected && !s_popup_allselect) ? 'assets/appdetail/video-analysis/icon_select_h.png' : 'assets/appdetail/video-analysis/icon_select_n.png'">
-        <label [ngStyle]="ngStyle_popup_select(item.selected)" class="popup-title">{{item.name}}</label>
-      </div>
     </div>
-
   </div>
 
   <ng2-toasty class="toasty" [position]="'top-center'"></ng2-toasty>
