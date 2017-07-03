@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
 import {ChannelService} from "../../common/services/channel.service";
 import {RecognitionService} from "../../common/services/recognition.service";
 import {ToastyService} from 'ng2-toasty';
-import {addWarningToast} from '../../common/ts/toast';
+import {addWarningToast , addWaitToast } from '../../common/ts/toast';
 declare var $:any;
 @Component({
   selector: 'video-analysis',
@@ -153,7 +153,6 @@ export class VideoAnalysisComoponent {
     if (this.s_popup_allselect) {
       return;
     }
-    // todo 修改order
     this.d_analysis_options[index].selected = !this.d_analysis_options[index].selected;
   }
   $popup_select_all_toggle () {
@@ -172,6 +171,11 @@ export class VideoAnalysisComoponent {
       this.s_fullscreen_grid = index;
       this.s_selected_grid = index;
     }
+  }
+  $change_analysis_submit() {
+    // todo request
+    addWaitToast(this.toastyService ,'等待视频源重新加载','保存成功');
+    // todo 修改数据源
   }
   //------
   get_ckplayer_url (index: number) {
@@ -239,7 +243,7 @@ export class VideoAnalysisComoponent {
       let recognitions = str.split(',');
       for (let i = 0 ; i < recognitions.length ; i ++) {
         for (let j = 0 ; j < this.d_analysis_options.length ; j++) {
-          if (this.d_analysis_options[j].cateId == recognitions[i]) {
+          if (this.d_analysis_options[j].code == recognitions[i]) {
             this.d_analysis_options[j].selected = true;
           }
         }
@@ -274,7 +278,7 @@ export class VideoAnalysisComoponent {
       this.d_video_list.push(test) */
       /* this.d_video_list.push(test)
       this.d_video_list.push(test)
-      this.d_video_list.push(test)*/
+      this.d_video_list.push(test) */
       console.log(this.d_video_list)
     });
   }
