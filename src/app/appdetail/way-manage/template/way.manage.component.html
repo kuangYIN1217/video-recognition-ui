@@ -80,7 +80,8 @@
           </span>
         </div>
         <div class="infoBtn">
-          <a href="javascript:void(0)" class="btn" style="margin-left: 28px" (click)="create()" [style.display]="btnIndex==0?'':'none'">保存</a>
+          <a href="javascript:void(0)" class="btn" style="margin-left: 28px" (click)="create()" [style.display]="btnIndex==0?'':'none'"  *ngIf="show==1">保存</a>
+          <a href="javascript:void(0)" class="btn" style="margin-left: 28px" *ngIf="show==0">保存</a>
           <a href="javascript:void(0)" class="btn" style="margin-left: 28px" (click)="editSave()" [style.display]="btnIndex==1?'':'none'">保存</a>
           <a href="javascript:void(0)" class="btn" style="margin-left: 28px" (click)="cancel()">取消</a>
         </div>

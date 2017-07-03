@@ -86,7 +86,7 @@
               <div class="channelContent" *ngIf="arr.length==0">
                 <img src="../assets/appmanage/addChannel.png" (click)="add()" style="vertical-align: middle"/>
               </div>
-              <div class="channelContent" [style.display]="arr.length>0" *ngFor="let item of arr let i=index" >
+              <div class="channelContent" [style.display]="arr.length>0" *ngFor="let item of arr let i=index">
                 <span>通道名称</span><input type="text" name="channelName" [(ngModel)]="item.channelName"/>
                 <span>地址</span><input type="text" name="channelAddress" [(ngModel)]="item.channelAddress"/>
                 <span>协议</span>

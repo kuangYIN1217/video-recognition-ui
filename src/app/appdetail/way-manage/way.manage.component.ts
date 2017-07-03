@@ -39,6 +39,7 @@ export class WayManageComponent {
   switchArr2:any[]=[];
   chanRequired:number=0;
   search:string;
+  show:number=1;
   constructor(private appManageService: AppManageService,private channelService: ChannelService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     console.log(this.appId);
@@ -157,6 +158,7 @@ export class WayManageComponent {
     }
   }
   create(){
+      this.show=0;
       let chanAddr = this.chanAddr;
       let chanName = this.chanName;
       let protocol = this.protocol;
@@ -173,9 +175,10 @@ export class WayManageComponent {
     }else{
       this.chanRequired = 0;
     }
-      console.log(chanName,chanAddr);
+      //console.log(chanName,chanAddr);
       this.channelService.createChannel(this.appId,chanAddr,chanName,protocol,status)
         .subscribe(result=>{
+          this.show=1;
           this.addDialog = 0;
           this.getPages(this.appId,this.page-1,this.pageMaxItem);
         })
