@@ -303,16 +303,29 @@ export class VideoAnalysisComoponent {
     })
   }
   initChannels() {
+    var test = {
+      // channelOut: 'rtmp://www.ossrs.net:1935/live/demo.1496733858737.1499159873989',
+      // channelOut: 'rtmp://live.hkstv.hk.lxdns.com/live/hks', // 香港卫视
+      // channelOut: 'rtmp://62.113.210.250:1935/medienasa-live/ok-magdeburg_high', // 德国
+      // channelOut: 'rtmp://146.185.30.242:1935/live/safeer1', // 英国
+      channelOut: 'rtmp://s2.live14.com:1935/stream/5195e80fe1ed0' //泰国
+    }
+   /* this.d_video_list.push(test);
+    this.d_video_list.push(test);
+    this.d_video_list.push(test);
+    this.d_video_list.push(test);
+    this.d_video_list.push(test);
+    this.d_video_list.push(test);
+    this.d_video_list.push(test);
+    this.d_video_list.push(test);
+    this.d_video_list.push(test); */
+
     this.channelService.getOpenChannelById(this.d_applicationId).subscribe(rep => {
       this.d_video_list = rep;
       this.d_video_list.sort(function(a,b){
         return parseInt(a.channelOrder) - parseInt(b.channelOrder)
       })
       this.init_grid_number(rep.length ? rep.length : 0);
-     /* var test = {
-        channelOut: 'rtmp://live.hkstv.hk.lxdns.com/live/hks',
-        recognitionCategory: '148,153,150,151'
-      } */
       console.log(this.d_video_list)
     });
   }

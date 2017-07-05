@@ -40,11 +40,15 @@ export class RecognitionService {
     console.log(appId)
     console.log(channelIds)
     console.log(recognitions)
-    let path = "/api/UpadateApplicationChannelRecognitionCategory/" + appId + "/" + channelIds + "/" +recognitions;
-    path = encodeURI(path);
-    console.log(path)
+    let body = {
+      "application": appId,
+      "channelId": channelIds,
+      "recognitionCategory": recognitions
+    };
+    let path = "/api/UpadateApplicationChannelRecognitionCategory";
+    console.log(path);
     let headers = this.getHeaders();
-    return this.http.get(this.SERVER_URL + path, {headers: headers})
+    return this.http.post(this.SERVER_URL + path, body ,{headers: headers})
       .map((response: Response) => {
         if (response && response.json()) {
           if(response.status==200){
