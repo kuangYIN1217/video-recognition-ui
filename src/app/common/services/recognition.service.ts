@@ -1,5 +1,5 @@
 import {Headers, Http, Response} from "@angular/http";
-import {Injectable} from "@angular/core";
+import {Injectable, Query} from "@angular/core";
 
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
@@ -36,18 +36,15 @@ export class RecognitionService {
       });
   }
 
-  setRecognitions(appId , channelIds , recognitions) {
-    console.log(appId)
+  setRecognitions( channelIds , recognitions) {
     console.log(channelIds)
     console.log(recognitions)
-    let body = {
-      "application": appId,
-      "channelId": channelIds,
-      "recognitionCategory": recognitions
-    };
+    let body ="channelId=" + channelIds + "&recognitionCategory=" + recognitions;
     let path = "/api/UpadateApplicationChannelRecognitionCategory";
     console.log(path);
-    let headers = this.getHeaders();
+    let headers = new Headers();
+    headers.append('Content-Type','application/x-www-form-urlencoded');
+    headers.append('Authorization',this.getAuthorization());
     return this.http.post(this.SERVER_URL + path, body ,{headers: headers})
       .map((response: Response) => {
         if (response && response.json()) {

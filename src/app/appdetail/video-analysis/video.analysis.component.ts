@@ -182,7 +182,7 @@ export class VideoAnalysisComoponent {
     // todo request
     if (this.s_selected_grid === 0) {
       // 当前所有
-      this.recognitionService.setRecognitions(this.d_applicationId , this.getAllChannelID() , this.getSelectedRecognitions()).subscribe(rep => {
+      this.recognitionService.setRecognitions( this.getAllChannelID() , this.getSelectedRecognitions()).subscribe(rep => {
         console.log(rep)
         this.d_video_list= rep.sort(function(a,b){
           return parseInt(a.channelOrder) - parseInt(b.channelOrder)
@@ -190,7 +190,7 @@ export class VideoAnalysisComoponent {
       });
     } else {
       //
-      this.recognitionService.setRecognitions(this.d_applicationId , this.d_video_list[this.s_selected_grid -1].channelId , this.getSelectedRecognitions()).subscribe(rep => {
+      this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getSelectedRecognitions()).subscribe(rep => {
         console.log(rep)
         this.d_video_list[this.s_selected_grid -1].recognitionCategory = rep[0].recognitionCategory;
       });
@@ -211,7 +211,7 @@ export class VideoAnalysisComoponent {
   getAllChannelID() {
     let channelIDS = '';
     for (let i = 0 ; i < this.d_video_list.length ; i++) {
-      channelIDS += this.d_video_list[i].channelId;
+      channelIDS += this.d_video_list[i].channelId + ',';
     }
     return channelIDS.substring( 0 ,channelIDS.length -1);
   }
@@ -308,7 +308,7 @@ export class VideoAnalysisComoponent {
       // channelOut: 'rtmp://live.hkstv.hk.lxdns.com/live/hks', // 香港卫视
       // channelOut: 'rtmp://62.113.210.250:1935/medienasa-live/ok-magdeburg_high', // 德国
       // channelOut: 'rtmp://146.185.30.242:1935/live/safeer1', // 英国
-      channelOut: 'rtmp://s2.live14.com:1935/stream/5195e80fe1ed0' //泰国
+      // channelOut: 'rtmp://s2.live14.com:1935/stream/5195e80fe1ed0' //泰国
     }
    /* this.d_video_list.push(test);
     this.d_video_list.push(test);
