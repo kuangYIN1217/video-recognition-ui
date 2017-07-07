@@ -356,6 +356,9 @@ a{
   border:1px solid #d3d3d3;
   margin-left: 16px;
 }
+.marginLeft{
+  margin-left: 10px !important;
+}
 .appManageSpace{
   position: fixed;
   top: 170px;

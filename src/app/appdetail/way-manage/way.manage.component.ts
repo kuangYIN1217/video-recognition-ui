@@ -37,7 +37,8 @@ export class WayManageComponent {
   pageMaxItem: number = 10;
   switchArr1:any[]=[];
   switchArr2:any[]=[];
-  chanRequired:number=0;
+  chanRequired1:number=0;
+  chanRequired2:number=0;
   search:string;
   show:number=1;
   constructor(private appManageService: AppManageService,private channelService: ChannelService) {
@@ -158,24 +159,24 @@ export class WayManageComponent {
     }
   }
   create(){
-      this.show=0;
       let chanAddr = this.chanAddr;
       let chanName = this.chanName;
       let protocol = this.protocol;
       let status =  this.radioIndex;
-      if(!chanName){
-        this.chanRequired = 1;
+      if(!chanName||chanName==''){
+        this.chanRequired1 = 1;
         return false;
       }else{
-        this.chanRequired = 0;
+        this.chanRequired1 = 0;
       }
-    if(!chanAddr){
-      this.chanRequired = 1;
+    if(!chanAddr||chanAddr==''){
+      this.chanRequired2 = 1;
       return false;
     }else{
-      this.chanRequired = 0;
+      this.chanRequired2 = 0;
     }
       //console.log(chanName,chanAddr);
+      this.show = 0;
       this.channelService.createChannel(this.appId,chanAddr,chanName,protocol,status)
         .subscribe(result=>{
           this.show=1;
@@ -183,6 +184,7 @@ export class WayManageComponent {
           this.getPages(this.appId,this.page-1,this.pageMaxItem);
         })
   }
+
   edit(item){
     if(item.channelStatus==1){
         return false;
@@ -205,10 +207,22 @@ export class WayManageComponent {
 
   }
   editSave(){
-    this.addDialog = 0;
+    if(this.chanName==''){
+      this.chanRequired1 = 1;
+      return false;
+    }else{
+      this.chanRequired1 = 0;
+    }
+    if(this.chanAddr==''){
+      this.chanRequired2 = 1;
+      return false;
+    }else{
+      this.chanRequired2 = 0;
+    }
     this.channelService.updateChannel(this.appId,this.chanId,this.chanOrder,this.chanName,this.chanAddr,this.protocol,this.radioIndex)
       .subscribe(result=>{
         this.getPages(this.appId,this.page-1,this.pageMaxItem);
+        this.addDialog = 0;
       })
   }
   runChannel(item){

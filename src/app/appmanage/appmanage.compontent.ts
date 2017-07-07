@@ -112,6 +112,18 @@ export class AppManageComponent {
     let icon = photo;
     for(let i in this.arr){
       this.arr[i].channelProtocol = "RTMP";
+      if(!this.arr[i].channelName||this.arr[i].channelName==''){
+        this.arr[i].flag=1;
+        return false;
+      }else{
+        this.arr[i].flag=2;
+      }
+      if(!this.arr[i].channelAddress||this.arr[i].channelAddress==''){
+        this.arr[i].flag1=1;
+        return false;
+      }else{
+        this.arr[i].flag1=2;
+      }
     }
     this.appManageService.createApp(appName,appCate,icon,this.arr)
       .subscribe(result=>{
