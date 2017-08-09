@@ -21,6 +21,9 @@ import {HeaderComponent} from './header/header.component'
 /* import { CkplayerComponent } from './ckplayer/ckplayer.component' */
 import { JWplayerComponent } from './jwplayer/jwplayer.component'
 import {PageComponent} from "./page/page.component";
+import {TaskManageComponent} from "./taskmanage/taskmanage.component";
+import {CreateTextComponent} from "./taskmanage/createtext/createtext.componment";
+import {AlarmRluesComponent} from "./taskmanage/alarmrlues/alarmrlues";
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +38,10 @@ import {PageComponent} from "./page/page.component";
     HeaderComponent,
     PageComponent,
     /* CkplayerComponent, */
-    JWplayerComponent
+    JWplayerComponent,
+    TaskManageComponent,
+    CreateTextComponent,
+    AlarmRluesComponent
     //InputReadonlyDirective
   ],
   imports: [

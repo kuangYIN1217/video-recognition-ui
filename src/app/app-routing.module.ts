@@ -9,6 +9,9 @@ import {TechnologySupportComponent} from './appdetail/technology-support/technol
 import {WayManageComponent} from './appdetail/way-manage/way.manage.component'
 import {VideoAnalysisComoponent} from './appdetail/video-analysis/video.analysis.component'
 import {PageComponent} from "./page/page.component";
+import {TaskManageComponent} from "./taskmanage/taskmanage.component";
+import {CreateTextComponent} from "./taskmanage/createtext/createtext.componment";
+import {AlarmRluesComponent} from "./taskmanage/alarmrlues/alarmrlues";
 const routes: Routes = [
   //{ path: '', component: NavigationComponent },
   {path: 'login', component: LoginComponent},
@@ -20,6 +23,9 @@ const routes: Routes = [
   {path: 'technologysupport', component: TechnologySupportComponent},
   {path: 'monitorreport', component: MonitorReportComponent},
   {path: 'page', component: PageComponent},
+  {path: 'taskmanage', component: TaskManageComponent},
+  {path: 'createtext', component: CreateTextComponent},
+  {path: 'alarmrules', component: AlarmRluesComponent},
   {path: '', redirectTo: '/appmanage', pathMatch: 'full'},
   // { path: 'detail/:id', component: HeroDetailComponent },
 

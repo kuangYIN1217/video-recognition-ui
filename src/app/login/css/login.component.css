@@ -203,19 +203,19 @@ ul, ol {
     margin-top:5px;
     outline: none !important;
 }
-#username:focus,#password:focus{
+/*#username:focus,#password:focus{
   border-left:1px solid #e5e5e5 !important;
   border-right:none !important;
   border-top:none !important;
   border-bottom:none !important;
-}
+}*/
 .pass{
     margin-bottom: 36px;
     border: 1px solid #e5e5e5;
     overflow: hidden;
 }
 input{
-	text-indent: 10px;
+	  text-indent: 10px;
     width: 234px;
     height: 30px;
     font-family: "Microsoft YaHei";
@@ -269,7 +269,7 @@ input{
     color:#fe7d34 ;
     font-size: 14px;
     margin-top: 24px;
-  margin-bottom: 36px;
+    margin-bottom: 36px;
 }
 .remember{
     float: left;

@@ -4,7 +4,7 @@
 import { Component } from '@angular/core';
 import {Headers} from "@angular/http";
 import {AppManageService} from "app/common/services/appmanage.service";
-import {FileUploader} from "ng2-file-upload";
+import {FileItem, FileUploader} from "ng2-file-upload";
 import {SERVER_URL} from "app/app.constants";
 import {appManageInfo} from "../common/defs/resources";
 import {Router} from "@angular/router";
@@ -42,6 +42,12 @@ export class AppManageComponent {
   channel:number=0;
   photoRequired:number=0;
   applicationChannels:any[]=[];
+  radioIndex:number=1;
+  excel:number=1;
+  progress:number=0;
+  importPath:string;
+  id1:any[]=[];
+  id2:any[]=[];
   sceneArr:any[]=[{"name":"道路识别",'flag':1}, {"name":"故障检测"}, {"name":"字母图形分类"}, {"name":"图形识别"}, {"name":"雷暴检测"}, {"name":"神经区域分割"}, {"name":"大数据回归"}];
   systemArr:any[]=[{"name":"ios",'flag':1},{"name":"Android"},{"name":"Windows"},{"name":"HTML5"},{"name":"Linux"},{"name":"其他"}];
   constructor(private appManageService: AppManageService,private router:Router) {
@@ -63,7 +69,9 @@ export class AppManageComponent {
   });
 
   selectedFileOnChanged(event:any) {
-    if(this.btnIndex==0){
+    console.log(event.target.value);
+    this.upload();
+/*    if(this.btnIndex==0){
       $('#image').attr('src','');
     }else if(this.btnIndex==1){
       $('#updateImage').attr('src','');
@@ -82,16 +90,38 @@ export class AppManageComponent {
     }
     if (file) {
       reader.readAsDataURL(file);
-    }
+    }*/
   }
   getAllInfo(){
     this.appManageService.getAppInfo()
       .subscribe(result=>{
         this.appManageInfo = result;
-        if(this.appManageInfo.length==0){
-          this.createApp = 'space';
-        }
+/*          for(let i in result){
+            if(result[i].applicationType=="实时流分析"){
+              this.id1.push(result[i].applicationId);
+              let id1 = this.id1.join(",");
+              this.appManageService.getAllDate("实时流分析",id1)
+                .subscribe(date=>{
+
+                });
+            }else if(result[i].applicationType=="离线文件分析")
+              this.id2.push(result[i].applicationId);
+              let id2 = this.id2.join(",");
+            this.appManageService.getAllDate("离线文件分析",id2)
+              .subscribe(date=>{
+
+              });
+          };*/
+          //let applicationId = this.idArr.join(',');
+          //console.log(applicationId);
       });
+  }
+  categoryChange(){
+    if(this.appCate=="实时流分析"){
+      this.channel=0;
+    }else{
+      this.channel=1;
+    }
   }
   start(item){
     if(item.stop==1||item.stop==undefined){
@@ -107,10 +137,9 @@ export class AppManageComponent {
   del(index){
     this.arr.splice(index,1);
   }
-  createMethod(photo){
+  createInput(){
     let appName = this.appName;
     let appCate = this.appCate;
-    let icon = photo;
     for(let i in this.arr){
       this.arr[i].channelProtocol = "RTMP";
       if(!this.arr[i].channelName||this.arr[i].channelName==''){
@@ -126,29 +155,78 @@ export class AppManageComponent {
         this.arr[i].flag1=2;
       }
     }
-    this.appManageService.createApp(appName,appCate,icon,this.arr)
+    this.appManageService.createApp(appName,appCate,this.arr,null)
       .subscribe(result=>{
         console.log(result);
         this.createApp='manage';
         this.getAllInfo();
       });
   }
+  createImport(){
+    let appName = this.appName;
+    let appCate = this.appCate;
+    this.appManageService.createApp(appName,appCate,null,this.importPath)
+      .subscribe(result=>{
+        console.log(result);
+        this.createApp='manage';
+        this.getAllInfo();
+      });
+  }
+  createOffline(){
+    let appName = this.appName;
+    let appCate = this.appCate;
+    this.appManageService.createApp(appName,appCate,null,null)
+      .subscribe(result=>{
+        console.log(result);
+        this.createApp='manage';
+        this.getAllInfo();
+      });
+  }
+  editTitle(item){
+    if(item.flag==undefined||item.flag!=1){
+      item.flag=1;
+      this.appName = item.applicationName;
+    }
+  }
+  updateName(item){
+/*    this.createTime = item.createTime;
+    this.appId = item.applicationId;
+    this.appCate = item.applicationType;
+    this.appManageService.updateApp(this.appId,this.appName,this.appCate,this.createTime)
+      .subscribe(result=>{
+        this.getAllInfo();
+      });*/
+    item.flag=2;
+  }
+  upload(){
+    this.uploader.queue[0].upload(); // 开始上传
+    this.uploader.onProgressItem=(fileItem: FileItem, progress: any)=>{
+      this.progress=0;
+      if(progress==100){
+        setTimeout(()=>{
+          fileItem.headers.flag=1;
+        }, 300);
+      }
+    };
+    this.uploader.queue[0].onSuccess = (response: any, status: any, headers: any) => {
+      this.importPath = response;
+    }
+  }
   create(){
     if(!this.appName){
       this.required = 1;
       return false;
-    }else{
-      if(this.uploader.queue.length==0){
-        this.createMethod("/home/ligang/dataset/1498548481858moren.png");
-      }else{
+    }else if(this.appCate=='实时流分析'){
+      if(this.excel==1){
         this.required = 0;
-        this.uploader.queue[0].upload(); // 开始上传
-        this.uploader.queue[0].onSuccess = (response: any, status: any, headers: any) => {
-          this.uploader.queue[0].remove();
-          this.icon = response;
-          this.createMethod(this.icon);
+        this.createInput();
+      }else if(this.excel==0){
+        this.required = 0;
+        this.createImport();
       }
-      }
+    }else if(this.appCate=='离线文件分析'){
+        this.required = 0;
+        this.createOffline();
     }
   }
   dia(item){
@@ -187,11 +265,11 @@ export class AppManageComponent {
     this.uploader.queue[0].onSuccess = (response: any, status: any, headers: any) => {
       this.uploader.queue[0].remove();
       this.icon = response;
-      this.appManageService.updateApp(this.appId,this.appName,this.appCate,this.createTime,this.icon)
+/*      this.appManageService.updateApp(this.appId,this.appName,this.appCate,this.createTime,this.icon)
         .subscribe(result=>{
           this.createApp='manage';
           this.getAllInfo();
-        })
+        })*/
     }
     this.uploader.queue[0].upload(); // 开始上传
   }
@@ -231,6 +309,14 @@ export class AppManageComponent {
       }
     }
     this.sceneGather = this.sceneGatherArr.toString();
+  }
+  radio(i){
+    this.radioIndex = i;
+    if(this.radioIndex==1){
+      this.excel=1;
+    }else if(this.radioIndex==0){
+      this.excel=0;
+    }
   }
   gotoAppmanage () {
     this.createApp = 'manage';

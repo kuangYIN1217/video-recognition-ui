@@ -1,0 +1,27 @@
+.createTask{
+  margin:20px 30px 0 30px;
+  background: #ffffff;
+}
+.taskTitle{
+  font-size: 16px;
+  color: #333333;
+  padding:20px 0 33px 20px;
+}
+.taskContent{
+  font-size: 14px;
+  color: #333333;
+  padding-left: 90px;
+}
+.symbol{
+  font-size: 12px;
+  color: #fe1c1c;
+}
+.createInfo input{
+  width:490px;
+  height:36px;
+  border:1px solid #d3d3d3;
+  box-sizing: border-box;
+  border-radius: 5px;
+  margin-left: 30px;
+  margin-bottom: 30px;
+}

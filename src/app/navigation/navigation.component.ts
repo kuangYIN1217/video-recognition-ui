@@ -70,6 +70,9 @@ export class NavigationComponent {
     } else if (this.location.isCurrentPathEqualTo('/technologysupport') ) {
       this.focusTab = 4;
       // this.needhide = 0;
+    }else if (this.location.isCurrentPathEqualTo('/taskmanage') ) {
+      this.focusTab = 5;
+      // this.needhide = 0;
     }
   }
 

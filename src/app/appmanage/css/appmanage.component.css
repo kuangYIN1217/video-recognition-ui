@@ -71,6 +71,22 @@ a{
   font-size: 14px;
   font-style: normal;
 }
+.back:hover{
+  text-decoration:none;
+  width: 114px;
+  float: right;
+  height: 30px;
+  margin-top: 5px;
+  margin-right: 1.56vw;
+  border-radius: 5px;
+  color: #ffffff;
+  background:#ff7c35 ;
+  text-align: center;
+  border:1px solid #ff7c35;
+  line-height: 30px;
+  font-size: 14px;
+  font-style: normal;
+}
 .appManage h3{
   font-size: 16px;
   color: #333333;
@@ -88,6 +104,9 @@ a{
   margin: 0 auto;
   overflow: hidden;
 }
+.topSpace{
+  height:15px;
+}
 .appModel{
   border:1px solid #ccc;
   -webkit-box-shadow:0 0 10px #999999;
@@ -99,35 +118,59 @@ a{
   border-radius: 8px;
   margin:15px 32px;
 }
-.appModel:nth-of-type(1),.appModel:nth-of-type(2){
-  margin-top: 30px;
-}
+
 .appModel_header{
   overflow: hidden;
   margin: 0 30px;
   border-bottom: 1px solid #eeeeee;
 }
-.appModel_header img{
+.appModel_header .icon{
   display: inline-block;
   width:58px;
   height:58px;
   margin:26px 0;
   float: left;
 }
-.appModel_header span{
+.appModel_header .index_title{
   display: inline-block;
   float: left;
   height:58px;
+  width:154px;
   line-height: 58px;
-  margin-top: 1.56vw;
+  margin-top: 26px;
   margin-left: 66px;
   font-size: 14px;
   color: #333333;
   font-weight: bold;
+  text-overflow:ellipsis;
+  overflow: hidden;
+  white-space:nowrap;
+}
+.appModel_header .index_operation{
+  float: right;
+  margin-top: 45px;
+}
+.appModel_header .index_operation .edit{
+  margin-right: 12px;
+}
+.index_editTitle{
+  display: inline-block;
+  float: left;
+  width:160px;
+  height:22px;
+  margin-top: 42px;
+  margin-left: 66px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333333;
+}
+.index_editTitle:focus{
+  height:24px;
 }
 .appModel_content{
   margin:26px 30px 46px 30px;
   display: block;
+  outline: none;
 }
 .appModel_content tbody{
   display: block;
@@ -141,13 +184,18 @@ a{
 
   word-break: break-all;
 }
-.appModel_content tr td:nth-of-type(1){
-  width:29%;
+.appModel_content tr .one{
   color: #333333;
+  font-size: 18px;
+  width:190px;
 }
-.appModel_content tr td:nth-of-type(2){
-  color: #555555;
-  width:68%;
+.appModel_content tr .two{
+  color: #ff7c35;
+  font-size: 24px;
+  width:50px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
 }
 .sceneInput{
   text-indent: 6px;
@@ -201,8 +249,18 @@ a{
   margin-left: 102px;
 }
 .createInfo{
-  margin-bottom: 26px;
+  margin-bottom: 30px;
   height:36px;
+}
+.radio{
+  margin-bottom: 44px;
+  display: inline-block;
+}
+.input{
+  margin-left: 6px;
+}
+.import{
+  margin-left: 126px;
 }
 .createInfo:nth-of-type(6){
   height:146px;
@@ -275,7 +333,7 @@ a{
   width:494px;
   height:34px;
   color: #666666;
-  margin-left: 4px;
+  margin-left: 6px;
   position: absolute;
   background: url("../../../assets/appmanage/rightArrow.png") no-repeat right center;
   appearance:none;
@@ -292,6 +350,7 @@ a{
   color: #666666;
 }
 .channelContent{
+  margin-left: 104px;
   margin-bottom: 26px;
 }
 .channelContent input{
@@ -382,7 +441,32 @@ a{
   background: #e8e8e8;
   margin: 0;
   font-weight: normal;
-
+}
+.notChoose{
+  color: #666666;
+  font-size: 14px;
+  margin-left: 12px;
+}
+.createbtn{
+  display: inline-block;
+  border:1px solid #d3d3d3;
+  height:30px;
+  line-height: 30px;
+  box-sizing: border-box;
+  text-align: center;
+  color: #666666;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.downLoadBtn{
+  width:130px;
+  background: #eeeeee;
+  margin-left: 192px;
+}
+.browse{
+  width:80px;
+  margin-left: 104px;
 }
 .sceneContent{
   clear: left;
@@ -403,6 +487,89 @@ a{
   background: #e8e8e8;
   color: #333333;
   border:1px solid #e8e8e8;
+}
+.importModel{
+  overflow: hidden;
+}
+.imgMiddle{
+  display: inline-block;
+  vertical-align: middle;
+}
+.uploadShow{
+  width:484px;
+  margin-left:83px;
+  float: left;
+}
+.importDown{
+  float: left;
+}
+.uploadTr{
+  border-collapse:collapse;
+  display: block;
+  padding:20px 0 10px 0;
+  overflow: hidden;
+}
+.uploadTxt{
+  font-size: 14px;
+  width:378px;
+  color: #52a683;
+  float: left;
+  display: inline-block;
+  text-align: left;
+  padding-top: 2px;
+}
+.uploadImg{
+  cursor: pointer;
+  float: right;
+  display: inline-block;
+  text-align: right;
+  margin-bottom: 12px;
+  padding:0;
+}
+.border{
+  border-bottom: 1px solid #d3d3d3;
+}
+.paddingRight{
+  padding-right: 8px;
+}
+.paddingLeft{
+  padding-left: 8px;
+}
+.right{
+  margin-right: 12px;
+}
+.importDown{
+  margin-top: 44px;
+  margin-left: 20px !important;
+}
+.progressouter{
+  width:484px;
+  height:15px;
+  background: #999999;
+  border:1px solid #b5b5b5;
+  border-radius: 10px;
+  box-shadow:0px 5px 5px #818181 inset;
+  clear: both;
+  margin-left:20px;
+  text-align: center;
+  color: #ffffff;
+  position: relative;
+}
+.progressouter span{
+  position: absolute;
+  z-index: 999;
+  color: #ffffff;
+  display: inline-block;
+  height:15px;
+  line-height: 15px;
+}
+.progressinner{
+  /*background: #ed8942;*/
+  background: linear-gradient(rgb(236,148,81),rgb(235,123,53));
+  border-radius: 10px;
+  height:18px;
+  /*box-shadow:0px 2px 2px #ccc inset;*/
+  margin:0 1px;
 }
 .selected img{
   display: inline-block;
@@ -597,39 +764,14 @@ input{
 input:focus{
   border:1px solid #23a880 !important;
 }
-@media (min-width:1200px) and (max-width:1366px) {
-  .app{
-    width:1040px;
-  }
-  .appModel_content tr td:nth-of-type(1){
-    width:28%;
-  }
-  .appModel_content tr td:nth-of-type(2){
-    width:69%;
-  }
-}
-@media (min-width:1367px) and (max-width:1440px) {
-  .app{
-    width:1040px;
-  }
-  .appModel_content tr td:nth-of-type(1){
-    width:28%;
-  }
-  .appModel_content tr td:nth-of-type(2){
-    width:69%;
-  }
-}
-@media (min-width:1440px) and (max-width:1650px){
+@media (min-width:1120px) and (max-width:1650px) {
   .app{
     width:1040px;
   }
 }
-@media (min-width:1440px) and (max-width:1680px) {
-  .appModel_content tr td:nth-of-type(1){
-    width:29%;
-  }
-  .appModel_content tr td:nth-of-type(2){
-    width:68%;
+@media  (max-width:1120px) {
+  .app{
+    width:500px;
   }
 }
 

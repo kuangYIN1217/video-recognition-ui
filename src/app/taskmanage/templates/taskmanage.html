@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="task">
+    <div class="task_title">
+      <div class="title_name fl">
+        <label>任务名称：</label>
+        <input type="text" name="taskName" [(ngModel)]="taskName"/>
+      </div>
+      <div class="title_warnStatus fl">
+        <label>告警状态：</label>
+        <select [(ngModel)]="warnStatus" (ngModelChange)="warnStatus=$event;selectChange()">
+          <option></option>
+        </select>
+      </div>
+      <div class="searchBtn fr">
+        <a href="#" class="btn">查询</a>
+      </div>
+    </div>
+    <div class="task_body">
+      <div class="body_btn">
+        <a href="#" class="btn delete fr">删除</a>
+        <a href="#" class="btn add fr" routerLinkActive="active" routerLink="/createtext">新增</a>
+      </div>
+      <div class="task_content">
+        <table cellspacing="0" class="taskTable">
+          <tr>
+            <th class="checked">
+              <img src="../assets/appdetail/way.manage/unchecked.png"  class="middle pad"/>
+              <!--<img src="../assets/appdetail/way.manage/checked.png"  class="middle pad" (click)="allSel()"/>-->
+            </th>
+            <th class="name pad">任务名称</th>
+            <th class="rule pad">规则名称</th>
+            <th class="file pad">文件个数</th>
+            <th class="run pad">运行状态</th>
+            <th class="progress pad"> 进度</th>
+            <th class="operation pad">操作</th>
+          </tr>
+        </table>
+        <page [pageParams]="pageParams" (changeCurPage)="getPageData($event)" class="page"></page>
+      </div>
+    </div>
+  </div>
+</div>

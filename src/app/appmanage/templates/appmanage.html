@@ -10,51 +10,79 @@
       <label class="divider">|</label>
       <label class="title">应用管理</label>
     </div>
-    <div class="createBtn" (click)="createJob()" [style.display]="createApp=='create'?'none':''"> <a href="javascript:void(0)"  class="back"><img src="../assets/appmanage/jiahao.png" class="addicon" alt="">新建应用</a></div>
+    <div class="createBtn" (click)="createJob()" [style.display]="createApp=='create'?'none':''"> <a href="javascript:void(0)"  class="back">新建应用</a></div>
   </div>
   <div class="appManage" [style.display]="createApp=='manage'?'':'none'">
     <div class="appBody">
       <div class="app">
+        <div class="topSpace"></div>
       <div class="appModel" *ngFor="let item of appManageInfo">
-        <div routerLinkActive="active" class="appModel-wrapper" routerLink="/videoanalysis" (click)="jump(item)">
+        <div *ngIf="item.applicationType=='实时流分析'">
         <div class="appModel_header" >
-          <img src="{{SERVER_URL}}/api/file?filePath={{item.icon}}"/>
-          <!--<img src="{{SERVER_URL}}/api/file?filePath={{icon}}" *ngIf="btnIndex==1"/>-->
-          <span>{{item.applicationName}}</span>
+          <img src="../assets/appmanage/shipin.png" class="icon"/>
+          <span class="index_title" title="{{item.applicationName}}" *ngIf="item.flag==undefined||item.flag!=1">{{item.applicationName}}</span>
+          <input type="text" value={{item.applicationName}} class="index_editTitle" *ngIf="item.flag==1" (blur)="updateName(item)" name="appName" [(ngModel)]="appName"/>
+          <span class="index_operation">
+            <img src="../assets/appmanage/xiugai.png" class="edit" (click)="editTitle(item)" *ngIf="item.flag==undefined||item.flag!=1"/>
+            <img src="../assets/appmanage/shouyexiugai.png" class="edit" *ngIf="item.flag==1"/>
+            <img src="../assets/appmanage/shanchu.png"/>
+          </span>
         </div>
-        <table class="appModel_content">
+        <table class="appModel_content" routerLinkActive="active" routerLink="/videoanalysis" (click)="jump(item)">
           <tr>
-            <td>应用类型:</td>
-            <td>{{item.applicationType}}</td>
+            <td class="one">已建通道</td>
+            <td class="two">8</td>
           </tr>
           <tr>
-            <td>APIkey:</td>
-            <td>420a5932a8a0f</td>
+            <td class="one">已开通道</td>
+            <td class="two">10</td>
           </tr>
           <tr>
-            <td>Master Secret:</td>
-            <td>df7f78f9e2c8c</td>
+            <td class="one">系统告警</td>
+            <td class="two">4</td>
           </tr>
           <tr>
-            <td>创建时间:</td>
-            <td>{{item.createTime}}</td>
+            <td class="one">待处理告警</td>
+            <td class="two">10</td>
           </tr>
         </table>
         </div>
-        <ul class="option">
-<!--          <li>
-            <a href="javascript:void(0)"  (click)="start(item)" *ngIf="item.stop==0">暂停</a>
-            <a href="javascript:void(0)" (click)="start(item)" *ngIf="(item.stop==1)||(item.stop==undefined)">开始</a>
-          </li>
-          <li class="open"  [ngClass]="{close: item.stop==0}">|</li>-->
-          <li><a href="javascript:void(0)" (click)="update(item)" [ngClass]="{ unchange: item.stop==0}">修改</a></li>
-          <li class="open"  [ngClass]="{close: item.stop==0}">|</li>
-          <li><a href="javascript:void(0)" (click)="dia(item)" [ngClass]="{ unchange: item.stop==0}">删除</a></li>
-        </ul>
+        <div *ngIf="item.applicationType=='离线文件分析'">
+          <div class="appModel_header" >
+            <img src="../assets/appmanage/wenben.png" class="icon"/>
+            <span class="index_title" title="{{item.applicationName}}" *ngIf="item.flag==undefined||item.flag!=1">{{item.applicationName}}</span>
+            <input type="text" value={{item.applicationName}} class="index_editTitle" *ngIf="item.flag==1" (blur)="updateName(item)" name="appName" [(ngModel)]="appName"/>
+            <span class="index_operation">
+            <img src="../assets/appmanage/xiugai.png" class="edit" (click)="editTitle(item)" *ngIf="item.flag==undefined||item.flag!=1"/>
+            <img src="../assets/appmanage/shouyexiugai.png" class="edit" *ngIf="item.flag==1"/>
+            <img src="../assets/appmanage/shanchu.png"/>
+          </span>
+          </div>
+          <table class="appModel_content">
+            <tr>
+              <td class="one">总任务数</td>
+              <td class="two" routerLinkActive="active" routerLink="/taskmanage">10</td>
+            </tr>
+            <tr>
+              <td class="one">已完成任务</td>
+              <td class="two">10</td>
+            </tr>
+            <tr>
+              <td class="one">系统告警</td>
+              <td class="two">10</td>
+            </tr>
+            <tr>
+              <td class="one">待处理告警</td>
+              <td class="two">10</td>
+            </tr>
+          </table>
+        </div>
       </div>
       </div>
     </div>
   </div>
+
+
 
   <div class="appManage" [style.display]="createApp=='create'?'':'none'">
       <h3 [style.display]="btnIndex==0?'':'none'">新建应用</h3>
@@ -62,27 +90,37 @@
       <div class="createLeft">
         <div class="form">
           <div class="createInfo">
-            <label><span class="symbol">*</span>应用名称：</label>
+            <label><span class="symbol">*</span>项目名称：</label>
             <input type="text" name="appName" [(ngModel)]="appName"/>
             <span class="must" [style.display]="required==1?'':'none'">必填字段</span>
           </div>
           <div class="createInfo">
-            <label><span class="symbol" style="line-height: 36px">*</span>应用类别：</label>
-            <select [(ngModel)]="appCate" (ngModelChange)="appCate=$event">
+            <label><span class="symbol" style="line-height: 36px">*</span>项目类别：</label>
+            <select [(ngModel)]="appCate" (ngModelChange)="appCate=$event;categoryChange()">
               <option value="{{i}}" *ngFor="let i of appCates">{{i}}</option>
             </select>
           </div>
-          <div class="createInfo" style="height: 68px">
+<!--          <div class="createInfo" style="height: 68px">
             <label style="float: left;line-height: 68px"><span class="symbol">&nbsp;&nbsp;</span>应用图标：</label>
             <div class="image" onclick="document.getElementById('file').click()">
               <input type="file" id="file" name="file" multiple ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)"/>
               <img src="" id="image" *ngIf="btnIndex==0"/>
               <img src="{{SERVER_URL}}/api/file?filePath={{this.icon}}" *ngIf="btnIndex==1" style="width: 68px; height: 68px;" id="updateImage"/>
             </div>
-          </div>
+          </div>-->
           <div class="createInfo" style="height: auto" [style.display]="channel==0?'':'none'">
-            <label class="channelConfig" style="padding-left: 8px; margin-right: 24px">通道配置：</label>
-            <div class="channel">
+            <label style="line-height: 36px">通道配置：</label>
+            <span class="radio">
+              <span class="input">
+                <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=1" (click)="radio(1)"/>
+                <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==1" (click)="radio(1)"/><label>输入通道</label>
+              </span>
+              <span class="import">
+                <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=0" (click)="radio(0)"/>
+                <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==0" (click)="radio(0)"/><label>导入通道</label>
+              </span>
+            </span>
+            <div class="channel" [style.display]="excel==1?'':'none'">
               <div class="channelContent" *ngIf="arr.length==0">
                 <img src="../assets/appmanage/addChannel.png" (click)="add()" style="vertical-align: middle"/>
               </div>
@@ -97,7 +135,26 @@
                 <img src="../assets/appmanage/addChannel.png" (click)="add()" *ngIf="(i+1)==arr.length" class="add" style="margin-left: 14px"/>
               </div>
             </div>
+            <div [style.display]="excel==0?'':'none'" class="importModel">
+              <div  *ngIf="uploader.queue.length==0">
+                <span onclick="document.getElementById('file').click()" class="browse createbtn">浏览...</span> <span class="notChoose">未选择文件</span>
+                <input type="file" id="file" name="file" ng2FileSelect [uploader]="uploader" accept=".xlsx" (change)="selectedFileOnChanged($event)"/>
+                <a href="#" class="downLoadBtn createbtn" onclick="return false" (click)="download()">下载导入模板</a>
+              </div>
+              <table class="uploadShow">
+                <tr *ngFor="let item of uploader.queue;let i =index" class="uploadTr" [ngClass]="{border: item.headers.flag==1}">
+                  <td class="uploadTxt paddingLeft"><img src="../assets/appmanage/shangchuan.png" class="imgMiddle right" *ngIf="item.progress==0"/><img src="../assets/appmanage/shangchuan.png" class="imgMiddle right"  *ngIf="item.progress!=100&&(item.progress!=0)"/>{{item.file.name}}<span *ngIf="(item.file.size/1024)>=1024">（{{item.file.size/1024/1024|number:'1.2-2'}}）MB</span><span *ngIf="(item.file.size/1024)<1024">（{{item.file.size/1024|number:'1.2-2'}}）KB</span></td>
+                  <td class="uploadImg paddingRight"><img src="../assets/appmanage/shanchu.png" class="imgMiddle" (click)="item.remove()"/></td>
+                  <div class="progressouter" *ngIf="item.headers.flag==0||(!item.headers.flag)">
+                    <span>{{item.progress}}%</span>
+                    <div class="progressinner" [ngStyle]="{width: item.progress + '%'}"></div>
+                  </div>
+                </tr>
+              </table>
+              <a href="#" class="downLoadBtn createbtn importDown" onclick="return false" (click)="download()" *ngIf="uploader.queue.length>0">下载导入模板</a>
             </div>
+          </div>
+
 <!--          <div class="createInfo">
             <label><span class="symbol">*</span>场景选择:</label>
             <input type="text" required class="sceneInput" id="sceneInput" (click)="buyScene()" readonly name="sceneGather" [(ngModel)]="sceneGather"/>
@@ -125,8 +182,8 @@
             </div>
           </div>-->
           <div class="btn">
-            <a href="javascript:void(0)"  class="crtBtn" (click)="create()" [style.display]="btnIndex==0?'':'none'">创建</a>
-            <a href="javascript:void(0)"  class="crtBtn" (click)="updateSave()" [style.display]="btnIndex==1?'':'none'">保存</a>
+            <a href="javascript:void(0)"  class="crtBtn" (click)="create()">创建</a>
+           <!-- <a href="javascript:void(0)"  class="crtBtn" (click)="updateSave()" [style.display]="btnIndex==1?'':'none'">保存</a>-->
             <a href="javascript:void(0)" class="backBtn" (click)="back()">返回</a>
           </div>
         </div>

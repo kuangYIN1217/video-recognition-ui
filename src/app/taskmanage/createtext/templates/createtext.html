@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="createTask">
+    <div class="taskTitle">
+      <span>{{taskTitle}}</span>
+    </div>
+    <div class="taskContent">
+      <div class="form">
+        <div class="createInfo">
+          <label><span class="symbol">*</span>任务名称：</label>
+          <input type="text" name="taskName" [(ngModel)]="taskName"/>
+          <span class="must" [style.display]="required==1?'':'none'">必填字段</span>
+        </div>
+        <div class="createInfo">
+          <label><span class="symbol">*</span>告警规则：</label>
+          <input type="text" required readonly name="alarmRule" [(ngModel)]="alarmRule"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
