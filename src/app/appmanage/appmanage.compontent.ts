@@ -2,6 +2,7 @@
  * Created by Administrator on 2017/6/15 0015.
  */
 import { Component } from '@angular/core';
+import {Headers} from "@angular/http";
 import {AppManageService} from "app/common/services/appmanage.service";
 import {FileUploader} from "ng2-file-upload";
 import {SERVER_URL} from "app/app.constants";
@@ -54,7 +55,7 @@ export class AppManageComponent {
         this.protocols=protocols;
       });
   }
-  Headers:Headers = this.appManageService.getHeaders();
+  Headers: Headers = this.appManageService.getHeaders();
   public uploader:FileUploader = new FileUploader({
     url: SERVER_URL+"/api/upload",
     method: "POST",
