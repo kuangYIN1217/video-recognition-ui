@@ -7,7 +7,15 @@ import { Component } from '@angular/core';
 })
 export class CreateTextComponent {
   taskTitle:string="新建任务";
+  checked:number=0;
   constructor() {
 
+  }
+  checkedRlues(){
+    if(this.checked==0){
+      this.checked=1;
+    }else{
+      this.checked=0;
+    }
   }
 }

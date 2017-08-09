@@ -16,6 +16,17 @@
   font-size: 12px;
   color: #fe1c1c;
 }
+.createInfo{
+  width:600px;
+  position: relative;
+  overflow: hidden;
+}
+.createInfo .jia{
+  position: absolute;
+  right:10px;
+  top:10px;
+  cursor: pointer;
+}
 .createInfo input{
   width:490px;
   height:36px;
@@ -24,4 +35,17 @@
   border-radius: 5px;
   margin-left: 30px;
   margin-bottom: 30px;
+  padding-left: 16px;
+}
+.fl{
+  float: left;
+}
+.fr{
+  float: right;
+}
+.upload{
+  margin-left: 30px;
+}
+#file{
+  display: none;
 }

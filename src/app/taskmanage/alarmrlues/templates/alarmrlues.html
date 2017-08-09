@@ -1,0 +1,12 @@
+<div class="checkedRlue">
+  <h4>已选规则</h4>
+  <div class="rlueContent">
+    <div class="rlue">
+      <span *ngFor="let item of sceneArr;let i=index" [ngClass]="{right: (i+1)%3==0}">
+        <img src="../assets/alarmrlues/unchecked.png" (click)="check(item)" *ngIf="item.flag==undefined||item.flag==2" class="middle"/>
+        <img src="../assets/alarmrlues/checked.png" (click)="check(item)" *ngIf="item.flag==1" class="middle"/>
+        <a class="middle">{{item.name}}</a>
+      </span>
+    </div>
+  </div>
+</div>
