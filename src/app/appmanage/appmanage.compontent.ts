@@ -96,24 +96,23 @@ export class AppManageComponent {
     this.appManageService.getAppInfo()
       .subscribe(result=>{
         this.appManageInfo = result;
-/*          for(let i in result){
+          for(let i in result){
             if(result[i].applicationType=="实时流分析"){
               this.id1.push(result[i].applicationId);
-              let id1 = this.id1.join(",");
-              this.appManageService.getAllDate("实时流分析",id1)
-                .subscribe(date=>{
-
-                });
             }else if(result[i].applicationType=="离线文件分析")
               this.id2.push(result[i].applicationId);
-              let id2 = this.id2.join(",");
-            this.appManageService.getAllDate("离线文件分析",id2)
-              .subscribe(date=>{
+          };
+        let id1 = this.id1.join(",");
+        console.log(id1);
+/*        this.appManageService.getAllDate("实时流分析",id1)
+         .subscribe(date=>{
+         });*/
+        let id2 = this.id2.join(",");
+        console.log(id2);
+        /*            this.appManageService.getAllDate("离线文件分析",id2)
+         .subscribe(date=>{
 
-              });
-          };*/
-          //let applicationId = this.idArr.join(',');
-          //console.log(applicationId);
+         });*/
       });
   }
   categoryChange(){
@@ -280,12 +279,15 @@ export class AppManageComponent {
     this.appName = '';
     this.icon = '';
     this.arr=[{}];
-    $('#image').attr('src','');
+    //$('#image').attr('src','');
     this.btnIndex = 0;
     this.createApp = 'create';
     this.channel = 0;
     this.appCate = this.appCates[0];
     this.protocol = this.protocols[0];
+    if(this.uploader.queue.length>0){
+      this.uploader.queue[0].remove();
+    }
   }
   buyScene(){
     this.scene = 1;
