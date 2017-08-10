@@ -325,6 +325,7 @@ export class AppManageComponent {
     if(item){
       sessionStorage.setItem("applicationId" , item.applicationId);
       sessionStorage.setItem("applicationName" , item.applicationName);
+      sessionStorage.setItem("applicationType" , item.applicationType);
     }
   }
 }

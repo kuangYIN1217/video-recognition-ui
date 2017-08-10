@@ -17,7 +17,7 @@ import {TechnologySupportComponent} from './appdetail/technology-support/technol
 import {WayManageComponent} from './appdetail/way-manage/way.manage.component'
 import {VideoAnalysisComoponent} from './appdetail/video-analysis/video.analysis.component'
 import {HeaderComponent} from './header/header.component'
-
+import { WarnComponent } from './appdetail/warn-manage/warn.component'
 /* import { CkplayerComponent } from './ckplayer/ckplayer.component' */
 import { JWplayerComponent } from './jwplayer/jwplayer.component'
 import {PageComponent} from "./page/page.component";
@@ -41,7 +41,8 @@ import {AlarmRluesComponent} from "./taskmanage/alarmrlues/alarmrlues";
     JWplayerComponent,
     TaskManageComponent,
     CreateTextComponent,
-    AlarmRluesComponent
+    AlarmRluesComponent,
+    WarnComponent
     //InputReadonlyDirective
   ],
   imports: [
