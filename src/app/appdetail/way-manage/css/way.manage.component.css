@@ -35,16 +35,22 @@ input{
 }
 .btn{
   display: inline-block;
-  color: #333333;
   font-size: 14px;
   width:80px;
   height:30px;
   text-align: center;
   line-height: 30px;
-  background: #eeeeee;
   border-radius: 5px;
   border:1px solid #d3d3d3;
   box-sizing: border-box;
+}
+.bgco{
+  color: #ffffff;
+  background: #ff7c35;
+}
+.bgcg{
+  color: #333333;
+  background: #eeeeee;
 }
 .pdl{
   margin-right: 18px;
@@ -242,6 +248,7 @@ input{
   margin-left: 32px;
   text-indent: 6px;
   color: #333333;
+  box-sizing: border-box;
 }
 .dialogContent .info select{
   background: url("../../../../assets/appdetail/way.manage/selectDown.png") no-repeat right 6px center;
@@ -276,10 +283,10 @@ select{
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  padding-left: 16px;
+  padding-left: 8px;
 }
 select option{
-  padding-left: 16px;
+  padding-left: 8px;
 }
 input{
   outline: none;

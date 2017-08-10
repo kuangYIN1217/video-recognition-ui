@@ -16,7 +16,7 @@
     <div class="appBody">
       <div class="app">
         <div class="topSpace"></div>
-      <div class="appModel" *ngFor="let item of appManageInfo">
+      <div class="appModel" *ngFor="let item of realTime">
         <div *ngIf="item.applicationType=='实时流分析'">
         <div class="appModel_header" >
           <img src="../assets/appmanage/shipin.png" class="icon"/>
@@ -25,28 +25,30 @@
           <span class="index_operation">
             <img src="../assets/appmanage/xiugai.png" class="edit" (click)="editTitle(item)" *ngIf="item.flag==undefined||item.flag!=1"/>
             <img src="../assets/appmanage/shouyexiugai.png" class="edit" *ngIf="item.flag==1"/>
-            <img src="../assets/appmanage/shanchu.png"/>
+            <img src="../assets/appmanage/shanchu--hui.png"/>
           </span>
         </div>
-        <table class="appModel_content" routerLinkActive="active" routerLink="/videoanalysis" (click)="jump(item)">
+        <table class="appModel_content">
           <tr>
             <td class="one">已建通道</td>
-            <td class="two">8</td>
+            <td class="two" routerLinkActive="active" routerLink="/waymanage" (click)="jump(item)">{{item.totalChannel}}</td>
           </tr>
           <tr>
             <td class="one">已开通道</td>
-            <td class="two">10</td>
+            <td class="two">{{item.startChannel}}</td>
           </tr>
           <tr>
             <td class="one">系统告警</td>
-            <td class="two">4</td>
+            <td class="two" routerLinkActive="active" routerLink="/warnmanage" (click)="jump(item)">{{item.alarmCount}}</td>
           </tr>
           <tr>
             <td class="one">待处理告警</td>
-            <td class="two">10</td>
+            <td class="two">{{item.notProcessAlarmCount}}</td>
           </tr>
         </table>
         </div>
+      </div>
+        <div class="appModel" *ngFor="let item of offline">
         <div *ngIf="item.applicationType=='离线文件分析'">
           <div class="appModel_header" >
             <img src="../assets/appmanage/wenben.png" class="icon"/>
@@ -55,25 +57,26 @@
             <span class="index_operation">
             <img src="../assets/appmanage/xiugai.png" class="edit" (click)="editTitle(item)" *ngIf="item.flag==undefined||item.flag!=1"/>
             <img src="../assets/appmanage/shouyexiugai.png" class="edit" *ngIf="item.flag==1"/>
-            <img src="../assets/appmanage/shanchu.png"/>
+            <img src="../assets/appmanage/shanchu--hui.png" *ngIf="item.totalTask!=item.finishTask"/>
+            <img src="../assets/appmanage/shanchu.png" *ngIf="item.totalTask==item.finishTask" (click)="dia(item)"/>
           </span>
           </div>
           <table class="appModel_content">
             <tr>
               <td class="one">总任务数</td>
-              <td class="two" routerLinkActive="active" routerLink="/taskmanage">10</td>
+              <td class="two" routerLinkActive="active" routerLink="/taskmanage" (click)="jump(item)">{{item.totalTask}}</td>
             </tr>
             <tr>
               <td class="one">已完成任务</td>
-              <td class="two">10</td>
+              <td class="two">{{item.finishTask}}</td>
             </tr>
             <tr>
               <td class="one">系统告警</td>
-              <td class="two">10</td>
+              <td class="two" routerLinkActive="active" routerLink="/warnmanage" (click)="jump(item)">{{item.alarmCount}}</td>
             </tr>
             <tr>
               <td class="one">待处理告警</td>
-              <td class="two">10</td>
+              <td class="two">{{item.notProcessAlarmCount}}</td>
             </tr>
           </table>
         </div>

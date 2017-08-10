@@ -13,6 +13,8 @@ import {TaskManageComponent} from "./taskmanage/taskmanage.component";
 import {CreateTextComponent} from "./taskmanage/createtext/createtext.componment";
 import {AlarmRluesComponent} from "./taskmanage/alarmrlues/alarmrlues";
 import { WarnComponent } from './appdetail/warn-manage/warn.component'
+import {ChannelComponent} from "./channel/channel.component";
+import {WarnRlueComponent} from "./appdetail/warn-rlue/warnrlue.component";
 const routes: Routes = [
   //{ path: '', component: NavigationComponent },
   {path: 'login', component: LoginComponent},
@@ -28,6 +30,9 @@ const routes: Routes = [
   {path: 'createtext', component: CreateTextComponent},
   {path: 'alarmrules', component: AlarmRluesComponent},
   {path: 'warnmanage', component: WarnComponent},
+  {path: 'channel', component: ChannelComponent},
+  {path: 'warnrlue', component: WarnRlueComponent},
+
   {path: '', redirectTo: '/appmanage', pathMatch: 'full'},
   // { path: 'detail/:id', component: HeroDetailComponent },
 

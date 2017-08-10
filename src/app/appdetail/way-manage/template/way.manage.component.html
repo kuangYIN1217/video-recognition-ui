@@ -6,7 +6,7 @@
         <!--<img src="../assets/appdetail/way.manage/search.png" (click)="searchChannel()"/>-->
       <!--</div>-->
       <div class="channelName">
-        <label>通道名称：</label><input type="text"/>
+        <label>通道名称：</label><input type="text" name="channelName" [(ngModel)]="channelName"/>
       </div>
       <div class="channelName">
         <label>开启状态：</label>
@@ -14,14 +14,14 @@
           <option *ngFor="let item of statusArr" value="{{item}}">{{item}}</option>
         </select>
       </div>
-      <a href="#" onclick="return false" class="btn searchBtn">查询</a>
+      <a href="#" onclick="return false" class="btn searchBtn" (click)="searchResult()">查询</a>
     </div>
     <div class="channelContent">
         <div class="headerBtn">
-          <a href="javascript:void(0)" class="btn pdl" (click)="addChannel()">添加</a>
-          <a href="javascript:void(0)" class="btn pdl" >导入</a>
-          <a href="javascript:void(0)" class="btn downExcel" >下载模板</a>
-          <a href="javascript:void(0)" class="btn pdl" (click)="dia()">删除</a>
+          <a href="javascript:void(0)" class="btn pdl bgcg" (click)="addChannel()">添加</a>
+          <a href="javascript:void(0)" class="btn pdl bgcg" >导入</a>
+          <a href="javascript:void(0)" class="btn downExcel bgcg" >下载模板</a>
+          <a href="javascript:void(0)" class="btn pdl bgcg" (click)="dia()">删除</a>
         </div>
       <div class="channelList">
         <table class="channelTable" cellspacing="0">
@@ -89,6 +89,16 @@
           </select>
         </div>
         <div class="info">
+          <label>通道类型：</label>
+          <select [(ngModel)]="channelType" (ngModelChange)="channelType=$event;">
+            <option value="{{i}}" *ngFor="let i of channelTypes">{{i}}</option>
+          </select>
+        </div>
+        <div class="info">
+          <label>视频地址：</label>
+          <input type="text" name="videoAddress" [(ngModel)]="videoAddress"/>
+        </div>
+        <div class="info">
           <label>是否开启：</label>
           <span class="radio">
             <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=1" (click)="radio(1)"/>
@@ -98,14 +108,14 @@
           </span>
         </div>
         <div class="infoBtn">
-          <a href="javascript:void(0)" class="btn" style="margin-left: 28px" (click)="create()" [style.display]="btnIndex==0?'':'none'"  *ngIf="show==1">保存</a>
-          <a href="javascript:void(0)" class="btn" style="margin-left: 28px" *ngIf="show==0">保存</a>
-          <a href="javascript:void(0)" class="btn" style="margin-left: 28px" (click)="editSave()" [style.display]="btnIndex==1?'':'none'">保存</a>
-          <a href="javascript:void(0)" class="btn" style="margin-left: 28px" (click)="cancel()">取消</a>
+          <a href="javascript:void(0)" class="btn bgco" style="margin-left: 28px" (click)="create()" [style.display]="btnIndex==0?'':'none'">创建</a>
+          <a href="javascript:void(0)" class="btn bgco" style="margin-left: 28px" (click)="editSave()" [style.display]="btnIndex==1?'':'none'">保存</a>
+          <a href="javascript:void(0)" class="btn bgcg" style="margin-left: 28px" (click)="cancel()">取消</a>
         </div>
       </div>
     </div>
   </div>
+
   <div class="dialog" [style.display]="delSysDialog==1?'':'none'">
     <div class="dialogContainer addDialogContainer">
       <div class="dialogHeader">
@@ -116,7 +126,7 @@
         <span class="middle" style="padding-left: 10px">对不起，通道开启中，不可删除！</span>
       </div>
       <div class="delSys">
-        <a href="javascript:void(0)" class="btn" (click)="cancel()">确定</a>
+        <a href="javascript:void(0)" class="btn bgcg" (click)="cancel()">确定</a>
       </div>
     </div>
   </div>

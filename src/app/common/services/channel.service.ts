@@ -44,6 +44,26 @@ export class ChannelService {
         }
       });
   }
+  searchResult(name,status,page=0,size=10){
+    let path ="/api/applicationChannelDynamic/"+name+"/"+status+"?page="+page+"&size="+size;
+    let headers = this.getHeaders();
+    return this.http.post(this.SERVER_URL+path, { headers : headers})
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
+  getChannelType(){
+    let path = "/api/getChannelType";
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers})
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
   searchChannel(applicationId,channelName,page=0,size=10){
     let path = "/api/applicationChannelByApplicationAndChannelName/"+applicationId+"/"+channelName+"?page="+page+"&size="+size+"&sort=channelOrder,asc";
     let headers = this.getHeaders();
@@ -54,7 +74,7 @@ export class ChannelService {
         }
       });
   }
-  createChannel(id,chanAddr,chanName,protocol,status){
+  createChannel(id,chanAddr,chanName,protocol,channelType,videoAddress,status){
     let path = "/api/applicationChannel";
     let body = JSON.stringify({
       "application": id,
@@ -64,7 +84,10 @@ export class ChannelService {
       "channelOut": null,
       "channelProtocol": protocol,
       "channelStatus":status,
-      "recognitionCategory": null
+      "channelType": channelType,
+      "videoAddress": videoAddress,
+      "recognitionCategory": null,
+
     });
     let headers = this.getHeaders();
     return this.http.post(this.SERVER_URL+path,body,{ headers: headers })
@@ -76,7 +99,7 @@ export class ChannelService {
         }
       });
   }
-  updateChannel(appId,id,order,chanName,chanAddr,protocol,status){
+  updateChannel(appId,id,order,chanName,chanAddr,protocol,channelType,videoAddress,status){
     let path = "/api/applicationChannel";
     let body = JSON.stringify({
       "application": appId,
@@ -85,7 +108,9 @@ export class ChannelService {
       "channelName": chanName,
       "channelOrder": order,
       "channelOut": null,
-      "channelProtocol": "RTMP",
+      "channelProtocol": protocol,
+      "channelType": channelType,
+      "videoAddress": videoAddress,
       "channelStatus": status,
       "recognitionCategory": null
     });

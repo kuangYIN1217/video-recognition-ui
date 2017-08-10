@@ -1,0 +1,40 @@
+<div class="dialog" [style.display]="addDialog==1?'':'none'">
+  <div class="dialogContainer addDialogContainer">
+    <div class="dialogHeader">
+      <span>{{popup_title}}</span>
+    </div>
+    <div class="dialogContent">
+      <div class="info">
+        <label>通道名称：</label>
+        <input type="text" name="chanName" [(ngModel)]="chanName"/>
+        <span class="must" [style.display]="chanRequired1==1?'':'none'">必填字段</span>
+      </div>
+      <div class="info">
+        <label>通道地址：</label>
+        <input type="text" name="chanAddr" [(ngModel)]="chanAddr"/>
+        <span class="must" [style.display]="chanRequired2==1?'':'none'">必填字段</span>
+      </div>
+      <div class="info">
+        <label>通道协议：</label>
+        <select [(ngModel)]="protocol" (ngModelChange)="protocol=$event;">
+          <option value="{{i}}" *ngFor="let i of protocols">{{i}}</option>
+        </select>
+      </div>
+      <div class="info">
+        <label>是否开启：</label>
+        <span class="radio">
+            <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=1" (click)="radio(1)"/>
+            <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==1" (click)="radio(1)"/><span class="middle">开启</span>
+            <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=0" (click)="radio(0)" style="margin-left: 20px"/>
+            <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==0" (click)="radio(0)" style="margin-left: 20px"/><span class="middle">关闭</span>
+          </span>
+      </div>
+      <div class="infoBtn">
+        <a href="javascript:void(0)" class="btn" style="margin-left: 28px" (click)="create()" [style.display]="btnIndex==0?'':'none'"  *ngIf="show==1">保存</a>
+        <a href="javascript:void(0)" class="btn" style="margin-left: 28px" *ngIf="show==0">保存</a>
+        <a href="javascript:void(0)" class="btn" style="margin-left: 28px" (click)="editSave()" [style.display]="btnIndex==1?'':'none'">保存</a>
+        <a href="javascript:void(0)" class="btn" style="margin-left: 28px" (click)="cancel()">取消</a>
+      </div>
+    </div>
+  </div>
+</div>

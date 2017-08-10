@@ -13,6 +13,7 @@ declare var $:any;
   providers: [AppManageService,ChannelService]
 })
 export class WayManageComponent {
+  ChannelService: any;
   popup_title: string = '新增通道';
   addDialog:number=0;
   protocols:any[]=[];
@@ -41,7 +42,15 @@ export class WayManageComponent {
   chanRequired2:number=0;
   search:string;
   show:number=1;
+  status:string;
+  channelName:any;
+  statusCode:any;
+  channelType:string;
+  channelTypes:any[]=[];
   statusArr:any[]=["全部","开启","关闭"];
+  videoAddress:any;
+  createFlag:boolean=true;
+  upadteFlag:boolean=true;
   constructor(private appManageService: AppManageService,private channelService: ChannelService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     console.log(this.appId);
@@ -50,6 +59,11 @@ export class WayManageComponent {
       .subscribe(protocols=>{
         this.protocols=protocols;
       });
+    this.channelService.getChannelType()
+      .subscribe(result=>{
+        this.channelTypes=result;
+      });
+    this.status = this.statusArr[0];
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
@@ -69,6 +83,26 @@ export class WayManageComponent {
         this.allFlag=true;
       }
     }
+  }
+  searchResult(){
+    debugger
+    if(!this.channelName){
+      this.channelName=null;
+    }
+    if(this.status=="开启"){
+      this.statusCode = 1;
+    } else if(this.status=="关闭"){
+      this.statusCode = 0;
+    }else{
+      this.statusCode = null;
+    }
+    this.channelService.searchResult(this.channelName,this.statusCode,this.page-1,this.pageMaxItem)
+      .subscribe(result=>{
+        if(result.content){
+          this.channelInfo=result.content;
+          console.log(this.channelInfo);
+        }
+      })
   }
   searchChannel(){
     this.channelService.searchChannel(this.appId,this.search,this.page-1,this.pageMaxItem)
@@ -147,8 +181,10 @@ export class WayManageComponent {
     this.addDialog = 1;
     this.btnIndex = 0;
     this.protocol = this.protocols[0];
+    this.channelType = this.channelTypes[0];
     this.chanName = '';
     this.chanAddr = '';
+    this.videoAddress = '';
     this.chanStatus = '1';
     this.radioIndex = 1;
   }
@@ -163,6 +199,8 @@ export class WayManageComponent {
       let chanAddr = this.chanAddr;
       let chanName = this.chanName;
       let protocol = this.protocol;
+      let channelType = this.channelType;
+      let videoAddress = this.videoAddress;
       let status =  this.radioIndex;
       if(!chanName||chanName==''){
         this.chanRequired1 = 1;
@@ -178,11 +216,16 @@ export class WayManageComponent {
     }
       //console.log(chanName,chanAddr);
       this.show = 0;
-      this.channelService.createChannel(this.appId,chanAddr,chanName,protocol,status)
+    if(!this.createFlag) {
+      return;
+    }
+    this.createFlag = false;
+      this.channelService.createChannel(this.appId,chanAddr,chanName,protocol,channelType,videoAddress,status)
         .subscribe(result=>{
           this.show=1;
           this.addDialog = 0;
           this.getPages(this.appId,this.page-1,this.pageMaxItem);
+          this.createFlag = true;
         })
   }
 
@@ -196,6 +239,8 @@ export class WayManageComponent {
       this.chanName = item.channelName;
       this.chanAddr = item.channelAddress;
       this.protocol = item.channelProtocol;
+      this.channelType = item.channelType;
+      this.videoAddress = item.videoAddress;
       this.chanId = item.channelId;
       this.chanOrder = item.channelOrder;
       this.chanStatus = item.channelStatus;
@@ -220,10 +265,15 @@ export class WayManageComponent {
     }else{
       this.chanRequired2 = 0;
     }
-    this.channelService.updateChannel(this.appId,this.chanId,this.chanOrder,this.chanName,this.chanAddr,this.protocol,this.radioIndex)
+    if(!this.upadteFlag){
+      return
+    }
+    this.upadteFlag = false;
+    this.channelService.updateChannel(this.appId,this.chanId,this.chanOrder,this.chanName,this.chanAddr,this.protocol,this.channelType,this.videoAddress,this.radioIndex)
       .subscribe(result=>{
         this.getPages(this.appId,this.page-1,this.pageMaxItem);
         this.addDialog = 0;
+        this.upadteFlag = true;
       })
   }
   runChannel(item){

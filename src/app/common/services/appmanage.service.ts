@@ -26,7 +26,6 @@ export class AppManageService {
     return headers;
   }
   createApp(appName,appCate,applicationChannels,importPath){
-    debugger
     let path = "/api/appllication";
     let body = JSON.stringify({
       "applicationChannels":applicationChannels ,
@@ -77,7 +76,7 @@ export class AppManageService {
   getAllDate(cate,id){
     let path = "/api/count/"+cate+"/"+id;
     let headers = this.getHeaders();
-    return this.http.put(this.SERVER_URL+path,{ headers: headers })
+    return this.http.get(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {
         if (response && response.json()) {
           if(response.status==200){
@@ -86,13 +85,12 @@ export class AppManageService {
         }
       });
   }
-  updateApp(id,appName,appCate,time){
+  updateApp(id,appName,appCate){
     let path = "/api/appllication";
     let body = JSON.stringify({
       "applicationId": id,
       "applicationName": appName,
       "applicationType": appCate,
-      "createTime": time,
     });
     console.log(body);
     let headers = this.getHeaders();
