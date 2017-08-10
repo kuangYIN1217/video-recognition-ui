@@ -70,14 +70,14 @@ export class NavigationComponent {
       // this.needhide = 0;
     } else if (this.location.isCurrentPathEqualTo('/waymanage') ) {
       this.focusTab = 2;
-      // this.needhide = 0;
+      // this.needhide = 0;　
     } else if (this.location.isCurrentPathEqualTo('/monitorreport') ) {
       this.focusTab = 3;
       // this.needhide = 0;
     } else if (this.location.isCurrentPathEqualTo('/technologysupport') ) {
       this.focusTab = 4;
       // this.needhide = 0;
-    }else if (this.location.isCurrentPathEqualTo('/taskmanage')||this.location.isCurrentPathEqualTo('/createtext')){
+    }else if (this.location.isCurrentPathEqualTo('/taskmanage') ||　this.location.isCurrentPathEqualTo('/createtext') ) {
       this.focusTab = 5;
       // this.needhide = 0;
     }else if (this.location.isCurrentPathEqualTo('/warnmanage')||this.location.isCurrentPathEqualTo('/warnrlue')){
