@@ -18,6 +18,7 @@ export class NavigationComponent {
   sceneArray: SceneInfo[] = [];
   focusCollapse: string = "0";
   username: string = "";
+  online: boolean = true;
   // location: Location;
 
   changeCollapse() {
@@ -52,6 +53,12 @@ export class NavigationComponent {
       this.username = "Loading";
     }
 
+    if (sessionStorage['applicationType'] === '离线文件分析') {
+      this.online = false;
+    } else {
+      this.online = true;
+    }
+
     if (this.location.isCurrentPathEqualTo('/login') || this.location.isCurrentPathEqualTo('') ) {
       this.focusTab = 0;
       // this.needhide = 0;
@@ -72,6 +79,9 @@ export class NavigationComponent {
       // this.needhide = 0;
     }else if (this.location.isCurrentPathEqualTo('/taskmanage') ) {
       this.focusTab = 5;
+      // this.needhide = 0;
+    }else if (this.location.isCurrentPathEqualTo('/warnmanage') ) {
+      this.focusTab = 6;
       // this.needhide = 0;
     }
   }

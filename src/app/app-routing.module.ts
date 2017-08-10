@@ -12,6 +12,7 @@ import {PageComponent} from "./page/page.component";
 import {TaskManageComponent} from "./taskmanage/taskmanage.component";
 import {CreateTextComponent} from "./taskmanage/createtext/createtext.componment";
 import {AlarmRluesComponent} from "./taskmanage/alarmrlues/alarmrlues";
+import { WarnComponent } from './appdetail/warn-manage/warn.component'
 const routes: Routes = [
   //{ path: '', component: NavigationComponent },
   {path: 'login', component: LoginComponent},
@@ -26,6 +27,7 @@ const routes: Routes = [
   {path: 'taskmanage', component: TaskManageComponent},
   {path: 'createtext', component: CreateTextComponent},
   {path: 'alarmrules', component: AlarmRluesComponent},
+  {path: 'warnmanage', component: WarnComponent},
   {path: '', redirectTo: '/appmanage', pathMatch: 'full'},
   // { path: 'detail/:id', component: HeroDetailComponent },
 
