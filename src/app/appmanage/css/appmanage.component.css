@@ -393,11 +393,12 @@ a{
   margin-bottom: 294px;
 }
 .crtBtn{
-  width:114px;
+  width:80px;
   height:30px;
   border-radius: 5px;
   display: inline-block;
   color: #fff;
+  box-sizing: border-box;
   background:#ff7e35 ;
   font-size: 14px;
   text-align: center;
@@ -405,16 +406,17 @@ a{
 }
 
 .backBtn{
-  width:112px;
-  height:28px;
+  width:80px;
+  height:30px;
   border-radius: 5px;
   display: inline-block;
+  box-sizing: border-box;
   color: #747474;
   font-size: 14px;
   text-align: center;
   line-height: 28px;
   border:1px solid #d3d3d3;
-  margin-left: 16px;
+  margin-left: 18px;
 }
 .marginLeft{
   margin-left: 10px !important;

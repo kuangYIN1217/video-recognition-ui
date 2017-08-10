@@ -41,6 +41,7 @@ export class WayManageComponent {
   chanRequired2:number=0;
   search:string;
   show:number=1;
+  statusArr:any[]=["全部","开启","关闭"];
   constructor(private appManageService: AppManageService,private channelService: ChannelService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     console.log(this.appId);

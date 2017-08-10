@@ -1,52 +1,70 @@
 <div class="container">
   <div class="channel">
-    <div class="search">
-      <input type="text" placeholder="搜索通道" name="search" [(ngModel)]="search"/>
-      <img src="../assets/appdetail/way.manage/search.png" (click)="searchChannel()"/>
+    <div class="channelTitle">
+      <!--<div class="search">-->
+        <!--<input type="text" placeholder="搜索通道" name="search" [(ngModel)]="search"/>-->
+        <!--<img src="../assets/appdetail/way.manage/search.png" (click)="searchChannel()"/>-->
+      <!--</div>-->
+      <div class="channelName">
+        <label>通道名称：</label><input type="text"/>
+      </div>
+      <div class="channelName">
+        <label>开启状态：</label>
+        <select [(ngModel)]="status" (ngModelChange)="status=$event;">
+          <option *ngFor="let item of statusArr" value="{{item}}">{{item}}</option>
+        </select>
+      </div>
+      <a href="#" onclick="return false" class="btn searchBtn">查询</a>
     </div>
-    <div class="headerBtn">
-      <a href="javascript:void(0)" class="btn" (click)="addChannel()">添加</a>
-      <a href="javascript:void(0)" class="btn" (click)="dia()">删除</a>
+    <div class="channelContent">
+        <div class="headerBtn">
+          <a href="javascript:void(0)" class="btn pdl" (click)="addChannel()">添加</a>
+          <a href="javascript:void(0)" class="btn pdl" >导入</a>
+          <a href="javascript:void(0)" class="btn downExcel" >下载模板</a>
+          <a href="javascript:void(0)" class="btn pdl" (click)="dia()">删除</a>
+        </div>
+      <div class="channelList">
+        <table class="channelTable" cellspacing="0">
+          <tr>
+            <th class="checked">
+              <img src="../assets/appdetail/way.manage/unchecked.png" *ngIf="allFlag==false" class="middle pad" (click)="allSel()"/>
+              <img src="../assets/appdetail/way.manage/checked.png" *ngIf="allFlag==true" class="middle pad" (click)="allSel()"/>
+            </th>
+            <th class="order pad">画面顺序</th>
+            <th class="name pad">通道名称</th>
+            <th class="channelAddr pad">通道地址</th>
+            <th class="protocol pad">协议</th>
+            <th class="switch pad">
+              <span class="middle">开启状态</span>
+              <img src="../assets/appdetail/way.manage/init.png" class="middle" *ngIf="order==0" (click)="sortByType()"/>
+              <img src="../assets/appdetail/way.manage/shang.png" class="middle" *ngIf="order==1" (click)="sortByType()"/>
+              <img src="../assets/appdetail/way.manage/xia.png" class="middle" *ngIf="order==2" (click)="sortByType()"/>
+            </th>
+            <th class="operation pad">操作</th>
+          </tr>
+          <tr *ngFor="let item of channelInfo let i=index;">
+            <td>
+              <img src="../assets/appdetail/way.manage/unchecked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag!=1"/>
+              <img src="../assets/appdetail/way.manage/checked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag==1"/>
+            </td>
+            <td class="pad">{{item.channelOrder}}</td>
+            <td class="pad">{{item.channelName}}</td>
+            <td class="pad">{{item.channelAddress}}</td>
+            <td class="pad">{{item.channelProtocol}}</td>
+            <td class="pad">{{output(item.channelStatus)}}</td>
+            <td class="operation pad">
+              <a class="operationBtn stop" *ngIf="item.channelStatus==0" (click)="runChannel(item)"></a>
+              <a class="operationBtn start" *ngIf="item.channelStatus==1" (click)="runChannel(item)"></a>
+              <a class="operationBtn edit" *ngIf="item.channelStatus==0" (click)="edit(item)"></a>
+              <a class="operationBtn unedit" *ngIf="item.channelStatus==1" (click)="edit(item)"></a>
+              <a class="operationBtn up" (click)="dirRecord(item.channelId,1)" *ngIf="i!=0"></a>
+              <a class="operationBtn down" (click)="dirRecord(item.channelId,2)" *ngIf="i!=channelInfo.length-1"></a>
+            </td>
+          </tr>
+        </table>
+        <page [pageParams]="pageParams" (changeCurPage)="getPageData($event)" class="page"></page>
+      </div>
     </div>
-    <table class="channelTable" cellspacing="0">
-      <tr>
-        <th class="checked">
-          <img src="../assets/appdetail/way.manage/unchecked.png" *ngIf="allFlag==false" class="middle pad" (click)="allSel()"/>
-          <img src="../assets/appdetail/way.manage/checked.png" *ngIf="allFlag==true" class="middle pad" (click)="allSel()"/>
-        </th>
-        <th class="order pad">画面顺序</th>
-        <th class="channelName pad">通道名称</th>
-        <th class="channelAddr pad">通道地址</th>
-        <th class="protocol pad">协议</th>
-        <th class="switch pad">
-          <span class="middle">开启状态</span>
-          <img src="../assets/appdetail/way.manage/init.png" class="middle" *ngIf="order==0" (click)="sortByType()"/>
-          <img src="../assets/appdetail/way.manage/shang.png" class="middle" *ngIf="order==1" (click)="sortByType()"/>
-          <img src="../assets/appdetail/way.manage/xia.png" class="middle" *ngIf="order==2" (click)="sortByType()"/>
-        </th>
-        <th class="operation pad">操作</th>
-      </tr>
-      <tr *ngFor="let item of channelInfo let i=index;">
-        <td>
-          <img src="../assets/appdetail/way.manage/unchecked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag!=1"/>
-          <img src="../assets/appdetail/way.manage/checked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag==1"/>
-        </td>
-        <td class="pad">{{item.channelOrder}}</td>
-        <td class="pad">{{item.channelName}}</td>
-        <td class="pad">{{item.channelAddress}}</td>
-        <td class="pad">{{item.channelProtocol}}</td>
-        <td class="pad">{{output(item.channelStatus)}}</td>
-        <td class="operation pad">
-          <a class="operationBtn stop" *ngIf="item.channelStatus==0" (click)="runChannel(item)"></a>
-          <a class="operationBtn start" *ngIf="item.channelStatus==1" (click)="runChannel(item)"></a>
-          <a class="operationBtn edit" *ngIf="item.channelStatus==0" (click)="edit(item)"></a>
-          <a class="operationBtn unedit" *ngIf="item.channelStatus==1" (click)="edit(item)"></a>
-          <a class="operationBtn up" (click)="dirRecord(item.channelId,1)" *ngIf="i!=0"></a>
-          <a class="operationBtn down" (click)="dirRecord(item.channelId,2)" *ngIf="i!=channelInfo.length-1"></a>
-        </td>
-      </tr>
-    </table>
-    <page [pageParams]="pageParams" (changeCurPage)="getPageData($event)" class="page"></page>
   </div>
   <div class="dialog" [style.display]="addDialog==1?'':'none'">
     <div class="dialogContainer addDialogContainer">

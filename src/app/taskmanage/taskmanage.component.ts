@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   providers: []
 })
 export class TaskManageComponent {
+  alarmStatusArr:any[]=["全部","完成","进行中","未启动","暂停"];
   constructor() {
 
   }

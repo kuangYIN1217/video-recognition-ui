@@ -1,6 +1,5 @@
 .channel{
   margin:20px 30px;
-  background: #ffffff;
   overflow: hidden;
 }
 a{
@@ -28,9 +27,7 @@ input{
   text-indent: 16px;
 }
 .headerBtn{
-  float: right;
-  margin-right: 20px;
-  margin-top: 20px;
+  margin:20px;
 }
 .must{
   font-size: 14px;
@@ -40,20 +37,72 @@ input{
   display: inline-block;
   color: #333333;
   font-size: 14px;
-  width:114px;
+  width:80px;
   height:30px;
   text-align: center;
   line-height: 30px;
   background: #eeeeee;
   border-radius: 5px;
   border:1px solid #d3d3d3;
-  margin-left: 14px;
+  box-sizing: border-box;
 }
-.channelTable{
+.pdl{
+  margin-right: 18px;
+  margin-top: 20px;
+}
+.downExcel{
+  width:130px !important;
+  margin-top: 20px;
+  margin-right: 18px;
+}
+.searchBtn{
+  float: right;
+  margin-right: 20px;
+  margin-top: 22px;
+  background: #ff7c35 !important;
+  color: #ffffff !important;
+}
+.channelName{
+  float: left;
+  overflow: hidden;
+  margin:20px 0 20px 20px;
+}
+.channelName input,.channelName select{
+  width:280px;
+  height:36px;
+  box-sizing: border-box;
+  border:1px solid #d3d3d3;
+  float: left;
+  border-radius: 5px;
+  margin-left: 20px;
+  margin-right: 14px;
+}
+.channelName select{
+  background: url("../../../../assets/appdetail/way.manage/selectDown.png") no-repeat right 6px center;
+  color: #666666;
+}
+.channelTitle{
+  background: #ffffff;
+  margin-bottom: 20px;
+  font-size: 14px;
+  overflow: hidden;
+}
+.channelName label{
+  color: #333333;
+  float: left;
+  line-height: 36px;
+  display: inline-block;
+}
+.channelContent{
+  background: #ffffff;
+}
+.channelList{
   clear: both;
   margin:0 20px;
+}
+.channelTable{
+  width:100%;
   border:1px solid #d3d3d3;
-  width:97.5%;
 }
 .channelTable th{
   color: #333333;
@@ -108,17 +157,17 @@ input{
 .order{
   width:12%;
 }
-.channelName{
+.name{
   width:12%;
 }
 .channelAddr{
-  width:24%;
+  width:22%;
 }
 .protocol{
-  width:14%;
+  width:12%;
 }
 .switch{
-  width:16%;
+  width:14%;
 }
 .operation{
   width:20%;
@@ -195,7 +244,7 @@ input{
   color: #333333;
 }
 .dialogContent .info select{
-  background: url("../../../../assets/appmanage/rightArrow1.png") no-repeat right 6px center;
+  background: url("../../../../assets/appdetail/way.manage/selectDown.png") no-repeat right 6px center;
   color: #666666;
   height:34px !important;
 }
@@ -224,29 +273,22 @@ select:focus{
 }
 select{
   outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-left: 16px;
+}
+select option{
+  padding-left: 16px;
 }
 input{
   outline: none;
+  padding-left: 8px;
 }
 input:focus{
   border:1px solid #23a880 !important;
 }
 
-@media (min-width:1200px) and (max-width:1366px) {
-  .channelTable{
-    width:96.4%;
-  }
-}
-@media (min-width:1367px) and (max-width:1440px) {
-  .channelTable{
-    width:96.8%;
-  }
-}
-@media (min-width:1441px) and (max-width:1680px) {
-  .channelTable{
-    width:97.2%;
-  }
-}
 
 
 

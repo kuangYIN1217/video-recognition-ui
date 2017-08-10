@@ -11,6 +11,7 @@ import {plainToClass} from "class-transformer";
 @Injectable()
 export class AppManageService {
   SERVER_URL: string = SERVER_URL;
+  inputPath:string;
   constructor(private http: Http) { }
 
   getAuthorization(){
@@ -25,6 +26,7 @@ export class AppManageService {
     return headers;
   }
   createApp(appName,appCate,applicationChannels,importPath){
+    debugger
     let path = "/api/appllication";
     let body = JSON.stringify({
       "applicationChannels":applicationChannels ,
@@ -32,10 +34,13 @@ export class AppManageService {
       "applicationName": appName,
       "applicationType": appCate,
       "createTime": null,
-      "inputPath":importPath
     });
+    if(importPath){
+      this.inputPath = encodeURI(importPath);
+    }
     let headers = this.getHeaders();
-    return this.http.post(this.SERVER_URL+path,body,{ headers: headers })
+    headers.append('inputPath',this.inputPath);
+    return this.http.post(this.SERVER_URL+path,body,{ headers: headers})
       .map((response: Response) => {
         if (response && response.json()) {
           if(response.status==200){

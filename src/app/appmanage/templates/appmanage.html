@@ -144,7 +144,7 @@
               <table class="uploadShow">
                 <tr *ngFor="let item of uploader.queue;let i =index" class="uploadTr" [ngClass]="{border: item.headers.flag==1}">
                   <td class="uploadTxt paddingLeft"><img src="../assets/appmanage/shangchuan.png" class="imgMiddle right" *ngIf="item.progress==0"/><img src="../assets/appmanage/shangchuan.png" class="imgMiddle right"  *ngIf="item.progress!=100&&(item.progress!=0)"/>{{item.file.name}}<span *ngIf="(item.file.size/1024)>=1024">（{{item.file.size/1024/1024|number:'1.2-2'}}）MB</span><span *ngIf="(item.file.size/1024)<1024">（{{item.file.size/1024|number:'1.2-2'}}）KB</span></td>
-                  <td class="uploadImg paddingRight"><img src="../assets/appmanage/shanchu.png" class="imgMiddle" (click)="item.remove()"/></td>
+                  <td class="uploadImg paddingRight"><img src="../assets/appmanage/delete.png" class="imgMiddle" (click)="item.remove()"/></td>
                   <div class="progressouter" *ngIf="item.headers.flag==0||(!item.headers.flag)">
                     <span>{{item.progress}}%</span>
                     <div class="progressinner" [ngStyle]="{width: item.progress + '%'}"></div>
