@@ -10,6 +10,9 @@ export class WarnRlueComponent{
   channelInfo:any[]=[];
   createIndex:number=0;
   warn_title:string;
+  deleteIndex:number=0;
+  tip_title:string;
+  tip_content:string;
   constructor() {
 
   }
@@ -30,8 +33,19 @@ export class WarnRlueComponent{
       this.allFlag=false;
     }
   }
+  indexChange(event){
+    this.createIndex = event;
+  }
+  deleteChange(event){
+    this.deleteIndex = event;
+  }
   createWarn(){
     this.createIndex=1;
     this.warn_title="新建规则";
+  }
+  delete(){
+    this.deleteIndex = 1;
+    this.tip_title = "删除";
+    this.tip_content = "删除所选通道?"
   }
 }

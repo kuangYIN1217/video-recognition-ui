@@ -153,6 +153,9 @@ a{
 .appModel_header .index_operation .edit{
   margin-right: 12px;
 }
+.index_operation img{
+  cursor: pointer;
+}
 .index_editTitle{
   display: inline-block;
   float: left;

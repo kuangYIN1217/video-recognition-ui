@@ -1,4 +1,4 @@
-import { Component,Input } from '@angular/core';
+import { Component,Input, Output,EventEmitter} from '@angular/core';
 declare var $:any;
 @Component({
   selector: 'warn-window',
@@ -10,6 +10,8 @@ export class WarnWindowComponent{
   channelInfo:any[]=[];
   radioIndex:number;
   @Input() warn_title:string;
+  @Input() createIndex:number;
+  @Output() indexChange: EventEmitter<any> = new EventEmitter();
   constructor() {
 
   }
@@ -20,6 +22,7 @@ export class WarnWindowComponent{
     this.radioIndex = i;
   }
   back(){
-
+    this.createIndex = 2;
+    this.indexChange.emit(this.createIndex)
   }
 }

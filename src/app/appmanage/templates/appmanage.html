@@ -25,7 +25,8 @@
           <span class="index_operation">
             <label for="name"><img src="../assets/appmanage/xiugai.png" class="edit" (click)="editTitle(item)" *ngIf="item.flag==undefined||item.flag!=1"/></label>
             <img src="../assets/appmanage/shouyexiugai.png" class="edit" *ngIf="item.flag==1"/>
-            <img src="../assets/appmanage/shanchu--hui.png"/>
+            <img src="../assets/appmanage/shanchu--hui.png" *ngIf="item.startChannel!=0"/>
+            <img src="../assets/appmanage/shanchu.png" *ngIf="item.startChannel==0" (click)="dia(item)"/>
           </span>
         </div>
         <table class="appModel_content">

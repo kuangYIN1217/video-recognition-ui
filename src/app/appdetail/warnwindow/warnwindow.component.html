@@ -32,10 +32,10 @@
           </span>
       </div>
       <div class="infoBtn">
-        <a href="javascript:void(0)" class="btn" style="margin-left: 28px" (click)="create()">创建</a>
-        <a href="javascript:void(0)" class="btn" style="margin-left: 28px" (click)="editSave()">保存</a>
-        <a href="javascript:void(0)" class="btn" style="margin-left: 28px" (click)="back()">返回</a>
-        <a href="javascript:void(0)" class="btn" style="margin-left: 28px" (click)="cancel()">取消</a>
+        <a href="javascript:void(0)" class="btn bgco" style="margin-left: 24px" (click)="create()" *ngIf="warn_title=='新建规则'">创建</a>
+        <a href="javascript:void(0)" class="btn bgco" style="margin-left: 24px" (click)="editSave()"  *ngIf="warn_title=='修改规则'">保存</a>
+        <a href="javascript:void(0)" class="btn bgcg" style="margin-left: 18px" (click)="back()"  *ngIf="warn_title=='新建规则'">返回</a>
+        <a href="javascript:void(0)" class="btn bgcg" style="margin-left: 18px" (click)="back()"  *ngIf="warn_title=='修改规则'">取消</a>
       </div>
     </div>
   </div>

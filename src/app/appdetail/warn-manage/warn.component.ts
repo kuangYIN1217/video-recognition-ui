@@ -13,18 +13,23 @@ export class WarnComponent{
   chanNameArr:any[]=[];
   warnRlueArr:any[]=[];
   appId:string;
+  warnRlue:string;
+  chanName:string;
+  warnStatus:string;
   statusArr:any[]=["全部","开启","关闭"];
   constructor(private warnService: WarnService) {
     this.appId = window.sessionStorage.getItem("applicationId");
-      this.warnService.getChanName()
+      this.warnService.getWarnRules()
         .subscribe(result=>{
           this.warnRlueArr = result;
+          this.warnRlue = this.warnRlueArr[0];
         })
-      this.warnService.getWarnRules(this.appId)
+      this.warnService.getChanName(this.appId)
         .subscribe(result=>{
-          this.warnRlueArr=result;
-          console.log(this.warnRlueArr);
+          this.chanNameArr=result;
+          this.chanName = this.chanNameArr[0];
         })
+    this.warnStatus = this.statusArr[0];
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));

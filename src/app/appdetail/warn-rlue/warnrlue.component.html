@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="warn-content">
-      <a href="#" onclick="return false" class="btn bgcg">删除</a>
+      <a href="#" onclick="return false" class="btn bgcg" (click)="delete()">删除</a>
       <a href="#" onclick="return false" class="btn bgcg" style="margin-right: 0" (click)="createWarn()">新建</a>
       <div class="table-margin">
         <table class="channelTable" cellspacing="0">
@@ -61,6 +61,7 @@
         <page [pageParams]="pageParams" (changeCurPage)="getPageData($event)" class="page"></page>
       </div>
     </div>
-    <warn-window [style.display]="createIndex==1?'':'none'" [warn_title]="warn_title"></warn-window>
+    <warn-window [style.display]="createIndex==1?'':'none'" [warn_title]="warn_title" [createIndex]="createIndex" (indexChange)="indexChange($event)"></warn-window>
+    <app-tips [style.display]="deleteIndex==1?'':'none'" [tip_title]="tip_title" [tip_content]="tip_content" [deleteIndex]="deleteIndex" (deleteChange)="deleteChange($event)"></app-tips>
   </div>
 </div>

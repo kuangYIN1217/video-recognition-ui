@@ -25,7 +25,7 @@ export class WarnService {
     headers.append('Authorization', this.getAuthorization());
     return headers;
   }
-  getChanName(){
+  getWarnRules(){
     let path = "/api/getAllRuleName";
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path, { headers : headers})
@@ -35,8 +35,8 @@ export class WarnService {
         }
       });
   }
-  getWarnRules(id){
-    let path = "/api/findAlarmByApplication/"+id;
+  getChanName(id){
+    let path = "/api/getApplicationChannelNameByApplication/"+id;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path, { headers : headers})
       .map((response: Response) => {
