@@ -44,8 +44,8 @@ export class ChannelService {
         }
       });
   }
-  searchResult(name,status,page=0,size=10){
-    let path ="/api/applicationChannelDynamic/"+name+"/"+status+"?page="+page+"&size="+size;
+  searchResult(id,name,status,page=0,size=10){
+    let path ="/api/applicationChannelDynamic?applicationId="+id+"&channelName="+name+"&channelStatus="+status+"&page="+page+"&size="+size;
     let headers = this.getHeaders();
     return this.http.post(this.SERVER_URL+path, { headers : headers})
       .map((response: Response) => {

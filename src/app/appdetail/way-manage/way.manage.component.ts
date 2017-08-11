@@ -51,6 +51,7 @@ export class WayManageComponent {
   videoAddress:any;
   createFlag:boolean=true;
   upadteFlag:boolean=true;
+  url:string;
   constructor(private appManageService: AppManageService,private channelService: ChannelService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     console.log(this.appId);
@@ -96,7 +97,7 @@ export class WayManageComponent {
     }else{
       this.statusCode = null;
     }
-    this.channelService.searchResult(this.channelName,this.statusCode,this.page-1,this.pageMaxItem)
+    this.channelService.searchResult(this.appId,this.channelName,this.statusCode,this.page-1,this.pageMaxItem)
       .subscribe(result=>{
         if(result.content){
           this.channelInfo=result.content;
@@ -145,6 +146,13 @@ export class WayManageComponent {
     }else{
       this.allFlag=false;
     }
+  }
+  download(){
+    this.appManageService.downTemplate()
+      .subscribe(result=>{
+        this.url = result.url;
+        location.href = this.url;
+      })
   }
   dia(){
     for(let i in this.channelInfo){

@@ -15,6 +15,7 @@ import {AlarmRluesComponent} from "./taskmanage/alarmrlues/alarmrlues";
 import { WarnComponent } from './appdetail/warn-manage/warn.component'
 import {ChannelComponent} from "./channel/channel.component";
 import {WarnRlueComponent} from "./appdetail/warn-rlue/warnrlue.component";
+import {WarnWindowComponent} from "./appdetail/warnwindow/warnwindow.component";
 const routes: Routes = [
   //{ path: '', component: NavigationComponent },
   {path: 'login', component: LoginComponent},
@@ -32,7 +33,7 @@ const routes: Routes = [
   {path: 'warnmanage', component: WarnComponent},
   {path: 'channel', component: ChannelComponent},
   {path: 'warnrlue', component: WarnRlueComponent},
-
+  {path: 'warnwindow', component: WarnWindowComponent},
   {path: '', redirectTo: '/appmanage', pathMatch: 'full'},
   // { path: 'detail/:id', component: HeroDetailComponent },
 

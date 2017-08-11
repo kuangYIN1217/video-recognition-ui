@@ -48,6 +48,14 @@ export class AppManageService {
         }
       });
   }
+  downTemplate(){
+    let path = "/api/template";
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers} )
+      .map((response: Response) => {
+        return response;
+      });
+  }
   getAppInfo(){
     let path = "/api/appllications";
     let headers = this.getHeaders();

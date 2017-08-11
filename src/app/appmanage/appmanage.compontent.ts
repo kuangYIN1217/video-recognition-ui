@@ -52,6 +52,7 @@ export class AppManageComponent {
   type2:string;
   realTime:any[]=[];
   offline:any[]=[];
+  url:any;
   sceneArr:any[]=[{"name":"道路识别",'flag':1}, {"name":"故障检测"}, {"name":"字母图形分类"}, {"name":"图形识别"}, {"name":"雷暴检测"}, {"name":"神经区域分割"}, {"name":"大数据回归"}];
   systemArr:any[]=[{"name":"ios",'flag':1},{"name":"Android"},{"name":"Windows"},{"name":"HTML5"},{"name":"Linux"},{"name":"其他"}];
   constructor(private appManageService: AppManageService,private router:Router) {
@@ -146,6 +147,13 @@ export class AppManageComponent {
          });*/
       });
   }
+  download(){
+      this.appManageService.downTemplate()
+        .subscribe(result=>{
+          this.url = result.url;
+          location.href = this.url;
+        })
+  }
   categoryChange(){
     if(this.appCate=="实时流分析"){
       this.channel=0;
@@ -214,8 +222,8 @@ export class AppManageComponent {
   }
   editTitle(item){
     if(item.flag==undefined||item.flag!=1){
-      item.flag=1;
       this.appName = item.applicationName;
+      item.flag=1;
     }
   }
   updateName(item){

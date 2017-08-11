@@ -4,5 +4,63 @@
       <div class="tab_item" routerLinkActive="active" routerLink="/warnmanage">告警实况</div>
       <div class="tab_item focus" routerLinkActive="active" routerLink="/warnrlue">告警规则</div>
     </div>
+    <div class="search-content">
+      <div class="search-select">
+        <div class="search-info">
+          <label>规则名称：</label>
+          <input type="text" [(ngModel)]="rlueName" (ngModelChange)="rlueName=$event;"/>
+        </div>
+        <div class="search-info">
+          <label>告警对象：</label>
+          <select [(ngModel)]="warnRlue" (ngModelChange)="warnRlue=$event;">
+            <option *ngFor="let item of statusArr" value="{{item}}">{{item}}</option>
+          </select>
+        </div>
+        <div class="search-info">
+          <label>告警状态：</label>
+          <select [(ngModel)]="warnStatus" (ngModelChange)="warnStatus=$event;">
+            <option *ngFor="let item of statusArr" value="{{item}}">{{item}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="search">
+        <a href="#" onclick="return false" class="btn bgco">查询</a>
+      </div>
+    </div>
+    <div class="warn-content">
+      <a href="#" onclick="return false" class="btn bgcg">删除</a>
+      <a href="#" onclick="return false" class="btn bgcg" style="margin-right: 0" (click)="createWarn()">新建</a>
+      <div class="table-margin">
+        <table class="channelTable" cellspacing="0">
+          <tr>
+            <th class="checked">
+              <img src="../assets/appdetail/way.manage/unchecked.png" *ngIf="allFlag==false" class="middle" (click)="allSel()"/>
+              <img src="../assets/appdetail/way.manage/checked.png" *ngIf="allFlag==true" class="middle" (click)="allSel()"/>
+            </th>
+            <th class="order">规则名称</th>
+            <th class="name">告警对象</th>
+            <th class="channelAddr">对象特征</th>
+            <th class="protocol">告警状态</th>
+            <th class="operation pad">操作</th>
+          </tr>
+          <tr *ngFor="let item of channelInfo let i=index;">
+            <td>
+              <img src="../assets/appdetail/way.manage/unchecked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag!=1"/>
+              <img src="../assets/appdetail/way.manage/checked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag==1"/>
+            </td>
+            <td class="pad">{{item.channelOrder}}</td>
+            <td class="pad">{{item.channelName}}</td>
+            <td class="pad">{{item.channelAddress}}</td>
+            <td class="pad">{{item.channelProtocol}}</td>
+            <td class="operation pad">
+              <img src="../assets/warn/chuli.png"/>
+              <img src="../assets/warn/chakanxiangqing.png"/>
+            </td>
+          </tr>
+        </table>
+        <page [pageParams]="pageParams" (changeCurPage)="getPageData($event)" class="page"></page>
+      </div>
+    </div>
+    <warn-window [style.display]="createIndex==1?'':'none'" [warn_title]="warn_title"></warn-window>
   </div>
 </div>

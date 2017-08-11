@@ -26,6 +26,7 @@ import {CreateTextComponent} from "./taskmanage/createtext/createtext.componment
 import {AlarmRluesComponent} from "./taskmanage/alarmrlues/alarmrlues";
 import {ChannelComponent} from "./channel/channel.component";
 import {WarnRlueComponent} from "./appdetail/warn-rlue/warnrlue.component";
+import {WarnWindowComponent} from "./appdetail/warnwindow/warnwindow.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +47,8 @@ import {WarnRlueComponent} from "./appdetail/warn-rlue/warnrlue.component";
     AlarmRluesComponent,
     WarnComponent,
     ChannelComponent,
-    WarnRlueComponent
+    WarnRlueComponent,
+    WarnWindowComponent
     //InputReadonlyDirective
   ],
   imports: [
