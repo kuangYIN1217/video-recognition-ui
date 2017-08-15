@@ -17,6 +17,7 @@ import {ChannelComponent} from "./channel/channel.component";
 import {WarnRlueComponent} from "./appdetail/warn-rlue/warnrlue.component";
 import {WarnWindowComponent} from "./appdetail/warnwindow/warnwindow.component";
 import {TipsComponent} from "./tips/tips.component";
+import {WarnDetailComponent} from "./appdetail/warn-detail/warn.detail.component";
 const routes: Routes = [
   //{ path: '', component: NavigationComponent },
   {path: 'login', component: LoginComponent},
@@ -36,6 +37,7 @@ const routes: Routes = [
   {path: 'warnrlue', component: WarnRlueComponent},
   {path: 'warnwindow', component: WarnWindowComponent},
   {path: 'tips', component: TipsComponent},
+  {path: 'warndetail', component: WarnDetailComponent},
   {path: '', redirectTo: '/appmanage', pathMatch: 'full'},
   // { path: 'detail/:id', component: HeroDetailComponent },
 

@@ -86,7 +86,6 @@ export class WayManageComponent {
     }
   }
   searchResult(){
-    debugger
     if(!this.channelName){
       this.channelName=null;
     }
@@ -258,7 +257,6 @@ export class WayManageComponent {
         this.radioIndex = 0;
       }
   }
-
   }
   editSave(){
     if(this.chanName==''){

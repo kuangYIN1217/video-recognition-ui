@@ -275,6 +275,10 @@ input{
   text-align: center;
   padding:50px 0 42px;
 }
+.bgcg{
+  background: #eeeeee;
+  color: #333333;
+}
 select:focus{
   border:1px solid #23a880 !important;
 }

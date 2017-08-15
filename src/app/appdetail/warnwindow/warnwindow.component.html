@@ -6,36 +6,60 @@
     <div class="dialogContent">
       <div class="info">
         <label>规则名称：</label>
-        <input type="text" name="ruleName" [(ngModel)]="ruleName"/>
+        <input type="text" name="ruleName" [(ngModel)]="ruleName" *ngIf="warn_title!='任务详情'"/>
+        <input type="text" name="ruleName" [(ngModel)]="ruleName" readonly *ngIf="warn_title=='任务详情'"/>
         <span class="must" [style.display]="chanRequired1==1?'':'none'">必填字段</span>
       </div>
-      <div class="info">
+      <div class="createInfo" >
         <label>告警通道：</label>
-        <select></select>
+        <input type="text" required readonly name="warnChannel" [(ngModel)]="warnChannel"/>
+        <img src="../assets/createtext/jia.png" class="jia" (click)="checkedRlues()" *ngIf="warn_title!='任务详情'"/>
+        <img src="../assets/createtext/jia.png" class="jia" *ngIf="warn_title=='任务详情'"/>
+        <alarm-rlues [style.display]="checked==1?'':'none'"  width="280px" margin="20px 10px 0 20px" paddingRight="10px" [warnChanArr]="warnChanArr" [warnChanChecked]="warnChanChecked" (chanChange)="chanChange($event)" (chanChangeId)="chanChangeId($event)"></alarm-rlues>
       </div>
-      <div class="info">
+<!--      <div class="info">
+        <label>告警通道：</label>
+        <select [(ngModel)]="warnChannel" (ngModelChange)="warnChannel=$event;warnChanges($event)" *ngIf="warn_title!='任务详情'">
+          <option value="{{item.channelName}}" *ngFor="let item of warnChanArr">{{item.channelName}}</option>
+        </select>
+        <select [(ngModel)]="warnChannel" (ngModelChange)="warnChannel=$event;warnChanges($event)" disabled *ngIf="warn_title=='任务详情'">
+          <option value="{{item.channelName}}" *ngFor="let item of warnChanArr">{{item.channelName}}</option>
+        </select>
+      </div>-->
+      <div class="info" [ngClass]="{marginTop: checked==1}">
         <label>告警对象：</label>
-        <select></select>
+        <select [(ngModel)]="warnObj" (ngModelChange)="warnObj=$event;" *ngIf="warn_title!='任务详情'">
+          <option value="{{item}}" *ngFor="let item of warnObjArr">{{item}}</option>
+        </select>
+        <select [(ngModel)]="warnObj" (ngModelChange)="warnObj=$event;" disabled *ngIf="warn_title=='任务详情'">
+          <option value="{{item}}" *ngFor="let item of warnObjArr">{{item}}</option>
+        </select>
       </div>
-      <div class="info">
+      <div class="info" *ngIf="warnObj=='车'">
         <label>对象特征：</label>
         <span class="carNum">车牌号</span>
-        <input type="text" class="car"/>
+        <input type="text" class="car" name="car" [(ngModel)]="car"/>
       </div>
       <div class="info">
         <label>开启告警：</label>
-        <span class="radio">
+        <span class="radio" *ngIf="warn_title!='任务详情'">
             <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=1" (click)="radio(1)"/>
             <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==1" (click)="radio(1)"/><span class="middle">开启</span>
             <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=0" (click)="radio(0)" style="margin-left: 20px"/>
             <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==0" (click)="radio(0)" style="margin-left: 20px"/><span class="middle">关闭</span>
-          </span>
+        </span>
+        <span class="radio" *ngIf="warn_title=='任务详情'">
+            <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=1"/>
+            <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==1" /><span class="middle">开启</span>
+            <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=0"  style="margin-left: 20px"/>
+            <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==0" style="margin-left: 20px"/><span class="middle">关闭</span>
+        </span>
       </div>
       <div class="infoBtn">
         <a href="javascript:void(0)" class="btn bgco" style="margin-left: 24px" (click)="create()" *ngIf="warn_title=='新建规则'">创建</a>
-        <a href="javascript:void(0)" class="btn bgco" style="margin-left: 24px" (click)="editSave()"  *ngIf="warn_title=='修改规则'">保存</a>
+        <a href="javascript:void(0)" class="btn bgco" style="margin-left: 24px" (click)="editSave()"  *ngIf="warn_title=='修改规则'||warn_title=='任务详情'">保存</a>
         <a href="javascript:void(0)" class="btn bgcg" style="margin-left: 18px" (click)="back()"  *ngIf="warn_title=='新建规则'">返回</a>
-        <a href="javascript:void(0)" class="btn bgcg" style="margin-left: 18px" (click)="back()"  *ngIf="warn_title=='修改规则'">取消</a>
+        <a href="javascript:void(0)" class="btn bgcg" style="margin-left: 26px" (click)="back()"  *ngIf="warn_title=='任务详情'||warn_title=='修改规则'">返回</a>
       </div>
     </div>
   </div>

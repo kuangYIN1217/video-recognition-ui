@@ -8,12 +8,12 @@
       <div class="search-select">
         <div class="search-info">
           <label>规则名称：</label>
-          <input type="text" [(ngModel)]="rlueName" (ngModelChange)="rlueName=$event;"/>
+          <input type="text" [(ngModel)]="ruleName" (ngModelChange)="ruleName=$event;"/>
         </div>
         <div class="search-info">
           <label>告警对象：</label>
-          <select [(ngModel)]="warnRlue" (ngModelChange)="warnRlue=$event;">
-            <option *ngFor="let item of statusArr" value="{{item}}">{{item}}</option>
+          <select [(ngModel)]="warnRule" (ngModelChange)="warnRule=$event;">
+            <option *ngFor="let item of warnObjArr" value="{{item}}">{{item}}</option>
           </select>
         </div>
         <div class="search-info">
@@ -24,11 +24,11 @@
         </div>
       </div>
       <div class="search">
-        <a href="#" onclick="return false" class="btn bgco">查询</a>
+        <a href="#" onclick="return false" class="btn bgco" (click)="searchRule()">查询</a>
       </div>
     </div>
     <div class="warn-content">
-      <a href="#" onclick="return false" class="btn bgcg" (click)="delete()">删除</a>
+      <a href="#" onclick="return false" class="btn bgcg" (click)="dia()">删除</a>
       <a href="#" onclick="return false" class="btn bgcg" style="margin-right: 0" (click)="createWarn()">新建</a>
       <div class="table-margin">
         <table class="channelTable" cellspacing="0">
@@ -43,25 +43,28 @@
             <th class="protocol">告警状态</th>
             <th class="operation pad">操作</th>
           </tr>
-          <tr *ngFor="let item of channelInfo let i=index;">
+          <tr *ngFor="let item of rulesInfo let i=index;">
             <td>
               <img src="../assets/appdetail/way.manage/unchecked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag!=1"/>
               <img src="../assets/appdetail/way.manage/checked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag==1"/>
             </td>
-            <td class="pad">{{item.channelOrder}}</td>
-            <td class="pad">{{item.channelName}}</td>
-            <td class="pad">{{item.channelAddress}}</td>
-            <td class="pad">{{item.channelProtocol}}</td>
+            <td class="pad">{{item.ruleName}}</td>
+            <td class="pad">{{item.alarmTarget}}</td>
+            <td class="pad">{{item.targetFeature}}</td>
+            <td class="pad">{{item.alarmRuleStatus}}</td>
             <td class="operation pad">
-              <img src="../assets/warn/chuli.png"/>
-              <img src="../assets/warn/chakanxiangqing.png"/>
+              <a class="operationBtn stop" *ngIf="item.alarmRuleStatus=='开启'" (click)="runRule(item)"></a>
+              <a class="operationBtn start" *ngIf="item.alarmRuleStatus=='关闭'" (click)="runRule(item)"></a>
+              <a class="operationBtn look" (click)="lookRule(item)"></a>
+              <a class="operationBtn edit" *ngIf="item.alarmRuleStatus=='关闭'" (click)="edit(item)"></a>
+              <a class="operationBtn unedit" *ngIf="item.alarmRuleStatus=='开启'" (click)="edit(item)"></a>
             </td>
           </tr>
         </table>
         <page [pageParams]="pageParams" (changeCurPage)="getPageData($event)" class="page"></page>
       </div>
     </div>
-    <warn-window [style.display]="createIndex==1?'':'none'" [warn_title]="warn_title" [createIndex]="createIndex" (indexChange)="indexChange($event)"></warn-window>
-    <app-tips [style.display]="deleteIndex==1?'':'none'" [tip_title]="tip_title" [tip_content]="tip_content" [deleteIndex]="deleteIndex" (deleteChange)="deleteChange($event)"></app-tips>
+    <warn-window [style.display]="createIndex==1?'':'none'" [warn_title]="warn_title" [(createIndex)]="createIndex" (indexChange)="indexChange($event)" [(ruleList)]="ruleList"></warn-window>
+    <app-tips [style.display]="deleteIndex==1?'':'none'" [tip_title]="tip_title" [tip_content]="tip_content" [deleteIndex]="deleteIndex" [tip_btn]="tip_btn" (deleteChange)="deleteChange($event)" (deletedChange)="deletedChange($event)"></app-tips>
   </div>
 </div>

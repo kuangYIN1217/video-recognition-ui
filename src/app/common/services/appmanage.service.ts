@@ -93,17 +93,17 @@ export class AppManageService {
         }
       });
   }
-  updateApp(id,appName,appCate){
-    let path = "/api/appllication";
+  updateApp(id,appName){
+    let path = "/api/UpdateappllicationName";
     let body = JSON.stringify({
       "applicationId": id,
-      "applicationName": appName,
-      "applicationType": appCate,
+      "name": appName
     });
     console.log(body);
     let headers = this.getHeaders();
     return this.http.put(this.SERVER_URL+path,body,{ headers: headers })
       .map((response: Response) => {
+      console.log(response);
         if (response && response.json()) {
           if(response.status==200){
             return response.json();

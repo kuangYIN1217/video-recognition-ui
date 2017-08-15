@@ -17,13 +17,13 @@
   color: #fe1c1c;
 }
 .createInfo{
-  width:600px;
+  width:670px;
   position: relative;
   overflow: hidden;
 }
 .createInfo .jia{
   position: absolute;
-  right:10px;
+  right:80px;
   top:10px;
   cursor: pointer;
 }
@@ -88,4 +88,14 @@
 .upload p{
   font-size: 12px;
   color: #bf533a;
+}
+.marginTop{
+  margin-top: 30px;
+}
+.must{
+  font-size: 14px;
+  color: #fe1c1c;
+  position: absolute;
+  top:7px;
+  right:0;
 }

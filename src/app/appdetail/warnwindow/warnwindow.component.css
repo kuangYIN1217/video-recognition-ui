@@ -23,7 +23,7 @@
   box-shadow:0 0 10px #999999;
 }
 .addDialogContainer{
-  top:50%;
+  top:40%;
   width:506px;
   left:50%;
   margin-left: -253px;
@@ -66,7 +66,7 @@
   border:1px solid #d3d3d3;
   border-radius: 5px;
   margin-left: 32px;
-  text-indent: 6px;
+  padding-left: 8px;
   color: #333333;
   box-sizing: border-box;
 }
@@ -110,10 +110,9 @@ select{
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  padding-left: 16px;
 }
 select option{
-  padding-left: 16px;
+  padding-left: 8px;
 }
 input{
   outline: none;
@@ -141,4 +140,33 @@ input:focus{
 .bgcg{
   color:#333333;
   background: #eeeeee;
+}
+.createInfo{
+  width:390px;
+  position: relative;
+  overflow: hidden;
+}
+.createInfo .jia{
+  position: absolute;
+  right:10px;
+  top:10px;
+  cursor: pointer;
+}
+.createInfo input{
+  width:280px;
+  height:36px;
+  border:1px solid #d3d3d3;
+  box-sizing: border-box;
+  border-radius: 5px;
+  margin-left: 32px;
+  margin-bottom: 30px;
+  padding-left: 8px;
+  color: #666666;
+}
+.createInfo alarm-rlues .checkedRlue{
+  width:280px !important;
+  box-sizing: border-box;
+}
+.marginTop{
+  margin-top: 30px;
 }

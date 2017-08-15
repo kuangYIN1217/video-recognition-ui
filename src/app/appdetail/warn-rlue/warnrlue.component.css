@@ -152,3 +152,27 @@
   display: inline-block;
   vertical-align: middle;
 }
+.operationBtn {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 10px;
+  /*margin: 0 auto;*/
+}
+.stop {
+  background: url('../../../assets/warn/yunxing.png') no-repeat center;
+
+}
+.start {
+  background: url('../../../assets/warn/zanting.png') no-repeat center;
+}
+.edit{
+  background: url('../../../assets/appdetail/way.manage/edit.png') no-repeat center;
+}
+.unedit{
+  background: url('../../../assets/appdetail/way.manage/unedit.png') no-repeat center;
+}
+.look{
+  background: url('../../../assets/warn/chakan.png') no-repeat center;
+}

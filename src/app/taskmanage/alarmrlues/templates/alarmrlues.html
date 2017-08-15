@@ -1,11 +1,13 @@
-<div class="checkedRlue">
+<div class="checkedRlue" [ngStyle]="{'width': width}">
   <h4>已选规则</h4>
   <div class="rlueContent">
-    <div class="rlue">
-      <span *ngFor="let item of sceneArr;let i=index" [ngClass]="{right: (i+1)%3==0}">
+    <div class="rlue"  [ngStyle]="{'margin': margin}">
+      <!--[ngClass]="{right: (i+1)%3==0}"-->
+      <span *ngFor="let item of warnChanArr;let i=index"  [ngStyle]="{'padding-right': paddingRight}">
         <img src="../assets/alarmrlues/unchecked.png" (click)="check(item)" *ngIf="item.flag==undefined||item.flag==2" class="middle"/>
         <img src="../assets/alarmrlues/checked.png" (click)="check(item)" *ngIf="item.flag==1" class="middle"/>
-        <a class="middle">{{item.name}}</a>
+        <a class="middle" *ngIf="item.channelName">{{item.channelName}}</a>
+        <a class="middle" *ngIf="item.ruleName">{{item.ruleName}}</a>
       </span>
     </div>
   </div>

@@ -229,8 +229,10 @@ export class AppManageComponent {
   updateName(item){
     this.appId = item.applicationId;
     this.appCate = item.applicationType;
-    this.appManageService.updateApp(this.appId,this.appName,this.appCate)
+    console.log(this.appName);
+    this.appManageService.updateApp(this.appId,this.appName)
       .subscribe(result=>{
+        console.log(result);
       this.getAllInfo();
       });
     setTimeout(() => item.flag=2, 1000);
@@ -363,6 +365,7 @@ export class AppManageComponent {
   }
   jump(item){
     if(item){
+      console.log(item);
       sessionStorage.setItem("applicationId" , item.applicationId);
       sessionStorage.setItem("applicationName" , item.applicationName);
       sessionStorage.setItem("applicationType" , item.applicationType);
