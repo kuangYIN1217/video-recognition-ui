@@ -6,24 +6,112 @@ import {ChannelService} from "../../common/services/channel.service";
 import {RecognitionService} from "../../common/services/recognition.service";
 import {ToastyService} from 'ng2-toasty';
 import {addWarningToast , addWaitToast } from '../../common/ts/toast';
+import {Page} from "../../common/defs/resources";
+import {AppManageService} from "../../common/services/appmanage.service";
+import {nextTick} from "q";
 declare var $:any;
 @Component({
   selector: 'video-analysis',
   styleUrls: ['./css/video.analysis.component.css'],
   templateUrl: './template/video.analysis.component.html',
-  providers: [ChannelService , RecognitionService]
+  providers: [ChannelService , RecognitionService, AppManageService]
 })
 export class VideoAnalysisComoponent {
 
+  addDialog: number=0;
+  chanName: string;
+  chanAddr: string;
+  chanRequired1: number=0;
+  chanRequired2: number=0;
+  protocols: any[]=[];
+  protocol: string;
+  channelType: string;
+  channelTypes: any []=[];
+  videoAddress:any;
+  radioIndex:number = 1;
+  show: number = 1;
+  createFlag: boolean = true;
+  appId:string;
+  pageParams = new Page();
+  channelInfo: any[] = [];
+  page: number = 1;
+  pageMaxItem: number = 10;
+
+  radio(i){
+    this.radioIndex = i;
+  }
+
+  cancel(){
+    this.addDialog = 0;
+  }
+  create(){
+    let chanAddr = this.chanAddr;
+    let chanName = this.chanName;
+    let protocol = this.protocol;
+    let channelType = this.channelType;
+    let videoAddress = this.videoAddress;
+    let status =  this.radioIndex;
+    if(!chanName||chanName==''){
+      this.chanRequired1 = 1;
+      return false;
+    }else{
+      this.chanRequired1 = 0;
+    }
+    if(!chanAddr||chanAddr==''){
+      this.chanRequired2 = 1;
+      return false;
+    }else{
+      this.chanRequired2 = 0;
+    }
+    //console.log(chanName,chanAddr);
+    this.show = 0;
+    if(!this.createFlag) {
+      return;
+    }
+    this.createFlag = false;
+    this.channelService.createChannel(this.appId,chanAddr,chanName,protocol,channelType,videoAddress,status)
+      .subscribe(result=>{
+        this.show = 1;
+        this.addDialog = 0;
+        this.getPages(this.appId,this.page-1,this.pageMaxItem);
+        this.createFlag = true;
+        // todo refresh
+        this.initChannels()
+      })
+  }
+  getPages(id,page,size){
+    this.channelService.getPage(id,page,size)
+      .subscribe(result => {
+        this.channelInfo = result.content;
+        let page = new Page();
+        page.pageMaxItem = result.size;
+        page.curPage = result.number+1;
+        page.totalPage = result.totalPages;
+        page.totalNum = result.totalElements;
+        this.pageParams = page;
+      });
+  }
+
+  /* add video end */
   ngOnInit() {
     console.log(window.navigator.plugins)
   }
-  constructor (private channelService: ChannelService , private recognitionService: RecognitionService, private toastyService:ToastyService) {
+  constructor (private channelService: ChannelService , private recognitionService: RecognitionService, private toastyService:ToastyService, private appManageService: AppManageService) {
     this.d_applicationId = parseInt(window.sessionStorage.getItem('applicationId'));
      /* 初始化recognition */
     this.initRecognitions();
     /* 初始化channel */
     this.initChannels();
+
+    this.appManageService.getProtocol()
+      .subscribe(protocols=>{
+        this.protocols=protocols;
+      });
+    this.channelService.getChannelType()
+      .subscribe(result=>{
+        this.channelTypes=result;
+      });
+    this.appId = window.sessionStorage.getItem("applicationId");
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
@@ -123,6 +211,15 @@ export class VideoAnalysisComoponent {
       'fullscreen': this.s_fullscreen_grid === index
     }
   }
+  /*ngStyle_add_video(index: number) {
+   let parent = $('.item-add-video').eq(index -1).parents('.player-item');
+    let top = (parent.height() - 107) / 2;
+    let left = (parent.width() - 107) / 2;
+    return {
+      'top': top + 'px',
+      'left': left + 'px'
+    }
+  }*/
   // 事件命名规范（$xxx , $http_xxx , $$output）---------------------------------------------
   $grid_icon_click(number: number) {
     if (this.s_grid_number === number) {
@@ -176,6 +273,24 @@ export class VideoAnalysisComoponent {
       this.s_fullscreen_grid = index;
       this.s_selected_grid = index;
     }
+  }
+  $add_video_click(index: number , $event) {
+    $event = $event || window.event;
+    $event.preventDefault();
+    $event.stopPropagation();
+    this.addDialog = 1;
+    this.protocol = this.protocols[0];
+    this.channelType = this.channelTypes[0];
+    this.chanName = '';
+    this.chanAddr = '';
+    this.videoAddress = '';
+    this.radioIndex = 1;
+  }
+  ngIfaddVideo(index: number) {
+    if (this.d_video_list.length >= index) {
+      return false;
+    }
+    return true;
   }
   $change_analysis_submit() {
     addWaitToast(this.toastyService ,'等待视频源重新加载','保存成功');
