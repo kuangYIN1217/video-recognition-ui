@@ -10,7 +10,7 @@
         <input type="text" name="ruleName" [(ngModel)]="ruleName" readonly *ngIf="warn_title=='任务详情'"/>
         <span class="must" [style.display]="chanRequired1==1?'':'none'">必填字段</span>
       </div>
-      <div class="createInfo" >
+      <div class="createInfo" *ngIf="appCate=='实时流分析'">
         <label>告警通道：</label>
         <input type="text" required readonly name="warnChannel" [(ngModel)]="warnChannel"/>
         <img src="../assets/createtext/jia.png" class="jia" (click)="checkedRlues()" *ngIf="warn_title!='任务详情'"/>
@@ -61,6 +61,7 @@
         <a href="javascript:void(0)" class="btn bgcg" style="margin-left: 18px" (click)="back()"  *ngIf="warn_title=='新建规则'">返回</a>
         <a href="javascript:void(0)" class="btn bgcg" style="margin-left: 26px" (click)="back()"  *ngIf="warn_title=='任务详情'||warn_title=='修改规则'">返回</a>
       </div>
+      <app-tips [style.display]="deleteIndex==1?'':'none'" [tip_title]="tip_title" [tip_content]="tip_content" [deleteIndex]="deleteIndex" [tip_btn]="tip_btn" (deleteChange)="deleteChange($event)" (deletedChange)="deletedChange($event)"></app-tips>
     </div>
   </div>
 </div>

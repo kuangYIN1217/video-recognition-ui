@@ -34,12 +34,15 @@ export class CreateTextComponent {
         console.log(this.warnChanArr);
       })
   }
-/*  Headers: Headers = this.appManageService.getHeaders();
   public uploader:FileUploader = new FileUploader({
-    url: SERVER_URL+"/api/uploadOfflineFile",
+    url: SERVER_URL+"/api/upload",
     method: "POST",
     itemAlias: "file",
-  });*/
+  });
+  selectedFileOnChanged(){
+    console.log(this.uploader.queue);
+    this.uploader.queue[0].upload();
+  }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
   }

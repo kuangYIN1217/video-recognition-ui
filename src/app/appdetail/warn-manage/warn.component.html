@@ -6,10 +6,16 @@
     </div>
     <div class="search-content">
       <div class="search-select">
-        <div class="search-info">
+        <div class="search-info" *ngIf="appCate=='实时流分析'">
           <label>通道名称：</label>
           <select [(ngModel)]="chanName" (ngModelChange)="chanName=$event;">
             <option *ngFor="let item of chanNameArr" value="{{item}}">{{item}}</option>
+          </select>
+        </div>
+        <div class="search-info" *ngIf="appCate=='离线文件分析'">
+          <label>告警任务：</label>
+          <select [(ngModel)]="warnTask" (ngModelChange)="warnTask=$event;">
+            <option *ngFor="let item of warnTaskArr" value="{{item}}">{{item}}</option>
           </select>
         </div>
         <div class="search-info">
@@ -56,15 +62,15 @@
             <th class="protocol">状态</th>
             <th class="operation pad">操作</th>
           </tr>
-          <tr *ngFor="let item of channelInfo let i=index;">
+          <tr *ngFor="let item of allWarn let i=index;">
             <td>
               <img src="../assets/appdetail/way.manage/unchecked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag!=1"/>
               <img src="../assets/appdetail/way.manage/checked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag==1"/>
             </td>
-            <td class="pad">{{item.channelOrder}}</td>
-            <td class="pad">{{item.channelName}}</td>
-            <td class="pad">{{item.channelAddress}}</td>
-            <td class="pad">{{item.channelProtocol}}</td>
+            <!--<td class="pad">{{item.channelOrder}}</td>-->
+            <!--<td class="pad">{{item.channelName}}</td>-->
+            <!--<td class="pad">{{item.channelAddress}}</td>-->
+            <!--<td class="pad">{{item.channelProtocol}}</td>-->
             <td class="pad">
               <img src="../assets/warn/chakan.png"/>
               <img src="../assets/warn/xiazai.png"/>

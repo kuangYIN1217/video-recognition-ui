@@ -176,3 +176,6 @@
 .look{
   background: url('../../../assets/warn/chakan.png') no-repeat center;
 }
+@media (min-width:1200px) and (max-width:1680px) {
+
+}

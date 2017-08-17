@@ -25,6 +25,16 @@ export class WarnService {
     headers.append('Authorization', this.getAuthorization());
     return headers;
   }
+  getAllWarn(id){
+      let path = "/api/findAlarmByApplication/"+id;
+      let headers = this.getHeaders();
+      return this.http.get(this.SERVER_URL+path, { headers : headers})
+        .map((response: Response) => {
+          if (response && response.json()) {
+            return response.json();
+          }
+        });
+  }
   getWarnRules(id){
     let path = "/api/getAllRule/"+id;
     let headers = this.getHeaders();
@@ -91,15 +101,15 @@ export class WarnService {
     headers.append('applicationId',appId);
     return this.http.post(this.SERVER_URL+path,body,{ headers: headers })
       .map((response: Response) => {
-        if (response && response.json()) {
+        if (response) {
           if(response.status==200){
-            return response.json();
+            return response;
           }
         }
       });
   }
   editRuleSave(ruleId,name,obj,car,status){
-    let path = "/api/alarmRule";
+    let path = "/api/UpdateAlarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
       "alarmTarget": obj,
@@ -108,11 +118,11 @@ export class WarnService {
       "targetFeature": car
     });
     let headers = this.getHeaders();
-    return this.http.post(this.SERVER_URL+path,body,{ headers: headers })
+    return this.http.put(this.SERVER_URL+path,body,{ headers: headers })
       .map((response: Response) => {
-        if (response && response.json()) {
+        if (response) {
           if(response.status==200){
-            return response.json();
+            return response;
           }
         }
       });
@@ -124,25 +134,18 @@ export class WarnService {
       .map((response: Response) => {
         if (response) {
           if(response.status==200){
-            return "success";
-          }else{
-            return "fail";
+            return response;
           }
         }
       });
   }
-  searchRules(id,name,obj,status,page=0,size=10){
-    let path = "/api/findRuleDynamic";
-    let body = JSON.stringify({
-      "applicationId":id,
-      "ruleName": name,
-      "alarmTarget": obj,
-      "status": status,
-      "page": page,
-      "size":size ,
-    });
+  searchRules(id,name,chanId,obj,status,page=0,size=10){
+    if(name==undefined){
+      name=null;
+    }
+    let path = "/api/findRuleDynamic/"+id+"/"+name+"/"+chanId+"/"+obj+"/"+status+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
-    return this.http.post(this.SERVER_URL+path,body,{ headers: headers })
+    return this.http.get(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {
         if (response && response.json()) {
           if(response.status==200){
@@ -152,23 +155,21 @@ export class WarnService {
       });
   }
   searchWarns(id,name,ruleId,status,page=0,size=10,start,end){
-    if(status=='全部'){
-      status=null;
-    }
-    let path = "/api/findAlarmLiveDynamic";
-    let body = JSON.stringify({
-      "applicationId":id,
-      "channelName": name,
-      "alarmStatus": status,
-      "ruleId":ruleId,
-      "startTime": start,
-      "endTime": end
-    });
-    console.log(body);
+    let path = "/api/findAlarmLiveDynamic/"+id+"/"+name+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
-    headers.append('page',page.toString());
-    headers.append('size',size.toString());
-    return this.http.post(this.SERVER_URL+path,body,{ headers: headers })
+    return this.http.get(this.SERVER_URL+path,{ headers: headers })
+      .map((response: Response) => {
+        if (response && response.json()) {
+          if(response.status==200){
+            return response.json();
+          }
+        }
+      });
+  }
+  searchOffWarns(id,task,ruleId,status,page=0,size=10,start,end){
+    let path = "/api/findAlarmLiveDynamic/"+id+"/"+task+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size;
+    let headers = this.getHeaders();
+    return this.http.post(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {
         if (response && response.json()) {
           if(response.status==200){

@@ -31,6 +31,9 @@ export class WarnRlueComponent{
   deleteIdArr:any[]=[];
   tip_btn:string;
   appCate:string;
+  warnChan:string;
+  warnChanArr:any[]=[];
+  warnChanId:number;
   constructor(private warnService: WarnService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -41,11 +44,18 @@ export class WarnRlueComponent{
       this.warnService.getWarnObj()
         .subscribe(result=>{
           this.warnObjArr=result;
-          console.log(this.warnObjArr);
+          if(this.warnObjArr)
           this.warnRule = this.warnObjArr[0];
         });
       this.warnStatus = this.statusArr[0];
+      this.warnService.getWarnChannel(this.appId)
+        .subscribe(channel=>{
+          this.warnChanArr=channel;
+          if(this.warnChanArr)
+          this.warnChan = this.warnChanArr[0].channelName;
+        });
     }
+
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
@@ -102,8 +112,11 @@ export class WarnRlueComponent{
         console.log(this.deleteIdArr[i]);
           this.warnService.deleteRule(this.deleteIdArr[i].ruleId)
             .subscribe(result=>{
-              console.log(result);
-              this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
+              if(result.text().substring(0,2)=='Ok'){
+                this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
+              }else if(result.text().substring(0,2)=='No'){
+                alert("该规则下有开启通道！");
+              }
             })
       }
     }
@@ -124,10 +137,15 @@ export class WarnRlueComponent{
     }
   }
   searchRule(){
-    this.warnService.searchRules(this.appId,this.ruleName,this.warnRule,this.warnStatus,this.page-1,this.pageMaxItem)
+    for(let i in this.warnChanArr){
+      if(this.warnChanArr[i].channelName==this.warnChan){
+        this.warnChanId = this.warnChanArr[i].channelId;
+      }
+    }
+    this.warnService.searchRules(this.appId,this.ruleName,this.warnChanId,this.warnRule,this.warnStatus,this.page-1,this.pageMaxItem)
       .subscribe(result=>{
         this.rulesInfo = result.content;
-        console.log(result);
+        //console.log(result);
         let page = new Page();
         page.pageMaxItem = result.size;
         page.curPage = result.number+1;

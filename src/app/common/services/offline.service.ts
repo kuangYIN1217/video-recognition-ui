@@ -28,4 +28,14 @@ export class OfflineService {
   create(){
 
   }
+  getWarnTask(id){
+    let path = "/api/getAllOfflineTask/"+id;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers})
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
 }

@@ -25,10 +25,13 @@ export class WarnWindowComponent{
   @Input() createIndex:number;
   @Input() ruleList:any;
   status:string;
+  appCate:string;
+  deleteIndex:number;
   @Output() indexChange: EventEmitter<any> = new EventEmitter();
 
   constructor(private warnService: WarnService) {
     this.appId = window.sessionStorage.getItem("applicationId");
+    this.appCate = window.sessionStorage.getItem("applicationType");
     console.log(this.appId);
     this.radioIndex = 0;
     this.warnService.getWarnChannel(this.appId)
@@ -112,8 +115,15 @@ export class WarnWindowComponent{
     this.warnStatus();
     this.warnService.createWarn(this.appId,this.warnChannelId,this.ruleName,this.warnObj,this.car,this.status)
       .subscribe(result=>{
+        console.log(result);
+        if(result.text()=='Ok'){
         this.createIndex = 2;
         this.indexChange.emit(this.createIndex);
+        }else if(result.text()=='No'){
+           alert("通道未开启，请开启xx通道！");
+        }else if(result.text()=='Error'){
+           alert("通道未开启成功！");
+        }
       })
   }
   editSave(){
@@ -123,8 +133,14 @@ export class WarnWindowComponent{
     this.warnStatus();
     this.warnService.editRuleSave(this.ruleList.ruleId,this.ruleName,this.warnObj,this.car,this.status)
       .subscribe(result=>{
-        this.createIndex = 2;
-        this.indexChange.emit(this.createIndex);
+        if(result.text()=='Ok'){
+          this.createIndex = 2;
+          this.indexChange.emit(this.createIndex);
+        }else if(result.text()=='No'){
+          alert("通道未开启，请开启xx通道！");
+        }else if(result.text()=='Error'){
+          alert("通道未开启成功！");
+        }
       })
   }
   back(){
