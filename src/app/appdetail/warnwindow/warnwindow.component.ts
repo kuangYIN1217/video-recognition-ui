@@ -61,16 +61,18 @@ export class WarnWindowComponent{
     console.log(this.ruleList);
     this.warnChanChecked = [];
     this.ruleName = this.ruleList.ruleName;
-    for(let i in this.ruleList.applicationChannels){
-      if(this.ruleList.applicationChannels.length==1){
-        this.warnChannel = this.ruleList.applicationChannels[0].channelName;
-      }else{
-        this.warnChannel = ','+this.ruleList.applicationChannels[i].channelName;
+    if(this.ruleList.applicationChannels){
+      for(let i in this.ruleList.applicationChannels){
+        if(this.ruleList.applicationChannels.length==1){
+          this.warnChannel = this.ruleList.applicationChannels[0].channelName;
+        }else{
+          this.warnChannel = ','+this.ruleList.applicationChannels[i].channelName;
+        }
+        this.warnChanChecked.push(this.ruleList.applicationChannels[i]);
+        console.log(this.warnChanChecked);
       }
-      this.warnChanChecked.push(this.ruleList.applicationChannels[i]);
-      console.log(this.warnChanChecked);
+      console.log(this.warnChannel);
     }
-    console.log(this.warnChannel);
     //console.log(this.warnChanArr);
     this.warnObj = this.ruleList.alarmTarget;
     this.car = this.ruleList.targetFeature;
@@ -127,21 +129,37 @@ export class WarnWindowComponent{
       })
   }
   editSave(){
+    debugger
     if(this.car==undefined){
       this.car=null;
     }
     this.warnStatus();
-    this.warnService.editRuleSave(this.ruleList.ruleId,this.ruleName,this.warnObj,this.car,this.status)
-      .subscribe(result=>{
-        if(result.text()=='Ok'){
-          this.createIndex = 2;
-          this.indexChange.emit(this.createIndex);
-        }else if(result.text()=='No'){
-          alert("通道未开启，请开启xx通道！");
-        }else if(result.text()=='Error'){
-          alert("通道未开启成功！");
-        }
-      })
+    if(this.appCate=='实时流分析'){
+      this.warnService.editRuleSave(this.warnChannelId,this.ruleList.ruleId,this.ruleName,this.warnObj,this.car,this.status)
+        .subscribe(result=>{
+          if(result.text()=='Ok'){
+            this.createIndex = 2;
+            this.indexChange.emit(this.createIndex);
+          }else if(result.text()=='No'){
+            alert("通道未开启，请开启xx通道！");
+          }else if(result.text()=='Error'){
+            alert("通道未开启成功！");
+          }
+        })
+    }else{
+      this.warnService.editRuleSave1(this.ruleList.ruleId,this.ruleName,this.warnObj,this.car,this.status)
+        .subscribe(result=>{
+          if(result.text()=='Ok'){
+            this.createIndex = 2;
+            this.indexChange.emit(this.createIndex);
+          }else if(result.text()=='No'){
+            alert("通道未开启，请开启xx通道！");
+          }else if(result.text()=='Error'){
+            alert("通道未开启成功！");
+          }
+        })
+    }
+
   }
   back(){
     this.createIndex = 2;

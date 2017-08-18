@@ -25,11 +25,23 @@
             <p>注：建议文件3-5个，每个文件大小不超过500M</p>
             <p>支持格式：asx\asf\mpg\wmv\3gp\mp4\mov\avi\flv </p>
           </div>
+          <div class="createInfo">
+            <table class="uploadShow" *ngIf="showArr.length>0">
+              <tr *ngFor="let item of showArr;let i =index" class="uploadTr" [ngClass]="{border: item.headers.flag==1}">
+                <td class="uploadTxt paddingLeft"><img src="../assets/appmanage/shangchuan.png" class="imgMiddle right" *ngIf="item.progress==0"/><img src="../assets/appmanage/shangchuan.png" class="imgMiddle right"  *ngIf="item.progress!=100&&(item.progress!=0)"/>{{item.file.name}}<span *ngIf="(item.file.size/1024)>=1024">（{{item.file.size/1024/1024|number:'1.2-2'}}）MB</span><span *ngIf="(item.file.size/1024)<1024">（{{item.file.size/1024|number:'1.2-2'}}）KB</span></td>
+                <td class="uploadImg paddingRight"><img src="../assets/appmanage/delete.png" class="imgMiddle" (click)="remove(i)"/></td>
+                <div class="progressouter" *ngIf="item.headers.flag==0||(!item.headers.flag)">
+                  <span>{{item.progress}}%</span>
+                  <div class="progressinner" [ngStyle]="{width: item.progress + '%'}"></div>
+                </div>
+              </tr>
+            </table>
+        </div>
           <span class="must" [style.display]="required==1?'':'none'">必填字段</span>
         </div>
         <div class="taskBtn">
         <a href="#" onclick="return false" class="btn create" (click)="create()">创建</a>
-        <a href="#" onclick="return false" class="btn back">返回</a>
+        <a href="#" onclick="return false" class="btn back" routerLinkActive="active" routerLink="/taskmanage">返回</a>
         </div>
       </div>
     </div>

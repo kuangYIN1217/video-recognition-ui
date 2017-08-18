@@ -121,3 +121,30 @@ label{
 .operation{
   width:26%;
 }
+.operationBtn {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 10px;
+  /*margin: 0 auto;*/
+}
+.rerun{
+  background: url('../../../assets/offline/chxyx.png') no-repeat center;
+}
+.stop {
+  background: url('../../../assets/appdetail/way.manage/qidong.png') no-repeat center;
+
+}
+.start {
+  background: url('../../../assets/appdetail/way.manage/zanting.png') no-repeat center;
+}
+.look {
+  background: url('../../../assets/offline/chakan.png') no-repeat center;
+}
+.edit{
+  background: url('../../../assets/appdetail/way.manage/edit.png') no-repeat center;
+}
+.unedit{
+  background: url('../../../assets/appdetail/way.manage/unedit.png') no-repeat center;
+}

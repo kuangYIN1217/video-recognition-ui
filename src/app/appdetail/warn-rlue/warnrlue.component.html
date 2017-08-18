@@ -10,7 +10,7 @@
           <label>规则名称：</label>
           <input type="text" [(ngModel)]="ruleName" (ngModelChange)="ruleName=$event;"/>
         </div>
-        <div class="search-info">
+        <div class="search-info" *ngIf="appCate=='实时流分析'">
           <label>告警通道：</label>
           <select [(ngModel)]="warnChan" (ngModelChange)="warnChan=$event;">
             <option *ngFor="let item of warnChanArr" value="{{item.channelName}}">{{item.channelName}}</option>
@@ -56,7 +56,7 @@
             </td>
             <td class="pad">{{item.ruleName}}</td>
             <td class="pad">{{item.alarmTarget}}</td>
-            <td class="pad">{{item.targetFeature}}</td>
+            <td class="pad">{{item.targetFeature==''?'无':item.targetFeature}}</td>
             <td class="pad">{{item.alarmRuleStatus}}</td>
             <td class="operation pad">
               <a class="operationBtn stop" *ngIf="item.alarmRuleStatus=='开启'" (click)="runRule(item)"></a>

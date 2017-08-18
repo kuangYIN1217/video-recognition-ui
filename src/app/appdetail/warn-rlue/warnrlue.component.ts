@@ -40,14 +40,6 @@ export class WarnRlueComponent{
     console.log(this.appId);
     console.log(this.appCate);
     if(this.appCate=="实时流分析"){
-      this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
-      this.warnService.getWarnObj()
-        .subscribe(result=>{
-          this.warnObjArr=result;
-          if(this.warnObjArr)
-          this.warnRule = this.warnObjArr[0];
-        });
-      this.warnStatus = this.statusArr[0];
       this.warnService.getWarnChannel(this.appId)
         .subscribe(channel=>{
           this.warnChanArr=channel;
@@ -55,7 +47,14 @@ export class WarnRlueComponent{
           this.warnChan = this.warnChanArr[0].channelName;
         });
     }
-
+    this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
+    this.warnService.getWarnObj()
+      .subscribe(result=>{
+        this.warnObjArr=result;
+        if(this.warnObjArr)
+          this.warnRule = this.warnObjArr[0];
+      });
+    this.warnStatus = this.statusArr[0];
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
@@ -137,10 +136,14 @@ export class WarnRlueComponent{
     }
   }
   searchRule(){
-    for(let i in this.warnChanArr){
-      if(this.warnChanArr[i].channelName==this.warnChan){
-        this.warnChanId = this.warnChanArr[i].channelId;
+    if(this.appCate=='实时流分析'){
+      for(let i in this.warnChanArr){
+        if(this.warnChanArr[i].channelName==this.warnChan){
+          this.warnChanId = this.warnChanArr[i].channelId;
+        }
       }
+    }else{
+      this.warnChanId = null;
     }
     this.warnService.searchRules(this.appId,this.ruleName,this.warnChanId,this.warnRule,this.warnStatus,this.page-1,this.pageMaxItem)
       .subscribe(result=>{
@@ -170,7 +173,8 @@ export class WarnRlueComponent{
           this.tip_content = "该告警下没有开启通道！";
           this.tip_btn = "开启通道";
         }
-        this.start_reply(reply);
+        this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
+        //this.start_reply(reply);
       });
   }
   start_reply(reply){

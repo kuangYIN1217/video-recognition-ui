@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {WarnService} from "../../common/services/warn.service";
 import {Page} from "app/common/defs/resources";
+import {ActivatedRoute, Router} from "@angular/router";
 declare var $:any;
 @Component({
   selector: 'warn-detail',
@@ -9,7 +10,13 @@ declare var $:any;
   providers: [WarnService]
 })
 export class WarnDetailComponent{
-  constructor(private warnService: WarnService) {
+  detailList:any={};
+  constructor(private warnService: WarnService,private router:Router,private route: ActivatedRoute) {
 
+  }
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.detailList = params['detailList'];
+    });
   }
 }

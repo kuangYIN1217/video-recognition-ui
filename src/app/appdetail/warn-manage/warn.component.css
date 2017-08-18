@@ -97,6 +97,13 @@
   margin-right: 20px;
   display: inline-block;
 }
+.inline{
+  display: inline-block !important;
+  float: none !important;
+  margin-top:0 !important;
+  margin-bottom:0 !important;
+  margin-left:40px !important;
+}
 .bgcg{
   display: block;
   background: #eeeeee;
@@ -135,4 +142,57 @@
 .middle{
   display: inline-block;
   vertical-align: middle;
+}
+.mrgr{
+  margin-right: 12px;
+  cursor: pointer;
+}
+
+/* detail */
+.lookDetail{
+  margin: 20px 30px;
+  background: #ffffff;
+  color: #333333;
+}
+.detail_title{
+  margin-left: 30px;
+  font-size: 20px;
+  padding:38px 0;
+}
+.detail_info{
+  margin-left: 113px;
+  overflow: hidden;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+.detail_info span{
+  display: inline-block;
+  vertical-align: middle;
+}
+.info_content{
+  padding-left: 30px;
+}
+.info_content img{
+  width: 156px;
+  height:116px;
+}
+.vergin{
+  line-height: 116px;
+}
+.downPhoto{
+  color: #ff7c35;
+  text-align: right;
+  text-decoration: none;
+  display: block;
+  margin-left: 170px;
+  margin-bottom: 46px;
+}
+.save{
+  float: none !important;
+  margin-left: 70px;
+}
+.cancel{
+  display: inline-block !important;
+  float: none !important;
+  margin:0 !important;
 }

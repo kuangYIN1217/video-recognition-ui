@@ -25,8 +25,8 @@ export class WarnService {
     headers.append('Authorization', this.getAuthorization());
     return headers;
   }
-  getAllWarn(id){
-      let path = "/api/findAlarmByApplication/"+id;
+  getAllWarn(id,page=0,size=10){
+      let path = "/api/findAlarmByApplication/"+id+"?page="+page+"$size="+size;
       let headers = this.getHeaders();
       return this.http.get(this.SERVER_URL+path, { headers : headers})
         .map((response: Response) => {
@@ -108,7 +108,28 @@ export class WarnService {
         }
       });
   }
-  editRuleSave(ruleId,name,obj,car,status){
+  editRuleSave(chanId,ruleId,name,obj,car,status){
+    let path = "/api/UpdateAlarmRule";
+    let body = JSON.stringify({
+      "alarmRuleStatus": status,
+      "alarmTarget": obj,
+      "ruleId": ruleId,
+      "ruleName": name,
+      "targetFeature": car
+    });
+    let headers = this.getHeaders();
+    headers.append('channelIds',chanId);
+    return this.http.put(this.SERVER_URL+path,body,{ headers: headers })
+      .map((response: Response) => {
+        if (response) {
+          if(response.status==200){
+            return response;
+          }
+        }
+      });
+  }
+  editRuleSave1(ruleId,name,obj,car,status){
+    debugger
     let path = "/api/UpdateAlarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
