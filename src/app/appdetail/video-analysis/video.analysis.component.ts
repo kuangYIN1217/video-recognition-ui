@@ -363,7 +363,6 @@ export class VideoAnalysisComoponent {
     let size_20 = 'assets/appdetail/video-analysis/icon_fullscreen_20.png'
     let size_18 = 'assets/appdetail/video-analysis/icon_fullscreen_18.png'
     if (this.s_fullscreen_grid === index) {
-      console.log('close fullscreen icon')
       return 'assets/appdetail/video-analysis/icon_fullscreen_close.png'
     }
     switch (this.s_grid_number) {
