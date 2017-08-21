@@ -40,6 +40,7 @@ export class WarnComponent{
       this.warnService.getWarnRules(this.appId)
         .subscribe(result=>{
           this.warnRlueArr = result.content;
+          console.log(this.warnRlueArr);
           this.warnRlue = this.warnRlueArr[0].ruleName;
         })
       this.warnService.getChanName(this.appId)
@@ -50,7 +51,9 @@ export class WarnComponent{
     this.offlineService.getWarnTask(this.appId)
       .subscribe(result=>{
           this.warnTaskArr = result.content;
-          //this.warnTask = this.warnTaskArr[0].taskName;
+          if(this.warnTaskArr.length>0){
+            this.warnTask = this.warnTaskArr[0].taskName;
+          }
       })
 
     this.warnStatus = this.statusArr[0];
@@ -59,13 +62,7 @@ export class WarnComponent{
     this.warnService.getAllWarn(id,page,size)
       .subscribe(result=>{
         console.log(result.content);
-        this.allWarn = result.content;
-        let page = new Page();
-        page.pageMaxItem = result.size;
-        page.curPage = result.number+1;
-        page.totalPage = result.totalPages;
-        page.totalNum = result.totalElements;
-        this.pageParams = page;
+        this.getWarnList(result);
       })
   }
   ngAfterViewInit() {
@@ -94,9 +91,36 @@ export class WarnComponent{
   getPageData(paraParam) {
     this.getAllWarn(this.appId,paraParam.curPage-1,paraParam.pageMaxItem);
   }
+  handling(item){
+    this.warnService.handlingWarn(item.alarmId,this.appId)
+      .subscribe(result=>{
+        this.getWarnList(result);
+      })
+  }
+  lookHandling(item){
+    this.warnService.handlingWarn(item.alarmId,this.appId)
+      .subscribe(result=>{
+        for(let i=0;i<result.length;i++){
+          if(result[i].alarmId == item.alarmId){
+            this.detaillist.alarmStatus = result[i].alarmStatus;
+          }
+        }
+      })
+  }
+  getWarnList(result){
+    this.allWarn = result.content;
+    console.log(result);
+    let page = new Page();
+    page.pageMaxItem = result.size;
+    page.curPage = result.number+1;
+    page.totalPage = result.totalPages;
+    page.totalNum = result.totalElements;
+    this.pageParams = page;
+  }
   searchWarn(){
-    for(let i in this.warnRlueArr){
-      if(this.warnRlueArr[i].ruleName = this.warnRlue){
+    for(let i=0;i<this.warnRlueArr.length;i++){
+      console.log(this.warnRlueArr[i].ruleName);
+      if(this.warnRlueArr[i].ruleName == this.warnRlue){
         this.ruleId = this.warnRlueArr[i].ruleId;
       }
     }
@@ -105,26 +129,12 @@ export class WarnComponent{
       console.log(this.ruleId);
       this.warnService.searchWarns(this.appId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null)
         .subscribe(result=>{
-          this.warnInfo = result.content;
-          console.log(result);
-          let page = new Page();
-          page.pageMaxItem = result.size;
-          page.curPage = result.number+1;
-          page.totalPage = result.totalPages;
-          page.totalNum = result.totalElements;
-          this.pageParams = page;
+          this.getWarnList(result);
         })
     }else{
       this.warnService.searchOffWarns(this.appId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null)
         .subscribe(result=>{
-          this.warnInfo = result.content;
-          console.log(result);
-          let page = new Page();
-          page.pageMaxItem = result.size;
-          page.curPage = result.number+1;
-          page.totalPage = result.totalPages;
-          page.totalNum = result.totalElements;
-          this.pageParams = page;
+          this.getWarnList(result);
         })
     }
   }

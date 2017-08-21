@@ -9,7 +9,7 @@
     <nav [style.display]="(focusTab>0)?'':'none'">
         <div class="nav_element" *ngIf="online" [class.focusTab] = "focusTab==1" routerLinkActive="active" routerLink="/videoanalysis" (click)="changeTab(1);focusCollapse='0'">
             <img [src]="focusTab!=1?'assets/appdetail/icon_analysis_n.png':'assets/appdetail/icon_analysis_h.png'">
-            <a href="#" onclick="return false">视频识别</a>
+            <a href="#" onclick="return false">实时分析</a>
         </div>
 
         <div class="nav_element"  *ngIf="online" [class.focusTab] = "focusTab==2" routerLinkActive="active" routerLink="/waymanage" (click)="changeTab(2);focusCollapse='0'">

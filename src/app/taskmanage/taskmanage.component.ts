@@ -94,6 +94,9 @@ export class TaskManageComponent {
     this.getAllTask(this.appId,this.page-1,this.pageMaxItem);
   }
   searchTask(){
+    if(this.taskName==undefined){
+      this.taskName=null;
+    }
     this.offlineService.searchTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem)
       .subscribe(result=>{
         this.taskList = result.content;
@@ -101,7 +104,10 @@ export class TaskManageComponent {
   }
   edit(item){
     console.log(item);
-    this.router.navigate(['../createtext'],{queryParams: {'taskName':item.taskName,'alarmRules':item.alarmRules,'inputPath':item.inputPath}});
+    this.router.navigate(['../createtext'],{queryParams: {'taskName':item.taskName,'alarmRules':item.alarmRules,'inputPath':item.inputPath,'taskTitle':"修改任务"}});
+  }
+  look(item){
+    this.router.navigate(['../createtext'],{queryParams: {'taskName':item.taskName,'alarmRules':item.alarmRules,'inputPath':item.inputPath,'taskTitle':"查看任务"}});
   }
 /*  dia(){
     for(let i in this.taskList){

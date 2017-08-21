@@ -184,7 +184,19 @@ export class WarnService {
       });
   }
   searchWarns(id,name,ruleId,status,page=0,size=10,start,end){
-    let path = "/api/findAlarmLiveDynamic/"+44+"/"+123123+"/"+157+"/"+"全部"+"/"+start+"/"+end+"?page="+page+"&size="+size;
+    let path = "/api/findAlarmLiveDynamic/"+id+"/"+name+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path,{ headers: headers })
+      .map((response: Response) => {
+        if (response && response.json()) {
+          if(response.status==200){
+            return response.json();
+          }
+        }
+      });
+  }
+  handlingWarn(alarmId,appId){
+    let path = "/api/processAlarm/"+alarmId+"/"+appId;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {
@@ -196,9 +208,9 @@ export class WarnService {
       });
   }
   searchOffWarns(id,task,ruleId,status,page=0,size=10,start,end){
-    let path = "/api/findAlarmLiveDynamic/"+id+"/"+task+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size;
+    let path = "/api/findAlarmListDynamic/"+id+"/"+task+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
-    return this.http.post(this.SERVER_URL+path,{ headers: headers })
+    return this.http.get(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {
         if (response && response.json()) {
           if(response.status==200){

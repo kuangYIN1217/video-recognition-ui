@@ -124,7 +124,9 @@ export class CreateTextComponent {
   }
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-        this.tasklist = params['task'];
+        this.taskTitle = params['taskTitle'];
+        this.taskName = params['taskName'];
+        this.warnRule = params['alarmRules'];
     });
   }
   create(){
@@ -152,6 +154,7 @@ export class CreateTextComponent {
     this.offlineService.create(this.appId,this.ruleId,this.taskName,this.inputPath,this.fileName,this.fileNumber)
       .subscribe(result=>{
         console.log(result);
+        this.router.navigate(['../taskmanage']);
       })
   }
   chanChange(event){

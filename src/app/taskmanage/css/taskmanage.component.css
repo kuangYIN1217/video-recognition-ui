@@ -159,3 +159,6 @@ select{
 select option{
   padding-left: 8px;
 }
+input{
+  padding-left: 8px;
+}
