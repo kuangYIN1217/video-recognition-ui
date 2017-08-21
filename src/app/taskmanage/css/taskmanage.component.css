@@ -148,3 +148,14 @@ label{
 .unedit{
   background: url('../../../assets/appdetail/way.manage/unedit.png') no-repeat center;
 }
+select{
+  background: url("../../../assets/appdetail/way.manage/selectDown.png") no-repeat right 6px center;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-left: 8px;
+}
+select option{
+  padding-left: 8px;
+}

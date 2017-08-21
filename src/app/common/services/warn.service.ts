@@ -66,7 +66,7 @@ export class WarnService {
       });
   }
   getWarnObj(){
-    let path = "/api/alarmTarget";
+    let path = "/api/recognitionCategories";
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path, { headers : headers})
       .map((response: Response) => {
@@ -76,7 +76,7 @@ export class WarnService {
       });
   }
   getAllRlues(id,page=0,size=10){
-    let path = "/api/getAllRule/"+id+"?page="+page+"&size"+size;
+    let path = "/api/getAllRule/"+id+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path, { headers : headers})
       .map((response: Response) => {
@@ -89,7 +89,9 @@ export class WarnService {
     let path = "/api/alarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
-      "alarmTarget": obj,
+      "recognitionCategor": {
+        "cateId": obj
+      },
       "createTime": null,
       "ruleId": 0,
       "ruleName":name ,
@@ -109,10 +111,13 @@ export class WarnService {
       });
   }
   editRuleSave(chanId,ruleId,name,obj,car,status){
+    debugger
     let path = "/api/UpdateAlarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
-      "alarmTarget": obj,
+      "recognitionCategory": {
+        "cateId": obj
+      },
       "ruleId": ruleId,
       "ruleName": name,
       "targetFeature": car
@@ -133,7 +138,9 @@ export class WarnService {
     let path = "/api/UpdateAlarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
-      "alarmTarget": obj,
+      "recognitionCategory": {
+        "cateId": obj
+      },
       "ruleId": ruleId,
       "ruleName": name,
       "targetFeature": car
@@ -164,6 +171,7 @@ export class WarnService {
     if(name==undefined){
       name=null;
     }
+    console.log(id,name,chanId,obj,status);
     let path = "/api/findRuleDynamic/"+id+"/"+name+"/"+chanId+"/"+obj+"/"+status+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path,{ headers: headers })
@@ -176,7 +184,7 @@ export class WarnService {
       });
   }
   searchWarns(id,name,ruleId,status,page=0,size=10,start,end){
-    let path = "/api/findAlarmLiveDynamic/"+id+"/"+name+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size;
+    let path = "/api/findAlarmLiveDynamic/"+44+"/"+123123+"/"+157+"/"+"全部"+"/"+start+"/"+end+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {

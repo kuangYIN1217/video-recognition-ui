@@ -34,6 +34,9 @@ export class WarnRlueComponent{
   warnChan:string;
   warnChanArr:any[]=[];
   warnChanId:number;
+  cateId:number;
+  warnChannel:string;
+  warnObj:string;
   constructor(private warnService: WarnService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -47,14 +50,14 @@ export class WarnRlueComponent{
           this.warnChan = this.warnChanArr[0].channelName;
         });
     }
-    this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
     this.warnService.getWarnObj()
       .subscribe(result=>{
         this.warnObjArr=result;
         if(this.warnObjArr)
-          this.warnRule = this.warnObjArr[0];
+          this.warnRule = this.warnObjArr[0].name;
       });
     this.warnStatus = this.statusArr[0];
+    this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
@@ -145,7 +148,12 @@ export class WarnRlueComponent{
     }else{
       this.warnChanId = null;
     }
-    this.warnService.searchRules(this.appId,this.ruleName,this.warnChanId,this.warnRule,this.warnStatus,this.page-1,this.pageMaxItem)
+    for(let i in this.warnObjArr){
+      if(this.warnRule==this.warnObjArr[i].name){
+        this.cateId = this.warnObjArr[i].cateId;
+      }
+    }
+    this.warnService.searchRules(this.appId,this.ruleName,this.warnChanId,this.cateId,this.warnStatus,this.page-1,this.pageMaxItem)
       .subscribe(result=>{
         this.rulesInfo = result.content;
         //console.log(result);
@@ -198,6 +206,7 @@ export class WarnRlueComponent{
     this.createIndex=1;
     this.warn_title="任务详情";
     this.ruleList = item;
+    console.log(this.ruleList);
   }
   indexChange(event){
     this.createIndex = event;
@@ -209,7 +218,21 @@ export class WarnRlueComponent{
   createWarn(){
     this.createIndex=1;
     this.warn_title="新建规则";
-  }
+    this.ruleList = {
+      "ruleName":'',
+      "applicationChannels":[
+        {
+          "channelName":'',
+          "channelId":null
+        }
+        ],
+      "recognitionCategor":{
+        "name":"人"
+      },
+      "createTime":null,
+      "targetFeature":''
+    };
+;  }
   delete(){
     this.deleteIndex = 1;
     this.tip_title = "删除";

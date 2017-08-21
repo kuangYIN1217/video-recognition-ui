@@ -29,13 +29,13 @@
       <div class="info" [ngClass]="{marginTop: checked==1}">
         <label>告警对象：</label>
         <select [(ngModel)]="warnObj" (ngModelChange)="warnObj=$event;" *ngIf="warn_title!='任务详情'">
-          <option value="{{item}}" *ngFor="let item of warnObjArr">{{item}}</option>
+          <option value="{{item.name}}" *ngFor="let item of warnObjArr">{{item.name}}</option>
         </select>
         <select [(ngModel)]="warnObj" (ngModelChange)="warnObj=$event;" disabled *ngIf="warn_title=='任务详情'">
-          <option value="{{item}}" *ngFor="let item of warnObjArr">{{item}}</option>
+          <option value="{{item.name}}" *ngFor="let item of warnObjArr">{{item.name}}</option>
         </select>
       </div>
-      <div class="info" *ngIf="warnObj=='车'">
+      <div class="info" *ngIf="warnObj=='车牌识别'">
         <label>对象特征：</label>
         <span class="carNum">车牌号</span>
         <input type="text" class="car" name="car" [(ngModel)]="car"/>

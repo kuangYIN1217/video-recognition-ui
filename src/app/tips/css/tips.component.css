@@ -110,10 +110,10 @@ select{
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  padding-left: 16px;
+  padding-left: 8px;
 }
 select option{
-  padding-left: 16px;
+  padding-left: 8px;
 }
 input{
   outline: none;

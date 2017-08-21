@@ -19,7 +19,7 @@
         <div class="search-info">
           <label>告警对象：</label>
           <select [(ngModel)]="warnRule" (ngModelChange)="warnRule=$event;">
-            <option *ngFor="let item of warnObjArr" value="{{item}}">{{item}}</option>
+            <option *ngFor="let item of warnObjArr" value="{{item.name}}">{{item.name}}</option>
           </select>
         </div>
         <div class="search-info">
@@ -55,8 +55,8 @@
               <img src="../assets/appdetail/way.manage/checked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag==1"/>
             </td>
             <td class="pad">{{item.ruleName}}</td>
-            <td class="pad">{{item.alarmTarget}}</td>
-            <td class="pad">{{item.targetFeature==''?'无':item.targetFeature}}</td>
+            <td class="pad">{{item.recognitionCategor==null?'无':item.recognitionCategor.name}}</td>
+            <td class="pad">{{item.targetFeature==null?'无':item.targetFeature}}</td>
             <td class="pad">{{item.alarmRuleStatus}}</td>
             <td class="operation pad">
               <a class="operationBtn stop" *ngIf="item.alarmRuleStatus=='开启'" (click)="runRule(item)"></a>

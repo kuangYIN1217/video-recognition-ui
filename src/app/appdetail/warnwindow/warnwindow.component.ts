@@ -27,6 +27,7 @@ export class WarnWindowComponent{
   status:string;
   appCate:string;
   deleteIndex:number;
+  cateId:number;
   @Output() indexChange: EventEmitter<any> = new EventEmitter();
 
   constructor(private warnService: WarnService) {
@@ -41,8 +42,10 @@ export class WarnWindowComponent{
     this.warnService.getWarnObj()
       .subscribe(result=>{
         this.warnObjArr=result;
-        this.warnObj = this.warnObjArr[0];
-        console.log(this.warnObj);
+        if(this.warnObj){
+          this.warnObj = this.warnObjArr[0].name;
+          console.log(this.warnObj);
+        }
       });
   }
   chanChange(event){
@@ -50,6 +53,7 @@ export class WarnWindowComponent{
     console.log(this.warnChannel);
   }
   chanChangeId(event){
+    console.log(event);
     this.warnChannelId = event.join(',');
     console.log(this.warnChannelId);
   }
@@ -58,23 +62,30 @@ export class WarnWindowComponent{
     this.warnObj = this.warnObjArr[0];
   }*/
   ngOnChanges(...args: any[]) {
+    this.checked = 0;
     console.log(this.ruleList);
     this.warnChanChecked = [];
+    this.warnChannel='';
+    this.warnChannelId='';
     this.ruleName = this.ruleList.ruleName;
     if(this.ruleList.applicationChannels){
-      for(let i in this.ruleList.applicationChannels){
-        if(this.ruleList.applicationChannels.length==1){
+      for(let i=0;i< this.ruleList.applicationChannels.length;i++){
+        if(this.warnChannel==''){
           this.warnChannel = this.ruleList.applicationChannels[0].channelName;
+          this.warnChannelId= this.ruleList.applicationChannels[0].channelId;
         }else{
-          this.warnChannel = ','+this.ruleList.applicationChannels[i].channelName;
+          this.warnChannel += ','+this.ruleList.applicationChannels[i].channelName;
+          this.warnChannelId= ','+this.ruleList.applicationChannels[i].channelId;
         }
         this.warnChanChecked.push(this.ruleList.applicationChannels[i]);
         console.log(this.warnChanChecked);
       }
-      console.log(this.warnChannel);
+      console.log(this.warnChannelId);
     }
     //console.log(this.warnChanArr);
-    this.warnObj = this.ruleList.alarmTarget;
+    if(this.ruleList.recognitionCategor){
+      this.warnObj = this.ruleList.recognitionCategor.name;
+    }
     this.car = this.ruleList.targetFeature;
     if(this.ruleList.alarmRuleStatus=='开启'){
       this.radioIndex = 1;
@@ -115,7 +126,12 @@ export class WarnWindowComponent{
       this.car=null;
     }
     this.warnStatus();
-    this.warnService.createWarn(this.appId,this.warnChannelId,this.ruleName,this.warnObj,this.car,this.status)
+    for(let i in this.warnObjArr){
+      if(this.warnObj==this.warnObjArr[i].name){
+        this.cateId = this.warnObjArr[i].cateId;
+      }
+    }
+    this.warnService.createWarn(this.appId,this.warnChannelId,this.ruleName,this.cateId,this.car,this.status)
       .subscribe(result=>{
         console.log(result);
         if(result.text()=='Ok'){
@@ -129,13 +145,20 @@ export class WarnWindowComponent{
       })
   }
   editSave(){
-    debugger
     if(this.car==undefined){
       this.car=null;
     }
     this.warnStatus();
+    for(let i in this.warnObjArr){
+      if(this.warnObj==this.warnObjArr[i].name){
+        this.cateId = this.warnObjArr[i].cateId;
+      }
+    }
+    if(this.warnObj!='车牌识别'){
+      this.car = null;
+    }
     if(this.appCate=='实时流分析'){
-      this.warnService.editRuleSave(this.warnChannelId,this.ruleList.ruleId,this.ruleName,this.warnObj,this.car,this.status)
+      this.warnService.editRuleSave(this.warnChannelId,this.ruleList.ruleId,this.ruleName,this.cateId,this.car,this.status)
         .subscribe(result=>{
           if(result.text()=='Ok'){
             this.createIndex = 2;
@@ -147,7 +170,7 @@ export class WarnWindowComponent{
           }
         })
     }else{
-      this.warnService.editRuleSave1(this.ruleList.ruleId,this.ruleName,this.warnObj,this.car,this.status)
+      this.warnService.editRuleSave1(this.ruleList.ruleId,this.ruleName,this.cateId,this.car,this.status)
         .subscribe(result=>{
           if(result.text()=='Ok'){
             this.createIndex = 2;

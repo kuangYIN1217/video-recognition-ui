@@ -39,7 +39,6 @@ export class WarnComponent{
       this.getAllWarn(this.appId,this.page-1,this.pageMaxItem);
       this.warnService.getWarnRules(this.appId)
         .subscribe(result=>{
-          console.log(result.content);
           this.warnRlueArr = result.content;
           this.warnRlue = this.warnRlueArr[0].ruleName;
         })
@@ -51,7 +50,7 @@ export class WarnComponent{
     this.offlineService.getWarnTask(this.appId)
       .subscribe(result=>{
           this.warnTaskArr = result.content;
-          this.warnTask = this.warnTaskArr[0].taskName;
+          //this.warnTask = this.warnTaskArr[0].taskName;
       })
 
     this.warnStatus = this.statusArr[0];

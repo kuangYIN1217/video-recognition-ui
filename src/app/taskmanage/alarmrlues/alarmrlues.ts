@@ -20,9 +20,12 @@ export class AlarmRluesComponent {
     //this.appCate = window.sessionStorage.getItem("applicationType");
   }
   ngOnChanges(...args: any[]) {
-    for(let i in this.warnChanChecked){
-      this.warnChanChecked[i].flag=2;
-    }
+    console.log(this.warnChanChecked);
+/*    for(let i=0;i<this.warnChanChecked.length;i++){
+      if(this.warnChanChecked){
+        this.warnChanChecked[i].flag=2;
+      }
+    }*/
   }
   check(item){
     if(!item.flag||item.flag==2){
