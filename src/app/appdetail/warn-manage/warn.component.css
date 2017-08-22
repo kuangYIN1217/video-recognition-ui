@@ -77,6 +77,9 @@
 .search-time .search-info .time-select{
   margin-left: 0;
 }
+.time-select{
+  background: url("../../../assets/warn/rili.png") no-repeat right 6px center;
+}
 .btn{
   font-size: 14px;
   text-align: center;

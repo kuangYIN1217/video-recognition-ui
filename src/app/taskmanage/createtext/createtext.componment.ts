@@ -36,6 +36,10 @@ export class CreateTextComponent {
   deleteIndex:number=0;
   tip_title:string;
   tip_content:string;
+  fileNames:string;
+  temArr:any[]=[];
+  warnRuleArr:any[]=[];
+  lookIndex:number=0;
   constructor(private warnService: WarnService,private offlineService: OfflineService,private router:Router,private route: ActivatedRoute) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -44,7 +48,7 @@ export class CreateTextComponent {
     this.warnService.getWarnRules(this.appId)
       .subscribe(result=>{
         this.warnChanArr = result.content;
-        //this.warnRlue = this.warnChanArr[0].ruleName;
+        //this.warnRule = this.warnChanArr[0].ruleName;
         console.log(this.warnChanArr);
       })
   }
@@ -136,12 +140,31 @@ export class CreateTextComponent {
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
         this.taskTitle = params['taskTitle'];
-        this.taskName = params['taskName'];
-        this.warnRule = params['alarmRules'];
+        if(this.taskTitle!='新建任务'){
+          this.taskName = params['taskName'];
+          this.warnRule = '';
+          this.inputPath = params['inputPath'];
+          this.fileNames = params['fileNames'];
+          this.warnRuleArr = JSON.parse(params['alarmRules']);
+          for(let i=0;i<this.warnRuleArr.length;i++){
+            if(this.warnRule==''){
+              this.warnRule = this.warnRuleArr[0].ruleName;
+            }else{
+              this.warnRule += ','+this.warnRuleArr[i].ruleName;
+            }
+          }
+          this.lookIndex = 1;
+          console.log(this.uploader.queue);
+        }
     });
+
   }
+  deleteChange(event){
+  this.deleteIndex = event;
+}
+
   create(){
-    if(!this.taskName){
+/*    if(!this.taskName){
       this.required = 1;
       return false;
     }else{
@@ -158,17 +181,17 @@ export class CreateTextComponent {
       return false;
     }else{
       this.required = 0;
-    }
-    for(let i in this.warnChanArr){
+    }*/
+/*    for(let i in this.warnChanArr){
       if(this.ruleId==undefined){
         this.ruleId = this.warnChanArr[0].ruleId;
       }else{
         this.ruleId += ','+this.warnChanArr[i].ruleId;
       }
-    }
-    console.log(this.ruleId);
+    }*/
+    //console.log(this.ruleId);
     this.fileNumber = this.uploader.queue.length;
-    this.offlineService.create(this.appId,this.ruleId,this.taskName,this.inputPath,this.fileName,this.fileNumber)
+    this.offlineService.create(this.appId,this.warnRuleId,this.taskName,this.inputPath,this.fileName,this.fileNumber)
       .subscribe(result=>{
         console.log(result);
         this.router.navigate(['../taskmanage']);

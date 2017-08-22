@@ -42,7 +42,7 @@ export class WarnComponent{
         .subscribe(result=>{
           this.warnRlueArr = result.content;
           console.log(this.warnRlueArr);
-          if(this.warnRlueArr){
+          if(this.warnRlueArr.length>0){
             this.warnRlue = this.warnRlueArr[0].ruleName;
           }
         })

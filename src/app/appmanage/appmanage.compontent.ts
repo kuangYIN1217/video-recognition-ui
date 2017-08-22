@@ -53,6 +53,9 @@ export class AppManageComponent {
   realTime:any[]=[];
   offline:any[]=[];
   url:any;
+  deleteIndex:number=0;
+  tip_title:string;
+  tip_content:string;
   sceneArr:any[]=[{"name":"道路识别",'flag':1}, {"name":"故障检测"}, {"name":"字母图形分类"}, {"name":"图形识别"}, {"name":"雷暴检测"}, {"name":"神经区域分割"}, {"name":"大数据回归"}];
   systemArr:any[]=[{"name":"ios",'flag':1},{"name":"Android"},{"name":"Windows"},{"name":"HTML5"},{"name":"Linux"},{"name":"其他"}];
   constructor(private appManageService: AppManageService,private router:Router) {
@@ -101,7 +104,6 @@ export class AppManageComponent {
     this.appManageService.getAppInfo()
       .subscribe(result=>{
         // this.appManageInfo = result;
-        console.log(result);
         this.id1="";
         this.id2="";
         this.type1="";
@@ -126,14 +128,12 @@ export class AppManageComponent {
             this.appManageService.getAllDate(this.type1,this.id1)
              .subscribe(date=>{
                this.realTime = date;
-               console.log(this.realTime);
              });
           }
         if(this.type2){
           this.appManageService.getAllDate(this.type2,this.id2)
            .subscribe(date=>{
              this.offline = date;
-             console.log(this.offline);
            });
         }
 
@@ -195,19 +195,32 @@ export class AppManageComponent {
     }
     this.appManageService.createApp(appName,appCate,this.arr,null)
       .subscribe(result=>{
-        debugger
         console.log(result);
         this.createApp='manage';
         this.getAllInfo();
       });
+  }
+  deleteChange(event){
+    this.deleteIndex = event;
   }
   createImport(){
     let appName = this.appName;
     let appCate = this.appCate;
     this.appManageService.createApp(appName,appCate,null,this.importPath)
       .subscribe(result=>{
-        debugger
         console.log(result);
+/*        if(result.num.length>0){
+          console.log(result.num);
+          this.deleteIndex =1;
+          this.tip_title = '提示';
+          this.tip_content = '无效数据，第'+result.num+1+'行导入失败！';
+          return
+        }else {*/
+          console.log(result.applicationChannels.length);
+          this.deleteIndex =1;
+          this.tip_title = '提示';
+          this.tip_content = '成功导入'+result.applicationChannels.length+'条通道！';
+       // }
         this.createApp='manage';
         this.getAllInfo();
       });

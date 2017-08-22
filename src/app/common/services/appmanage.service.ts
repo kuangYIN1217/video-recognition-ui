@@ -26,7 +26,7 @@ export class AppManageService {
     return headers;
   }
   createApp(appName,appCate,applicationChannels,importPath){
-    let path = "/api/appllication";
+    let path = "/api/application";
     let body = JSON.stringify({
       "applicationChannels":applicationChannels ,
       "applicationId": 0,
@@ -41,6 +41,7 @@ export class AppManageService {
     headers.append('inputPath',this.inputPath);
     return this.http.post(this.SERVER_URL+path,body,{ headers: headers})
       .map((response: Response) => {
+      console.log(response);
         if (response && response.json()) {
           if(response.status==200){
             return response.json();

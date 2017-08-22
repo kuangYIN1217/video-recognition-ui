@@ -102,12 +102,15 @@ export class TaskManageComponent {
         this.taskList = result.content;
       })
   }
+  add(){
+    this.router.navigate(['../createtext'],{queryParams: {'taskTitle':"新建任务"}});
+  }
   edit(item){
     console.log(item);
-    this.router.navigate(['../createtext'],{queryParams: {'taskName':item.taskName,'alarmRules':item.alarmRules,'inputPath':item.inputPath,'taskTitle':"修改任务"}});
+    this.router.navigate(['../createtext'],{queryParams: {'taskName':item.taskName,'alarmRules':JSON.stringify(item.alarmRules),'inputPath':item.inputPath,'taskTitle':"修改任务",'fileNames':item.fileNames}});
   }
   look(item){
-    this.router.navigate(['../createtext'],{queryParams: {'taskName':item.taskName,'alarmRules':item.alarmRules,'inputPath':item.inputPath,'taskTitle':"查看任务"}});
+    this.router.navigate(['../createtext'],{queryParams: {'taskName':item.taskName,'alarmRules':item.alarmRules,'inputPath':item.inputPath,'taskTitle':"查看任务",'fileNames':item.fileNames}});
   }
 /*  dia(){
     for(let i in this.taskList){

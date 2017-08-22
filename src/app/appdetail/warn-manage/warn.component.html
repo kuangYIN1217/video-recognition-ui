@@ -34,11 +34,11 @@
       <div class="search-time">
         <div class="search-info no-margin">
           <label>告警时间：</label>
-          <select [(ngModel)]="startTime" (ngModelChange)="startTime=$event;">
+          <select [(ngModel)]="startTime" (ngModelChange)="startTime=$event;" class="time">
             <!--<option *ngFor="let item of statusArr" value="{{item}}">{{item}}</option>-->
           </select>
           <span>至</span>
-          <select [(ngModel)]="endTime" (ngModelChange)="endTime=$event;" class="time-select">
+          <select [(ngModel)]="endTime" (ngModelChange)="endTime=$event;" class="time-select" >
             <!--<option *ngFor="let item of statusArr" value="{{item}}">{{item}}</option>-->
           </select>
         </div>

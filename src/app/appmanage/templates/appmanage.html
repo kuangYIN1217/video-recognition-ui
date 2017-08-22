@@ -212,6 +212,7 @@
         </div>
       </div>-->
   </div>
+  <app-tips [style.display]="deleteIndex==1?'':'none'" [tip_title]="tip_title" [tip_content]="tip_content" [deleteIndex]="deleteIndex" [tip_btn]="tip_btn" (deleteChange)="deleteChange($event)" (deletedChange)="deletedChange($event)"></app-tips>
   <div class="appManageSpace" [style.display]="createApp=='space'?'':'none'">
     <div class="spaceContent">
       <img src="../assets/appmanage/addAPP.png"/>
