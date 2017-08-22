@@ -32,6 +32,10 @@ export class CreateTextComponent {
   fileNameArr:any[]=[];
   fileNumber:number;
   tasklist:any={};
+  size:number=0;
+  deleteIndex:number=0;
+  tip_title:string;
+  tip_content:string;
   constructor(private warnService: WarnService,private offlineService: OfflineService,private router:Router,private route: ActivatedRoute) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -52,6 +56,13 @@ export class CreateTextComponent {
   selectedFileOnChanged(){
     console.log(this.uploader.queue);
     for(let j=0;j<this.uploader.queue.length;j++){
+      this.size = this.uploader.queue[j].file.size;
+      if((this.size/1024/1024)>500){
+        this.deleteIndex =1;
+        this.tip_title = '提示';
+        this.tip_content = this.uploader.queue[j].file.name +'文件大于500M！';
+        return false;
+      }
       if(Number(j)>4){
         this.uploader.queue[5].remove();
         j-=1;
@@ -133,14 +144,20 @@ export class CreateTextComponent {
     if(!this.taskName){
       this.required = 1;
       return false;
+    }else{
+      this.required = 0;
     }
     if(!this.warnRule){
       this.required = 1;
       return false;
+    }else{
+      this.required = 0;
     }
     if(this.uploader.queue.length==0){
       this.required = 1;
       return false;
+    }else{
+      this.required = 0;
     }
     for(let i in this.warnChanArr){
       if(this.ruleId==undefined){

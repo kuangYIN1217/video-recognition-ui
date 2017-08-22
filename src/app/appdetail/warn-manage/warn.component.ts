@@ -3,6 +3,7 @@ import {WarnService} from "../../common/services/warn.service";
 import {Page} from "app/common/defs/resources";
 import {OfflineService} from "../../common/services/offline.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {SERVER_URL} from "../../app.constants";
 declare var $:any;
 @Component({
   selector: 'apt-warn',
@@ -41,7 +42,9 @@ export class WarnComponent{
         .subscribe(result=>{
           this.warnRlueArr = result.content;
           console.log(this.warnRlueArr);
-          this.warnRlue = this.warnRlueArr[0].ruleName;
+          if(this.warnRlueArr){
+            this.warnRlue = this.warnRlueArr[0].ruleName;
+          }
         })
       this.warnService.getChanName(this.appId)
         .subscribe(result=>{
@@ -98,17 +101,15 @@ export class WarnComponent{
       })
   }
   lookHandling(item){
-    this.warnService.handlingWarn(item.alarmId,this.appId)
-      .subscribe(result=>{
-        for(let i=0;i<result.length;i++){
-          if(result[i].alarmId == item.alarmId){
-            this.detaillist.alarmStatus = result[i].alarmStatus;
-          }
-        }
-      })
+    item.alarmStatus = '已处理';
   }
   getWarnList(result){
     this.allWarn = result.content;
+    for(let i=0;i<this.allWarn.length;i++){
+      if(this.allWarn[i].alarmStatus=='已处理'){
+
+      }
+    }
     console.log(result);
     let page = new Page();
     page.pageMaxItem = result.size;
@@ -116,6 +117,11 @@ export class WarnComponent{
     page.totalPage = result.totalPages;
     page.totalNum = result.totalElements;
     this.pageParams = page;
+  }
+  download(item){
+    let path = "/api/file?filePath=" + item.imagePath;
+    let url = SERVER_URL + path;
+    window.open(url,"_blank");
   }
   searchWarn(){
     for(let i=0;i<this.warnRlueArr.length;i++){
@@ -137,5 +143,19 @@ export class WarnComponent{
           this.getWarnList(result);
         })
     }
+  }
+  save(item){
+    this.warnService.handlingWarn(item.alarmId,this.appId)
+      .subscribe(result=>{
+        for(let i=0;i<result.length;i++){
+          if(result[i].alarmId == item.alarmId){
+            this.detaillist.alarmStatus = result[i].alarmStatus;
+          }
+        }
+      })
+    this.lookIndex = 0;
+  }
+  cancel(){
+    this.lookIndex = 0;
   }
 }

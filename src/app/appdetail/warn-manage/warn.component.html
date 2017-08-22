@@ -75,11 +75,12 @@
             <td class="pad">{{item.duration}}</td>
             <td class="pad">
               <img src="../assets/warn/chakan.png" class="mrgr"/>
-              <img src="../assets/warn/xiazai.png" class="mrgr"/>
+              <img src="../assets/warn/xiazai.png" class="mrgr" (click)="download(item)"/>
             </td>
             <td>{{item.alarmStatus}}</td>
             <td class="operation pad">
-              <img src="../assets/warn/chuli.png" class="mrgr" (click)="handling(item)"/>
+              <img src="../assets/warn/chuli.png" class="mrgr" (click)="handling(item)" *ngIf="item.alarmStatus=='未处理'"/>
+              <img src="../assets/warn/chuli--hui.png" class="mrgr" *ngIf="item.alarmStatus=='已处理'"/>
               <img src="../assets/warn/chakanxiangqing.png" class="mrgr" (click)="lookPhoto(item)"/>
             </td>
           </tr>
@@ -114,7 +115,7 @@
       <div class="detail_info">
         <span class="info_name">告警状态：</span>
         <span class="info_content">{{detaillist.alarmStatus}}</span>
-        <a class="btn bgcg inline" (click)="lookHandling(detaillist)">处理</a>
+        <a class="btn bgcg inline" (click)="lookHandling(detaillist)" *ngIf="detaillist.alarmStatus=='未处理'">处理</a>
       </div>
       <div class="detail_info">
         <span class="info_name">处理时间：</span>
@@ -126,17 +127,17 @@
       </div>
       <div class="detail_info">
         <span class="info_name">告警快照：</span>
-        <span class="info_content">{{detaillist.inputPath}}<img src=""/></span>
+        <span class="info_content"><img src="{{SERVER_URL}}/api/file?filePath={{detaillist.imagePath}}"/></span>
       </div>
       <div class="detail_info">
         <span class="info_name"></span>
-        <span class="info_content"><a href="#" onclick="return false" class="downPhoto">下载快照</a></span>
+        <span class="info_content"><a href="#" onclick="return false" class="downPhoto" (click)="download(detaillist)">下载快照</a></span>
       </div>
       <div class="detail_info">
         <span class="info_name"></span>
         <span class="info_content">
-          <a href="#" onclick="return false" class="btn bgco save">保存</a>
-          <a href="#" onclick="return false" class="btn bgcg cancel">取消</a>
+          <a href="#" onclick="return false" class="btn bgco save" (click)="save(detaillist)">保存</a>
+          <a href="#" onclick="return false" class="btn bgcg cancel" (click)="cancel()">取消</a>
         </span>
       </div>
     </div>

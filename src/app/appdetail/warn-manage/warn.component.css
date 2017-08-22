@@ -87,7 +87,7 @@
   border-radius: 5px;
   border:1px solid #d3d3d3;
   text-decoration: none;
-
+  cursor: pointer;
 }
 .bgco{
   background: #ff7c35;
@@ -195,4 +195,18 @@
   display: inline-block !important;
   float: none !important;
   margin:0 !important;
+}
+select{
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-left: 8px;
+}
+select option{
+  padding-left: 8px;
+}
+input{
+  outline: none;
+  padding-left: 8px;
 }

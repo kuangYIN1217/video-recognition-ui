@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
 import {ChannelService} from "../../common/services/channel.service";
 import {channelInfo, Page} from "../../common/defs/resources";
 import {AppManageService} from "../../common/services/appmanage.service";
+import {ActivatedRoute , Router} from '@angular/router'
 declare var $:any;
 @Component({
   selector: 'way-manage',
@@ -52,7 +53,14 @@ export class WayManageComponent {
   createFlag:boolean=true;
   upadteFlag:boolean=true;
   url:string;
-  constructor(private appManageService: AppManageService,private channelService: ChannelService) {
+  constructor(private appManageService: AppManageService,private channelService: ChannelService , private route: ActivatedRoute , private router: Router) {
+    this.route.params.subscribe((param) => {
+      console.log(param);
+      this.status = param['status'];
+      console.log(this.status);
+      this.searchResult();
+      //this.status = param;
+    })
     this.appId = window.sessionStorage.getItem("applicationId");
     console.log(this.appId);
     this.getPages(this.appId,this.page-1,this.pageMaxItem);

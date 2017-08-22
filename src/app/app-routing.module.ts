@@ -18,6 +18,7 @@ import {WarnRlueComponent} from "./appdetail/warn-rlue/warnrlue.component";
 import {WarnWindowComponent} from "./appdetail/warnwindow/warnwindow.component";
 import {TipsComponent} from "./tips/tips.component";
 import {WarnDetailComponent} from "./appdetail/warn-detail/warn.detail.component";
+
 const routes: Routes = [
   //{ path: '', component: NavigationComponent },
   {path: 'login', component: LoginComponent},
@@ -26,6 +27,7 @@ const routes: Routes = [
   {path: 'appmanage', component: AppManageComponent},
   {path: 'videoanalysis', component: VideoAnalysisComoponent},
   {path: 'waymanage', component: WayManageComponent},
+  {path: 'waymanage/:status', component: WayManageComponent},
   {path: 'technologysupport', component: TechnologySupportComponent},
   {path: 'monitorreport', component: MonitorReportComponent},
   {path: 'page', component: PageComponent},

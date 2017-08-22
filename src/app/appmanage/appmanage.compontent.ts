@@ -195,6 +195,7 @@ export class AppManageComponent {
     }
     this.appManageService.createApp(appName,appCate,this.arr,null)
       .subscribe(result=>{
+        debugger
         console.log(result);
         this.createApp='manage';
         this.getAllInfo();
@@ -205,6 +206,7 @@ export class AppManageComponent {
     let appCate = this.appCate;
     this.appManageService.createApp(appName,appCate,null,this.importPath)
       .subscribe(result=>{
+        debugger
         console.log(result);
         this.createApp='manage';
         this.getAllInfo();
