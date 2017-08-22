@@ -26,6 +26,7 @@ const routes: Routes = [
   {path: 'appmanage', component: AppManageComponent},
   {path: 'videoanalysis', component: VideoAnalysisComoponent},
   {path: 'waymanage', component: WayManageComponent},
+  {path: 'waymanage/:status', component: WayManageComponent},
   {path: 'technologysupport', component: TechnologySupportComponent},
   {path: 'monitorreport', component: MonitorReportComponent},
   {path: 'page', component: PageComponent},

@@ -68,7 +68,7 @@ export class NavigationComponent {
     } else if (this.location.isCurrentPathEqualTo('/videoanalysis')) {
       this.focusTab = 1;
       // this.needhide = 0;
-    } else if (this.location.isCurrentPathEqualTo('/waymanage') ) {
+    } else if (this.location.path().match(/\/waymanage/)) {
       this.focusTab = 2;
       // this.needhide = 0;　
     } else if (this.location.isCurrentPathEqualTo('/monitorreport') ) {
