@@ -54,7 +54,9 @@ export class WayManageComponent {
   upadteFlag:boolean=true;
   url:string;
   constructor(private appManageService: AppManageService,private channelService: ChannelService , private route: ActivatedRoute , private router: Router) {
-
+/*    this.route.params.subscribe((param) => {
+      console.log(param);
+    })*/
     this.appId = window.sessionStorage.getItem("applicationId");
     console.log(this.appId);
     this.getPages(this.appId,this.page-1,this.pageMaxItem);
