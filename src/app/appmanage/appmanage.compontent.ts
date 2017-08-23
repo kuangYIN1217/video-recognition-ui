@@ -148,11 +148,12 @@ export class AppManageComponent {
       });
   }
   download(){
-      this.appManageService.downTemplate()
-        .subscribe(result=>{
-          this.url = result.url;
-          location.href = this.url;
-        })
+      // this.appManageService.downTemplate()
+      //   .subscribe(result=>{
+      //     this.url = result.url;
+      //     location.href = this.url;
+      //   })
+    window.open("/home/ligang/Templates/导入通道模板.xlsx","_blank");
   }
   categoryChange(){
     if(this.appCate=="实时流分析"){
