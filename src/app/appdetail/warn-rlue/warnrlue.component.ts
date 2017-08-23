@@ -46,7 +46,7 @@ export class WarnRlueComponent{
       this.warnService.getWarnChannel(this.appId)
         .subscribe(channel=>{
           this.warnChanArr=channel;
-          if(this.warnChanArr)
+          if(this.warnChanArr.length>0)
           this.warnChan = this.warnChanArr[0].channelName;
         });
     }

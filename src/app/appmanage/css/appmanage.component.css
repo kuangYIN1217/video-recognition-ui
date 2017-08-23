@@ -258,12 +258,23 @@ a{
 .radio{
   margin-bottom: 44px;
   display: inline-block;
+  vertical-align: top;
 }
 .input{
   margin-left: 6px;
+  font-size: 0px;
+  overflow: hidden;
+}
+.fontSize{
+  font-size: 14px;
+  margin-left: 10px;
+  display: inline-block;
+  vertical-align: middle;
 }
 .import{
   margin-left: 126px;
+  font-size: 0px;
+  overflow: hidden;
 }
 .createInfo:nth-of-type(6){
   height:146px;
@@ -323,8 +334,9 @@ a{
 }
 .createLeft input{
   width:490px;
-  height:30px;
-  text-indent: 4px;
+  height:36px;
+  padding-left: 6px;
+  box-sizing: border-box;
 }
 .createLeft textarea{
   width:356px;
@@ -333,18 +345,18 @@ a{
   margin-left: 4px;
 }
 .createLeft select{
-  width:494px;
-  height:34px;
+  width:490px;
+  height:36px;
   color: #666666;
   margin-left: 6px;
   position: absolute;
-  background: url("../../../assets/appmanage/rightArrow.png") no-repeat right center;
+  box-sizing: border-box;
+  background: url("../../../assets/appdetail/way.manage/selectDown.png") no-repeat right 6px center;
   appearance:none;
   -moz-appearance:none;
   -webkit-appearance:none;
   outline: none;
-  border-right: none;
-  text-indent: 6px;
+  padding-left: 6px;
 }
 
 .channel{

@@ -148,11 +148,12 @@ export class AppManageComponent {
       });
   }
   download(){
-      this.appManageService.downTemplate()
-        .subscribe(result=>{
-          this.url = result.url;
-          location.href = this.url;
-        })
+      // this.appManageService.downTemplate()
+      //   .subscribe(result=>{
+      //     this.url = result.url;
+      //     location.href = this.url;
+      //   })
+    window.open(SERVER_URL+"/home/ligang/Templates/template.xlsx","_blank");
   }
   categoryChange(){
     if(this.appCate=="实时流分析"){
@@ -208,19 +209,18 @@ export class AppManageComponent {
     let appCate = this.appCate;
     this.appManageService.createApp(appName,appCate,null,this.importPath)
       .subscribe(result=>{
-        console.log(result);
-/*        if(result.num.length>0){
-          console.log(result.num);
+        if(result.map.num[0]>0){
+          console.log(typeof result.map.num[0]);
           this.deleteIndex =1;
           this.tip_title = '提示';
-          this.tip_content = '无效数据，第'+result.num+1+'行导入失败！';
+          this.tip_content = '无效数据，第'+(result.map.num[0]+1)+'行导入失败！';
           return
-        }else {*/
-          console.log(result.applicationChannels.length);
+        }else {
+          console.log(result.map.set.length);
           this.deleteIndex =1;
           this.tip_title = '提示';
-          this.tip_content = '成功导入'+result.applicationChannels.length+'条通道！';
-       // }
+          this.tip_content = '成功导入'+result.map.set.length+'条通道！';
+        }
         this.createApp='manage';
         this.getAllInfo();
       });

@@ -102,9 +102,9 @@
           <label>是否开启：</label>
           <span class="radio">
             <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=1" (click)="radio(1)"/>
-            <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==1" (click)="radio(1)"/><span class="middle">开启</span>
+            <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==1" (click)="radio(1)"/><span class="middle fontSize">开启</span>
             <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=0" (click)="radio(0)" style="margin-left: 20px"/>
-            <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==0" (click)="radio(0)" style="margin-left: 20px"/><span class="middle">关闭</span>
+            <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==0" (click)="radio(0)" style="margin-left: 20px"/><span class="middle fontSize">关闭</span>
           </span>
         </div>
         <div class="infoBtn">
@@ -115,7 +115,7 @@
       </div>
     </div>
   </div>
-
+  <app-tips [style.display]="deleteIndex==1?'':'none'" [tip_title]="tip_title" [tip_content]="tip_content" [deleteIndex]="deleteIndex" [tip_btn]="tip_btn" (deleteChange)="deleteChange($event)" (deletedChange)="deletedChange($event)"></app-tips>
   <div class="dialog" [style.display]="delSysDialog==1?'':'none'">
     <div class="dialogContainer addDialogContainer">
       <div class="dialogHeader">

@@ -48,15 +48,15 @@ export class AlarmRluesComponent {
           if (this.warnChan[i] == item.channelName) {
             this.warnChan.splice(i, 1);
             this.warnChanId.splice(i, 1);
+            this.chanChange.emit(this.warnChan);
             this.chanChangeId.emit(this.warnChanId);
-            return;
           }
         }else{
           if (this.warnChan[i] == item.ruleName) {
             this.warnChan.splice(i, 1);
             this.warnChanId.splice(i, 1);
+            this.chanChange.emit(this.warnChan);
             this.chanChangeId.emit(this.warnChanId);
-            return;
           }
         }
       }
