@@ -62,4 +62,8 @@ export class AlarmRluesComponent {
       }
     }
   }
+
+  getSrc(item) {
+    return ('../assets/alarmrlues/' + (item.flag == 1 ? 'checked.png' : 'unchecked.png'));
+  }
 }
