@@ -15,6 +15,7 @@
 .rlueContent{
   background: #ffffff;
   height:163px;
+  overflow-y: auto;
 }
 /*.rlue{
 
