@@ -53,6 +53,9 @@ export class WayManageComponent {
   createFlag:boolean=true;
   upadteFlag:boolean=true;
   url:string;
+  deleteIndex:number=0;
+  tip_title:string;
+  tip_content:string;
   constructor(private appManageService: AppManageService,private channelService: ChannelService , private route: ActivatedRoute , private router: Router) {
 /*    this.route.params.subscribe((param) => {
       console.log(param);
@@ -136,6 +139,7 @@ export class WayManageComponent {
   getPages(id,page,size){
     this.channelService.getPage(id,page,size)
       .subscribe(result => {
+        console.log(result);
         this.channelInfo = result.content;
         let page = new Page();
         page.pageMaxItem = result.size;
@@ -296,6 +300,18 @@ export class WayManageComponent {
       })
   }
   runChannel(item){
+    let j=0;
+    for(let i=0;i<this.channelInfo.length;i++){
+      if(this.channelInfo[i].channelStatus==1){
+        j++;
+        if(j>9){
+          this.deleteIndex =1;
+          this.tip_title = '提示';
+          this.tip_content = '对不起，通道开启数超过9个，请先关闭其他通道！';
+          return
+        }
+      }
+    }
     if(item.channelStatus==0){
       item.channelStatus=1;
     }else if(item.channelStatus==1){
@@ -316,6 +332,9 @@ export class WayManageComponent {
     this.addDialog = 0;
     this.delSysDialog = 0;
     this.delDialog = 0;
+  }
+  deleteChange(event){
+    this.deleteIndex = event;
   }
   dirRecord(id,direction){
     if(direction == 1){

@@ -82,6 +82,10 @@
 .radio{
   display: inline-block;
   padding-left: 30px;
+  font-size: 0px;
+}
+.fontSize{
+  font-size: 14px;
 }
 .radio img{
   margin-right: 10px;

@@ -117,11 +117,11 @@
             <span class="radio">
               <span class="input">
                 <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=1" (click)="radio(1)"/>
-                <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==1" (click)="radio(1)"/><label>输入通道</label>
+                <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==1" (click)="radio(1)"/><label class="fontSize">输入通道</label>
               </span>
               <span class="import">
                 <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=0" (click)="radio(0)"/>
-                <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==0" (click)="radio(0)"/><label>导入通道</label>
+                <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==0" (click)="radio(0)"/><label class="fontSize">导入通道</label>
               </span>
             </span>
             <div class="channel" [style.display]="excel==1?'':'none'">
