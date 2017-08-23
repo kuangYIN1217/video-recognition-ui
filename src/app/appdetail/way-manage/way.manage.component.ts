@@ -6,6 +6,7 @@ import {ChannelService} from "../../common/services/channel.service";
 import {channelInfo, Page} from "../../common/defs/resources";
 import {AppManageService} from "../../common/services/appmanage.service";
 import {ActivatedRoute , Router} from '@angular/router'
+import {SERVER_URL} from "../../app.constants";
 declare var $:any;
 @Component({
   selector: 'way-manage',
@@ -75,11 +76,15 @@ export class WayManageComponent {
   }
   ngOnInit() {
     this.route.params.subscribe((param) => {
-      console.log(param);
-      this.status = param['status'];
-      console.log(this.status);
-      this.searchResult();
-      //this.status = param;
+      if(JSON.stringify(param) != "{}"){
+        console.log(param);
+        this.status = param['status'];
+        console.log(this.status);
+        this.searchResult();
+        //this.status = param;
+      }else{
+        console.log(12);
+      }
     })
   }
   ngAfterViewInit() {
@@ -164,11 +169,12 @@ export class WayManageComponent {
     }
   }
   download(){
-    this.appManageService.downTemplate()
+/*    this.appManageService.downTemplate()
       .subscribe(result=>{
         this.url = result.url;
         location.href = this.url;
-      })
+      })*/
+    window.open(SERVER_URL+"/home/ligang/Templates/template.xlsx","_blank");
   }
   dia(){
     for(let i in this.channelInfo){
@@ -301,18 +307,19 @@ export class WayManageComponent {
   }
   runChannel(item){
     let j=0;
-    for(let i=0;i<this.channelInfo.length;i++){
-      if(this.channelInfo[i].channelStatus==1){
-        j++;
-        if(j>9){
-          this.deleteIndex =1;
-          this.tip_title = '提示';
-          this.tip_content = '对不起，通道开启数超过9个，请先关闭其他通道！';
-          return
+    if(item.channelStatus==0){
+      for(let i=0;i<this.channelInfo.length;i++){
+        debugger
+        if(this.channelInfo[i].channelStatus==1){
+          j++;
+          if(j>8){
+            this.deleteIndex =1;
+            this.tip_title = '提示';
+            this.tip_content = '对不起，通道开启数超过9个，请先关闭其他通道！';
+            return
+          }
         }
       }
-    }
-    if(item.channelStatus==0){
       item.channelStatus=1;
     }else if(item.channelStatus==1){
       item.channelStatus=0;

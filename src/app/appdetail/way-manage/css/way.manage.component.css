@@ -178,6 +178,9 @@ input{
 .operation{
   width:20%;
 }
+.fontSize{
+  font-size: 14px;
+}
 .dialog{
   position: fixed;
   left: 0;
@@ -263,6 +266,7 @@ input{
 .radio{
   display: inline-block;
   padding-left: 34px;
+  font-size: 0px;
 }
 .radio img{
   margin-right: 10px;
