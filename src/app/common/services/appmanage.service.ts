@@ -58,7 +58,7 @@ export class AppManageService {
       });
   }
   getAppInfo(){
-    let path = "/api/appllications";
+    let path = "/api/applications";
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path, { headers : headers} )
       .map((response: Response) => {
@@ -69,7 +69,7 @@ export class AppManageService {
   }
   delInfo(id){
     console.log(id);
-    let path = "/api/appllication/"+id;
+    let path = "/api/application/"+id;
     let headers = this.getHeaders();
     return this.http.delete(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {
@@ -95,7 +95,7 @@ export class AppManageService {
       });
   }
   updateApp(id,appName){
-    let path = "/api/UpdateappllicationName";
+    let path = "/api/UpdateApplicationName";
     let body = JSON.stringify({
       "applicationId": id,
       "name": appName

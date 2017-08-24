@@ -7,6 +7,7 @@ import {channelInfo, Page} from "../../common/defs/resources";
 import {AppManageService} from "../../common/services/appmanage.service";
 import {ActivatedRoute , Router} from '@angular/router'
 import {SERVER_URL} from "../../app.constants";
+import {FileItem, FileUploader} from "ng2-file-upload";
 declare var $:any;
 @Component({
   selector: 'way-manage',
@@ -57,6 +58,7 @@ export class WayManageComponent {
   deleteIndex:number=0;
   tip_title:string;
   tip_content:string;
+  importPath:string;
   constructor(private appManageService: AppManageService,private channelService: ChannelService , private route: ActivatedRoute , private router: Router) {
 /*    this.route.params.subscribe((param) => {
       console.log(param);
@@ -74,6 +76,11 @@ export class WayManageComponent {
       });
     this.status = this.statusArr[0];
   }
+  public uploader:FileUploader = new FileUploader({
+    url: SERVER_URL+"/api/upload",
+    method: "POST",
+    itemAlias: "file",
+  });
   ngOnInit() {
     this.route.params.subscribe((param) => {
       if(JSON.stringify(param) != "{}"){
@@ -82,10 +89,8 @@ export class WayManageComponent {
         console.log(this.status);
         this.searchResult();
         //this.status = param;
-      }else{
-        console.log(12);
       }
-    })
+    });
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
@@ -169,12 +174,18 @@ export class WayManageComponent {
     }
   }
   download(){
-/*    this.appManageService.downTemplate()
-      .subscribe(result=>{
-        this.url = result.url;
-        location.href = this.url;
-      })*/
-    window.open(SERVER_URL+"/home/ligang/Templates/template.xlsx","_blank");
+    window.open(SERVER_URL+"/template.xlsx");
+  }
+  selectedFileOnChanged(event:any) {
+    this.uploader.queue[0].upload(); // 开始上传
+    this.uploader.queue[0].onSuccess = (response: any, status: any, headers: any) => {
+      console.log(response);
+      this.channelService.getImport(response,this.appId)
+        .subscribe(result=>{
+          console.log(result);
+          this.getPages(this.appId,this.page-1,this.pageMaxItem);
+        })
+    }
   }
   dia(){
     for(let i in this.channelInfo){
@@ -309,7 +320,6 @@ export class WayManageComponent {
     let j=0;
     if(item.channelStatus==0){
       for(let i=0;i<this.channelInfo.length;i++){
-        debugger
         if(this.channelInfo[i].channelStatus==1){
           j++;
           if(j>8){

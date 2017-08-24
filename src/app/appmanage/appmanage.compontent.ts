@@ -153,7 +153,7 @@ export class AppManageComponent {
       //     this.url = result.url;
       //     location.href = this.url;
       //   })
-    window.open(SERVER_URL+"/home/ligang/Templates/template.xlsx","_blank");
+    window.open(SERVER_URL+"/template.xlsx");
   }
   categoryChange(){
     if(this.appCate=="实时流分析"){

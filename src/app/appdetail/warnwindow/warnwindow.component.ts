@@ -26,7 +26,9 @@ export class WarnWindowComponent{
   @Input() ruleList:any;
   status:string;
   appCate:string;
-  deleteIndex:number;
+  deleteIndex:number=0;
+  tip_title:string;
+  tip_content:string;
   cateId:number;
   @Output() indexChange: EventEmitter<any> = new EventEmitter();
 
@@ -160,13 +162,19 @@ export class WarnWindowComponent{
     if(this.appCate=='实时流分析'){
       this.warnService.editRuleSave(this.warnChannelId,this.ruleList.ruleId,this.ruleName,this.cateId,this.car,this.status)
         .subscribe(result=>{
+          console.log(result);
           if(result.text()=='Ok'){
             this.createIndex = 2;
             this.indexChange.emit(this.createIndex);
           }else if(result.text()=='No'){
             alert("通道未开启，请开启xx通道！");
           }else if(result.text()=='Error'){
-            alert("通道未开启成功！");
+            this.deleteIndex =1;
+            this.tip_title = '提示';
+            this.tip_content = '通道未开启成功！';
+          }else if(result.text()=='Close'){
+            this.createIndex = 2;
+            this.indexChange.emit(this.createIndex);
           }
         })
     }else{
@@ -178,11 +186,16 @@ export class WarnWindowComponent{
           }else if(result.text()=='No'){
             alert("通道未开启，请开启xx通道！");
           }else if(result.text()=='Error'){
-            alert("通道未开启成功！");
+            this.deleteIndex =1;
+            this.tip_title = '提示';
+            this.tip_content = '通道未开启成功！';
           }
         })
     }
 
+  }
+  deleteChange(event){
+    this.deleteIndex = event;
   }
   back(){
     this.createIndex = 2;

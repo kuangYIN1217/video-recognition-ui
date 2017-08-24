@@ -19,7 +19,8 @@
     <div class="channelContent">
         <div class="headerBtn">
           <a href="javascript:void(0)" class="btn pdl bgcg" (click)="addChannel()">添加</a>
-          <a href="javascript:void(0)" class="btn pdl bgcg" >导入</a>
+          <a href="javascript:void(0)" class="btn pdl bgcg" onclick="document.getElementById('file').click()">导入</a>
+          <input type="file" id="file" name="file" ng2FileSelect [uploader]="uploader" accept=".xlsx" (change)="selectedFileOnChanged($event)"/>
           <a href="javascript:void(0)" class="btn downExcel bgcg" (click)="download()">下载模板</a>
           <a href="javascript:void(0)" class="btn pdl bgcg" (click)="dia()">删除</a>
         </div>
@@ -141,7 +142,7 @@
       </div>
       <div class="delSys">
         <a href="javascript:void(0)" class="btn bgcg" (click)="delete()">确定</a>
-        <a href="javascript:void(0)" class="btn bgcg" (click)="cancel()">取消</a>
+        <a href="javascript:void(0)" class="btn bgcg" (click)="cancel()" style="margin-left: 16px">取消</a>
       </div>
     </div>
   </div>

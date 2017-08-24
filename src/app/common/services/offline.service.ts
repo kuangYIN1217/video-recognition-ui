@@ -45,6 +45,26 @@ export class OfflineService {
         }
       });
   }
+  update(ruleId,taskId,taskName,inputPath,fileName,fileNumber){
+    let path = "/api/updateOfflineTask";
+    let body = JSON.stringify({
+      "taskId": taskId,
+      "fileNames": fileName,
+      "fileNumber": fileNumber,
+      "inputPath": inputPath,
+      "taskName": taskName
+    });
+    let headers = this.getHeaders();
+    headers.append('alarmRuleIds',ruleId);
+    return this.http.put(this.SERVER_URL + path, body, {headers: headers})
+      .map((response: Response) => {
+        if (response) {
+          if (response.status == 200) {
+            return response;
+          }
+        }
+      });
+  }
   getWarnTask(id,page=0,size=10){
     let path = "/api/getAllOfflineTask/"+id+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
@@ -82,6 +102,15 @@ export class OfflineService {
       });
   }
   delete(id){
-
+    let path = "/api/deleteOfflineTask/"+id;
+    let headers = this.getHeaders();
+    return this.http.delete(this.SERVER_URL+path,{ headers: headers })
+      .map((response: Response) => {
+        if (response) {
+          if(response.status==200){
+            return response;
+          }
+        }
+      });
   }
 }

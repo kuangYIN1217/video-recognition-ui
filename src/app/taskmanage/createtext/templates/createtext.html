@@ -20,13 +20,20 @@
         <div class="createInfo" [ngClass]="{marginTop: checked==1}">
           <label class="fl upText"><span class="symbol">*</span>上传文件：</label>
           <div class="fl upload">
-            <span onclick="document.getElementById('file1').click()" class="browse btn">浏览...</span> <span class="notChoose">未选择文件</span>
+            <span onclick="document.getElementById('file1').click()" class="browse btn" *ngIf="taskTitle!='查看任务'">浏览...</span>
+            <span class="notChoose">未选择文件</span>
             <input type="file" id="file1" name="file1" ng2FileSelect multiple [uploader]="uploader" accept=".asx,.asf,.mpg,.wmv,.3gp,.mp4,.mov,.avi,.flv" (change)="selectedFileOnChanged($event)"/>
             <p>注：建议文件3-5个，每个文件大小不超过500M</p>
             <p>支持格式：asx\asf\mpg\wmv\3gp\mp4\mov\avi\flv </p>
           </div>
           <div class="createInfo">
-            <table class="uploadShow" *ngIf="showArr.length>0||lookIndex==1">
+            <table class="uploadShow" *ngIf="lookIndex==1">
+              <tr *ngFor="let item of showName;let i =index" class="uploadTr border">
+                <td class="uploadTxt paddingLeft">{{item}}<span>MB</span></td>
+                <td class="uploadImg paddingRight"><img src="../assets/appmanage/delete.png" class="imgMiddle" (click)="removeArr(i)" *ngIf="taskTitle=='修改任务'"/></td>
+              </tr>
+            </table>
+            <table class="uploadShow" *ngIf="showArr.length>0">
               <tr *ngFor="let item of showArr;let i =index" class="uploadTr" [ngClass]="{border: item.headers.flag==1}">
                 <td class="uploadTxt paddingLeft"><img src="../assets/appmanage/shangchuan.png" class="imgMiddle right" *ngIf="item.progress==0"/><img src="../assets/appmanage/shangchuan.png" class="imgMiddle right"  *ngIf="item.progress!=100&&(item.progress!=0)"/>{{item.file.name}}<span *ngIf="(item.file.size/1024)>=1024">（{{item.file.size/1024/1024|number:'1.2-2'}}）MB</span><span *ngIf="(item.file.size/1024)<1024">（{{item.file.size/1024|number:'1.2-2'}}）KB</span></td>
                 <td class="uploadImg paddingRight"><img src="../assets/appmanage/delete.png" class="imgMiddle" (click)="remove(i)"/></td>

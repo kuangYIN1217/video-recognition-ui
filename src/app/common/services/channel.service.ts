@@ -54,6 +54,16 @@ export class ChannelService {
         }
       });
   }
+  getImport(inputPath,id){
+    let path ="/api/applicationImport?inputPath=" + encodeURIComponent(inputPath) + "&applicationId=" + id;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers})
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
   getChannelType(){
     let path = "/api/getChannelType";
     let headers = this.getHeaders();

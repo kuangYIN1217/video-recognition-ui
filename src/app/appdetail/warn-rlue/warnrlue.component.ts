@@ -69,6 +69,7 @@ export class WarnRlueComponent{
     this.warnService.getAllRlues(id,page,size)
       .subscribe(result=>{
         this.rulesInfo = result.content;
+        console.log(this.rulesInfo);
         let page = new Page();
         page.pageMaxItem = result.size;
         page.curPage = result.number+1;
@@ -175,11 +176,15 @@ export class WarnRlueComponent{
     this.warnService.warnRuleSwitch(item.ruleId,item.alarmRuleStatus)
       .subscribe(reply =>{
         console.log(reply.text());
-        if(reply.text()=='No'){
+        if(reply.text().substring(0,2)=='No'){
           this.deleteIndex = 1;
           this.tip_title = "提示";
           this.tip_content = "该告警下没有开启通道！";
           this.tip_btn = "开启通道";
+        }else if(reply.text().substring(0,2)=='Er'){
+          this.deleteIndex = 1;
+          this.tip_title = "提示";
+          this.tip_content = "该告警下没有开启通道！";
         }
         this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
         //this.start_reply(reply);
