@@ -70,8 +70,9 @@
             <td class="pad">{{item.alarmTime}}</td>
             <td class="pad">{{item.duration}}</td>
             <td class="pad">
-              <img src="../assets/warn/chakan.png" class="mrgr"/>
-              <img src="../assets/warn/xiazai.png" class="mrgr" (click)="download(item)"/>
+              <img src="../assets/warn/chakan.png" class="mrgr" (click)="seePhoto()"/>
+              <img src="../assets/warn/xiazai.png" class="mrgr" onclick="document.getElementById('down').click()"/>
+              <a id="down" href="{{SERVER_URL}}/download/{{item.imagePath}}" download></a>
             </td>
             <td>{{item.alarmStatus}}</td>
             <td class="operation pad">
@@ -79,6 +80,12 @@
               <img src="../assets/warn/chuli--hui.png" class="mrgr" *ngIf="item.alarmStatus=='已处理'"/>
               <img src="../assets/warn/chakanxiangqing.png" class="mrgr" (click)="lookPhoto(item)"/>
             </td>
+            <div class="fangda" [style.display]="seeIndex==1?'':'none'">
+            <span>
+              <img src="{{SERVER_URL}}/download/{{item.imagePath}}"/>
+              <img src="../assets/appmanage/delete.png" class="close" (click)="close()"/>
+            </span>
+            </div>
           </tr>
         </table>
         <page [pageParams]="pageParams" (changeCurPage)="getPageData($event)" class="page"></page>
@@ -138,9 +145,5 @@
       </div>
     </div>
   </div>
-  <div class="fangda" [style.display]="seeIndex==1?'':'none'">
-    <span>
-      <!--<img src="{{SERVER_URL}}/download/{{detaillist?.imagePath}}"/>-->
-    </span>
-  </div>
+
 </div>

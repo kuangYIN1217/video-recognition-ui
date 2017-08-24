@@ -289,15 +289,7 @@ input{
   background: #eeeeee;
   color: #333333;
 }
-.fangda{
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  background-color: rgba(111, 111, 111, 0.3);
-  opacity: 1;
-}
+
 select:focus{
   border:1px solid #23a880 !important;
 }

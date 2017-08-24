@@ -132,6 +132,12 @@ export class WarnComponent{
     this.detaillist = item;
     console.log(this.detaillist);
   }
+  seePhoto(){
+    this.seeIndex = 1;
+  }
+  close(){
+    this.seeIndex = 0;
+  }
 /*  allSel(){
     for(var i in this.channelInfo){
       if(this.allFlag==false){
