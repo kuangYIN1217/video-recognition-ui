@@ -26,7 +26,7 @@ export class WarnService {
     return headers;
   }
   getAllWarn(id,page=0,size=10){
-      let path = "/api/findAlarmByApplication/"+id+"?page="+page+"$size="+size;
+      let path = "/api/findAlarmByApplication/"+id+"?page="+page+"&size="+size;
       let headers = this.getHeaders();
       return this.http.get(this.SERVER_URL+path, { headers : headers})
         .map((response: Response) => {

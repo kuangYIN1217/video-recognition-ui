@@ -77,7 +77,6 @@ export class PageComponent {
     //console.log('修改页码', pageNo);
     vm.pageParams.curPage = pageNo;
     vm.pageParams.pageMaxItem = this.pageMaxItem;
-
     vm.changeCurPage.emit(vm.pageParams);
   }
 }

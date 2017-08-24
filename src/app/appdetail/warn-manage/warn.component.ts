@@ -77,7 +77,7 @@ export class WarnComponent{
       format: 'YYYY-MM-DD hh:mm:ss'
     });
     this.route.queryParams.subscribe(params => {
-      if(JSON.stringify(params) != "{}"){
+      if(JSON.stringify(params) != "{}"&& !params.pageNo){
         console.log(params);
         this.taskName = params['taskName'];
         this.warnService.searchOffWarns(this.appId,this.taskName,-1,'全部',this.page-1,this.pageMaxItem,null,null)
@@ -153,12 +153,6 @@ export class WarnComponent{
   }
   getWarnList(result){
     this.allWarn = result.content;
-/*    for(let i=0;i<this.allWarn.length;i++){
-      if(this.allWarn[i].alarmStatus=='已处理'){
-
-      }
-    }*/
-    console.log(result);
     let page = new Page();
     page.pageMaxItem = result.size;
     page.curPage = result.number+1;
@@ -180,9 +174,10 @@ export class WarnComponent{
     }
     this.warnService.alarmExport(this.appId,this.appCate,this.alarmIds.substring(0,this.alarmIds.length-1),this.alarmIds.substring(0,this.sourcePaths.length-1))
      .subscribe(result=>{
+       console.log(result.text());
        let url = decodeURIComponent(result.text());
        console.log(SERVER_URL+url);
-       window.open(SERVER_URL+url);
+       window.open(SERVER_URL+"/"+url);
      })
   }
   searchWarn(){
