@@ -190,12 +190,12 @@ a{
 .appModel_content tr .one{
   color: #333333;
   font-size: 18px;
-  width:190px;
+  width:176px;
 }
 .appModel_content tr .two{
   color: #ff7c35;
   font-size: 24px;
-  width:50px;
+  width:60px;
   text-align: center;
   cursor: pointer;
   outline: none;
@@ -711,7 +711,7 @@ a{
   font-size: 14px;
   text-align: center;
   line-height: 30px;
-  width: 114px;
+  width: 80px;
   height:30px;
   background: #eeeeee;
   border-radius: 5px;

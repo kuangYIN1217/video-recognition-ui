@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import {WarnService} from "../../common/services/warn.service";
 import {Page} from "app/common/defs/resources";
 import {OfflineService} from "../../common/services/offline.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SERVER_URL} from "../../app.constants";
+import {nextTick} from "@types/q";
 declare var $:any;
 @Component({
   selector: 'apt-warn',
@@ -12,6 +13,7 @@ declare var $:any;
   providers: [WarnService,OfflineService]
 })
 export class WarnComponent{
+  SERVER_URL = SERVER_URL;
   allFlag:boolean=false;
   channelInfo:any[]=[];
   chanNameArr:any[]=[];
@@ -34,7 +36,9 @@ export class WarnComponent{
   allWarn:any[]=[];
   lookIndex:number=0;
   detaillist:any={};
-  constructor(private warnService: WarnService,private offlineService: OfflineService,private router:Router) {
+  seeIndex:number=0;
+  taskName:number;
+  constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
       this.getAllWarn(this.appId,this.page-1,this.pageMaxItem);
@@ -58,8 +62,29 @@ export class WarnComponent{
             this.warnTask = this.warnTaskArr[0].taskName;
           }
       })
-
     this.warnStatus = this.statusArr[0];
+  }
+  ngOnInit() {
+    $("#start").jeDate({
+      isinitVal:true,
+      festival: false,
+      format: 'YYYY-MM-DD hh:mm:ss',
+    });
+    $("#end").jeDate({
+      isinitVal:true,
+      festival: false,
+      format: 'YYYY-MM-DD hh:mm:ss'
+    });
+    this.route.queryParams.subscribe(params => {
+      if(JSON.stringify(params) != "{}"){
+        console.log(params);
+        this.taskName = params['taskName'];
+        this.warnService.searchOffWarns(this.appId,this.taskName,-1,'全部',this.page-1,this.pageMaxItem,null,null)
+          .subscribe(result=>{
+            this.getWarnList(result);
+          })
+      }
+    });
   }
   getAllWarn(id,page,size){
     this.warnService.getAllWarn(id,page,size)
@@ -70,6 +95,36 @@ export class WarnComponent{
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
+  }
+  allSel(){
+    for(var i in this.allWarn){
+      if(this.allFlag==false){
+        this.allWarn[i]['flag']=1;
+      }else{
+        this.allWarn[i]['flag']=2;
+      }
+    }
+    if(this.allFlag==false){
+      this.allFlag=true;
+    }else{
+      this.allFlag=false;
+    }
+  }
+  check(item){
+    if(item.flag!=1){
+      item.flag=1;
+    }else{
+      item.flag=2;
+      this.allFlag=false;
+    }
+    for(var i in this.allWarn){
+      if(this.allWarn['flag']!=1){
+        this.allFlag=false;
+        return;
+      }else{
+        this.allFlag=true;
+      }
+    }
   }
   lookPhoto(item){
     // this.router.navigate(['../warndetail'],{queryParams: {'detailList':item}});
@@ -105,11 +160,11 @@ export class WarnComponent{
   }
   getWarnList(result){
     this.allWarn = result.content;
-    for(let i=0;i<this.allWarn.length;i++){
+/*    for(let i=0;i<this.allWarn.length;i++){
       if(this.allWarn[i].alarmStatus=='已处理'){
 
       }
-    }
+    }*/
     console.log(result);
     let page = new Page();
     page.pageMaxItem = result.size;
@@ -118,10 +173,12 @@ export class WarnComponent{
     page.totalNum = result.totalElements;
     this.pageParams = page;
   }
-  download(item){
-    let path = "/api/file?filePath=" + item.imagePath;
-    let url = SERVER_URL + path;
-    window.open(url,"_blank");
+
+  thumbnail(item){
+
+  }
+  export(){
+
   }
   searchWarn(){
     for(let i=0;i<this.warnRlueArr.length;i++){
@@ -130,15 +187,21 @@ export class WarnComponent{
         this.ruleId = this.warnRlueArr[i].ruleId;
       }
     }
+    if(this.startTime==undefined){
+      this.startTime=null;
+    }
+    if(this.endTime==undefined){
+      this.endTime=null;
+    }
     if(this.appCate=='实时流分析'){
       console.log(this.appId);
       console.log(this.ruleId);
-      this.warnService.searchWarns(this.appId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null)
+      this.warnService.searchWarns(this.appId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime)
         .subscribe(result=>{
           this.getWarnList(result);
         })
     }else{
-      this.warnService.searchOffWarns(this.appId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null)
+      this.warnService.searchOffWarns(this.appId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime)
         .subscribe(result=>{
           this.getWarnList(result);
         })

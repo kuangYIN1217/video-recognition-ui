@@ -17,7 +17,7 @@
     </div>
     <div class="task_body">
       <div class="body_btn">
-        <a href="#" class="btn delete fr">删除</a>
+        <a href="#" class="btn delete fr" onclick="return false" (click)="dia()">删除</a>
         <a href="#" class="btn add fr" onclick="return false" (click)="add()">新增</a>
       </div>
       <div class="task_content">
@@ -50,12 +50,13 @@
               <a class="operationBtn start" *ngIf="item.taskStatus=='进行中'" (click)="runChannel(item)"></a>
               <a class="operationBtn look" (click)="look(item)"></a>
               <a class="operationBtn edit" *ngIf="item.taskStatus!='进行中'" (click)="edit(item)"></a>
-              <a class="operationBtn unedit" *ngIf="item.taskStatus=='进行中'" (click)="edit(item)"></a>
+              <a class="operationBtn unedit" *ngIf="item.taskStatus=='进行中'"></a>
             </td>
           </tr>
         </table>
         <page [pageParams]="pageParams" (changeCurPage)="getPageData($event)" class="page"></page>
       </div>
+      <app-tips [style.display]="deleteIndex==1?'':'none'" [tip_title]="tip_title" [tip_content]="tip_content" [deleteIndex]="deleteIndex" [tip_btn]="tip_btn"  (deleteChange)="deleteChange($event)" (deletedChange)="deletedChange($event)"></app-tips>
     </div>
   </div>
 </div>

@@ -34,19 +34,15 @@
       <div class="search-time">
         <div class="search-info no-margin">
           <label>告警时间：</label>
-          <select [(ngModel)]="startTime" (ngModelChange)="startTime=$event;" class="time">
-            <!--<option *ngFor="let item of statusArr" value="{{item}}">{{item}}</option>-->
-          </select>
+          <input type="text" id="start" class="time" readonly placeholder="请选择时间" [(ngModel)]="startTime" (ngModelChange)="startTime=$event;"/>
           <span>至</span>
-          <select [(ngModel)]="endTime" (ngModelChange)="endTime=$event;" class="time-select" >
-            <!--<option *ngFor="let item of statusArr" value="{{item}}">{{item}}</option>-->
-          </select>
+          <input type="text" id="end" class="time" readonly placeholder="请选择时间" [(ngModel)]="endTime" (ngModelChange)="endTime=$event;" style="margin-left: 0"/>
         </div>
         <a href="#" onclick="return false" class="btn bgco" (click)="searchWarn()">查询</a>
       </div>
     </div>
     <div class="warn-content">
-      <a href="#" onclick="return false" class="btn bgcg">导出</a>
+      <a href="#" onclick="return false" class="btn bgcg" (click)="export()">导出</a>
       <div class="table-margin">
         <table class="channelTable" cellspacing="0">
           <tr>
@@ -127,19 +123,24 @@
       </div>
       <div class="detail_info">
         <span class="info_name">告警快照：</span>
-        <span class="info_content"><img src="{{SERVER_URL}}/api/file?filePath={{detaillist.imagePath}}"/></span>
+        <span class="info_content"><img src="{{SERVER_URL}}/download/{{detaillist?.imagePath}}" (click)="thumbnail(detaillist)"/></span>
       </div>
       <div class="detail_info">
         <span class="info_name"></span>
-        <span class="info_content"><a href="#" onclick="return false" class="downPhoto" (click)="download(detaillist)">下载快照</a></span>
+        <span class="info_content"><a href="{{SERVER_URL}}/download/{{detaillist?.imagePath}}" class="downPhoto" download>下载快照</a></span>
       </div>
       <div class="detail_info">
         <span class="info_name"></span>
-        <span class="info_content">
-          <a href="#" onclick="return false" class="btn bgco save" (click)="save(detaillist)">保存</a>
+        <span class="info_content" [ngClass]="{marginLeft: detaillist.alarmStatus=='已处理'}">
+          <a href="#" onclick="return false" class="btn bgco save" (click)="save(detaillist)" *ngIf="detaillist.alarmStatus=='未处理'">保存</a>
           <a href="#" onclick="return false" class="btn bgcg cancel" (click)="cancel()">取消</a>
         </span>
       </div>
     </div>
+  </div>
+  <div class="fangda" [style.display]="seeIndex==1?'':'none'">
+    <span>
+      <!--<img src="{{SERVER_URL}}/download/{{detaillist?.imagePath}}"/>-->
+    </span>
   </div>
 </div>

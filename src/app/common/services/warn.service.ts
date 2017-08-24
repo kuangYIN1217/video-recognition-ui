@@ -155,6 +155,24 @@ export class WarnService {
         }
       });
   }
+  alarmExport(appId,appCate,alarmIds,sourcePath){
+    let path = "/api/alarmExport";
+    let body = JSON.stringify({
+      "applicationId":appId,
+      "applicationType":appCate,
+      "alarmIds":alarmIds,
+      "sourcePaths":sourcePath
+    });
+    let headers = this.getHeaders();
+    return this.http.post(this.SERVER_URL+path,body,{ headers: headers })
+      .map((response: Response) => {
+        if (response) {
+          if(response.status==200){
+            return response;
+          }
+        }
+      });
+  }
   deleteRule(id){
     let path = "/api/deleteAlarmRule/"+id;
     let headers = this.getHeaders();
@@ -223,7 +241,7 @@ export class WarnService {
     let path = "/api/AlarmRuleSwitch";
     let body = JSON.stringify({
       "ruleId":id,
-      "ruleStatus":status
+      "alarmRuleStatus":status
     });
     let headers = this.getHeaders();
     return this.http.put(this.SERVER_URL + path,body,{headers: headers})

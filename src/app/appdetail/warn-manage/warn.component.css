@@ -49,7 +49,7 @@
   margin-left: 24px;
 }
 
-.search-info select{
+.search-info select,.search-info input{
   width:14.5vw;
   height:36px;
   box-sizing: border-box;
@@ -58,8 +58,13 @@
   border-radius: 5px;
   margin-left: 1.67vw;
   margin-right: 6px;
-  background: url("../../../assets/appdetail/way.manage/selectDown.png") no-repeat right 6px center;
   color: #666666;
+}
+.search-info select{
+  background: url("../../../assets/appdetail/way.manage/selectDown.png") no-repeat right 6px center;
+}
+.search-info input{
+  background: url("../../../assets/warn/rili.png") no-repeat right 6px center;
 }
 .search-time{
   overflow: hidden;
@@ -212,4 +217,7 @@ select option{
 input{
   outline: none;
   padding-left: 8px;
+}
+.marginLeft{
+  padding-left: 96px !important;
 }

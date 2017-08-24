@@ -40,6 +40,8 @@ export class CreateTextComponent {
   temArr:any[]=[];
   warnRuleArr:any[]=[];
   lookIndex:number=0;
+  showName:any[]=[];
+  taskId:number;
   constructor(private warnService: WarnService,private offlineService: OfflineService,private router:Router,private route: ActivatedRoute) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -109,6 +111,9 @@ export class CreateTextComponent {
       this.uploader.queue[j].upload();
     }
   }
+  removeArr(i){
+    this.showName.splice(i,1);
+  }
   remove(i){
     this.showArr.splice(i,1);
     if(this.uploader.queue[i].isUploading){
@@ -139,23 +144,32 @@ export class CreateTextComponent {
   }
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
+      if(JSON.stringify(params) != "{}"){
+        debugger
         this.taskTitle = params['taskTitle'];
-        if(this.taskTitle!='新建任务'){
-          this.taskName = params['taskName'];
-          this.warnRule = '';
-          this.inputPath = params['inputPath'];
-          this.fileNames = params['fileNames'];
+        this.taskName = params['taskName'];
+        this.warnRule = '';
+        this.inputPath = params['inputPath'];
+        this.fileNames = params['fileNames'];
+        if(params['alarmRules']){
           this.warnRuleArr = JSON.parse(params['alarmRules']);
-          for(let i=0;i<this.warnRuleArr.length;i++){
-            if(this.warnRule==''){
-              this.warnRule = this.warnRuleArr[0].ruleName;
-            }else{
-              this.warnRule += ','+this.warnRuleArr[i].ruleName;
-            }
-          }
-          this.lookIndex = 1;
-          console.log(this.uploader.queue);
         }
+        this.taskId = params['taskId'];
+        for(let i=0;i<this.warnRuleArr.length;i++){
+          if(this.warnRule==''){
+            this.warnRule = this.warnRuleArr[0].ruleName;
+          }else{
+            this.warnRule += ','+this.warnRuleArr[i].ruleName;
+          }
+        }
+        if(this.fileNames){
+          this.showName = this.fileNames.split(',');
+        }
+        console.log(this.showName);
+        this.lookIndex = 1;
+
+      }
+
     });
 
   }
@@ -164,7 +178,7 @@ export class CreateTextComponent {
 }
 
   create(){
-/*    if(!this.taskName){
+    if(!this.taskName){
       this.required = 1;
       return false;
     }else{
@@ -181,7 +195,7 @@ export class CreateTextComponent {
       return false;
     }else{
       this.required = 0;
-    }*/
+    }
 /*    for(let i in this.warnChanArr){
       if(this.ruleId==undefined){
         this.ruleId = this.warnChanArr[0].ruleId;
@@ -192,6 +206,46 @@ export class CreateTextComponent {
     //console.log(this.ruleId);
     this.fileNumber = this.uploader.queue.length;
     this.offlineService.create(this.appId,this.warnRuleId,this.taskName,this.inputPath,this.fileName,this.fileNumber)
+      .subscribe(result=>{
+        console.log(result);
+        this.router.navigate(['../taskmanage']);
+      })
+  }
+  update(){
+    console.log(this.warnRuleId);
+    let tem:any[]=[];
+    let temp:any[]=[];
+    debugger
+    tem = this.inputPath.split(',');
+    for(let i=0;i<tem.length;i++){
+      this.inputPathArr.unshift(tem[i]);
+    }
+    temp = this.fileNames.split(',');
+    for(let i=0;i<temp.length;i++){
+      this.fileNameArr.unshift(temp[i]);
+    }
+    this.inputPath = this.inputPathArr.join(',');
+    this.fileName = this.fileNameArr.join(',');
+    this.fileNumber = this.inputPathArr.length;
+    if(!this.taskName){
+      this.required = 1;
+      return false;
+    }else{
+      this.required = 0;
+    }
+    if(!this.warnRule){
+      this.required = 1;
+      return false;
+    }else{
+      this.required = 0;
+    }
+    if(this.inputPathArr.length==0){
+      this.required = 1;
+      return false;
+    }else{
+      this.required = 0;
+    }
+    this.offlineService.update(this.warnRuleId,this.taskId,this.taskName,this.inputPath,this.fileName,this.fileNumber)
       .subscribe(result=>{
         console.log(result);
         this.router.navigate(['../taskmanage']);

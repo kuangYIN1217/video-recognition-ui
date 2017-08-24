@@ -176,6 +176,18 @@
 .look{
   background: url('../../../assets/warn/chakan.png') no-repeat center;
 }
-@media (min-width:1200px) and (max-width:1680px) {
-
+select{
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-left: 8px;
 }
+select option{
+  padding-left: 8px;
+}
+input{
+  outline: none;
+  padding-left: 8px;
+}
+

@@ -21,6 +21,10 @@ export class TaskManageComponent {
   pageParams = new Page();
   status:string;
   alarmStatusArr:any[]=["全部","完成","进行中","未启动","暂停"];
+  deleteIndex:number=0;
+  tip_title:string;
+  tip_content:string;
+  deleteIdArr:any[]=[];
   constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -78,7 +82,7 @@ export class TaskManageComponent {
   }
   runChannel(item){
     if(item.taskStatus!='进行中'){
-      this.status='开始';
+      this.status='进行中';
     }else if(item.taskStatus=='进行中'){
       this.status='暂停';
     }
@@ -107,26 +111,45 @@ export class TaskManageComponent {
   }
   edit(item){
     console.log(item);
-    this.router.navigate(['../createtext'],{queryParams: {'taskName':item.taskName,'alarmRules':JSON.stringify(item.alarmRules),'inputPath':item.inputPath,'taskTitle':"修改任务",'fileNames':item.fileNames}});
+    this.router.navigate(['../createtext'],{queryParams: {'taskId':item.taskId,'taskName':item.taskName,'alarmRules':JSON.stringify(item.alarmRules),'inputPath':item.inputPath,'taskTitle':"修改任务",'fileNames':item.fileNames}});
   }
   look(item){
-    this.router.navigate(['../createtext'],{queryParams: {'taskName':item.taskName,'alarmRules':item.alarmRules,'inputPath':item.inputPath,'taskTitle':"查看任务",'fileNames':item.fileNames}});
+    this.router.navigate(['../warnmanage'],{queryParams: {'taskName':item.taskName}});
   }
-/*  dia(){
+
+  dia(){
     for(let i in this.taskList){
-      if(this.taskList[i]['flag'] == '1'&&this.taskList[i].alarmRuleStatus=='进行中'){
+      if(this.taskList[i]['flag'] == '1'&&this.taskList[i].taskStatus=='进行中'){
         this.deleteIndex =1;
         this.tip_title = '提示';
-        this.tip_content = '该告警不可删除！';
+        this.tip_content = '该任务不可删除！';
         return false;
-      }else if(this.taskList[i]['flag'] == '1'&&this.taskList[i].alarmRuleStatus=='关闭'){
-        this.deleteIndex =1;
-        this.tip_title = '删除';
-        this.tip_content = '是否删除该告警！';
+      }else if(this.taskList[i]['flag'] == '1'&&this.taskList[i].taskStatus!='进行中'){
         this.deleteIdArr.push(this.taskList[i]);
       }
     }
-  }*/
+    this.deleteIndex =1;
+    this.tip_title = '删除';
+    this.tip_content = '是否删除该任务！';
+  }
+  deleteChange(event){
+    this.deleteIndex = event;
+  }
+  deletedChange(event){
+    console.log(event);
+    if(event==1){
+      for(let i in this.deleteIdArr){
+        console.log(this.deleteIdArr[i]);
+        this.offlineService.delete(this.deleteIdArr[i].taskId)
+          .subscribe(result=>{
+            console.log(result);
+            //if(result.text().substring(0,2)=='Ok'){
+              //this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
+            //}
+          })
+      }
+    }
+  }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
   }
