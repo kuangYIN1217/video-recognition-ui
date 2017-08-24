@@ -4,7 +4,6 @@ import {Page} from "app/common/defs/resources";
 import {OfflineService} from "../../common/services/offline.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SERVER_URL} from "../../app.constants";
-import {nextTick} from "@types/q";
 declare var $:any;
 @Component({
   selector: 'apt-warn',
