@@ -145,7 +145,6 @@ export class CreateTextComponent {
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       if(JSON.stringify(params) != "{}"){
-        debugger
         this.taskTitle = params['taskTitle'];
         this.taskName = params['taskName'];
         this.warnRule = '';

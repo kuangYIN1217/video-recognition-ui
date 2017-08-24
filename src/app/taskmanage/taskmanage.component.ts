@@ -50,6 +50,13 @@ export class TaskManageComponent {
         this.pageParams = page;
       })
   }
+  output(item){
+    let ruleName ='';
+    for(let i=0;i<item.length;i++){
+      ruleName += item[i].ruleName + ',';
+    }
+    return ruleName.substring(0,ruleName.length-1);
+  }
   allSel(){
     for(var i in this.taskList){
       if(this.allFlag==false){
@@ -142,10 +149,7 @@ export class TaskManageComponent {
         console.log(this.deleteIdArr[i]);
         this.offlineService.delete(this.deleteIdArr[i].taskId)
           .subscribe(result=>{
-            console.log(result);
-            //if(result.text().substring(0,2)=='Ok'){
-              //this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
-            //}
+            this.getAllTask(this.appId,this.page-1,this.pageMaxItem);
           })
       }
     }

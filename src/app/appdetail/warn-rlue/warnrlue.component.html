@@ -43,22 +43,22 @@
               <img src="../assets/appdetail/way.manage/unchecked.png" *ngIf="allFlag==false" class="middle" (click)="allSel()"/>
               <img src="../assets/appdetail/way.manage/checked.png" *ngIf="allFlag==true" class="middle" (click)="allSel()"/>
             </th>
-            <th class="order">规则名称</th>
-            <th class="name">告警对象</th>
-            <th class="channelAddr">对象特征</th>
-            <th class="protocol">告警状态</th>
-            <th class="operation pad">操作</th>
+            <th class="rule">规则名称</th>
+            <th class="alarm">告警对象</th>
+            <th class="feature">对象特征</th>
+            <th class="status">告警状态</th>
+            <th class="operation">操作</th>
           </tr>
           <tr *ngFor="let item of rulesInfo let i=index;">
-            <td>
+            <td class="checked">
               <img src="../assets/appdetail/way.manage/unchecked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag!=1"/>
               <img src="../assets/appdetail/way.manage/checked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag==1"/>
             </td>
-            <td class="pad">{{item.ruleName}}</td>
-            <td class="pad">{{item.recognitionCategor==null?'无':item.recognitionCategor.name}}</td>
-            <td class="pad">{{item.targetFeature==''?'无':item.targetFeature}}</td>
-            <td class="pad">{{item.alarmRuleStatus}}</td>
-            <td class="operation pad">
+            <td>{{item.ruleName}}</td>
+            <td>{{item.recognitionCategor==null?'无':item.recognitionCategor.name}}</td>
+            <td>{{item.targetFeature==''?'无':item.targetFeature}}</td>
+            <td>{{item.alarmRuleStatus}}</td>
+            <td>
               <a class="operationBtn stop" *ngIf="item.alarmRuleStatus=='开启'" (click)="runRule(item)"></a>
               <a class="operationBtn start" *ngIf="item.alarmRuleStatus=='关闭'" (click)="runRule(item)"></a>
               <a class="operationBtn look" (click)="lookRule(item)"></a>

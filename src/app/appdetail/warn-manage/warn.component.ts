@@ -4,12 +4,13 @@ import {Page} from "app/common/defs/resources";
 import {OfflineService} from "../../common/services/offline.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SERVER_URL} from "../../app.constants";
+import {WebSocketService} from "../../common/services/web-socket.service";
 declare var $:any;
 @Component({
   selector: 'apt-warn',
   templateUrl: './warn.component.html',
   styleUrls: ['./warn.component.css'],
-  providers: [WarnService,OfflineService]
+  providers: [WarnService,OfflineService,WebSocketService]
 })
 export class WarnComponent{
   SERVER_URL = SERVER_URL;
@@ -39,9 +40,20 @@ export class WarnComponent{
   taskName:number;
   alarmIds:string='';
   sourcePaths:string='';
-  constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
+  deleteIndex:number=0;
+  tip_title:string;
+  tip_content:string;
+  constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
+    if(this.appCate=="实时流分析"){
+/*      this.websocket.connect().then(() => {
+       this.websocket.subscribe('/job/' + jobPath, (data) => {
+       // console.log(data);
+       //this.updateChart(data);
+       });
+       })*/
+    }
       this.getAllWarn(this.appId,this.page-1,this.pageMaxItem);
       this.warnService.getWarnRules(this.appId)
         .subscribe(result=>{
@@ -87,6 +99,9 @@ export class WarnComponent{
       }
     });
   }
+/*  ngOnDestroy() {
+    this.websocket.stopWebsocket();
+  }*/
   getAllWarn(id,page,size){
     this.warnService.getAllWarn(id,page,size)
       .subscribe(result=>{
@@ -133,6 +148,9 @@ export class WarnComponent{
     this.detaillist = item;
     console.log(this.detaillist);
   }
+  thumbnail(){
+    this.seeIndex = 2;
+}
   seePhoto(){
     this.seeIndex = 1;
   }
@@ -145,13 +163,21 @@ export class WarnComponent{
   handling(item){
     this.warnService.handlingWarn(item.alarmId,this.appId)
       .subscribe(result=>{
-        this.getWarnList(result);
+        this.getAllWarn(this.appId,this.page-1,this.pageMaxItem);
       })
+  }
+  deleteChange(event){
+    this.deleteIndex = event;
   }
   lookHandling(item){
     item.alarmStatus = '已处理';
   }
   getWarnList(result){
+/*    let tem:any[]=[];
+    for(let i=0;i<result.content.length;i++){
+      tem.push(result.content[i].createTime);
+    }
+    tem.sort();*/
     this.allWarn = result.content;
     let page = new Page();
     page.pageMaxItem = result.size;
@@ -160,10 +186,6 @@ export class WarnComponent{
     page.totalNum = result.totalElements;
     this.pageParams = page;
   }
-
-  thumbnail(item){
-
-  }
   export(){
     for(let i in this.allWarn){
       if(this.allWarn[i]['flag'] == '1'){
@@ -171,6 +193,12 @@ export class WarnComponent{
           this.alarmIds += this.allWarn[i].alarmId+',';
         this.sourcePaths+=this.allWarn[i].imagePath+',';
       }
+    }
+    if(this.alarmIds==''||this.sourcePaths==''){
+      this.deleteIndex = 1;
+      this.tip_title = "提示";
+      this.tip_content = "请选择任务！";
+      return false
     }
     this.warnService.alarmExport(this.appId,this.appCate,this.alarmIds.substring(0,this.alarmIds.length-1),this.alarmIds.substring(0,this.sourcePaths.length-1))
      .subscribe(result=>{

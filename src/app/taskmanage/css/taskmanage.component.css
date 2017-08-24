@@ -93,6 +93,11 @@ label{
 .taskTable tr:nth-child(even){
   background: #eeeeee;
 }
+.taskTable td{
+  text-overflow:ellipsis;
+  overflow: hidden;
+  white-space:nowrap;
+}
 .middle{
   display: inline-block;
   vertical-align: middle;
@@ -161,4 +166,25 @@ select option{
 }
 input{
   padding-left: 8px;
+}
+.checked{
+  width:10%;
+}
+.name{
+  width:15%;
+}
+.rule{
+  width:15%;
+}
+.file{
+  width:15%;
+}
+.run{
+  width:15%;
+}
+.progress{
+  width:15%;
+}
+.operation{
+  width:15%;
 }

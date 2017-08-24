@@ -148,6 +148,11 @@
 .channelTable tr:nth-child(even){
   background: #eeeeee;
 }
+.channelTable td{
+  text-overflow:ellipsis;
+  overflow: hidden;
+  white-space:nowrap;
+}
 .middle{
   display: inline-block;
   vertical-align: middle;
@@ -189,5 +194,24 @@ select option{
 input{
   outline: none;
   padding-left: 8px;
+}
+.checked{
+  padding-left: 20px;
+  width:10%;
+}
+.rule{
+  width:18%;
+}
+.alarm{
+  width:18%;
+}
+.feature{
+  width:18%;
+}
+.status{
+  width:18%;
+}
+.operation{
+  width:18%;
 }
 

@@ -104,12 +104,10 @@ export class OfflineService {
   delete(id){
     let path = "/api/deleteOfflineTask/"+id;
     let headers = this.getHeaders();
-    return this.http.delete(this.SERVER_URL+path,{ headers: headers })
+    return this.http.delete(this.SERVER_URL+path, { headers : headers})
       .map((response: Response) => {
-        if (response) {
-          if(response.status==200){
-            return response;
-          }
+        if (response && response.json()) {
+          return response.json();
         }
       });
   }
