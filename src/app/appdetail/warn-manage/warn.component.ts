@@ -37,6 +37,8 @@ export class WarnComponent{
   detaillist:any={};
   seeIndex:number=0;
   taskName:number;
+  alarmIds:string='';
+  sourcePaths:string='';
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -137,20 +139,6 @@ export class WarnComponent{
   close(){
     this.seeIndex = 0;
   }
-/*  allSel(){
-    for(var i in this.channelInfo){
-      if(this.allFlag==false){
-        this.channelInfo[i]['flag']=1;
-      }else{
-        this.channelInfo[i]['flag']=2;
-      }
-    }
-    if(this.allFlag==false){
-      this.allFlag=true;
-    }else{
-      this.allFlag=false;
-    }
-  }*/
   getPageData(paraParam) {
     this.getAllWarn(this.appId,paraParam.curPage-1,paraParam.pageMaxItem);
   }
@@ -183,7 +171,19 @@ export class WarnComponent{
 
   }
   export(){
-
+    for(let i in this.allWarn){
+      if(this.allWarn[i]['flag'] == '1'){
+          console.log(this.allWarn[i]);
+          this.alarmIds += this.allWarn[i].alarmId+',';
+        this.sourcePaths+=this.allWarn[i].imagePath+',';
+      }
+    }
+    this.warnService.alarmExport(this.appId,this.appCate,this.alarmIds.substring(0,this.alarmIds.length-1),this.alarmIds.substring(0,this.sourcePaths.length-1))
+     .subscribe(result=>{
+       let url = decodeURIComponent(result.text());
+       console.log(SERVER_URL+url);
+       window.open(SERVER_URL+url);
+     })
   }
   searchWarn(){
     for(let i=0;i<this.warnRlueArr.length;i++){

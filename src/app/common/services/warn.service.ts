@@ -156,15 +156,9 @@ export class WarnService {
       });
   }
   alarmExport(appId,appCate,alarmIds,sourcePath){
-    let path = "/api/alarmExport";
-    let body = JSON.stringify({
-      "applicationId":appId,
-      "applicationType":appCate,
-      "alarmIds":alarmIds,
-      "sourcePaths":sourcePath
-    });
+    let path = "/api/alarmExport?applicationId="+appId+"&applicationType="+appCate+"&alarmIds="+alarmIds+"&sourcePaths="+sourcePath
     let headers = this.getHeaders();
-    return this.http.post(this.SERVER_URL+path,body,{ headers: headers })
+    return this.http.get(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {
         if (response) {
           if(response.status==200){
