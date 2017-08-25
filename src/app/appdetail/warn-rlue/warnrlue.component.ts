@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {WarnService} from "../../common/services/warn.service";
 import {Page} from "app/common/defs/resources";
+import {calc_height} from "../../common/ts/calc_height";
 declare var $:any;
 @Component({
   selector: 'apt-rlue',
@@ -59,6 +60,9 @@ export class WarnRlueComponent{
     this.warnStatus = this.statusArr[0];
     this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
   }
+  ngOnInit() {
+    calc_height(document.getElementById('warn-content'));
+  }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
   }
@@ -68,7 +72,16 @@ export class WarnRlueComponent{
   getAllRlues(id,page,size){
     this.warnService.getAllRlues(id,page,size)
       .subscribe(result=>{
-        this.rulesInfo = result.content;
+        let tem1:any[]=[];
+        let tem2:any[]=[];
+        for(let i=0;i<result.content.length;i++){
+          if(result.content[i].alarmRuleStatus=='开启'){
+            tem1.push(result.content[i]);
+          }else{
+            tem2.push(result.content[i]);
+          }
+        }
+        this.rulesInfo = tem1.concat(tem2);
         console.log(this.rulesInfo);
         let page = new Page();
         page.pageMaxItem = result.size;
@@ -184,7 +197,7 @@ export class WarnRlueComponent{
         }else if(reply.text().substring(0,2)=='Er'){
           this.deleteIndex = 1;
           this.tip_title = "提示";
-          this.tip_content = "该告警下没有开启通道！";
+          this.tip_content = reply.text().substring(5);
         }
         this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
         //this.start_reply(reply);

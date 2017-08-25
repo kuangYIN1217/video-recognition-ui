@@ -8,6 +8,7 @@ import {AppManageService} from "../../common/services/appmanage.service";
 import {ActivatedRoute , Router} from '@angular/router'
 import {SERVER_URL} from "../../app.constants";
 import {FileItem, FileUploader} from "ng2-file-upload";
+import {calc_height} from "../../common/ts/calc_height";
 declare var $:any;
 @Component({
   selector: 'way-manage',
@@ -82,6 +83,7 @@ export class WayManageComponent {
     itemAlias: "file",
   });
   ngOnInit() {
+    calc_height(document.getElementById('channelContent'));
     this.route.params.subscribe((param) => {
       if(JSON.stringify(param) != "{}"){
         console.log(param);

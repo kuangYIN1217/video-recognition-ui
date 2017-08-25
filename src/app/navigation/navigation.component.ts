@@ -58,7 +58,6 @@ export class NavigationComponent {
     } else {
       this.online = true;
     }
-
     if (this.location.isCurrentPathEqualTo('/login') || this.location.isCurrentPathEqualTo('') ) {
       this.focusTab = 0;
       // this.needhide = 0;
@@ -77,7 +76,7 @@ export class NavigationComponent {
     } else if (this.location.isCurrentPathEqualTo('/technologysupport') ) {
       this.focusTab = 4;
       // this.needhide = 0;
-    }else if (this.location.isCurrentPathEqualTo('/taskmanage') ||　this.location.isCurrentPathEqualTo('/createtext') ) {
+    }else if (this.location.isCurrentPathEqualTo('/taskmanage')||this.location.path().match(/\/createtext/)){
       this.focusTab = 5;
       // this.needhide = 0;
     }else if (this.location.isCurrentPathEqualTo('/warnmanage')||this.location.isCurrentPathEqualTo('/warnrlue')){

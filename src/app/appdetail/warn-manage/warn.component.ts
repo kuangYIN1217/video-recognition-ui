@@ -4,13 +4,13 @@ import {Page} from "app/common/defs/resources";
 import {OfflineService} from "../../common/services/offline.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SERVER_URL} from "../../app.constants";
-import {WebSocketService} from "../../common/services/web-socket.service";
+import {calc_height} from "app/common/ts/calc_height";
 declare var $:any;
 @Component({
   selector: 'apt-warn',
   templateUrl: './warn.component.html',
   styleUrls: ['./warn.component.css'],
-  providers: [WarnService,OfflineService,WebSocketService]
+  providers: [WarnService,OfflineService]
 })
 export class WarnComponent{
   SERVER_URL = SERVER_URL;
@@ -43,18 +43,20 @@ export class WarnComponent{
   deleteIndex:number=0;
   tip_title:string;
   tip_content:string;
-  constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router,private websocket: WebSocketService) {
+  interval: any;
+  constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
+    this.getAllWarn(this.appId,this.page-1,this.pageMaxItem);
     if(this.appCate=="实时流分析"){
-/*      this.websocket.connect().then(() => {
-       this.websocket.subscribe('/job/' + jobPath, (data) => {
-       // console.log(data);
-       //this.updateChart(data);
-       });
-       })*/
+      this.interval = setInterval(() => {
+        this.getAllWarn(this.appId,this.page-1,this.pageMaxItem);
+      }, 10000);
+    }else{
+      this.interval = setInterval(() => {
+        this.getAllWarn(this.appId,this.page-1,this.pageMaxItem);
+      }, 3600000);
     }
-      this.getAllWarn(this.appId,this.page-1,this.pageMaxItem);
       this.warnService.getWarnRules(this.appId)
         .subscribe(result=>{
           this.warnRlueArr = result.content;
@@ -77,7 +79,11 @@ export class WarnComponent{
       })
     this.warnStatus = this.statusArr[0];
   }
+  ngOnDestroy(){
+    clearInterval(this.interval);
+  }
   ngOnInit() {
+    calc_height(document.getElementById('warn-content'));
     $("#start").jeDate({
       isinitVal:true,
       festival: false,
@@ -99,9 +105,6 @@ export class WarnComponent{
       }
     });
   }
-/*  ngOnDestroy() {
-    this.websocket.stopWebsocket();
-  }*/
   getAllWarn(id,page,size){
     this.warnService.getAllWarn(id,page,size)
       .subscribe(result=>{
@@ -173,18 +176,43 @@ export class WarnComponent{
     item.alarmStatus = '已处理';
   }
   getWarnList(result){
-/*    let tem:any[]=[];
+/*    debugger
+    let tem:any[]=[];
+    let time:string;
     for(let i=0;i<result.content.length;i++){
-      tem.push(result.content[i].createTime);
+      time = this.compareTime(result.content[i].createTime,result.content[i+1].createTime);
+      if(time==result.content[i].createTime){
+        tem.push(result.content[i]);
+      }else{
+        tem.push(result.content[i+1]);
+      }
     }
-    tem.sort();*/
+    this.allWarn = tem;*/
     this.allWarn = result.content;
+    console.log(this.allWarn);
     let page = new Page();
     page.pageMaxItem = result.size;
     page.curPage = result.number+1;
     page.totalPage = result.totalPages;
     page.totalNum = result.totalElements;
     this.pageParams = page;
+  }
+  compareTime(a,b){
+    let tem1:any[]=[];
+    let tem2:any[]=[];
+    tem1 = a.substring(0,10).split('-');
+    tem2 = b.substring(0,10).split('-');
+    a = tem1[1]+'-'+tem1[2]+'-'+tem1[0]+' '+a.substring(10,19);
+    b = tem2[1]+'-'+tem2[2]+'-'+tem2[0]+' '+b.substring(10,19);
+    var result = (Date.parse(b)-Date.parse(a))/3600/1000;
+    if(result<0){
+      //alert(b<a);
+      return a;
+    }else if(result>0){
+      return b;
+    }else if(result==0){
+      return a;
+    }
   }
   export(){
     for(let i in this.allWarn){

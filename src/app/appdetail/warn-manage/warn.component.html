@@ -41,9 +41,9 @@
         <a href="#" onclick="return false" class="btn bgco" (click)="searchWarn()">查询</a>
       </div>
     </div>
-    <div class="warn-content">
+    <div class="warn-content" id="warn-content">
       <a href="#" onclick="return false" class="btn bgcg" (click)="export()">导出</a>
-      <div class="table-margin">
+      <div class="table-margin" >
         <table class="channelTable" cellspacing="0">
           <tr>
             <th class="checked">
@@ -73,7 +73,7 @@
             <td>
               <img src="../assets/warn/chakan.png" class="mrgr" (click)="seePhoto()"/>
               <img src="../assets/warn/xiazai.png" class="mrgr" onclick="document.getElementById('down').click()"/>
-              <a id="down" href="{{SERVER_URL}}/download/{{item.imagePath}}" download></a>
+              <a id="down" href="{{SERVER_URL}}/download/{{item?.imagePath}}" download></a>
             </td>
             <td>{{item.alarmStatus}}</td>
             <td>
@@ -83,7 +83,7 @@
             </td>
             <div class="fangda" [style.display]="seeIndex==1?'':'none'">
             <span>
-              <img src="{{SERVER_URL}}/download/{{item.imagePath}}" class="jietu"/>
+              <img src="{{SERVER_URL}}/download/{{item?.imagePath}}" class="jietu"/>
               <img src="../assets/appmanage/delete.png" class="close" (click)="close()"/>
             </span>
             </div>

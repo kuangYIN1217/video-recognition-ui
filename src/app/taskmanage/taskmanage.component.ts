@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {OfflineService} from "../common/services/offline.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Page} from "app/common/defs/resources";
+import {calc_height} from "../common/ts/calc_height";
 declare var $:any;
 @Component({
   selector: 'task-manage',
@@ -33,6 +34,9 @@ export class TaskManageComponent {
     this.getAllTask(this.appId,this.page-1,this.pageMaxItem);
 
     this.alarmStatus = this.alarmStatusArr[0];
+  }
+  ngOnInit() {
+    calc_height(document.getElementById('task_body'));
   }
   getPageData(paraParam) {
     this.getAllTask(this.appId,paraParam.curPage-1,paraParam.pageMaxItem);
