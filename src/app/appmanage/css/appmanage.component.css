@@ -199,6 +199,7 @@ a{
   text-align: center;
   cursor: pointer;
   outline: none;
+  width: auto;
 }
 .sceneInput{
   text-indent: 6px;
