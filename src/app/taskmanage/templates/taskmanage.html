@@ -43,7 +43,7 @@
             <td>{{output(item.alarmRules)}}</td>
             <td>{{item.fileNumber}}</td>
             <td>{{item.taskStatus}}</td>
-            <td style="position: relative;"><span class="mouse" (mouseenter)="running(item)" (mouseleave)="stopped(item)">{{item.percent|percent:'.2'}}</span>
+            <td style="position: relative;"><span class="mouse" (mouseenter)="running(item)" (mouseleave)="stopped(item)">{{getPercent(item.percent)}}</span>
               <div class="percentBox" *ngIf="item.show==1" [ngClass]="{border: item.show==1}">
                 <div class="percent"  *ngFor="let item of percent">
                   <p>{{item.fileName}}<span>(10M)</span></p>

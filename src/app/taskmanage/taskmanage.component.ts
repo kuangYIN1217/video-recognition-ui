@@ -35,6 +35,9 @@ export class TaskManageComponent {
     console.log(this.appId);
     console.log(this.appCate);
     this.getAllTask(this.appId,this.page-1,this.pageMaxItem);
+    this.interval = setInterval(() => {
+      this.getAllTask(this.appId,this.page-1,this.pageMaxItem);
+    }, 10000);
     this.alarmStatus = this.alarmStatusArr[0];
   }
   ngOnInit() {
@@ -51,16 +54,15 @@ export class TaskManageComponent {
     this.offlineService.getWarnTask(id,page,size)
       .subscribe(result=>{
         this.taskList = result.content;
-/*        for(let i=0;i<result.content.length;i++){
+        for(let i=0;i<result.content.length;i++){
           if(result.content[i].taskStatus=='进行中'){
             this.websocket.connect().then(() => {
               this.websocket.subscribe('/taskPercent/' + result.content[i].taskId,(data) =>{
                 this.percent = data.offlineFiles;
-                console.log(this.percent);
               });
             })
           }
-        }*/
+        }
         console.log(result.content);
         let page = new Page();
         page.pageMaxItem = result.size;
@@ -78,8 +80,6 @@ export class TaskManageComponent {
         console.log(item.taskId);
         this.websocket.subscribe('/taskPercent/' + item.taskId,(data) =>{
           this.percent = data.offlineFiles;
-
-          //console.log(this.percent);
         });
       })
     }
@@ -156,6 +156,9 @@ export class TaskManageComponent {
       .subscribe(result=>{
         this.taskList = result.content;
       })
+  }
+  getPercent(item){
+    return (item*100).toFixed(2)+'%';
   }
   add(){
     this.router.navigate(['../createtext'],{queryParams: {'taskTitle':"新建任务"}});
