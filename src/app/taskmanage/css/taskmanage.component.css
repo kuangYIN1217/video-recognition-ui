@@ -188,3 +188,37 @@ input{
 .operation{
   width:15%;
 }
+.percentBox{
+  width:250px;
+  color: #666666;
+}
+.progressouter{
+  width:200px;
+  height:10px;
+  background: #999999;
+  border:1px solid #b5b5b5;
+  border-radius: 10px;
+  box-shadow:0px 5px 5px #818181 inset;
+  clear: both;
+  text-align: center;
+  color: #ffffff;
+  position: relative;
+  box-sizing: border-box;
+}
+.progressouter span{
+  position: absolute;
+  z-index: 999;
+  color: #ffffff;
+  display: inline-block;
+  height:15px;
+  line-height: 15px;
+}
+.progressinner{
+  /*background: #ed8942;*/
+  background: linear-gradient(rgb(236,148,81),rgb(235,123,53));
+  border-radius: 10px;
+  height:10px;
+  /*box-shadow:0px 2px 2px #ccc inset;*/
+  margin:0 1px;
+  box-sizing: border-box;
+}

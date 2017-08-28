@@ -116,12 +116,15 @@ export class WarnWindowComponent{
     }
     console.log(this.warnChannelId);
   }*/
-  checkedRlues(){
-    if(this.checked==0){
-      this.checked=1;
-    }else{
-      this.checked=0;
-    }
+  checkedRlues(e){
+    var oev = e || event;
+    this.checked=1;
+    oev.preventDefault();
+    oev.stopPropagation();
+    return false;
+  }
+  hide(){
+    this.checked = 0;
   }
   create(){
     if(this.car==undefined){
@@ -167,7 +170,9 @@ export class WarnWindowComponent{
             this.createIndex = 2;
             this.indexChange.emit(this.createIndex);
           }else if(result.text()=='No'){
-            alert("通道未开启，请开启xx通道！");
+            this.deleteIndex =1;
+            this.tip_title = '提示';
+            this.tip_content = '通道未开启，请开启通道！';
           }else if(result.text()=='Error'){
             this.deleteIndex =1;
             this.tip_title = '提示';
@@ -184,7 +189,9 @@ export class WarnWindowComponent{
             this.createIndex = 2;
             this.indexChange.emit(this.createIndex);
           }else if(result.text()=='No'){
-            alert("通道未开启，请开启xx通道！");
+            this.deleteIndex =1;
+            this.tip_title = '提示';
+            this.tip_content = '通道未开启，请开启通道！';
           }else if(result.text()=='Error'){
             this.deleteIndex =1;
             this.tip_title = '提示';

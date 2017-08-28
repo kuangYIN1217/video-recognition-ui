@@ -62,7 +62,10 @@ export class AlarmRluesComponent {
       }
     }
   }
-
+  stopPropagetion(e){
+    var oev = e || event;
+    oev.stopPropagation();
+  }
   getSrc(item) {
     return ('../assets/alarmrlues/' + (item.flag == 1 ? 'checked.png' : 'unchecked.png'));
   }

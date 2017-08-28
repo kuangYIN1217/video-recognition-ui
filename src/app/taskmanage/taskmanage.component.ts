@@ -3,12 +3,13 @@ import {OfflineService} from "../common/services/offline.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Page} from "app/common/defs/resources";
 import {calc_height} from "../common/ts/calc_height";
+import {WebSocketService} from "../common/services/web-socket.service";
 declare var $:any;
 @Component({
   selector: 'task-manage',
   styleUrls: ['./css/taskmanage.component.css'],
   templateUrl: './templates/taskmanage.html',
-  providers: [OfflineService]
+  providers: [OfflineService,WebSocketService]
 })
 export class TaskManageComponent {
   appId:string;
@@ -26,7 +27,7 @@ export class TaskManageComponent {
   tip_title:string;
   tip_content:string;
   deleteIdArr:any[]=[];
-  constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router) {
+  constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
     console.log(this.appId);
@@ -38,6 +39,9 @@ export class TaskManageComponent {
   ngOnInit() {
     calc_height(document.getElementById('task_body'));
   }
+  ngOnDestroy(){
+    this.websocket.stopWebsocket();
+  }
   getPageData(paraParam) {
     this.getAllTask(this.appId,paraParam.curPage-1,paraParam.pageMaxItem);
   }
@@ -45,6 +49,17 @@ export class TaskManageComponent {
     this.offlineService.getWarnTask(id,page,size)
       .subscribe(result=>{
         this.taskList = result.content;
+        for(let i=0;i<result.content.length;i++){
+          if(result.content[i].taskStatus=='进行中'){
+            this.websocket.connect().then(() => {
+              this.websocket.subscribe('/taskPercent/' + result.content[i].taskId, (data) =>{
+                console.log(data);
+                //this.updateChart(data);
+              });
+            })
+          }
+        }
+
         console.log(result.content);
         let page = new Page();
         page.pageMaxItem = result.size;

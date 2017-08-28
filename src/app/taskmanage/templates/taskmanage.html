@@ -43,7 +43,18 @@
             <td>{{output(item.alarmRules)}}</td>
             <td>{{item.fileNumber}}</td>
             <td>{{item.taskStatus}}</td>
-            <td>{{item.precent}}</td>
+            <td>{{item.percent==""?'0.00':item.percent|percent:'.2'}}
+<!--              <div class="percentBox">
+                <div class="percent">
+                  <p>视频名称<span>(10M)</span></p>
+                  <div class="progressouter">
+                    &lt;!&ndash;<span>100%</span>&ndash;&gt;
+                    <div class="progressinner"></div>
+                  </div>
+                </div>
+              </div>-->
+              <!--[ngStyle]="{width: item.progress + '%'}"-->
+            </td>
             <td>
               <a class="operationBtn rerun" *ngIf="item.taskStatus=='完成'" (click)="runChannel(item)"></a>
               <a class="operationBtn stop" *ngIf="item.taskStatus!='进行中'" (click)="runChannel(item)"></a>

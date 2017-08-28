@@ -258,11 +258,14 @@ export class CreateTextComponent {
     this.warnRuleId = event.join(',');
     console.log(this.warnRuleId);
   }
-  checkedRlues(){
-    if(this.checked==0){
-      this.checked=1;
-    }else{
-      this.checked=0;
-    }
+  checkedRlues(e){
+    var oev = e || event;
+    this.checked=1;
+    oev.preventDefault();
+    oev.stopPropagation();
+    return false;
+  }
+  hide(){
+    this.checked = 0;
   }
 }
