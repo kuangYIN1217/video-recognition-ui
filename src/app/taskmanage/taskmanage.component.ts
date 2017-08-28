@@ -27,19 +27,21 @@ export class TaskManageComponent {
   tip_title:string;
   tip_content:string;
   deleteIdArr:any[]=[];
+  percent:any[]=[];
+  interval: any;
   constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
     console.log(this.appId);
     console.log(this.appCate);
     this.getAllTask(this.appId,this.page-1,this.pageMaxItem);
-
     this.alarmStatus = this.alarmStatusArr[0];
   }
   ngOnInit() {
     calc_height(document.getElementById('task_body'));
   }
   ngOnDestroy(){
+    clearInterval(this.interval);
     this.websocket.stopWebsocket();
   }
   getPageData(paraParam) {
@@ -49,17 +51,16 @@ export class TaskManageComponent {
     this.offlineService.getWarnTask(id,page,size)
       .subscribe(result=>{
         this.taskList = result.content;
-        for(let i=0;i<result.content.length;i++){
+/*        for(let i=0;i<result.content.length;i++){
           if(result.content[i].taskStatus=='进行中'){
             this.websocket.connect().then(() => {
-              this.websocket.subscribe('/taskPercent/' + result.content[i].taskId, (data) =>{
-                console.log(data);
-                //this.updateChart(data);
+              this.websocket.subscribe('/taskPercent/' + result.content[i].taskId,(data) =>{
+                this.percent = data.offlineFiles;
+                console.log(this.percent);
               });
             })
           }
-        }
-
+        }*/
         console.log(result.content);
         let page = new Page();
         page.pageMaxItem = result.size;
@@ -68,6 +69,24 @@ export class TaskManageComponent {
         page.totalNum = result.totalElements;
         this.pageParams = page;
       })
+  }
+  running(item){
+    this.percent = [];;
+    if(item.taskStatus=='进行中'){
+      item.show = 1;
+      this.websocket.connect().then(() => {
+        console.log(item.taskId);
+        this.websocket.subscribe('/taskPercent/' + item.taskId,(data) =>{
+          this.percent = data.offlineFiles;
+
+          //console.log(this.percent);
+        });
+      })
+    }
+  }
+  stopped(item){
+    item.show = 2;
+    this.websocket.stopWebsocket();
   }
   output(item){
     let ruleName ='';
@@ -111,9 +130,15 @@ export class TaskManageComponent {
       this.status='进行中';
     }else if(item.taskStatus=='进行中'){
       this.status='暂停';
+      this.websocket.stopWebsocket();
     }
     this.offlineService.offlineSwitch(item.taskId,this.status)
-      .subscribe(reply => this.start_reply(reply));
+      .subscribe(reply =>{
+/*        this.interval = setInterval(() => {
+          this.getAllTask(this.appId,this.page-1,this.pageMaxItem);
+        }, 3000);*/
+        this.start_reply(reply)
+      } );
   }
   start_reply(reply){
     if(reply.status==200){

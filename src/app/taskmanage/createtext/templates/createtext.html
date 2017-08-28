@@ -1,5 +1,5 @@
 <div class="container" (click)="hide()">
-  <div class="createTask">
+  <div class="createTask" id="createTask">
     <div class="taskTitle">
       <span>{{taskTitle}}</span>
     </div>
@@ -28,8 +28,8 @@
           </div>
           <div class="createInfo">
             <table class="uploadShow" *ngIf="lookIndex==1">
-              <tr *ngFor="let item of showName;let i =index" class="uploadTr border">
-                <td class="uploadTxt paddingLeft">{{item}}<span>MB</span></td>
+              <tr *ngFor="let item of showFile;let i =index" class="uploadTr border">
+                <td class="uploadTxt paddingLeft">{{item.name}}<span>（{{item.size}}）</span></td>
                 <td class="uploadImg paddingRight"><img src="../assets/appmanage/delete.png" class="imgMiddle" (click)="removeArr(i)" *ngIf="taskTitle=='修改任务'"/></td>
               </tr>
             </table>

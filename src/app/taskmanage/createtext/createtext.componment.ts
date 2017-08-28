@@ -4,6 +4,7 @@ import {FileUploader, FileItem} from "ng2-file-upload";
 import {WarnService} from "../../common/services/warn.service";
 import {OfflineService} from "../../common/services/offline.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {calc_height} from "../../common/ts/calc_height";
 declare var $:any;
 @Component({
   selector: 'create-text',
@@ -42,6 +43,10 @@ export class CreateTextComponent {
   lookIndex:number=0;
   showName:any[]=[];
   taskId:number;
+  fileSize:any[]=[];
+  showFile:any[]=[];
+  fileObj:any={};
+  alarmId:string;
   constructor(private warnService: WarnService,private offlineService: OfflineService,private router:Router,private route: ActivatedRoute) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -143,13 +148,16 @@ export class CreateTextComponent {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
   }
   ngOnInit() {
+    calc_height(document.getElementById('createTask'));
     this.route.queryParams.subscribe(params => {
       if(JSON.stringify(params) != "{}"){
         this.taskTitle = params['taskTitle'];
         this.taskName = params['taskName'];
         this.warnRule = '';
-        this.inputPath = params['inputPath'];
-        this.fileNames = params['fileNames'];
+        this.alarmId = '';
+        //this.inputPath = params['inputPath'];
+        //console.log(this.inputPath);
+        //this.fileNames = params['fileNames'];
         if(params['alarmRules']){
           this.warnRuleArr = JSON.parse(params['alarmRules']);
         }
@@ -160,13 +168,38 @@ export class CreateTextComponent {
           }else{
             this.warnRule += ','+this.warnRuleArr[i].ruleName;
           }
+          if(this.alarmId==''){
+            this.alarmId = this.warnRuleArr[0].ruleId;
+          }else{
+            this.alarmId += ','+this.warnRuleArr[i].ruleId;
+          }
         }
+/*        console.log(this.fileNames);
         if(this.fileNames){
           this.showName = this.fileNames.split(',');
-        }
-        console.log(this.showName);
+        }*/
+    if(this.taskId){
+        this.offlineService.getSize(this.taskId)
+          .subscribe(result=>{
+            console.log(result);
+            let name:string='';
+            let path:string='';
+            for(let i=0;i<result.fileSize.length;i++){
+              this.fileObj = {};
+              this.fileObj.name = result.offlineTasks.offlineFiles[i].fileName;
+              name +=result.offlineTasks.offlineFiles[i].fileName+',';
+              this.fileObj.inputPath = result.offlineTasks.offlineFiles[i].inputPath;
+              path +=result.offlineTasks.offlineFiles[i].inputPath+',';
+              this.fileObj.size = result.fileSize[i];
+              this.showFile.push(this.fileObj);
+            }
+            this.fileNames = name.substring(0,name.length-1);
+            this.inputPath = path.substring(0,path.length-1);
+            console.log(this.fileNames);
+            console.log(this.inputPath);
+          })
+}
         this.lookIndex = 1;
-
       }
 
     });
@@ -204,7 +237,7 @@ export class CreateTextComponent {
     }*/
     //console.log(this.ruleId);
     this.fileNumber = this.uploader.queue.length;
-    this.offlineService.create(this.appId,this.warnRuleId,this.taskName,this.inputPath,this.fileName,this.fileNumber)
+    this.offlineService.create(this.appId,this.alarmId,this.taskName,this.inputPath,this.fileName,this.fileNumber)
       .subscribe(result=>{
         console.log(result);
         this.router.navigate(['../taskmanage']);

@@ -111,4 +111,14 @@ export class OfflineService {
         }
       });
   }
+  getSize(taskId){
+    let path = "/api/findOfflineTask/"+taskId;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers})
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
 }
