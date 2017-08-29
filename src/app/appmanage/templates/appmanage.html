@@ -157,6 +157,7 @@
               </table>
               <a href="#" class="downLoadBtn createbtn importDown" onclick="return false" (click)="download()" *ngIf="uploader.queue.length>0">下载导入模板</a>
             </div>
+            <span class="must padleft" [style.display]="(excel==0)&&(requiredFile==1)?'':'none'">请上传通道</span>
           </div>
 
 <!--          <div class="createInfo">

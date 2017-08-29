@@ -56,6 +56,7 @@ export class AppManageComponent {
   deleteIndex:number=0;
   tip_title:string;
   tip_content:string;
+  requiredFile:number=0;
   sceneArr:any[]=[{"name":"道路识别",'flag':1}, {"name":"故障检测"}, {"name":"字母图形分类"}, {"name":"图形识别"}, {"name":"雷暴检测"}, {"name":"神经区域分割"}, {"name":"大数据回归"}];
   systemArr:any[]=[{"name":"ios",'flag':1},{"name":"Android"},{"name":"Windows"},{"name":"HTML5"},{"name":"Linux"},{"name":"其他"}];
   constructor(private appManageService: AppManageService,private router:Router) {
@@ -210,13 +211,19 @@ export class AppManageComponent {
     this.appManageService.createApp(appName,appCate,null,this.importPath)
       .subscribe(result=>{
         if(result.map.num[0]>0){
-          console.log(typeof result.map.num[0]);
+          //console.log(typeof result.map.num[0]);
           this.deleteIndex =1;
           this.tip_title = '提示';
           this.tip_content = '无效数据，第'+(result.map.num[0]+1)+'行导入失败！';
           return
         }else {
-          console.log(result.map.set.length);
+          //console.log(result.map.set.length);
+          if(result.map.set.length==0){
+            this.deleteIndex =1;
+            this.tip_title = '提示';
+            this.tip_content = '没有导入条通道！';
+            return
+          }
           this.deleteIndex =1;
           this.tip_title = '提示';
           this.tip_content = '成功导入'+result.map.set.length+'条通道！';
@@ -276,6 +283,13 @@ export class AppManageComponent {
         this.createInput();
       }else if(this.excel==0){
         this.required = 0;
+        if(this.uploader.queue.length==0||!this.uploader.queue){
+          this.importPath = '';
+          this.requiredFile = 1;
+          return false;
+        }else{
+          this.requiredFile = 0;
+        }
         this.createImport();
       }
     }else if(this.appCate=='离线文件分析'){

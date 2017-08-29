@@ -345,7 +345,7 @@ export class WayManageComponent {
     }else{
       console.log("Start Failed!");
     }
-    this.getPages(this.appId,this.page-1,this.pageMaxItem);
+    //this.getPages(this.appId,this.page-1,this.pageMaxItem);
   }
   cancel(){
     this.addDialog = 0;
