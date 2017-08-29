@@ -73,7 +73,7 @@ export class TaskManageComponent {
       })
   }
   running(item){
-    this.percent = [];;
+    this.percent = [];
     if(item.taskStatus=='进行中'){
       item.show = 1;
       this.websocket.connect().then(() => {
