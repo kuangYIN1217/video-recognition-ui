@@ -306,7 +306,7 @@ export class VideoAnalysisComoponent {
     } else {
       //
       this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getSelectedRecognitions()).subscribe(rep => {
-        console.log(rep)
+        console.log(rep);
         this.d_video_list[this.s_selected_grid -1].recognitionCategory = rep[0].recognitionCategory;
       });
     }
@@ -353,7 +353,7 @@ export class VideoAnalysisComoponent {
   }
   get_ckplayer_index (index: number) {
     if (this.d_video_list && this.d_video_list.length >= index) {
-      return this.d_video_list[index-1].channelOrder
+      return this.d_video_list[index-1].channelName
     }
     return null;
   }
