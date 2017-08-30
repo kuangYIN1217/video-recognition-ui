@@ -350,9 +350,13 @@
 .radio{
   display: inline-block;
   padding-left: 34px;
+  font-size: 0px;
 }
 .radio img{
   margin-right: 10px;
+}
+.fontSize{
+  font-size: 14px;
 }
 .middle{
   display: inline-block;
@@ -383,4 +387,18 @@
 }
 a{
   text-decoration: none;
+}
+select{
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-left: 8px;
+}
+select option{
+  padding-left: 8px;
+}
+input{
+  outline: none;
+  padding-left: 8px;
 }

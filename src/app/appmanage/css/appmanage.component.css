@@ -109,9 +109,9 @@ a{
 }
 .appModel{
   border:1px solid #ccc;
-  -webkit-box-shadow:0 0 10px #999999;
-  -moz-box-shadow:0 0 10px #999999;
-  box-shadow:0 0 10px #999999;
+  -webkit-box-shadow:0 0 10px #ccc;
+  -moz-box-shadow:0 0 10px #ccc;
+  box-shadow:0 0 10px #ccc;
   width:454px;
   float: left;
   font-size: 14px;
@@ -139,9 +139,8 @@ a{
   line-height: 58px;
   margin-top: 26px;
   margin-left: 66px;
-  font-size: 16px;
+  font-size: 18px;
   color: #333333;
-  font-weight: bold;
   text-overflow:ellipsis;
   overflow: hidden;
   white-space:nowrap;

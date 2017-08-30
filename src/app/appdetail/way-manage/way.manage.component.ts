@@ -224,7 +224,7 @@ export class WayManageComponent {
         console.log(this.channelInfo[i].channelStatus);
         this.delSysDialog =1;
         return false;
-      }else{
+      }else if(this.channelInfo[i]['flag'] == '1'&&this.channelInfo[i].channelStatus=='0'){
       this.delChannel(this.channelInfo[i].channelId);
       }
     }
