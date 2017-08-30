@@ -60,13 +60,12 @@ export class WayManageComponent {
   tip_title:string;
   tip_content:string;
   importPath:string;
+  init_flag:boolean = true;
   constructor(private appManageService: AppManageService,private channelService: ChannelService , private route: ActivatedRoute , private router: Router) {
 /*    this.route.params.subscribe((param) => {
       console.log(param);
     })*/
     this.appId = window.sessionStorage.getItem("applicationId");
-    console.log(this.appId);
-    this.getPages(this.appId,this.page-1,this.pageMaxItem);
     this.appManageService.getProtocol()
       .subscribe(protocols=>{
         this.protocols=protocols;
@@ -76,14 +75,7 @@ export class WayManageComponent {
         this.channelTypes=result;
       });
     this.status = this.statusArr[0];
-  }
-  public uploader:FileUploader = new FileUploader({
-    url: SERVER_URL+"/api/upload",
-    method: "POST",
-    itemAlias: "file",
-  });
-  ngOnInit() {
-    calc_height(document.getElementById('channelContent'));
+    console.log(this.status);
     this.route.params.subscribe((param) => {
       if(JSON.stringify(param) != "{}"){
         console.log(param);
@@ -93,6 +85,18 @@ export class WayManageComponent {
         //this.status = param;
       }
     });
+    if(this.status=='全部'){
+      this.getPages(this.appId,this.page-1,this.pageMaxItem);
+    }
+  }
+  public uploader:FileUploader = new FileUploader({
+    url: SERVER_URL+"/api/upload",
+    method: "POST",
+    itemAlias: "file",
+  });
+  ngOnInit() {
+    calc_height(document.getElementById('channelContent'));
+
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
@@ -179,6 +183,11 @@ export class WayManageComponent {
     window.open(SERVER_URL+"/template.xlsx");
   }
   selectedFileOnChanged(event:any) {
+    console.log(this.uploader.queue);
+    debugger
+    if(this.uploader.queue.length==0){
+      return
+    }else{
     this.uploader.queue[0].upload(); // 开始上传
     this.uploader.queue[0].onSuccess = (response: any, status: any, headers: any) => {
       console.log(response);
@@ -189,22 +198,26 @@ export class WayManageComponent {
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = '无效数据，第'+(result.map.num[0]+1)+'行导入失败！';
-            return
+            this.uploader.queue[0].remove();
           }else {
             //console.log(result.map.set.length);
             if(result.map.set.length==0){
               this.deleteIndex =1;
               this.tip_title = '提示';
               this.tip_content = '没有导入条通道！';
+              this.uploader.queue[0].remove();
               return
             }
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = '成功导入'+result.map.set.length+'条通道！';
+            this.uploader.queue[0].remove();
+            console.log(this.uploader.queue);
           }
           this.getPages(this.appId,this.page-1,this.pageMaxItem);
         })
     }
+  }
   }
   dia(){
     for(let i in this.channelInfo){
