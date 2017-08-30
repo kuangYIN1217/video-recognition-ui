@@ -9,7 +9,7 @@ export class TipsComponent{
   @Input() tip_title:string;
   @Input() tip_content:string;
   @Input() deleteIndex:number;
-  @Input() tip_btn:number;
+  @Input() tip_btn:string;
   @Output() deleteChange: EventEmitter<any> = new EventEmitter();
   @Output() deletedChange: EventEmitter<any> = new EventEmitter();
   deleted:number=0;

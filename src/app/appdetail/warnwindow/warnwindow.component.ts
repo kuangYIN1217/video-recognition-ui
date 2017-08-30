@@ -30,6 +30,9 @@ export class WarnWindowComponent{
   tip_title:string;
   tip_content:string;
   cateId:number;
+  chanRequired1:number=0;
+  chanRequired2:number=0;
+  title:string='已选通道';
   @Output() indexChange: EventEmitter<any> = new EventEmitter();
 
   constructor(private warnService: WarnService) {
@@ -127,6 +130,20 @@ export class WarnWindowComponent{
     this.checked = 0;
   }
   create(){
+    if(this.ruleName==''){
+      this.chanRequired1=1
+      return false;
+    }else{
+      this.chanRequired1=0;
+    }
+    if(this.appCate=='实时流分析'){
+      if(this.warnChannel==''){
+        this.chanRequired2=1;
+        return false;
+      }else{
+        this.chanRequired2=0;
+      }
+    }
     if(this.car==undefined){
       this.car=null;
     }

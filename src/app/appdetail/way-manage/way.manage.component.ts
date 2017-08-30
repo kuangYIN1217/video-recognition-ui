@@ -96,7 +96,6 @@ export class WayManageComponent {
   });
   ngOnInit() {
     calc_height(document.getElementById('channelContent'));
-
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
@@ -133,22 +132,28 @@ export class WayManageComponent {
         if(result.content){
           this.channelInfo=result.content;
           console.log(this.channelInfo);
+          let page = new Page();
+          page.pageMaxItem = result.size;
+          page.curPage = result.number+1;
+          page.totalPage = result.totalPages;
+          page.totalNum = result.totalElements;
+          this.pageParams = page;
         }
       })
   }
-  searchChannel(){
-    this.channelService.searchChannel(this.appId,this.search,this.page-1,this.pageMaxItem)
-      .subscribe(result=>{
-        console.log(result);
-        this.channelInfo = result.content;
-        let page = new Page();
-        page.pageMaxItem = result.size;
-        page.curPage = result.number+1;
-        page.totalPage = result.totalPages;
-        page.totalNum = result.totalElements;
-        this.pageParams = page;
-      });
-  }
+  // searchChannel(){
+  //   this.channelService.searchChannel(this.appId,this.search,this.page-1,this.pageMaxItem)
+  //     .subscribe(result=>{
+  //       console.log(result);
+  //       this.channelInfo = result.content;
+  //       let page = new Page();
+  //       page.pageMaxItem = result.size;
+  //       page.curPage = result.number+1;
+  //       page.totalPage = result.totalPages;
+  //       page.totalNum = result.totalElements;
+  //       this.pageParams = page;
+  //     });
+  // }
   getPageData(paraParam) {
     this.getPages(this.appId,paraParam.curPage-1,paraParam.pageMaxItem);
   }

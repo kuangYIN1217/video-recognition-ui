@@ -47,6 +47,8 @@ export class WarnRlueComponent{
       this.warnService.getWarnChannel(this.appId)
         .subscribe(channel=>{
           this.warnChanArr=channel;
+          this.warnChanArr.unshift({"channelId":-1,"channelName":'全部'});
+          console.log(this.warnChanArr);
           if(this.warnChanArr.length>0)
           this.warnChan = this.warnChanArr[0].channelName;
         });
@@ -54,8 +56,11 @@ export class WarnRlueComponent{
     this.warnService.getWarnObj()
       .subscribe(result=>{
         this.warnObjArr=result;
-        if(this.warnObjArr)
+        this.warnObjArr.unshift({"cateId":-1, "name": "全部"});
+        console.log(this.warnObjArr);
+        if(this.warnObjArr){
           this.warnRule = this.warnObjArr[0].name;
+        }
       });
     this.warnStatus = this.statusArr[0];
     this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
@@ -72,7 +77,7 @@ export class WarnRlueComponent{
   getAllRlues(id,page,size){
     this.warnService.getAllRlues(id,page,size)
       .subscribe(result=>{
-        let tem1:any[]=[];
+/*        let tem1:any[]=[];
         let tem2:any[]=[];
         for(let i=0;i<result.content.length;i++){
           if(result.content[i].alarmRuleStatus=='开启'){
@@ -81,7 +86,8 @@ export class WarnRlueComponent{
             tem2.push(result.content[i]);
           }
         }
-        this.rulesInfo = tem1.concat(tem2);
+        this.rulesInfo = tem1.concat(tem2);*/
+        this.rulesInfo = result.content;
         console.log(this.rulesInfo);
         let page = new Page();
         page.pageMaxItem = result.size;
@@ -90,6 +96,13 @@ export class WarnRlueComponent{
         page.totalNum = result.totalElements;
         this.pageParams = page;
       })
+  }
+  filterName(arr){
+    let temName = '';
+    for(let i=0;i<arr.length;i++){
+      temName += arr[i].channelName + ',';
+    }
+    return temName.substring(0,temName.length-1);
   }
   allSel(){
     for(var i in this.rulesInfo){
@@ -143,11 +156,13 @@ export class WarnRlueComponent{
         this.deleteIndex =1;
         this.tip_title = '提示';
         this.tip_content = '该告警不可删除！';
+        this.tip_btn = "";
         return false;
       }else if(this.rulesInfo[i]['flag'] == '1'&&this.rulesInfo[i].alarmRuleStatus=='关闭'){
         this.deleteIndex =1;
         this.tip_title = '删除';
         this.tip_content = '是否删除该告警！';
+        this.tip_btn = "";
         this.deleteIdArr.push(this.rulesInfo[i]);
       }
     }
@@ -197,6 +212,7 @@ export class WarnRlueComponent{
         }else if(reply.text().substring(0,2)=='Er'){
           this.deleteIndex = 1;
           this.tip_title = "提示";
+          this.tip_btn = "";
           this.tip_content = reply.text().substring(5);
         }
         this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);

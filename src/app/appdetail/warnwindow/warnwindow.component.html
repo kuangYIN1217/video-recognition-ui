@@ -13,9 +13,10 @@
       <div class="createInfo" *ngIf="appCate=='实时流分析'">
         <label>告警通道：</label>
         <input type="text" required readonly name="warnChannel" [(ngModel)]="warnChannel"/>
+        <span class="must" [style.display]="chanRequired2==1?'':'none'">必填字段</span>
         <img src="../assets/createtext/jia.png" class="jia" (click)="checkedRlues()" *ngIf="warn_title!='任务详情'"/>
         <img src="../assets/createtext/jia.png" class="jia" *ngIf="warn_title=='任务详情'"/>
-        <alarm-rlues [style.display]="checked==1?'':'none'"  width="280px" margin="20px 10px 0 20px" paddingRight="10px" [warnChanArr]="warnChanArr" [warnChanChecked]="warnChanChecked" (chanChange)="chanChange($event)" (chanChangeId)="chanChangeId($event)"></alarm-rlues>
+        <alarm-rlues [style.display]="checked==1?'':'none'"  width="280px" margin="20px 10px 0 20px" paddingRight="10px" [title]="title" [warn_title]="warn_title" [warnChanArr]="warnChanArr" [warnChanChecked]="warnChanChecked" (chanChange)="chanChange($event)" (chanChangeId)="chanChangeId($event)"></alarm-rlues>
       </div>
 <!--      <div class="info">
         <label>告警通道：</label>

@@ -129,6 +129,7 @@
 .channelTable{
   width:100%;
   border:1px solid #d3d3d3;
+  table-layout:fixed;
 }
 .channelTable th{
   color: #333333;

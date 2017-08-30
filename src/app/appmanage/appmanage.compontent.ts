@@ -57,6 +57,7 @@ export class AppManageComponent {
   tip_title:string;
   tip_content:string;
   requiredFile:number=0;
+  createFlag:boolean=true;
   sceneArr:any[]=[{"name":"道路识别",'flag':1}, {"name":"故障检测"}, {"name":"字母图形分类"}, {"name":"图形识别"}, {"name":"雷暴检测"}, {"name":"神经区域分割"}, {"name":"大数据回归"}];
   systemArr:any[]=[{"name":"ios",'flag':1},{"name":"Android"},{"name":"Windows"},{"name":"HTML5"},{"name":"Linux"},{"name":"其他"}];
   constructor(private appManageService: AppManageService,private router:Router) {
@@ -197,6 +198,7 @@ export class AppManageComponent {
     }
     this.appManageService.createApp(appName,appCate,this.arr,null)
       .subscribe(result=>{
+        this.createFlag = true;
         console.log(result);
         this.createApp='manage';
         this.getAllInfo();
@@ -210,6 +212,7 @@ export class AppManageComponent {
     let appCate = this.appCate;
     this.appManageService.createApp(appName,appCate,null,this.importPath)
       .subscribe(result=>{
+        this.createFlag = true;
         if(result.map.num[0]>0){
           //console.log(typeof result.map.num[0]);
           this.deleteIndex =1;
@@ -274,6 +277,7 @@ export class AppManageComponent {
     }
   }
   create(){
+    this.createFlag = false;
     if(!this.appName){
       this.required = 1;
       return false;

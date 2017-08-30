@@ -6,6 +6,8 @@ import { Component,Input, Output , EventEmitter} from '@angular/core';
   providers: []
 })
 export class AlarmRluesComponent {
+  @Input() title: string;
+  @Input() warn_title:string;
   @Input() width: string = '';
   @Input() margin: string = '';
   @Input() paddingRight: string = '';
@@ -20,6 +22,15 @@ export class AlarmRluesComponent {
     //this.appCate = window.sessionStorage.getItem("applicationType");
   }
   ngOnChanges(...args: any[]) {
+    console.log(this.warn_title);
+    if(this.warn_title=='新建规则'){
+      for(let i=0;i<this.warnChanArr.length;i++){
+        if(this.warnChanArr[i].flag==1){
+          this.warnChanArr[i].flag=2;
+        }
+      }
+    }
+    console.log(this.warnChanArr);
     console.log(this.warnChanChecked);
 /*    for(let i=0;i<this.warnChanChecked.length;i++){
       if(this.warnChanChecked){

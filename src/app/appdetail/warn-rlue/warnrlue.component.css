@@ -130,6 +130,7 @@
 .channelTable{
   width:100%;
   border:1px solid #d3d3d3;
+  table-layout:fixed;
 }
 .channelTable th{
   color: #333333;
@@ -148,7 +149,7 @@
 .channelTable tr:nth-child(even){
   background: #eeeeee;
 }
-.channelTable td{
+.channelTable tr td{
   text-overflow:ellipsis;
   overflow: hidden;
   white-space:nowrap;
@@ -200,18 +201,21 @@ input{
   width:10%;
 }
 .rule{
+  width:12%;
+}
+.channel{
   width:18%;
 }
 .alarm{
-  width:18%;
+  width:15%;
 }
 .feature{
-  width:18%;
+  width:15%;
 }
 .status{
-  width:18%;
+  width:15%;
 }
 .operation{
-  width:18%;
+  width:15%;
 }
 

@@ -47,6 +47,7 @@ export class CreateTextComponent {
   showFile:any[]=[];
   fileObj:any={};
   alarmId:string;
+  title:string='已选规则';
   constructor(private warnService: WarnService,private offlineService: OfflineService,private router:Router,private route: ActivatedRoute) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");

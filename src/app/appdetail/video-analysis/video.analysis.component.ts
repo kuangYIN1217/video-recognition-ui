@@ -36,7 +36,6 @@ export class VideoAnalysisComoponent {
   channelInfo: any[] = [];
   page: number = 1;
   pageMaxItem: number = 10;
-
   radio(i){
     this.radioIndex = i;
   }

@@ -148,7 +148,6 @@ input:focus{
 .createInfo{
   width:390px;
   position: relative;
-  overflow: hidden;
 }
 .createInfo .jia{
   position: absolute;
@@ -171,6 +170,15 @@ input:focus{
   width:280px !important;
   box-sizing: border-box;
 }
+.createInfo span{
+  position: absolute;
+  top:8px;
+  right:-58px;
+}
 .marginTop{
   margin-top: 30px;
+}
+.must{
+  font-size: 14px;
+  color: #fe1c1c;
 }

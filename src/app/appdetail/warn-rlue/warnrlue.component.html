@@ -44,6 +44,7 @@
               <img src="../assets/appdetail/way.manage/checked.png" *ngIf="allFlag==true" class="middle" (click)="allSel()"/>
             </th>
             <th class="rule">规则名称</th>
+            <th class="channel" *ngIf="appCate=='实时流分析'">告警通道</th>
             <th class="alarm">告警对象</th>
             <th class="feature">对象特征</th>
             <th class="status">告警状态</th>
@@ -55,6 +56,7 @@
               <img src="../assets/appdetail/way.manage/checked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag==1"/>
             </td>
             <td>{{item.ruleName}}</td>
+            <td *ngIf="appCate=='实时流分析'" class="channel">{{filterName(item.applicationChannels)}}</td>
             <td>{{item.recognitionCategor==null?'无':item.recognitionCategor.name}}</td>
             <td>{{item.targetFeature==''?'无':item.targetFeature}}</td>
             <td>{{item.alarmRuleStatus}}</td>
