@@ -185,6 +185,7 @@ export class WayManageComponent {
   selectedFileOnChanged(event:any) {
     console.log(this.uploader.queue);
     debugger
+    this.uploader.queue[0].isReady = true;
     if(this.uploader.queue.length==0){
       return
     }else{
@@ -198,7 +199,6 @@ export class WayManageComponent {
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = '无效数据，第'+(result.map.num[0]+1)+'行导入失败！';
-            this.uploader.queue[0].remove();
           }else {
             //console.log(result.map.set.length);
             if(result.map.set.length==0){
@@ -211,9 +211,9 @@ export class WayManageComponent {
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = '成功导入'+result.map.set.length+'条通道！';
-            this.uploader.queue[0].remove();
-            console.log(this.uploader.queue);
           }
+          event.target.value='';
+          this.uploader.queue[0].remove();
           this.getPages(this.appId,this.page-1,this.pageMaxItem);
         })
     }
