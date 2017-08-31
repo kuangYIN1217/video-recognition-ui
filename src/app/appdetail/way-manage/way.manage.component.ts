@@ -138,6 +138,7 @@ export class WayManageComponent {
           page.totalPage = result.totalPages;
           page.totalNum = result.totalElements;
           this.pageParams = page;
+          console.log(this.pageParams);
         }
       })
   }
@@ -188,8 +189,6 @@ export class WayManageComponent {
     window.open(SERVER_URL+"/template.xlsx");
   }
   selectedFileOnChanged(event:any) {
-    console.log(this.uploader.queue);
-    debugger
     this.uploader.queue[0].isReady = true;
     if(this.uploader.queue.length==0){
       return

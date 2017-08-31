@@ -223,12 +223,12 @@ export class CreateTextComponent {
     }else{
       this.required = 0;
     }
-    if(this.uploader.queue.length==0){
+/*    if(this.uploader.queue.length==0){
       this.required = 1;
       return false;
     }else{
       this.required = 0;
-    }
+    }*/
 /*    for(let i in this.warnChanArr){
       if(this.ruleId==undefined){
         this.ruleId = this.warnChanArr[0].ruleId;
@@ -238,14 +238,15 @@ export class CreateTextComponent {
     }*/
     //console.log(this.ruleId);
     this.fileNumber = this.uploader.queue.length;
-    this.offlineService.create(this.appId,this.alarmId,this.taskName,this.inputPath,this.fileName,this.fileNumber)
+    console.log(this.warnRuleId);
+    this.offlineService.create(this.appId,this.warnRuleId,this.taskName,"/home/deepviewer/dataset/150354299530259819402b63db.mp4",this.fileName,this.fileNumber)
       .subscribe(result=>{
         console.log(result);
         this.router.navigate(['../taskmanage']);
       })
   }
   update(){
-    console.log(this.warnRuleId);
+    console.log(this.alarmId);
     let tem:any[]=[];
     let temp:any[]=[];
     debugger
@@ -278,7 +279,7 @@ export class CreateTextComponent {
     }else{
       this.required = 0;
     }
-    this.offlineService.update(this.warnRuleId,this.taskId,this.taskName,this.inputPath,this.fileName,this.fileNumber)
+    this.offlineService.update(this.alarmId,this.taskId,this.taskName,this.inputPath,this.fileName,this.fileNumber)
       .subscribe(result=>{
         console.log(result);
         this.router.navigate(['../taskmanage']);

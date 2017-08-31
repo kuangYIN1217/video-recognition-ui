@@ -35,7 +35,7 @@ export class ChannelService {
       });
   }
   getPage(applicationId,page=0,size=10){
-    let path = "/api/applicationChannelByApplication/"+applicationId+"?page="+page+"&size="+size+"&sort=channelOrder,asc";
+    let path = "/api/applicationChannelByApplication/"+applicationId+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path, { headers : headers})
       .map((response: Response) => {
