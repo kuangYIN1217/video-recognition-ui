@@ -9,6 +9,7 @@ import {SERVER_URL} from "app/app.constants";
 import {appManageInfo} from "../common/defs/resources";
 import {Router} from "@angular/router";
 import {stringify} from "querystring";
+import {calc_height} from "../common/ts/calc_height";
 declare var $:any;
 @Component({
   selector: 'app-manage',
@@ -240,6 +241,7 @@ export class AppManageComponent {
     let appCate = this.appCate;
     this.appManageService.createApp(appName,appCate,null,null)
       .subscribe(result=>{
+        this.createFlag = true;
         console.log(result);
         this.createApp='manage';
         this.getAllInfo();
@@ -277,6 +279,9 @@ export class AppManageComponent {
     }
   }
   create(){
+    if(!this.createFlag) {
+      return;
+    }
     this.createFlag = false;
     if(!this.appName){
       this.required = 1;
@@ -300,6 +305,9 @@ export class AppManageComponent {
         this.required = 0;
         this.createOffline();
     }
+  }
+  ngOnInit() {
+    calc_height(document.getElementById('appManage'));
   }
   dia(item){
     if(item.stop==0){
