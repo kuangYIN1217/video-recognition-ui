@@ -151,7 +151,7 @@ export class TaskManageComponent {
     this.getAllTask(this.appId,this.page-1,this.pageMaxItem);
   }
   searchTask(){
-    if(this.taskName==undefined){
+    if(this.taskName==undefined||this.taskName==''){
       this.taskName=null;
       clearInterval(this.interval);
       this.search();

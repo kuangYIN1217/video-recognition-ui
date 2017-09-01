@@ -23,6 +23,8 @@ export class AlarmRluesComponent {
   }
   ngOnChanges(...args: any[]) {
     console.log(this.warn_title);
+    this.warnChan=[];
+    this.warnChanId=[];
     if(this.warn_title=='新建规则'){
       for(let i=0;i<this.warnChanArr.length;i++){
         if(this.warnChanArr[i].flag==1){
@@ -31,7 +33,7 @@ export class AlarmRluesComponent {
       }
     }
     console.log(this.warnChanArr);
-    console.log(this.warnChanChecked);
+    //console.log(this.warnChanChecked);
 /*    for(let i=0;i<this.warnChanChecked.length;i++){
       if(this.warnChanChecked){
         this.warnChanChecked[i].flag=2;
