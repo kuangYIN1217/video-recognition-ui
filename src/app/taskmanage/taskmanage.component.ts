@@ -29,6 +29,7 @@ export class TaskManageComponent {
   deleteIdArr:any[]=[];
   percent:any[]=[];
   interval: any;
+  interval1: any;
   constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -45,6 +46,7 @@ export class TaskManageComponent {
   }
   ngOnDestroy(){
     clearInterval(this.interval);
+    clearInterval(this.interval1);
     this.websocket.stopWebsocket();
   }
   getPageData(paraParam) {
@@ -151,10 +153,19 @@ export class TaskManageComponent {
   searchTask(){
     if(this.taskName==undefined){
       this.taskName=null;
+      clearInterval(this.interval);
+      this.search();
     }
+  }
+  search(){
     this.offlineService.searchTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem)
       .subscribe(result=>{
         this.taskList = result.content;
+        if(this.alarmStatus=='进行中'){
+          this.interval1 = setInterval(() => {
+            this.search();
+          }, 10000);
+        }
       })
   }
   getPercent(item){
@@ -165,7 +176,7 @@ export class TaskManageComponent {
   }
   edit(item){
     console.log(item);
-    this.router.navigate(['../createtext'],{queryParams: {'taskId':item.taskId,'taskName':item.taskName,'alarmRules':JSON.stringify(item.alarmRules),'inputPath':item.inputPath,'taskTitle':"修改任务",'fileNames':item.fileNames}});
+    this.router.navigate(['../createtext'],{queryParams: {'taskId':item.taskId,'taskName':item.taskName,'alarmRules':JSON.stringify(item.alarmRules),'taskTitle':"修改任务"}});
   }
   look(item){
     this.router.navigate(['../warnmanage'],{queryParams: {'taskName':item.taskName}});

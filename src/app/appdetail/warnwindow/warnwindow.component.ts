@@ -68,6 +68,8 @@ export class WarnWindowComponent{
   }*/
   ngOnChanges(...args: any[]) {
     this.checked = 0;
+    this.chanRequired1=0;
+    this.chanRequired2=0;
     console.log(this.ruleList);
     this.warnChanChecked = [];
     this.warnChannel='';
@@ -129,9 +131,9 @@ export class WarnWindowComponent{
   hide(){
     this.checked = 0;
   }
-  create(){
+  validation(){
     if(this.ruleName==''){
-      this.chanRequired1=1
+      this.chanRequired1=1;
       return false;
     }else{
       this.chanRequired1=0;
@@ -147,12 +149,18 @@ export class WarnWindowComponent{
     if(this.car==undefined){
       this.car=null;
     }
+    if(this.warnObj!='车牌识别'){
+      this.car = null;
+    }
     this.warnStatus();
     for(let i in this.warnObjArr){
       if(this.warnObj==this.warnObjArr[i].name){
         this.cateId = this.warnObjArr[i].cateId;
       }
     }
+  }
+  create(){
+    this.validation();
     this.warnService.createWarn(this.appId,this.warnChannelId,this.ruleName,this.cateId,this.car,this.status)
       .subscribe(result=>{
         console.log(result);
@@ -167,18 +175,7 @@ export class WarnWindowComponent{
       })
   }
   editSave(){
-    if(this.car==undefined){
-      this.car=null;
-    }
-    this.warnStatus();
-    for(let i in this.warnObjArr){
-      if(this.warnObj==this.warnObjArr[i].name){
-        this.cateId = this.warnObjArr[i].cateId;
-      }
-    }
-    if(this.warnObj!='车牌识别'){
-      this.car = null;
-    }
+    this.validation();
     if(this.appCate=='实时流分析'){
       this.warnService.editRuleSave(this.warnChannelId,this.ruleList.ruleId,this.ruleName,this.cateId,this.car,this.status)
         .subscribe(result=>{

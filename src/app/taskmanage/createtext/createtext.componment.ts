@@ -23,7 +23,9 @@ export class CreateTextComponent {
   warnRule:string;
   warnRuleId:string;
   taskName:string;
-  required:number=0;
+  required1:number=0;
+  required2:number=0;
+  required3:number=0;
   ruleId:string;
   showArr:any[]=[];
   progress:number=0;
@@ -48,6 +50,9 @@ export class CreateTextComponent {
   fileObj:any={};
   alarmId:string;
   title:string='已选规则';
+  offlineFiles:any[]=[];
+  upOfflineFiles:any[]=[];
+  offlineObj:any={};
   constructor(private warnService: WarnService,private offlineService: OfflineService,private router:Router,private route: ActivatedRoute) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -107,18 +112,20 @@ export class CreateTextComponent {
       };
       this.uploader.queue[j].onSuccess = (response: any, status: any, headers: any) => {
         console.log(response);
-        this.inputPathArr.push(response);
+        this.offlineObj = { "fileName":this.uploader.queue[j].file.name,"inputPath":response };
+        this.offlineFiles.push(this.offlineObj);
+/*        this.inputPathArr.push(response);
         this.fileNameArr.push(this.uploader.queue[j].file.name);
         if(j==this.uploader.queue.length-1){
         this.inputPath = this.inputPathArr.join(',');
         this.fileName = this.fileNameArr.join(',');
-        }
+        }*/
       };
       this.uploader.queue[j].upload();
     }
   }
   removeArr(i){
-    this.showName.splice(i,1);
+    this.showFile.splice(i,1);
   }
   remove(i){
     this.showArr.splice(i,1);
@@ -132,10 +139,11 @@ export class CreateTextComponent {
   }
   analysis(i){
     let index = this.uploader.getIndexOfItem(this.uploader.queue[i]);
-    this.inputPathArr.splice(index,1);
+    this.offlineFiles.splice(index,1);
+/*    this.inputPathArr.splice(index,1);
     this.fileNameArr.splice(index,1);
     this.inputPath = this.inputPathArr.join(',');
-    this.fileName = this.fileNameArr.join(',');
+    this.fileName = this.fileNameArr.join(',');*/
   }
   isInArray(arr,value){
     for(var i = 0; i < arr.length; i++){
@@ -151,6 +159,9 @@ export class CreateTextComponent {
   ngOnInit() {
     calc_height(document.getElementById('createTask'));
     this.route.queryParams.subscribe(params => {
+      this.required1 = 0;
+      this.required2 = 0;
+      this.required3 = 0;
       if(JSON.stringify(params) != "{}"){
         this.taskTitle = params['taskTitle'];
         this.taskName = params['taskName'];
@@ -162,6 +173,9 @@ export class CreateTextComponent {
         if(params['alarmRules']){
           this.warnRuleArr = JSON.parse(params['alarmRules']);
         }
+/*        if(params['offlineFiles']){
+          this.offlineFiles = JSON.parse(params['offlineFiles']);
+        }*/
         this.taskId = params['taskId'];
         for(let i=0;i<this.warnRuleArr.length;i++){
           if(this.warnRule==''){
@@ -175,6 +189,9 @@ export class CreateTextComponent {
             this.alarmId += ','+this.warnRuleArr[i].ruleId;
           }
         }
+/*        for(let j=0;j<this.offlineFiles.length;j++){
+
+        }*/
 /*        console.log(this.fileNames);
         if(this.fileNames){
           this.showName = this.fileNames.split(',');
@@ -187,17 +204,18 @@ export class CreateTextComponent {
             let path:string='';
             for(let i=0;i<result.fileSize.length;i++){
               this.fileObj = {};
-              this.fileObj.name = result.offlineTasks.offlineFiles[i].fileName;
+              this.fileObj.fileName = result.offlineTasks.offlineFiles[i].fileName;
               name +=result.offlineTasks.offlineFiles[i].fileName+',';
               this.fileObj.inputPath = result.offlineTasks.offlineFiles[i].inputPath;
               path +=result.offlineTasks.offlineFiles[i].inputPath+',';
               this.fileObj.size = result.fileSize[i];
               this.showFile.push(this.fileObj);
             }
-            this.fileNames = name.substring(0,name.length-1);
+            console.log(this.showFile);
+/*            this.fileNames = name.substring(0,name.length-1);
             this.inputPath = path.substring(0,path.length-1);
             console.log(this.fileNames);
-            console.log(this.inputPath);
+            console.log(this.inputPath);*/
           })
 }
         this.lookIndex = 1;
@@ -212,23 +230,23 @@ export class CreateTextComponent {
 
   create(){
     if(!this.taskName){
-      this.required = 1;
+      this.required1 = 1;
       return false;
     }else{
-      this.required = 0;
+      this.required1 = 0;
     }
     if(!this.warnRule){
-      this.required = 1;
+      this.required2 = 1;
       return false;
     }else{
-      this.required = 0;
+      this.required2 = 0;
     }
-/*    if(this.uploader.queue.length==0){
-      this.required = 1;
+    if(this.uploader.queue.length==0){
+      this.required3 = 1;
       return false;
     }else{
-      this.required = 0;
-    }*/
+      this.required3 = 0;
+    }
 /*    for(let i in this.warnChanArr){
       if(this.ruleId==undefined){
         this.ruleId = this.warnChanArr[0].ruleId;
@@ -239,7 +257,8 @@ export class CreateTextComponent {
     //console.log(this.ruleId);
     this.fileNumber = this.uploader.queue.length;
     console.log(this.warnRuleId);
-    this.offlineService.create(this.appId,this.warnRuleId,this.taskName,"/home/deepviewer/dataset/150354299530259819402b63db.mp4",this.fileName,this.fileNumber)
+    console.log(this.offlineFiles);
+    this.offlineService.create(this.appId,this.warnRuleId,this.taskName,this.offlineFiles,this.fileNumber)
       .subscribe(result=>{
         console.log(result);
         this.router.navigate(['../taskmanage']);
@@ -247,9 +266,8 @@ export class CreateTextComponent {
   }
   update(){
     console.log(this.alarmId);
-    let tem:any[]=[];
+    /*  let tem:any[]=[];
     let temp:any[]=[];
-    debugger
     tem = this.inputPath.split(',');
     for(let i=0;i<tem.length;i++){
       this.inputPathArr.unshift(tem[i]);
@@ -260,26 +278,37 @@ export class CreateTextComponent {
     }
     this.inputPath = this.inputPathArr.join(',');
     this.fileName = this.fileNameArr.join(',');
-    this.fileNumber = this.inputPathArr.length;
+    this.fileNumber = this.inputPathArr.length;*/
+    if(this.showFile.length!=0){
+      for(let i=0;i<this.showFile.length;i++){
+        this.offlineFiles.unshift(this.showFile[this.showFile.length-1]);
+      }
+    }
+    for(let j=0;j<this.offlineFiles.length;j++){
+      let obj = {};
+      obj = { "fileName":this.offlineFiles[j].fileName,"inputPath":this.offlineFiles[j].inputPath };
+      this.upOfflineFiles.push(obj);
+    }
+    console.log(this.upOfflineFiles);
     if(!this.taskName){
-      this.required = 1;
+      this.required1 = 1;
       return false;
     }else{
-      this.required = 0;
+      this.required1 = 0;
     }
     if(!this.warnRule){
-      this.required = 1;
+      this.required2 = 1;
       return false;
     }else{
-      this.required = 0;
+      this.required2 = 0;
     }
-    if(this.inputPathArr.length==0){
-      this.required = 1;
+    if(this.offlineFiles.length==0){
+      this.required3 = 1;
       return false;
     }else{
-      this.required = 0;
+      this.required3 = 0;
     }
-    this.offlineService.update(this.alarmId,this.taskId,this.taskName,this.inputPath,this.fileName,this.fileNumber)
+    this.offlineService.update(this.alarmId,this.taskId,this.upOfflineFiles,this.taskName,this.fileNumber)
       .subscribe(result=>{
         console.log(result);
         this.router.navigate(['../taskmanage']);
