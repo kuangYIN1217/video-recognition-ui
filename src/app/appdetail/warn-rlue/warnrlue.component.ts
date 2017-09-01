@@ -182,6 +182,9 @@ export class WarnRlueComponent{
         this.cateId = this.warnObjArr[i].cateId;
       }
     }
+    if(this.ruleName==''||this.ruleName==undefined){
+      this.ruleName = null;
+    }
     this.warnService.searchRules(this.appId,this.ruleName,this.warnChanId,this.cateId,this.warnStatus,this.page-1,this.pageMaxItem)
       .subscribe(result=>{
         this.rulesInfo = result.content;

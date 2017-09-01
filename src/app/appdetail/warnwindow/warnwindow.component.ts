@@ -29,6 +29,7 @@ export class WarnWindowComponent{
   deleteIndex:number=0;
   tip_title:string;
   tip_content:string;
+  tip_btn:string;
   cateId:number;
   chanRequired1:number=0;
   chanRequired2:number=0;
@@ -82,7 +83,7 @@ export class WarnWindowComponent{
           this.warnChannelId= this.ruleList.applicationChannels[0].channelId;
         }else{
           this.warnChannel += ','+this.ruleList.applicationChannels[i].channelName;
-          this.warnChannelId= ','+this.ruleList.applicationChannels[i].channelId;
+          this.warnChannelId+= ','+this.ruleList.applicationChannels[i].channelId;
         }
         this.warnChanChecked.push(this.ruleList.applicationChannels[i]);
         console.log(this.warnChanChecked);
@@ -168,9 +169,14 @@ export class WarnWindowComponent{
         this.createIndex = 2;
         this.indexChange.emit(this.createIndex);
         }else if(result.text()=='No'){
-           alert("通道未开启，请开启xx通道！");
+          this.deleteIndex =1;
+          this.tip_title = '提示';
+          this.tip_content = '通道未开启，请开启通道！';
+          this.tip_btn = '开启通道';
         }else if(result.text()=='Error'){
-           alert("通道未开启成功！");
+          this.deleteIndex =1;
+          this.tip_title = '提示';
+          this.tip_content = '通道未开启成功！';
         }
       })
   }
@@ -187,6 +193,7 @@ export class WarnWindowComponent{
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = '通道未开启，请开启通道！';
+            this.tip_btn = '开启通道';
           }else if(result.text()=='Error'){
             this.deleteIndex =1;
             this.tip_title = '提示';

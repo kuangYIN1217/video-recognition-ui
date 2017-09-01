@@ -111,7 +111,6 @@ export class WarnService {
       });
   }
   editRuleSave(chanId,ruleId,name,obj,car,status){
-    debugger
     let path = "/api/UpdateAlarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
@@ -180,9 +179,6 @@ export class WarnService {
       });
   }
   searchRules(id,name,chanId,obj,status,page=0,size=10){
-    if(name==undefined){
-      name=null;
-    }
     console.log(id,name,chanId,obj,status);
     let path = "/api/findRuleDynamic/"+id+"/"+name+"/"+chanId+"/"+obj+"/"+status+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
