@@ -166,12 +166,13 @@ export class CreateTextComponent {
         this.taskTitle = params['taskTitle'];
         this.taskName = params['taskName'];
         this.warnRule = '';
-        this.alarmId = '';
+        this.warnRuleId = '';
         //this.inputPath = params['inputPath'];
         //console.log(this.inputPath);
         //this.fileNames = params['fileNames'];
         if(params['alarmRules']){
           this.warnRuleArr = JSON.parse(params['alarmRules']);
+          console.log(this.warnRuleArr);
         }
 /*        if(params['offlineFiles']){
           this.offlineFiles = JSON.parse(params['offlineFiles']);
@@ -183,10 +184,10 @@ export class CreateTextComponent {
           }else{
             this.warnRule += ','+this.warnRuleArr[i].ruleName;
           }
-          if(this.alarmId==''){
-            this.alarmId = this.warnRuleArr[0].ruleId;
+          if(this.warnRuleId==''){
+            this.warnRuleId = this.warnRuleArr[0].ruleId;
           }else{
-            this.alarmId += ','+this.warnRuleArr[i].ruleId;
+            this.warnRuleId += ','+this.warnRuleArr[i].ruleId;
           }
         }
 /*        for(let j=0;j<this.offlineFiles.length;j++){
@@ -264,8 +265,17 @@ export class CreateTextComponent {
         this.router.navigate(['../taskmanage']);
       })
   }
+  chanChange(event){
+    this.warnRule = event.join(',');
+    console.log(this.warnRule);
+  }
+  chanChangeId(event){
+    this.warnRuleId = event.join(',');
+    console.log(this.warnRuleId);
+  }
   update(){
-    console.log(this.alarmId);
+    debugger
+    console.log(this.warnRuleId);
     /*  let tem:any[]=[];
     let temp:any[]=[];
     tem = this.inputPath.split(',');
@@ -308,20 +318,13 @@ export class CreateTextComponent {
     }else{
       this.required3 = 0;
     }
-    this.offlineService.update(this.alarmId,this.taskId,this.upOfflineFiles,this.taskName,this.fileNumber)
+    this.offlineService.update(this.warnRuleId,this.taskId,this.upOfflineFiles,this.taskName,this.fileNumber)
       .subscribe(result=>{
         console.log(result);
         this.router.navigate(['../taskmanage']);
       })
   }
-  chanChange(event){
-    this.warnRule = event.join(',');
-    console.log(this.warnRule);
-  }
-  chanChangeId(event){
-    this.warnRuleId = event.join(',');
-    console.log(this.warnRuleId);
-  }
+
   checkedRlues(e){
     var oev = e || event;
     this.checked=1;

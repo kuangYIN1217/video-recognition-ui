@@ -153,9 +153,9 @@ export class TaskManageComponent {
   searchTask(){
     if(this.taskName==undefined||this.taskName==''){
       this.taskName=null;
-      clearInterval(this.interval);
-      this.search();
     }
+    clearInterval(this.interval);
+    this.search();
   }
   search(){
     this.offlineService.searchTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem)

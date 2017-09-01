@@ -23,9 +23,9 @@ export class AlarmRluesComponent {
   }
   ngOnChanges(...args: any[]) {
     console.log(this.warn_title);
-    this.warnChan=[];
-    this.warnChanId=[];
     if(this.warn_title=='新建规则'){
+      this.warnChan=[];
+      this.warnChanId=[];
       for(let i=0;i<this.warnChanArr.length;i++){
         if(this.warnChanArr[i].flag==1){
           this.warnChanArr[i].flag=2;
