@@ -199,18 +199,18 @@ export class WarnWindowComponent{
     this.warnService.createWarn(this.appId,this.warnChannelId,this.ruleName,this.cateId,this.code,this.car,this.status)
       .subscribe(result=>{
         console.log(result);
-        if(result.text()=='Ok'){
+        if(result.text().substring(0,2)=='Ok'){
         this.createIndex = 2;
         this.indexChange.emit(this.createIndex);
-        }else if(result.text()=='No'){
+        }else if(result.text().substring(0,2)=='No'){
           this.deleteIndex =1;
           this.tip_title = '提示';
           this.tip_content = '通道未开启，请开启通道！';
           this.tip_btn = '开启通道';
-        }else if(result.text()=='Error'){
+        }else if(result.text().substring(0,2)=='Er'){
           this.deleteIndex =1;
           this.tip_title = '提示';
-          this.tip_content = '通道未开启成功！';
+          this.tip_content = result.text().substring(5);
         }
       })
   }
@@ -220,18 +220,17 @@ export class WarnWindowComponent{
       this.warnService.editRuleSave(this.warnChannelId,this.ruleList.ruleId,this.ruleName,this.cateId,this.code,this.car,this.status)
         .subscribe(result=>{
           console.log(result);
-          if(result.text()=='Ok'){
+          if(result.text().substring(0,2)=='Ok'){
             this.createIndex = 2;
             this.indexChange.emit(this.createIndex);
           }else if(result.text()=='No'){
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = '通道未开启，请开启通道！';
-            this.tip_btn = '开启通道';
-          }else if(result.text()=='Error'){
+          }else if(result.text().substring(0,2)=='Er'){
             this.deleteIndex =1;
             this.tip_title = '提示';
-            this.tip_content = '通道未开启成功！';
+            this.tip_content = result.text().substring(5);
           }else if(result.text()=='Close'){
             this.createIndex = 2;
             this.indexChange.emit(this.createIndex);
@@ -243,11 +242,11 @@ export class WarnWindowComponent{
           if(result.text().substring(0,2)=='Ok'){
             this.createIndex = 2;
             this.indexChange.emit(this.createIndex);
-          }/*else if(result.text()=='No'){
+          }else if(result.text()=='No'){
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = '通道未开启，请开启通道！';
-          }*/else if(result.text().substring(0,2)=='Er'){
+          }else if(result.text().substring(0,2)=='Er'){
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = result.text().substring(5);
