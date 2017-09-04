@@ -137,18 +137,18 @@ export class VideoAnalysisComoponent {
   ngStyle_popup_allselect () {
     if  (this.s_popup_allselect) {
       return {
-        'color': '#23c880'
+        'color': '#23a880'
       }
     }
     return {}
   }
-  ngStyle_popup_select (selected) {
+/*  ngStyle_popup_select (selected) {
     if (this.s_popup_allselect) {
       return {
         'color': 'rgba(0,0,0,0.4)'
       }
     }
-  }
+  }*/
   ngStyle_grid_index3 () {
     let result: any = {};
     let parent_width = $('.right-content').width();
@@ -251,12 +251,24 @@ export class VideoAnalysisComoponent {
   }
   $popup_select_toggle (index: number) {
     if (this.s_popup_allselect) {
-      return;
+      this.s_popup_allselect = !this.s_popup_allselect;
+
     }
     this.d_analysis_options[index].selected = !this.d_analysis_options[index].selected;
   }
   $popup_select_all_toggle () {
     this.s_popup_allselect = !this.s_popup_allselect;
+    if(this.s_popup_allselect){
+      for(let i=0;i<this.d_analysis_options.length;i++){
+        this.d_analysis_options[i].selected = true;
+      }
+      //console.log(this.d_analysis_options);
+    }else{
+      for(let i=0;i<this.d_analysis_options.length;i++){
+        this.d_analysis_options[i].selected = !this.d_analysis_options[i].selected;
+      }
+      //console.log(this.d_analysis_options);
+    }
   }
   $fullscreen_click (index: number , $event) {
     $event = $event || window.event;

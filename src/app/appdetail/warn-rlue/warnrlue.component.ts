@@ -204,7 +204,7 @@ export class WarnRlueComponent{
       item.alarmRuleStatus='关闭';
     }
     console.log(item);
-    this.warnService.warnRuleSwitch(item.ruleId,item.alarmRuleStatus)
+    this.warnService.warnRuleSwitch(item.ruleId,item.alarmRuleStatus,this.appCate)
       .subscribe(reply =>{
         console.log(reply.text());
         if(reply.text().substring(0,2)=='No'){

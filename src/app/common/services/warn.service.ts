@@ -229,9 +229,12 @@ export class WarnService {
         }
       });
   }
-  warnRuleSwitch(id,status){
+  warnRuleSwitch(id,status,appCate){
     let path = "/api/AlarmRuleSwitch";
     let body = JSON.stringify({
+      "application": {
+        "applicationType": appCate
+      },
       "ruleId":id,
       "alarmRuleStatus":status
     });
