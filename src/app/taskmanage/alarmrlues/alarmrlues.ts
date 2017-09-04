@@ -8,6 +8,7 @@ import { Component,Input, Output , EventEmitter} from '@angular/core';
 export class AlarmRluesComponent {
   @Input() title: string;
   @Input() warn_title:string;
+  @Input() taskTitle:string;
   @Input() width: string = '';
   @Input() margin: string = '';
   @Input() paddingRight: string = '';
@@ -15,15 +16,17 @@ export class AlarmRluesComponent {
   @Input() warnChanChecked: any []=[];
   @Output() chanChange: EventEmitter<any> = new EventEmitter();
   @Output() chanChangeId: EventEmitter<any> = new EventEmitter();
+  @Output() warnChanCheckedChange: EventEmitter<any> = new EventEmitter();
   warnChan:any[]=[];
   warnChanId:any[]=[];
+  warnChanCheckedArr:any[]=[];
   //appCate:string;
   constructor() {
     //this.appCate = window.sessionStorage.getItem("applicationType");
   }
   ngOnChanges(...args: any[]) {
-    console.log(this.warn_title);
-    if(this.warn_title=='新建规则'){
+    //console.log(this.title);
+    if(this.warn_title=='新建规则'||this.taskTitle=='新建任务'){
       this.warnChan=[];
       this.warnChanId=[];
       for(let i=0;i<this.warnChanArr.length;i++){
@@ -31,9 +34,31 @@ export class AlarmRluesComponent {
           this.warnChanArr[i].flag=2;
         }
       }
+    }else if(this.warn_title=='修改规则'||this.taskTitle=='修改任务'){
+/*      this.warnChan=[];
+      this.warnChanId=[];*/
+      console.log(this.warnChanArr);
+      console.log(this.warnChanChecked);
+      if(this.warnChanChecked.length>0){
+        for(let i=0;i<this.warnChanChecked.length;i++){
+          for(let j=0;j<this.warnChanArr.length;j++){
+            if(this.warnChanArr[0].channelName){
+              if(this.warnChanChecked[i].channelId == this.warnChanArr[j].channelId){
+                this.warnChanArr[j].flag = 1;
+                this.warnChanCheckedArr.push(this.warnChanArr[j]);
+              }
+            }else{
+              if(this.warnChanChecked[i].ruleId == this.warnChanArr[j].ruleId){
+                this.warnChanArr[j].flag = 1;
+                this.warnChanCheckedArr.push(this.warnChanArr[j]);
+              }
+            }
+          }
+        }
+        this.warnChanCheckedChange.emit(this.warnChanCheckedArr);
+      }
     }
-    console.log(this.warnChanArr);
-    //console.log(this.warnChanChecked);
+
 /*    for(let i=0;i<this.warnChanChecked.length;i++){
       if(this.warnChanChecked){
         this.warnChanChecked[i].flag=2;

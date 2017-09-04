@@ -19,6 +19,7 @@ export class WarnWindowComponent{
   warnChannel:string;
   warnChannelId:string;
   warnObj:string;
+  code:string;
   checked:number=0;
   warnChanChecked:any[]=[];
   @Input() warn_title:string;
@@ -34,6 +35,8 @@ export class WarnWindowComponent{
   chanRequired1:number=0;
   chanRequired2:number=0;
   title:string='已选通道';
+  warnChecked:any[]=[];
+  onceFlag:boolean=true;
   @Output() indexChange: EventEmitter<any> = new EventEmitter();
 
   constructor(private warnService: WarnService) {
@@ -54,13 +57,42 @@ export class WarnWindowComponent{
         }
       });
   }
+  warnChanCheckedChange(event){
+    console.log(event);
+    this.warnChecked = event;
+    this.onceFlag = false;
+  }
   chanChange(event){
+    if(this.warnChecked.length>0){
+      if(this.onceFlag==false){
+        for(let i=0;i<this.warnChecked.length;i++){
+          if(this.warnChecked[i].channelName){
+            event.unshift(this.warnChecked[i].channelName);
+          }else{
+            event.unshift(this.warnChecked[i].ruleName);
+          }
+        }
+      }
+    }
     this.warnChannel = event.join(',');
+    this.onceFlag=true;
     console.log(this.warnChannel);
   }
   chanChangeId(event){
     console.log(event);
+    if(this.warnChecked.length>0){
+      if(this.onceFlag==false) {
+        for (let i = 0; i < this.warnChecked.length; i++) {
+          if(this.warnChecked[i].channelName){
+            event.unshift(this.warnChecked[i].channelId);
+          }else{
+            event.unshift(this.warnChecked[i].ruleId);
+          }
+        }
+      }
+    }
     this.warnChannelId = event.join(',');
+    this.onceFlag=true;
     console.log(this.warnChannelId);
   }
 /*  ngOnInit(){
@@ -157,12 +189,14 @@ export class WarnWindowComponent{
     for(let i in this.warnObjArr){
       if(this.warnObj==this.warnObjArr[i].name){
         this.cateId = this.warnObjArr[i].cateId;
+        this.code = this.warnObjArr[i].code;
+        return
       }
     }
   }
   create(){
     this.validation();
-    this.warnService.createWarn(this.appId,this.warnChannelId,this.ruleName,this.cateId,this.car,this.status)
+    this.warnService.createWarn(this.appId,this.warnChannelId,this.ruleName,this.cateId,this.code,this.car,this.status)
       .subscribe(result=>{
         console.log(result);
         if(result.text()=='Ok'){
@@ -183,7 +217,7 @@ export class WarnWindowComponent{
   editSave(){
     this.validation();
     if(this.appCate=='实时流分析'){
-      this.warnService.editRuleSave(this.warnChannelId,this.ruleList.ruleId,this.ruleName,this.cateId,this.car,this.status)
+      this.warnService.editRuleSave(this.warnChannelId,this.ruleList.ruleId,this.ruleName,this.cateId,this.code,this.car,this.status)
         .subscribe(result=>{
           console.log(result);
           if(result.text()=='Ok'){
@@ -204,7 +238,7 @@ export class WarnWindowComponent{
           }
         })
     }else{
-      this.warnService.editRuleSave1(this.ruleList.ruleId,this.ruleName,this.cateId,this.car,this.status)
+      this.warnService.editRuleSave1(this.ruleList.ruleId,this.ruleName,this.cateId,this.code,this.car,this.status)
         .subscribe(result=>{
           if(result.text().substring(0,2)=='Ok'){
             this.createIndex = 2;

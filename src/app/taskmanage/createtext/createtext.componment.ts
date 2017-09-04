@@ -53,6 +53,9 @@ export class CreateTextComponent {
   offlineFiles:any[]=[];
   upOfflineFiles:any[]=[];
   offlineObj:any={};
+  warnChanChecked:any[]=[];
+  warnChecked:any[]=[];
+  onceFlag:boolean=true;
   constructor(private warnService: WarnService,private offlineService: OfflineService,private router:Router,private route: ActivatedRoute) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -173,6 +176,7 @@ export class CreateTextComponent {
         if(params['alarmRules']){
           this.warnRuleArr = JSON.parse(params['alarmRules']);
           console.log(this.warnRuleArr);
+          this.warnChanChecked = this.warnRuleArr;
         }
 /*        if(params['offlineFiles']){
           this.offlineFiles = JSON.parse(params['offlineFiles']);
@@ -265,16 +269,38 @@ export class CreateTextComponent {
         this.router.navigate(['../taskmanage']);
       })
   }
+  warnChanCheckedChange(event){
+    console.log(event);
+    this.warnChecked = event;
+    this.onceFlag = false;
+  }
   chanChange(event){
+    console.log(event);
+    if(this.warnChecked.length>0){
+      if(this.onceFlag==false){
+        for(let i=0;i<this.warnChecked.length;i++){
+          event.unshift(this.warnChecked[i].ruleName);
+        }
+      }
+    }
     this.warnRule = event.join(',');
+    this.onceFlag=true;
     console.log(this.warnRule);
   }
   chanChangeId(event){
+    console.log(event);
+    if(this.warnChecked.length>0){
+      if(this.onceFlag==false) {
+        for (let i = 0; i < this.warnChecked.length; i++) {
+          event.unshift(this.warnChecked[i].ruleId);
+        }
+      }
+    }
     this.warnRuleId = event.join(',');
+    this.onceFlag=true;
     console.log(this.warnRuleId);
   }
   update(){
-    debugger
     console.log(this.warnRuleId);
     /*  let tem:any[]=[];
     let temp:any[]=[];
@@ -289,17 +315,6 @@ export class CreateTextComponent {
     this.inputPath = this.inputPathArr.join(',');
     this.fileName = this.fileNameArr.join(',');
     this.fileNumber = this.inputPathArr.length;*/
-    if(this.showFile.length!=0){
-      for(let i=0;i<this.showFile.length;i++){
-        this.offlineFiles.unshift(this.showFile[this.showFile.length-1]);
-      }
-    }
-    for(let j=0;j<this.offlineFiles.length;j++){
-      let obj = {};
-      obj = { "fileName":this.offlineFiles[j].fileName,"inputPath":this.offlineFiles[j].inputPath };
-      this.upOfflineFiles.push(obj);
-    }
-    console.log(this.upOfflineFiles);
     if(!this.taskName){
       this.required1 = 1;
       return false;
@@ -318,13 +333,23 @@ export class CreateTextComponent {
     }else{
       this.required3 = 0;
     }
+    if(this.showFile.length!=0){
+      for(let i=0;i<this.showFile.length;i++){
+        this.offlineFiles.unshift(this.showFile[this.showFile.length-1]);
+      }
+    }
+    for(let j=0;j<this.offlineFiles.length;j++){
+      let obj = {};
+      obj = { "fileName":this.offlineFiles[j].fileName,"inputPath":this.offlineFiles[j].inputPath };
+      this.upOfflineFiles.push(obj);
+    }
+    console.log(this.upOfflineFiles);
     this.offlineService.update(this.warnRuleId,this.taskId,this.upOfflineFiles,this.taskName,this.fileNumber)
       .subscribe(result=>{
         console.log(result);
         this.router.navigate(['../taskmanage']);
       })
   }
-
   checkedRlues(e){
     var oev = e || event;
     this.checked=1;

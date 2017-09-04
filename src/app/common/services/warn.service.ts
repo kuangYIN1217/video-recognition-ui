@@ -85,12 +85,13 @@ export class WarnService {
         }
       });
   }
-  createWarn(appId,chanId,name,obj,car,status){
+  createWarn(appId,chanId,name,obj,code,car,status){
     let path = "/api/alarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
       "recognitionCategor": {
-        "cateId": obj
+        "cateId": obj,
+        "code":code
       },
       "createTime": null,
       "ruleId": 0,
@@ -110,12 +111,13 @@ export class WarnService {
         }
       });
   }
-  editRuleSave(chanId,ruleId,name,obj,car,status){
+  editRuleSave(chanId,ruleId,name,obj,code,car,status){
     let path = "/api/UpdateAlarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
       "recognitionCategory": {
-        "cateId": obj
+        "cateId": obj,
+        "code":code
       },
       "ruleId": ruleId,
       "ruleName": name,
@@ -132,13 +134,13 @@ export class WarnService {
         }
       });
   }
-  editRuleSave1(ruleId,name,obj,car,status){
-    debugger
+  editRuleSave1(ruleId,name,obj,code,car,status){
     let path = "/api/UpdateAlarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
       "recognitionCategory": {
-        "cateId": obj
+        "cateId": obj,
+        "code":code
       },
       "ruleId": ruleId,
       "ruleName": name,
