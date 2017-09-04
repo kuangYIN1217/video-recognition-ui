@@ -20,6 +20,7 @@ export class AlarmRluesComponent {
   warnChan:any[]=[];
   warnChanId:any[]=[];
   warnChanCheckedArr:any[]=[];
+  bool:boolean=true;
   //appCate:string;
   constructor() {
     //this.appCate = window.sessionStorage.getItem("applicationType");
@@ -45,12 +46,22 @@ export class AlarmRluesComponent {
             if(this.warnChanArr[0].channelName){
               if(this.warnChanChecked[i].channelId == this.warnChanArr[j].channelId){
                 this.warnChanArr[j].flag = 1;
+                if(this.bool = true){
+                this.bool = false;
+                this.warnChan.push(this.warnChanArr[j].channelName);
+                this.warnChanId.push(this.warnChanArr[j].channelId);
                 this.warnChanCheckedArr.push(this.warnChanArr[j]);
+                }
               }
             }else{
               if(this.warnChanChecked[i].ruleId == this.warnChanArr[j].ruleId){
                 this.warnChanArr[j].flag = 1;
-                this.warnChanCheckedArr.push(this.warnChanArr[j]);
+                if(this.bool = true) {
+                  this.bool = false;
+                  this.warnChan.push(this.warnChanArr[j].ruleName);
+                  this.warnChanId.push(this.warnChanArr[j].ruleId);
+                  this.warnChanCheckedArr.push(this.warnChanArr[j]);
+                }
               }
             }
           }

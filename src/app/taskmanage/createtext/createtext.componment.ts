@@ -55,7 +55,6 @@ export class CreateTextComponent {
   offlineObj:any={};
   warnChanChecked:any[]=[];
   warnChecked:any[]=[];
-  onceFlag:boolean=true;
   constructor(private warnService: WarnService,private offlineService: OfflineService,private router:Router,private route: ActivatedRoute) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -272,32 +271,15 @@ export class CreateTextComponent {
   warnChanCheckedChange(event){
     console.log(event);
     this.warnChecked = event;
-    this.onceFlag = false;
   }
   chanChange(event){
     console.log(event);
-    if(this.warnChecked.length>0){
-      if(this.onceFlag==false){
-        for(let i=0;i<this.warnChecked.length;i++){
-          event.unshift(this.warnChecked[i].ruleName);
-        }
-      }
-    }
     this.warnRule = event.join(',');
-    this.onceFlag=true;
     console.log(this.warnRule);
   }
   chanChangeId(event){
     console.log(event);
-    if(this.warnChecked.length>0){
-      if(this.onceFlag==false) {
-        for (let i = 0; i < this.warnChecked.length; i++) {
-          event.unshift(this.warnChecked[i].ruleId);
-        }
-      }
-    }
     this.warnRuleId = event.join(',');
-    this.onceFlag=true;
     console.log(this.warnRuleId);
   }
   update(){
@@ -327,7 +309,7 @@ export class CreateTextComponent {
     }else{
       this.required2 = 0;
     }
-    if(this.offlineFiles.length==0){
+    if(this.offlineFiles.length==0&&this.showFile.length==0){
       this.required3 = 1;
       return false;
     }else{

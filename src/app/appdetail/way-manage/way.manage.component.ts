@@ -302,10 +302,16 @@ export class WayManageComponent {
     this.createFlag = false;
       this.channelService.createChannel(this.appId,chanAddr,chanName,protocol,channelType,videoAddress,status)
         .subscribe(result=>{
-          this.show=1;
-          this.addDialog = 0;
-          this.getPages(this.appId,this.page-1,this.pageMaxItem);
-          this.createFlag = true;
+          if(result.text()=='NO'){
+            this.deleteIndex =1;
+            this.tip_title = '提示';
+            this.tip_content = '该通道地址已存在！';
+          }else{
+            this.show=1;
+            this.addDialog = 0;
+            this.getPages(this.appId,this.page-1,this.pageMaxItem);
+            this.createFlag = true;
+          }
         })
   }
 

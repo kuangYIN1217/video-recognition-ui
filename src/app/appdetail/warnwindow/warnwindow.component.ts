@@ -36,7 +36,6 @@ export class WarnWindowComponent{
   chanRequired2:number=0;
   title:string='已选通道';
   warnChecked:any[]=[];
-  onceFlag:boolean=true;
   @Output() indexChange: EventEmitter<any> = new EventEmitter();
 
   constructor(private warnService: WarnService) {
@@ -60,39 +59,14 @@ export class WarnWindowComponent{
   warnChanCheckedChange(event){
     console.log(event);
     this.warnChecked = event;
-    this.onceFlag = false;
   }
   chanChange(event){
-    if(this.warnChecked.length>0){
-      if(this.onceFlag==false){
-        for(let i=0;i<this.warnChecked.length;i++){
-          if(this.warnChecked[i].channelName){
-            event.unshift(this.warnChecked[i].channelName);
-          }else{
-            event.unshift(this.warnChecked[i].ruleName);
-          }
-        }
-      }
-    }
     this.warnChannel = event.join(',');
-    this.onceFlag=true;
     console.log(this.warnChannel);
   }
   chanChangeId(event){
     console.log(event);
-    if(this.warnChecked.length>0){
-      if(this.onceFlag==false) {
-        for (let i = 0; i < this.warnChecked.length; i++) {
-          if(this.warnChecked[i].channelName){
-            event.unshift(this.warnChecked[i].channelId);
-          }else{
-            event.unshift(this.warnChecked[i].ruleId);
-          }
-        }
-      }
-    }
     this.warnChannelId = event.join(',');
-    this.onceFlag=true;
     console.log(this.warnChannelId);
   }
 /*  ngOnInit(){
