@@ -79,7 +79,7 @@ export class NavigationComponent {
     }else if (this.location.isCurrentPathEqualTo('/taskmanage')||this.location.path().match(/\/createtext/)){
       this.focusTab = 5;
       // this.needhide = 0;
-    }else if (this.location.isCurrentPathEqualTo('/warnmanage')||this.location.path().match(/\/warnrlue/)){
+    }else if (this.location.path().match(/\/warnmanage/)||this.location.path().match(/\/warnrlue/)){
       this.focusTab = 6;
       // this.needhide = 0;
     }

@@ -26,6 +26,8 @@ export class WarnComponent{
   pageParams = new Page();
   page: number = 1;
   pageMaxItem: number = 10;
+  pageNow:number;
+  pageChange:number;
   startTime:string;
   endTime:string;
   statusArr:any[]=["全部","已处理","未处理"];
@@ -160,8 +162,10 @@ export class WarnComponent{
   close(){
     this.seeIndex = 0;
   }
-  getPageData(paraParam) {
+  getPageData(paraParam){
     this.getAllWarn(this.appId,paraParam.curPage-1,paraParam.pageMaxItem);
+    //this.pageNow=paraParam.curPage;
+    //console.log(this.pageNow);
   }
   handling(item){
     this.warnService.handlingWarn(item.alarmId,this.appId)
@@ -215,6 +219,8 @@ export class WarnComponent{
     }
   }
   export(){
+    this.alarmIds='';
+    this.sourcePaths='';
     for(let i in this.allWarn){
       if(this.allWarn[i]['flag'] == '1'){
           console.log(this.allWarn[i]);
@@ -228,7 +234,9 @@ export class WarnComponent{
       this.tip_content = "请选择任务！";
       return false
     }
-    this.warnService.alarmExport(this.appId,this.appCate,this.alarmIds.substring(0,this.alarmIds.length-1),this.alarmIds.substring(0,this.sourcePaths.length-1))
+    console.log(this.alarmIds.substring(0,this.alarmIds.length-1));
+    console.log(this.sourcePaths.substring(0,this.sourcePaths.length-1));
+    this.warnService.alarmExport(this.appId,this.appCate,this.alarmIds.substring(0,this.alarmIds.length-1),this.sourcePaths.substring(0,this.sourcePaths.length-1))
      .subscribe(result=>{
        console.log(result.text());
        let url = decodeURIComponent(result.text());
