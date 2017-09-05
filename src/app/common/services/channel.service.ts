@@ -127,10 +127,8 @@ export class ChannelService {
     let headers = this.getHeaders();
     return this.http.put(this.SERVER_URL+path,body,{ headers: headers })
       .map((response: Response) => {
-        if (response && response.json()) {
-          if(response.status==200){
-            return response.json();
-          }
+        if (response) {
+            return response;
         }
       });
   }

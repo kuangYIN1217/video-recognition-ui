@@ -215,7 +215,6 @@ export class WarnRlueComponent{
         }else if(reply.text().substring(0,2)=='Er'){
           this.deleteIndex = 1;
           this.tip_title = "提示";
-          this.tip_btn = "";
           this.tip_content = reply.text().substring(5);
         }
         this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);

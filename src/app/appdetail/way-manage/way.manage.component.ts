@@ -261,7 +261,7 @@ export class WayManageComponent {
     this.addDialog = 1;
     this.btnIndex = 0;
     this.protocol = this.protocols[0];
-    this.channelType = this.channelTypes[0];
+    this.channelType = this.channelTypes[1];
     this.chanName = '';
     this.chanAddr = '';
     this.videoAddress = '';
@@ -316,6 +316,7 @@ export class WayManageComponent {
   }
 
   edit(item){
+    console.log(item);
     if(item.channelStatus==1){
         return false;
     }else{
@@ -355,7 +356,13 @@ export class WayManageComponent {
     }
     this.upadteFlag = false;
     this.channelService.updateChannel(this.appId,this.chanId,this.chanOrder,this.chanName,this.chanAddr,this.protocol,this.channelType,this.videoAddress,this.radioIndex)
-      .subscribe(result=>{
+      .subscribe(result=>
+      {
+        if(result.text().substring(0,2)=='NO'){
+          this.deleteIndex =1;
+          this.tip_title = '提示';
+          this.tip_content = '该通道地址已存在，画面顺序为'+result.text().substring(3)+'！';
+        }
         this.getPages(this.appId,this.page-1,this.pageMaxItem);
         this.addDialog = 0;
         this.upadteFlag = true;
