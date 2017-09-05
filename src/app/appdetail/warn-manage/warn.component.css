@@ -239,13 +239,12 @@ input{
   background-color: rgba(111, 111, 111, 0.3);
   opacity: 1;
   z-index: 999999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .fangda span{
   position: absolute;
-  top:50%;
-  left:50%;
-  margin-left: -640px;
-  margin-top: -360px;
 }
 .fangda .jietu{
   width:100%;
