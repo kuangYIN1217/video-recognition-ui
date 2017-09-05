@@ -15,7 +15,7 @@ declare var $:any;
 export class CreateTextComponent {
   SERVER_URL = SERVER_URL;
   taskTitle:string="新建任务";
-  //checked:number=0;
+  checked:number=0;
   warnRlue:string;
   warnChanArr:any[]=[];
   appId:string;
@@ -333,13 +333,14 @@ export class CreateTextComponent {
       })
   }
   checkedRules(e){
-    document.getElementById('alarmRules').style.display='block';
+    this.checked=1;
     var oev = e || event;
     oev.preventDefault();
     oev.stopPropagation();
     return false;
   }
+
   hide(){
-    document.getElementById('alarmRules').style.display='none';
+    this.checked = 0;
   }
 }
