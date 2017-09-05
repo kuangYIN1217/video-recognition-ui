@@ -13,9 +13,9 @@
         <div class="createInfo">
           <label><span class="symbol">*</span>告警规则：</label>
           <input type="text" required readonly name="warnRule" [(ngModel)]="warnRule"/>
-          <img src="../assets/createtext/jia.png" class="jia" (click)="checkedRlues()"/>
+          <img src="../assets/createtext/jia.png" class="jia" (click)="checkedRules()"/>
           <span class="must" [style.display]="required2==1?'':'none'">必填字段</span>
-          <alarm-rlues [style.display]="checked==1?'':'none'" width="490px" margin="35px 50px 0 50px" paddingRight="46px" [title]="title" [taskTitle]="taskTitle" [warnChanArr]="warnChanArr" [warnChanChecked]="warnChanChecked" (chanChange)="chanChange($event)" (chanChangeId)="chanChangeId($event)" (warnChanCheckedChange)="warnChanCheckedChange($event)"></alarm-rlues>
+          <alarm-rlues id="alarmRules" width="490px" margin="35px 50px 0 50px" paddingRight="46px" [title]="title" [taskTitle]="taskTitle" [warnChanArr]="warnChanArr" [warnChanChecked]="warnChanChecked" (chanChange)="chanChange($event)" (chanChangeId)="chanChangeId($event)" (warnChanCheckedChange)="warnChanCheckedChange($event)"></alarm-rlues>
         </div>
         <div class="createInfo" [ngClass]="{marginTop: checked==1}">
           <label class="fl upText"><span class="symbol">*</span>上传文件：</label>

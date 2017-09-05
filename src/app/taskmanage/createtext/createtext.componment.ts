@@ -15,7 +15,7 @@ declare var $:any;
 export class CreateTextComponent {
   SERVER_URL = SERVER_URL;
   taskTitle:string="新建任务";
-  checked:number=0;
+  //checked:number=0;
   warnRlue:string;
   warnChanArr:any[]=[];
   appId:string;
@@ -332,14 +332,14 @@ export class CreateTextComponent {
         this.router.navigate(['../taskmanage']);
       })
   }
-  checkedRlues(e){
+  checkedRules(e){
+    document.getElementById('alarmRules').style.display='block';
     var oev = e || event;
-    this.checked=1;
     oev.preventDefault();
     oev.stopPropagation();
     return false;
   }
   hide(){
-    this.checked = 0;
+    document.getElementById('alarmRules').style.display='none';
   }
 }

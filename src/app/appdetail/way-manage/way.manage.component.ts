@@ -314,7 +314,6 @@ export class WayManageComponent {
           }
         })
   }
-
   edit(item){
     console.log(item);
     if(item.channelStatus==1){

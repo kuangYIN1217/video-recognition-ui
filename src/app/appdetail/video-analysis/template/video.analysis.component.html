@@ -98,7 +98,8 @@
 
         <div class="popup-item" *ngFor="let item of d_analysis_options; let i = index">
           <img (click)="$popup_select_toggle(i)" [src]="(item.selected) ? 'assets/appdetail/video-analysis/icon_select_h.png' : 'assets/appdetail/video-analysis/icon_select_n.png'">
-          <label [ngStyle]="ngStyle_popup_select(item.selected)" class="popup-title">{{item.name}}</label>
+          <label class="popup-title">{{item.name}}</label>
+          <!--[ngStyle]="ngStyle_popup_select(item.selected)"-->
         </div>
       </div>
       <div class="analysis-submit-wrapper">
