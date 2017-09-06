@@ -264,10 +264,10 @@ export class WarnComponent{
         this.sessionRules = this.warnRlueArr[i].ruleName;
       }
     }
-    if(this.startTime==undefined){
+    if(this.startTime==''){
       this.startTime=null;
     }
-    if(this.endTime==undefined){
+    if(this.endTime==''){
       this.endTime=null;
     }
     if(this.appCate=='实时流分析'){
