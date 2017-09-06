@@ -111,7 +111,7 @@ export class AlarmRluesComponent {
       }
     }
   }
-  stopPropagetion(e){
+  stopPropagetion(e:any){
     var oev = e || event;
     oev.stopPropagation();
   }

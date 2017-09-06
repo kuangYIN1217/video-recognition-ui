@@ -96,6 +96,9 @@ export class WayManageComponent {
   });
   ngOnInit() {
     calc_height(document.getElementById('channelContent'));
+    this.route.queryParams.subscribe(params => {
+        this.statusCode = params['statusCode'];
+    });
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
@@ -137,6 +140,7 @@ export class WayManageComponent {
           page.curPage = result.number+1;
           page.totalPage = result.totalPages;
           page.totalNum = result.totalElements;
+          //page.statusCode = this.statusCode;
           this.pageParams = page;
           console.log(this.pageParams);
         }
@@ -157,6 +161,7 @@ export class WayManageComponent {
   // }
   getPageData(paraParam) {
     this.getPages(this.appId,paraParam.curPage-1,paraParam.pageMaxItem);
+    console.log(this.statusCode);
   }
   getPages(id,page,size){
     this.channelService.getPage(id,page,size)

@@ -204,22 +204,42 @@ export class WarnRlueComponent{
       item.alarmRuleStatus='关闭';
     }
     console.log(item);
-    this.warnService.warnRuleSwitch(item.ruleId,item.alarmRuleStatus,this.appCate)
-      .subscribe(reply =>{
-        console.log(reply.text());
-        if(reply.text().substring(0,2)=='No'){
-          this.deleteIndex = 1;
-          this.tip_title = "提示";
-          this.tip_content = "该告警下没有开启通道！";
-          this.tip_btn = "开启通道";
-        }else if(reply.text().substring(0,2)=='Er'){
-          this.deleteIndex = 1;
-          this.tip_title = "提示";
-          this.tip_content = reply.text().substring(5);
-        }
-        this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
-        //this.start_reply(reply);
-      });
+    if(this.appCate=='实时流分析'){
+      this.warnService.warnRuleSwitch(item.ruleId,item.alarmRuleStatus,this.appCate)
+        .subscribe(reply =>{
+          console.log(reply.text());
+          if(reply.text().substring(0,2)=='No'){
+            this.deleteIndex = 1;
+            this.tip_title = "提示";
+            this.tip_content = "该告警下没有开启通道！";
+            this.tip_btn = "开启通道";
+          }else if(reply.text().substring(0,2)=='Er'){
+            this.deleteIndex = 1;
+            this.tip_title = "提示";
+            this.tip_content = reply.text().substring(5);
+          }
+          this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
+          //this.start_reply(reply);
+        });
+    }else{
+      this.warnService.warnRuleSwitch(item.ruleId,item.alarmRuleStatus,this.appCate)
+        .subscribe(reply =>{
+          console.log(reply.text());
+          if(reply.text().substring(0,2)=='No'){
+            this.deleteIndex = 1;
+            this.tip_title = "提示";
+            this.tip_content = "请先关闭离线任务！";
+            this.tip_btn = "开启通道";
+          }else if(reply.text().substring(0,2)=='Er'){
+            this.deleteIndex = 1;
+            this.tip_title = "提示";
+            this.tip_content = reply.text().substring(5);
+          }
+          this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
+          //this.start_reply(reply);
+        });
+    }
+
   }
   start_reply(reply){
     if(reply.status==200){

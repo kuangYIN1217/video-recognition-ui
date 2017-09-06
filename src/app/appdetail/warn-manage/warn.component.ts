@@ -46,18 +46,31 @@ export class WarnComponent{
   tip_title:string;
   tip_content:string;
   interval: any;
+  sessionRules:string;
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
     this.getAllWarn(this.appId,this.page-1,this.pageMaxItem);
     if(this.appCate=="实时流分析"){
       this.interval = setInterval(() => {
-        this.getAllWarn(this.appId,this.page-1,this.pageMaxItem);
-      }, 10000);
+        if(sessionStorage.getItem("name")){
+          this.chanName = sessionStorage.getItem("name");
+        }
+        this.session();
+        if(this.pageNow){
+          this.getAllWarn(this.appId,this.pageNow-1,this.pageMaxItem);
+        }
+      }, 30000);
     }else{
       this.interval = setInterval(() => {
-        this.getAllWarn(this.appId,this.page-1,this.pageMaxItem);
-      }, 3600000);
+        if(sessionStorage.getItem("task")){
+          this.warnTask = sessionStorage.getItem("task");
+        }
+        this.session();
+        if(this.pageNow){
+          this.getAllWarn(this.appId,this.pageNow-1,this.pageMaxItem);
+        }
+      }, 360000);
     }
       this.warnService.getWarnRules(this.appId)
         .subscribe(result=>{
@@ -81,6 +94,20 @@ export class WarnComponent{
       })
     this.warnStatus = this.statusArr[0];
   }
+  session(){
+    if(sessionStorage.getItem("rule")){
+      this.warnTask = sessionStorage.getItem("rule");
+    }
+    if(sessionStorage.getItem("status")){
+      this.warnRlue = sessionStorage.getItem("status");
+    }
+    if(sessionStorage.getItem("start")){
+      $('#start').val(sessionStorage.getItem("start"));
+    }
+    if(sessionStorage.getItem("end")){
+      $('#end').val(sessionStorage.getItem("end"));
+    }
+  }
   ngOnDestroy(){
     clearInterval(this.interval);
   }
@@ -96,6 +123,8 @@ export class WarnComponent{
       festival: false,
       format: 'YYYY-MM-DD hh:mm:ss'
     });
+    this.startTime = $('#start').val("");
+    this.endTime = $('#end').val("");
     this.route.queryParams.subscribe(params => {
       if(JSON.stringify(params) != "{}"&& !params.pageNo){
         console.log(params);
@@ -164,8 +193,12 @@ export class WarnComponent{
   }
   getPageData(paraParam){
     this.getAllWarn(this.appId,paraParam.curPage-1,paraParam.pageMaxItem);
-    //this.pageNow=paraParam.curPage;
-    //console.log(this.pageNow);
+    this.pageNow=paraParam.curPage;
+    console.log(this.pageNow);
+  }
+  date(item){
+    var d = new Date(item);
+    return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + ((d.getHours()<10)?('0'+d.getHours()):d.getHours()) + ':' + ((d.getMinutes()<10)?('0'+d.getMinutes()):d.getMinutes()) + ':' + ((d.getSeconds()<10)?('0'+d.getSeconds()):d.getSeconds());
   }
   handling(item){
     this.warnService.handlingWarn(item.alarmId,this.appId)
@@ -180,18 +213,6 @@ export class WarnComponent{
     item.alarmStatus = '已处理';
   }
   getWarnList(result){
-/*    debugger
-    let tem:any[]=[];
-    let time:string;
-    for(let i=0;i<result.content.length;i++){
-      time = this.compareTime(result.content[i].createTime,result.content[i+1].createTime);
-      if(time==result.content[i].createTime){
-        tem.push(result.content[i]);
-      }else{
-        tem.push(result.content[i+1]);
-      }
-    }
-    this.allWarn = tem;*/
     this.allWarn = result.content;
     console.log(this.allWarn);
     let page = new Page();
@@ -200,23 +221,6 @@ export class WarnComponent{
     page.totalPage = result.totalPages;
     page.totalNum = result.totalElements;
     this.pageParams = page;
-  }
-  compareTime(a,b){
-    let tem1:any[]=[];
-    let tem2:any[]=[];
-    tem1 = a.substring(0,10).split('-');
-    tem2 = b.substring(0,10).split('-');
-    a = tem1[1]+'-'+tem1[2]+'-'+tem1[0]+' '+a.substring(10,19);
-    b = tem2[1]+'-'+tem2[2]+'-'+tem2[0]+' '+b.substring(10,19);
-    var result = (Date.parse(b)-Date.parse(a))/3600/1000;
-    if(result<0){
-      //alert(b<a);
-      return a;
-    }else if(result>0){
-      return b;
-    }else if(result==0){
-      return a;
-    }
   }
   export(){
     this.alarmIds='';
@@ -244,11 +248,20 @@ export class WarnComponent{
        window.open(SERVER_URL+"/"+url);
      })
   }
+  sessionSet(){
+    sessionStorage.setItem("rule" , this.sessionRules);
+    sessionStorage.setItem("status" , this.warnStatus);
+    sessionStorage.setItem("start" , this.startTime);
+    sessionStorage.setItem("end" , this.endTime);
+  }
   searchWarn(){
+    this.startTime = $('#start').val();
+    this.endTime = $('#end').val();
     for(let i=0;i<this.warnRlueArr.length;i++){
       console.log(this.warnRlueArr[i].ruleName);
       if(this.warnRlueArr[i].ruleName == this.warnRlue){
         this.ruleId = this.warnRlueArr[i].ruleId;
+        this.sessionRules = this.warnRlueArr[i].ruleName;
       }
     }
     if(this.startTime==undefined){
@@ -258,13 +271,17 @@ export class WarnComponent{
       this.endTime=null;
     }
     if(this.appCate=='实时流分析'){
-      console.log(this.appId);
-      console.log(this.ruleId);
+      sessionStorage.setItem("name" , this.chanName);
+      this.sessionSet();
+      //console.log(this.appId);
+      //console.log(this.ruleId);
       this.warnService.searchWarns(this.appId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime)
         .subscribe(result=>{
           this.getWarnList(result);
         })
     }else{
+      sessionStorage.setItem("task" , this.warnTask);
+      this.sessionSet();
       this.warnService.searchOffWarns(this.appId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime)
         .subscribe(result=>{
           this.getWarnList(result);

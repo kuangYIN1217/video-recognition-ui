@@ -23,8 +23,8 @@ export class PageComponent {
     this.pageParams = {'totalNum':0,'curPage':1,'pageMaxItem':10,'totalPage':0,'statusCode':this.statusCode};
   }
   ngOnChanges(...args: any[]) {
-    //this.statusCode = this.pageParams.statusCode;
-    //console.log(this.statusCode);
+    this.statusCode = this.pageParams.statusCode;
+    console.log(this.statusCode);
   }
   getPageList(pageParams) {
     let pageList=[];
@@ -81,7 +81,7 @@ export class PageComponent {
     //console.log('修改页码', pageNo);
     vm.pageParams.curPage = pageNo;
     vm.pageParams.pageMaxItem = this.pageMaxItem;
-    //vm.pageParams.statusCode =  this.statusCode;
+    vm.pageParams.statusCode =  this.statusCode;
     //console.log(vm.pageParams);
     vm.changeCurPage.emit(vm.pageParams);
   }

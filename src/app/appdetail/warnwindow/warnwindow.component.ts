@@ -128,7 +128,7 @@ export class WarnWindowComponent{
     }
     console.log(this.warnChannelId);
   }*/
-  checkedRlues(e){
+  checkedRlues(e:any){
     var oev = e || event;
     this.checked=1;
     oev.preventDefault();

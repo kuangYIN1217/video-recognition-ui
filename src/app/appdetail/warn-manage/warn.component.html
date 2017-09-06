@@ -34,9 +34,9 @@
       <div class="search-time">
         <div class="search-info no-margin">
           <label>告警时间：</label>
-          <input type="text" id="start" class="time" readonly placeholder="请选择时间" [(ngModel)]="startTime" (ngModelChange)="startTime=$event;"/>
+          <input type="text" id="start" class="time" readonly placeholder="请选择时间"/>
           <span>至</span>
-          <input type="text" id="end" class="time" readonly placeholder="请选择时间" [(ngModel)]="endTime" (ngModelChange)="endTime=$event;" style="margin-left: 0"/>
+          <input type="text" id="end" class="time" readonly placeholder="请选择时间" style="margin-left: 0"/>
         </div>
         <a href="#" onclick="return false" class="btn bgco" (click)="searchWarn()">查询</a>
       </div>
@@ -68,7 +68,7 @@
             <td *ngIf="appCate=='离线文件分析'">{{item.taskName}}</td>
             <td>{{item.ruleName}}</td>
             <td *ngIf="appCate=='离线文件分析'">{{item.applicationName}}</td>
-            <td>{{item.alarmTime}}</td>
+            <td>{{date(item.alarmTime)}}</td>
             <td>{{item.duration.substring(0,4)}}</td>
             <td>
               <img src="../assets/warn/chakan.png" class="mrgr" (click)="seePhoto()"/>
@@ -83,7 +83,7 @@
             </td>
             <div class="fangda" [style.display]="seeIndex==1?'':'none'">
             <span>
-              <img src="{{SERVER_URL}}/download/{{item?.imagePath}}" class="jietu"/>
+              <img src="item?{{SERVER_URL}}/download/{{item?.imagePath}}:''" class="jietu"/>
               <img src="../assets/appmanage/delete.png" class="close" (click)="close()"/>
             </span>
             </div>
@@ -132,17 +132,17 @@
       </div>
       <div class="detail_info">
         <span class="info_name">告警快照：</span>
-        <span class="info_content"><img src="{{SERVER_URL}}/download/{{detaillist?.imagePath}}" (click)="thumbnail()"/></span>
+        <span class="info_content"><img src="detaillist?{{SERVER_URL}}/download/{{detaillist?.imagePath}}:''" (click)="thumbnail()"/></span>
       </div>
       <div class="fangda" [style.display]="seeIndex==2?'':'none'">
             <span>
-              <img src="{{SERVER_URL}}/download/{{detaillist?.imagePath}}" class="jietu"/>
+              <img src="detaillist?{{SERVER_URL}}/download/{{detaillist?.imagePath}}:''" class="jietu"/>
               <img src="../assets/appmanage/delete.png" class="close" (click)="close()"/>
             </span>
       </div>
       <div class="detail_info">
         <span class="info_name"></span>
-        <span class="info_content"><a href="{{SERVER_URL}}/download/{{detaillist?.imagePath}}" class="downPhoto" download>下载快照</a></span>
+        <span class="info_content"><a href="detaillist?{{SERVER_URL}}/download/{{detaillist?.imagePath}}:''" class="downPhoto" download>下载快照</a></span>
       </div>
       <div class="detail_info">
         <span class="info_name"></span>

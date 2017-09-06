@@ -332,9 +332,9 @@ export class CreateTextComponent {
         this.router.navigate(['../taskmanage']);
       })
   }
-  checkedRules(e){
+  checkedRules(e:any){
     this.checked=1;
-    var oev = e || event;
+    let oev = e || event;
     oev.preventDefault();
     oev.stopPropagation();
     return false;
