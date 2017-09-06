@@ -85,9 +85,8 @@ export class WayManageComponent {
         //this.status = param;
       }
     });
-    if(this.status=='全部'){
-      this.getPages(this.appId,this.page-1,this.pageMaxItem);
-    }
+      this.findCode();
+      this.getAllChannel(this.appId,this.channelName,this.statusCode,this.page-1,this.pageMaxItem);
   }
   public uploader:FileUploader = new FileUploader({
     url: SERVER_URL+"/api/upload",
@@ -96,9 +95,6 @@ export class WayManageComponent {
   });
   ngOnInit() {
     calc_height(document.getElementById('channelContent'));
-    this.route.queryParams.subscribe(params => {
-        this.statusCode = params['statusCode'];
-    });
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
@@ -120,6 +116,10 @@ export class WayManageComponent {
     }
   }
   searchResult(){
+    this.findCode();
+    this.getAllChannel(this.appId,this.channelName,this.statusCode,this.page-1,this.pageMaxItem);
+  }
+  findCode(){
     if(!this.channelName){
       this.channelName=null;
     }
@@ -130,7 +130,9 @@ export class WayManageComponent {
     }else{
       this.statusCode = null;
     }
-    this.channelService.searchResult(this.appId,this.channelName,this.statusCode,this.page-1,this.pageMaxItem)
+  }
+  getAllChannel(appId,channelName,statusCode,page,size){
+    this.channelService.searchResult(appId,channelName,statusCode,page,size)
       .subscribe(result=>{
         if(result.content){
           this.channelInfo=result.content;
@@ -160,22 +162,25 @@ export class WayManageComponent {
   //     });
   // }
   getPageData(paraParam) {
-    this.getPages(this.appId,paraParam.curPage-1,paraParam.pageMaxItem);
+    this.findCode();
     console.log(this.statusCode);
+    this.getAllChannel(this.appId,this.channelName,this.statusCode,paraParam.curPage-1,paraParam.pageMaxItem);
+    //console.log(this.statusCode);
   }
-  getPages(id,page,size){
+/*  getPages(id,page,size){
     this.channelService.getPage(id,page,size)
       .subscribe(result => {
         console.log(result);
         this.channelInfo = result.content;
         let page = new Page();
+        //page.statusCode = this.statusCode;
         page.pageMaxItem = result.size;
         page.curPage = result.number+1;
         page.totalPage = result.totalPages;
         page.totalNum = result.totalElements;
         this.pageParams = page;
       });
-  }
+  }*/
   allSel(){
     for(var i in this.channelInfo){
       if(this.allFlag==false){
@@ -223,7 +228,7 @@ export class WayManageComponent {
           }
           event.target.value='';
           this.uploader.queue[0].remove();
-          this.getPages(this.appId,this.page-1,this.pageMaxItem);
+          this.getAllChannel(this.appId,null,null,this.page-1,this.pageMaxItem);
         })
     }
   }
@@ -255,7 +260,7 @@ export class WayManageComponent {
     this.channelService.delChannel(id)
       .subscribe(result=>{
         this.delDialog = 0;
-        this.getPages(this.appId,this.page-1,this.pageMaxItem);
+        this.getAllChannel(this.appId,null,null,this.page-1,this.pageMaxItem);
       })
   }
   radio(i){
@@ -315,7 +320,7 @@ export class WayManageComponent {
           }else{
             this.show=1;
             this.addDialog = 0;
-            this.getPages(this.appId,this.page-1,this.pageMaxItem);
+            this.getAllChannel(this.appId,null,null,this.page-1,this.pageMaxItem);
             this.createFlag = true;
           }
         })
@@ -368,7 +373,7 @@ export class WayManageComponent {
           this.tip_title = '提示';
           this.tip_content = '该通道地址已存在，画面顺序为'+result.text().substring(3)+'！';
         }
-        this.getPages(this.appId,this.page-1,this.pageMaxItem);
+        this.getAllChannel(this.appId,null,null,this.page-1,this.pageMaxItem);
         this.addDialog = 0;
         this.upadteFlag = true;
       })
@@ -418,7 +423,7 @@ export class WayManageComponent {
     }
     this.channelService.getDirection(id,this.dire)
       .subscribe(result=>{
-        this.getPages(this.appId,this.page-1,this.pageMaxItem);
+        this.getAllChannel(this.appId,null,null,this.page-1,this.pageMaxItem);
       });
   }
 findStatus(){
