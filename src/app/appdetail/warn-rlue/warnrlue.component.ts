@@ -229,7 +229,6 @@ export class WarnRlueComponent{
             this.deleteIndex = 1;
             this.tip_title = "提示";
             this.tip_content = "请先关闭离线任务！";
-            this.tip_btn = "开启通道";
           }else if(reply.text().substring(0,2)=='Er'){
             this.deleteIndex = 1;
             this.tip_title = "提示";
