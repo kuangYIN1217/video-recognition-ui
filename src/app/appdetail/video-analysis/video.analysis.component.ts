@@ -296,6 +296,7 @@ export class VideoAnalysisComoponent {
       //console.log(this.d_analysis_options);
     }
   }
+
   $fullscreen_click (index: number , $event) {
     $event = $event || window.event;
     $event.preventDefault();
@@ -390,11 +391,54 @@ export class VideoAnalysisComoponent {
   }
   get_ckplayer_index (index: number) {
     if (this.d_video_list && this.d_video_list.length >= index) {
-      return this.d_video_list[index-1].channelName
+      return this.d_video_list[index-1].channelName;
     }
     return null;
   }
-
+  $channel_click(index:number, $event){
+    $event = $event || window.event;
+    $event.preventDefault();
+    $event.stopPropagation();
+    if (this.d_video_list && this.d_video_list.length >= index) {
+      //console.log(this.d_video_list);
+      if(this.d_video_list[index-1].channelStatus==1)
+      this.channelService.run(this.d_video_list[index-1].channelId,0)
+        .subscribe(reply => {
+          this.initChannels();
+        });
+    }
+  }
+  get_switch_icon_url (index: number) {
+    let size_22 = 'assets/appdetail/video-analysis/zanting.png';
+    let size_20 = 'assets/appdetail/video-analysis/zanting-22.png';
+    let size_18 = 'assets/appdetail/video-analysis/zanting-20.png';
+    if (this.s_fullscreen_grid === index) {
+      return 'assets/appdetail/video-analysis/zanting.png'
+    }
+    switch (this.s_grid_number) {
+      case 1: {
+        return size_22;
+      }
+      case 4: {
+        return size_20;
+      }
+      case 6: {
+        if (index === 1) {
+          return size_22;
+        }
+        return size_20;
+      }
+      case 8: {
+        if (index === 1) {
+          return size_22;
+        }
+        return size_18;
+      }
+      case 9: {
+        return size_18;
+      }
+    }
+  }
   get_fullscreen_icon_url (index: number) {
     let size_22 = 'assets/appdetail/video-analysis/icon_fullscreen_22.png';
     let size_20 = 'assets/appdetail/video-analysis/icon_fullscreen_20.png'

@@ -36,9 +36,9 @@ export class TaskManageComponent {
     this.appCate = window.sessionStorage.getItem("applicationType");
     console.log(this.appId);
     console.log(this.appCate);
-    this.getAllTask(this.appId,this.page-1,this.pageMaxItem);
+    this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
     this.interval = setInterval(() => {
-      this.getAllTask(this.appId,this.page-1,this.pageMaxItem);
+      this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
     }, 10000);
     this.alarmStatus = this.alarmStatusArr[0];
     this.route.params.subscribe((param) => {
@@ -172,7 +172,7 @@ export class TaskManageComponent {
     }else{
       console.log("Start Failed!");
     }
-    this.getAllTask(this.appId,this.page-1,this.pageMaxItem);
+    this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
   }
   searchTask(){
     if(this.taskName==undefined||this.taskName==''){
@@ -235,7 +235,7 @@ export class TaskManageComponent {
         console.log(this.deleteIdArr[i]);
         this.offlineService.delete(this.deleteIdArr[i].taskId)
           .subscribe(result=>{
-            this.getAllTask(this.appId,this.page-1,this.pageMaxItem);
+            this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
           })
       }
     }

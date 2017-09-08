@@ -122,6 +122,13 @@
   z-index: 3;
   cursor: pointer;
 }
+.player-item .item-switch {
+  position: absolute;
+  bottom: 18px;
+  right: 55px;
+  z-index: 3;
+  cursor: pointer;
+}
 .player-item.fullscreen {
   position: absolute;
   top: 16px !important;
@@ -133,6 +140,10 @@
   z-index: 4;
   border: none !important;
 }
+.player-item.fullscreen .item-switch {
+  bottom: 18px !important;
+  right: 54px !important;
+}
 .player-item.fullscreen .item-fullscreen {
   bottom: 20px !important;
   right: 20px !important;
@@ -140,7 +151,7 @@
 .player-item .item-screenshot {
   position: absolute;
   bottom: 17px;
-  right: 55px;
+  right: 90px;
   z-index: 3;
   cursor: pointer;
 }
@@ -159,9 +170,14 @@
   right: 15px;
   font-size: 22px;
 }
+
 .player-item.grid4 .item-fullscreen {
   bottom: 15px;
   right: 15px;
+}
+.player-item.grid4 .item-switch {
+  bottom: 14px;
+  right: 50px;
 }
 /* 六格布局 */
 .player-item.grid6 {
@@ -191,6 +207,10 @@
   bottom: 10px;
   right: 10px;
 }
+.player-item.grid6 .item-switch {
+  bottom: 9px;
+  right: 45px;
+}
 .item-add-video {
   position: absolute;
   width: 107px;
@@ -202,6 +222,10 @@
   bottom: 0;
   margin: auto;
   cursor: pointer;
+}
+.player-item.grid6.index1 .item-switch {
+  bottom: 12px;
+  right: 55px;
 }
 .player-item.grid6.index1 .item-fullscreen {
   bottom: 15px;
@@ -236,6 +260,14 @@
   bottom: 10px;
   right: 10px;
 }
+.player-item.grid8 .item-switch {
+  bottom: 9px;
+  right: 40px;
+}
+.player-item.grid8.index1 .item-switch {
+  bottom: 13px;
+  right: 55px;
+}
 .player-item.grid8.index1 .item-fullscreen {
   bottom: 15px;
   right: 15px;
@@ -253,6 +285,10 @@
 .player-item.grid9 .item-fullscreen {
   bottom: 10px;
   right: 10px;
+}
+.player-item.grid9 .item-switch {
+  bottom: 9px;
+  right: 40px;
 }
 
 /*.player-item .ck-player {

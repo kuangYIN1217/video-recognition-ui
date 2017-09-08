@@ -51,7 +51,7 @@ export class WarnComponent{
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
-    this.getAllWarn(this.appId,this.page-1,this.pageMaxItem);
+    this.searchWarn(this.appId,null,-1,'全部',this.page-1,this.pageMaxItem,null,null);
     if(this.appCate=="实时流分析"){
       this.interval = setInterval(() => {
         if(sessionStorage.getItem("name")){
@@ -59,7 +59,7 @@ export class WarnComponent{
         }
         this.session();
         if(this.pageNow){
-          this.getAllWarn(this.appId,this.pageNow-1,this.pageMaxItem);
+          this.searchWarn(this.appId,null,-1,'全部',this.pageNow-1,this.pageMaxItem,null,null);
         }
       }, 30000);
     }else{
@@ -69,13 +69,14 @@ export class WarnComponent{
         }
         this.session();
         if(this.pageNow){
-          this.getAllWarn(this.appId,this.pageNow-1,this.pageMaxItem);
+          this.searchWarn(this.appId,null,-1,'全部',this.pageNow-1,this.pageMaxItem,null,null);
         }
       }, 360000);
     }
     this.warnService.getWarnRules(this.appId)
       .subscribe(result=>{
         this.warnRlueArr = result.content;
+        this.warnRlueArr.unshift({"ruleId":-1,"ruleName":'全部'});
         console.log(this.warnRlueArr);
         if(this.warnRlueArr.length>0){
           this.warnRlue = this.warnRlueArr[0].ruleName;
@@ -85,11 +86,15 @@ export class WarnComponent{
     this.warnService.getChanName(this.appId)
       .subscribe(result=>{
         this.chanNameArr=result;
+        console.log(this.chanNameArr);
+        this.chanNameArr.unshift('全部');
         this.chanName = this.chanNameArr[0];
       })
     this.offlineService.getWarnTask(this.appId)
       .subscribe(result=>{
         this.warnTaskArr = result.content;
+        this.warnTaskArr.unshift({"taskId":-1,"taskName":'全部'});
+        console.log(this.warnTaskArr);
         if(this.warnTaskArr.length>0){
           this.warnTask = this.warnTaskArr[0].taskName;
         }
@@ -101,9 +106,9 @@ export class WarnComponent{
         this.warnStatus = param['status'];
         console.log(this.warnStatus);
         if(this.appCate=='实时流分析'){
-          this.searchWarn(this.appId,null,null,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+          this.searchWarn(this.appId,null,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
         }else{
-          this.searchWarn(this.appId,null,null,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+          this.searchWarn(this.appId,null,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
         }
       }
     });
@@ -210,7 +215,8 @@ export class WarnComponent{
     this.seeIndex = 0;
   }
   getPageData(paraParam){
-    this.getAllWarn(this.appId,paraParam.curPage-1,paraParam.pageMaxItem);
+    this.searchWarn(this.appId,null,-1,'全部',paraParam.curPage-1,paraParam.pageMaxItem,null,null);
+
     this.pageNow=paraParam.curPage;
     console.log(this.pageNow);
   }
@@ -221,7 +227,7 @@ export class WarnComponent{
   handling(item){
     this.warnService.handlingWarn(item.alarmId,this.appId)
       .subscribe(result=>{
-        this.getAllWarn(this.appId,this.page-1,this.pageMaxItem);
+        this.searchWarn(this.appId,null,-1,'全部',this.page-1,this.pageMaxItem,null,null);
       })
   }
   deleteChange(event){
@@ -294,11 +300,20 @@ export class WarnComponent{
     if(this.appCate=='实时流分析'){
       sessionStorage.setItem("name" , this.chanName);
       this.sessionSet();
-      this.searchWarn(this.appId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime);
+      if(this.chanName=='全部'){
+        this.searchWarn(this.appId,null,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime);
+      }else{
+        this.searchWarn(this.appId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime);
+      }
     }else{
       sessionStorage.setItem("task" , this.warnTask);
       this.sessionSet();
-      this.searchWarn(this.appId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime);
+      if(this.warnTask=='全部'){
+        this.searchWarn(this.appId,null,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime);
+      }else{
+        this.searchWarn(this.appId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime);
+      }
+
     }
 
   }

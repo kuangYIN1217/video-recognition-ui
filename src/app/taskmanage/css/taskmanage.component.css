@@ -203,9 +203,20 @@ input{
 }
 .percent{
   margin-left: 25px;
+  table-layout:fixed;
+}
+.percent p{
+  width:200px;
+  text-overflow:ellipsis;
+  overflow:hidden;
+  white-space:nowrap;
 }
 .mouse{
+  position: relative;
   cursor: pointer;
+  height:36px;
+  display: inline-block;
+  line-height: 36px;
 }
 .progressouter{
   width:200px;

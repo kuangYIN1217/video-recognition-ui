@@ -83,7 +83,7 @@
             </td>
             <div class="fangda" [style.display]="seeIndex==1?'':'none'">
             <span>
-              <img src="item?{{SERVER_URL}}/download/{{item?.imagePath}}:''" class="jietu"/>
+              <img src="{{SERVER_URL}}/download/{{item?.imagePath}}" class="jietu"/>
               <img src="../assets/appmanage/delete.png" class="close" (click)="close()"/>
             </span>
             </div>
@@ -132,17 +132,17 @@
       </div>
       <div class="detail_info">
         <span class="info_name">告警快照：</span>
-        <span class="info_content"><img src="detaillist?{{SERVER_URL}}/download/{{detaillist?.imagePath}}:''" (click)="thumbnail()"/></span>
+        <span class="info_content"><img src="{{SERVER_URL}}/download/{{detaillist?.imagePath}}" (click)="thumbnail()"/></span>
       </div>
       <div class="fangda" [style.display]="seeIndex==2?'':'none'">
             <span>
-              <img src="detaillist?{{SERVER_URL}}/download/{{detaillist?.imagePath}}:''" class="jietu"/>
+              <img src="{{SERVER_URL}}/download/{{detaillist?.imagePath}}" class="jietu"/>
               <img src="../assets/appmanage/delete.png" class="close" (click)="close()"/>
             </span>
       </div>
       <div class="detail_info">
         <span class="info_name"></span>
-        <span class="info_content"><a href="detaillist?{{SERVER_URL}}/download/{{detaillist?.imagePath}}:''" class="downPhoto" download>下载快照</a></span>
+        <span class="info_content"><a href="{{SERVER_URL}}/download/{{detaillist?.imagePath}}" class="downPhoto" download>下载快照</a></span>
       </div>
       <div class="detail_info">
         <span class="info_name"></span>
