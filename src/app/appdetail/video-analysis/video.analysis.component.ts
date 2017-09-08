@@ -36,6 +36,15 @@ export class VideoAnalysisComoponent {
   channelInfo: any[] = [];
   page: number = 1;
   pageMaxItem: number = 10;
+  fullscreenIndex1:number=0;
+  fullscreenIndex2:number=0;
+  fullscreenIndex3:number=0;
+  fullscreenIndex4:number=0;
+  fullscreenIndex5:number=0;
+  fullscreenIndex6:number=0;
+  fullscreenIndex7:number=0;
+  fullscreenIndex8:number=0;
+  fullscreenIndex9:number=0;
   radio(i){
     this.radioIndex = i;
   }
@@ -246,6 +255,23 @@ export class VideoAnalysisComoponent {
     this.changePopupOptions(this.d_video_list[index - 1].recognitionCategory);
 
   }
+  showFull(index:number){
+    this.getIndex(index);
+  }
+  hideFull(index){
+    this.getIndex(index);
+  }
+  getIndex(index){
+    this.fullscreenIndex1 = index;
+    this.fullscreenIndex2 = index;
+    this.fullscreenIndex3 = index;
+    this.fullscreenIndex4 = index;
+    this.fullscreenIndex5 = index;
+    this.fullscreenIndex6 = index;
+    this.fullscreenIndex7 = index;
+    this.fullscreenIndex8 = index;
+    this.fullscreenIndex9 = index;
+  }
   $popup_toggle () {
     this.s_popup_show = !this.s_popup_show;
   }
@@ -309,7 +335,7 @@ export class VideoAnalysisComoponent {
     if (this.s_selected_grid === 0) {
       // 当前所有
       this.recognitionService.setRecognitions( this.getAllChannelID() , this.getSelectedRecognitions()).subscribe(rep => {
-        console.log(rep)
+        console.log(rep);
         this.d_video_list= rep.sort(function(a,b){
           return parseInt(a.channelOrder) - parseInt(b.channelOrder)
         });
@@ -423,7 +449,7 @@ export class VideoAnalysisComoponent {
 
   initRecognitions() {
     this.recognitionService.getRecognitions().subscribe(rep => {
-      console.log(rep)
+      console.log(rep);
       this.d_analysis_options = rep;
     })
   }

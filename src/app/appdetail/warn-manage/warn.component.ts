@@ -47,6 +47,7 @@ export class WarnComponent{
   tip_content:string;
   interval: any;
   sessionRules:string;
+  status:string;
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -72,27 +73,45 @@ export class WarnComponent{
         }
       }, 360000);
     }
-      this.warnService.getWarnRules(this.appId)
-        .subscribe(result=>{
-          this.warnRlueArr = result.content;
-          console.log(this.warnRlueArr);
-          if(this.warnRlueArr.length>0){
-            this.warnRlue = this.warnRlueArr[0].ruleName;
-          }
-        })
-      this.warnService.getChanName(this.appId)
-        .subscribe(result=>{
-          this.chanNameArr=result;
-          this.chanName = this.chanNameArr[0];
-        })
+    this.warnService.getWarnRules(this.appId)
+      .subscribe(result=>{
+        this.warnRlueArr = result.content;
+        console.log(this.warnRlueArr);
+        if(this.warnRlueArr.length>0){
+          this.warnRlue = this.warnRlueArr[0].ruleName;
+          this.ruleId = this.warnRlueArr[0].ruleId;
+        }
+      })
+    this.warnService.getChanName(this.appId)
+      .subscribe(result=>{
+        this.chanNameArr=result;
+        this.chanName = this.chanNameArr[0];
+      })
     this.offlineService.getWarnTask(this.appId)
       .subscribe(result=>{
-          this.warnTaskArr = result.content;
-          if(this.warnTaskArr.length>0){
-            this.warnTask = this.warnTaskArr[0].taskName;
-          }
+        this.warnTaskArr = result.content;
+        if(this.warnTaskArr.length>0){
+          this.warnTask = this.warnTaskArr[0].taskName;
+        }
       })
     this.warnStatus = this.statusArr[0];
+    this.route.params.subscribe((param) => {
+      if(JSON.stringify(param) != "{}"){
+        console.log(param);
+        this.warnStatus = param['status'];
+        console.log(this.warnStatus);
+        if(this.appCate=='实时流分析'){
+          this.searchWarn(this.appId,null,null,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+        }else{
+          this.searchWarn(this.appId,null,null,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+        }
+      }
+    });
+
+  }
+  ngAfterViewInit(){
+    $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
+
   }
   session(){
     if(sessionStorage.getItem("rule")){
@@ -123,6 +142,7 @@ export class WarnComponent{
       festival: false,
       format: 'YYYY-MM-DD hh:mm:ss'
     });
+
     this.startTime = $('#start').val("");
     this.endTime = $('#end').val("");
     this.route.queryParams.subscribe(params => {
@@ -135,6 +155,7 @@ export class WarnComponent{
           })
       }
     });
+
   }
   getAllWarn(id,page,size){
     this.warnService.getAllWarn(id,page,size)
@@ -142,9 +163,6 @@ export class WarnComponent{
         console.log(result.content);
         this.getWarnList(result);
       })
-  }
-  ngAfterViewInit() {
-    $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
   }
   allSel(){
     for(var i in this.allWarn){
@@ -254,7 +272,7 @@ export class WarnComponent{
     sessionStorage.setItem("start" , this.startTime);
     sessionStorage.setItem("end" , this.endTime);
   }
-  searchWarn(){
+  validation(){
     this.startTime = $('#start').val();
     this.endTime = $('#end').val();
     for(let i=0;i<this.warnRlueArr.length;i++){
@@ -270,19 +288,30 @@ export class WarnComponent{
     if(this.endTime==''){
       this.endTime=null;
     }
+  }
+  search(){
+    this.validation();
     if(this.appCate=='实时流分析'){
       sessionStorage.setItem("name" , this.chanName);
       this.sessionSet();
+      this.searchWarn(this.appId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime);
+    }else{
+      sessionStorage.setItem("task" , this.warnTask);
+      this.sessionSet();
+      this.searchWarn(this.appId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime);
+    }
+
+  }
+  searchWarn(id,nameTask,ruleId,status,page,size,start,end){
+    if(this.appCate=='实时流分析'){
       //console.log(this.appId);
       //console.log(this.ruleId);
-      this.warnService.searchWarns(this.appId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime)
+      this.warnService.searchWarns(id,nameTask,ruleId,status,page,size,start,end)
         .subscribe(result=>{
           this.getWarnList(result);
         })
     }else{
-      sessionStorage.setItem("task" , this.warnTask);
-      this.sessionSet();
-      this.warnService.searchOffWarns(this.appId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime)
+      this.warnService.searchOffWarns(id,nameTask,ruleId,status,page,size,start,end)
         .subscribe(result=>{
           this.getWarnList(result);
         })

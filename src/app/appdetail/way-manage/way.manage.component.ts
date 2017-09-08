@@ -61,6 +61,7 @@ export class WayManageComponent {
   tip_content:string;
   importPath:string;
   init_flag:boolean = true;
+  pageNow:number;
   constructor(private appManageService: AppManageService,private channelService: ChannelService , private route: ActivatedRoute , private router: Router) {
 /*    this.route.params.subscribe((param) => {
       console.log(param);
@@ -165,8 +166,11 @@ export class WayManageComponent {
     this.findCode();
     console.log(this.statusCode);
     this.getAllChannel(this.appId,this.channelName,this.statusCode,paraParam.curPage-1,paraParam.pageMaxItem);
-    //console.log(this.statusCode);
+    this.pageNow=paraParam.curPage;
+/*    sessionStorage['curPage'] = this.pageNow;
+    console.log(sessionStorage['curPage']);*/
   }
+
 /*  getPages(id,page,size){
     this.channelService.getPage(id,page,size)
       .subscribe(result => {
@@ -313,7 +317,7 @@ export class WayManageComponent {
       this.channelService.createChannel(this.appId,chanAddr,chanName,protocol,channelType,videoAddress,status)
         .subscribe(result=>{
           console.log(result);
-          if(result.text()=='NO'){
+          if(result.text().substring(0,2)=='NO'){
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = '该通道地址已存在，画面顺序为'+result.text().substring(3)+'！';
@@ -423,7 +427,7 @@ export class WayManageComponent {
     }
     this.channelService.getDirection(id,this.dire)
       .subscribe(result=>{
-        this.getAllChannel(this.appId,null,null,this.page-1,this.pageMaxItem);
+        this.getAllChannel(this.appId,null,null,this.pageNow-1,this.pageMaxItem);
       });
   }
 findStatus(){

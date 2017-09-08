@@ -30,6 +30,7 @@ export class TaskManageComponent {
   percent:any[]=[];
   interval: any;
   interval1: any;
+  pageNow:number;
   constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -40,6 +41,14 @@ export class TaskManageComponent {
       this.getAllTask(this.appId,this.page-1,this.pageMaxItem);
     }, 10000);
     this.alarmStatus = this.alarmStatusArr[0];
+    this.route.params.subscribe((param) => {
+      if(JSON.stringify(param) != "{}"){
+        console.log(param);
+        this.alarmStatus = param['status'];
+        console.log(this.alarmStatus);
+        this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
+      }
+    });
   }
   ngOnInit() {
     calc_height(document.getElementById('task_body'));
@@ -50,7 +59,11 @@ export class TaskManageComponent {
     this.websocket.stopWebsocket();
   }
   getPageData(paraParam) {
-    this.getAllTask(this.appId,paraParam.curPage-1,paraParam.pageMaxItem);
+    //this.getAllTask(this.appId,paraParam.curPage-1,paraParam.pageMaxItem);
+    this.getTask(this.appId,this.taskName,this.alarmStatus,paraParam.curPage-1,paraParam.pageMaxItem);
+    this.pageNow=paraParam.curPage;
+/*    sessionStorage['taskCurPage'] = this.pageNow;
+    console.log(sessionStorage['taskCurPage']);*/
   }
   getAllTask(id,page,size){
     this.offlineService.getWarnTask(id,page,size)
@@ -75,6 +88,7 @@ export class TaskManageComponent {
       })
   }
   running(item){
+    console.log(item);
     this.percent = [];
     if(item.taskStatus=='进行中'){
       item.show = 1;
@@ -165,15 +179,19 @@ export class TaskManageComponent {
       this.taskName=null;
     }
     clearInterval(this.interval);
-    this.search();
+    // this.search(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
   }
   search(){
-    this.offlineService.searchTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem)
+    this.searchTask();
+    this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
+  }
+  getTask(id,name,status,page,size){
+    this.offlineService.searchTask(id,name,status,page,size)
       .subscribe(result=>{
         this.taskList = result.content;
         if(this.alarmStatus=='进行中'){
           this.interval1 = setInterval(() => {
-            this.search();
+            this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
           }, 10000);
         }
       })
