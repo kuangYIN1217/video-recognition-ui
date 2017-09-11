@@ -45,6 +45,11 @@ export class VideoAnalysisComoponent {
   fullscreenIndex7:number=0;
   fullscreenIndex8:number=0;
   fullscreenIndex9:number=0;
+
+
+
+
+
   radio(i){
     this.radioIndex = i;
   }
@@ -545,6 +550,7 @@ export class VideoAnalysisComoponent {
     }
     this.channelService.getOpenChannelById(this.d_applicationId).subscribe(rep => {
       this.d_video_list = rep;
+      console.log(rep);
       this.d_video_list.sort(function(a,b){
         return parseInt(a.channelOrder) - parseInt(b.channelOrder)
       })
