@@ -37,8 +37,8 @@ export class RecognitionService {
   }
 
   setRecognitions( channelIds , recognitions) {
-    console.log(channelIds)
-    console.log(recognitions)
+    console.log(channelIds);
+    console.log(recognitions);
     let body ="channelId=" + channelIds + "&recognitionCategory=" + recognitions;
     let path = "/api/UpadateApplicationChannelRecognitionCategory";
     console.log(path);

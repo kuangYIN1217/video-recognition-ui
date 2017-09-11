@@ -348,7 +348,7 @@ export class VideoAnalysisComoponent {
         this.d_video_list[this.s_selected_grid -1].recognitionCategory = rep[0].recognitionCategory;
       });
     }
-    this.s_popup_show = false;
+    //this.s_popup_show = false;
   }
   /* 获得当前为true的 recognition */
   getSelectedRecognitions() {
@@ -401,11 +401,17 @@ export class VideoAnalysisComoponent {
     $event.stopPropagation();
     if (this.d_video_list && this.d_video_list.length >= index) {
       //console.log(this.d_video_list);
-      if(this.d_video_list[index-1].channelStatus==1)
-      this.channelService.run(this.d_video_list[index-1].channelId,0)
-        .subscribe(reply => {
-          this.initChannels();
-        });
+      if(this.d_video_list[index-1].channelStatus==1){
+        this.channelService.run(this.d_video_list[index-1].channelId,0)
+          .subscribe(reply => {
+            this.initChannels();
+          });
+      }else  if(this.d_video_list[index-1].channelStatus==0){
+        this.channelService.run(this.d_video_list[index-1].channelId,1)
+          .subscribe(reply => {
+            this.initChannels();
+          });
+      }
     }
   }
   get_switch_icon_url (index: number) {
@@ -439,10 +445,41 @@ export class VideoAnalysisComoponent {
       }
     }
   }
+  get_switch_off_icon_url (index: number) {
+    let size_22 = 'assets/appdetail/video-analysis/kaishi.png';
+    let size_20 = 'assets/appdetail/video-analysis/kaishi-22.png';
+    let size_18 = 'assets/appdetail/video-analysis/kaishi-20.png';
+    if (this.s_fullscreen_grid === index) {
+      return 'assets/appdetail/video-analysis/kaishi.png'
+    }
+    switch (this.s_grid_number) {
+      case 1: {
+        return size_22;
+      }
+      case 4: {
+        return size_20;
+      }
+      case 6: {
+        if (index === 1) {
+          return size_22;
+        }
+        return size_20;
+      }
+      case 8: {
+        if (index === 1) {
+          return size_22;
+        }
+        return size_18;
+      }
+      case 9: {
+        return size_18;
+      }
+    }
+  }
   get_fullscreen_icon_url (index: number) {
     let size_22 = 'assets/appdetail/video-analysis/icon_fullscreen_22.png';
-    let size_20 = 'assets/appdetail/video-analysis/icon_fullscreen_20.png'
-    let size_18 = 'assets/appdetail/video-analysis/icon_fullscreen_18.png'
+    let size_20 = 'assets/appdetail/video-analysis/icon_fullscreen_20.png';
+    let size_18 = 'assets/appdetail/video-analysis/icon_fullscreen_18.png';
     if (this.s_fullscreen_grid === index) {
       return 'assets/appdetail/video-analysis/icon_fullscreen_close.png'
     }
