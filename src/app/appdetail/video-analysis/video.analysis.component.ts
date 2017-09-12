@@ -419,6 +419,16 @@ export class VideoAnalysisComoponent {
       }
     }
   }
+  get_switch(index){
+    if (this.d_video_list && this.d_video_list.length >= index) {
+      if(this.d_video_list[index-1].channelStatus==0){
+        return true;
+      }else{
+        return false;
+      }
+    }
+    return false;
+  }
   get_switch_icon_url (index: number) {
     let size_22 = 'assets/appdetail/video-analysis/zanting.png';
     let size_20 = 'assets/appdetail/video-analysis/zanting-22.png';
