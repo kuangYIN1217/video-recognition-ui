@@ -47,15 +47,13 @@ export class VideoAnalysisComoponent {
   fullscreenIndex9:number=0;
 
 
-
-
-
   radio(i){
     this.radioIndex = i;
   }
 
   cancel(){
     this.addDialog = 0;
+    this.createFlag = true;
   }
   create(){
     let chanAddr = this.chanAddr;
@@ -409,12 +407,12 @@ export class VideoAnalysisComoponent {
       if(this.d_video_list[index-1].channelStatus==1){
         this.channelService.run(this.d_video_list[index-1].channelId,0)
           .subscribe(reply => {
-            this.initChannels();
+            this.initChannelsNoSort();
           });
       }else  if(this.d_video_list[index-1].channelStatus==0){
         this.channelService.run(this.d_video_list[index-1].channelId,1)
           .subscribe(reply => {
-            this.initChannels();
+            this.initChannelsNoSort();
           });
       }
     }
@@ -548,6 +546,16 @@ export class VideoAnalysisComoponent {
       console.log(rep);
       this.d_analysis_options = rep;
     })
+  }
+  initChannelsNoSort(){
+    this.channelService.getOpenChannelById(this.d_applicationId).subscribe(rep => {
+      this.d_video_list = rep;
+      console.log(rep);
+      this.d_video_list.sort(function(a,b){
+        return parseInt(a.channelOrder) - parseInt(b.channelOrder)
+      })
+      //this.init_grid_number(rep.length ? rep.length : 0);
+    });
   }
   initChannels() {
     var test = {

@@ -34,12 +34,12 @@ export class TaskManageComponent {
   constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
-    console.log(this.appId);
-    console.log(this.appCate);
+    //console.log(this.appId);
+    //console.log(this.appCate);
     this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
-    this.interval = setInterval(() => {
+/*    this.interval = setInterval(() => {
       this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
-    }, 10000);
+    }, 10000);*/
     this.alarmStatus = this.alarmStatusArr[0];
     this.route.params.subscribe((param) => {
       if(JSON.stringify(param) != "{}"){

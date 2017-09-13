@@ -219,7 +219,9 @@ export class AppManageComponent {
           this.deleteIndex =1;
           this.tip_title = '提示';
           this.tip_content = '无效数据，第'+(result.map.num[0]+1)+'行导入失败！';
-          return
+          //return
+          this.createApp='manage';
+          this.getAllInfo();
         }else {
           //console.log(result.map.set.length);
           if(result.map.set.length==0){
@@ -355,6 +357,7 @@ export class AppManageComponent {
   }
   back(){
     this.createApp='manage';
+    this.createFlag = true;
   }
   createJob(){
     this.appName = '';

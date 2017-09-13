@@ -415,6 +415,7 @@ export class WayManageComponent {
     this.addDialog = 0;
     this.delSysDialog = 0;
     this.delDialog = 0;
+    this.createFlag = true;
   }
   deleteChange(event){
     this.deleteIndex = event;
