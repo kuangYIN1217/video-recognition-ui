@@ -64,26 +64,26 @@
               <img src="../assets/appdetail/way.manage/unchecked.png" class="middle" (click)="check(item)" *ngIf="item.flag!=1"/>
               <img src="../assets/appdetail/way.manage/checked.png" class="middle" (click)="check(item)" *ngIf="item.flag==1"/>
             </td>
-            <td *ngIf="appCate=='实时流分析'">{{item.channelName}}</td>
-            <td *ngIf="appCate=='离线文件分析'">{{item.taskName}}</td>
-            <td>{{item.ruleName}}</td>
-            <td *ngIf="appCate=='离线文件分析'">{{item.applicationName}}</td>
-            <td>{{date(item.alarmTime)}}</td>
-            <td>{{item.duration.substring(0,4)}}</td>
+            <td *ngIf="appCate=='实时流分析'" title="{{item.channelName}}">{{item.channelName}}</td>
+            <td *ngIf="appCate=='离线文件分析'" title="{{item.taskName}}">{{item.taskName}}</td>
+            <td title="{{item.ruleName}}">{{item.ruleName}}</td>
+            <td *ngIf="appCate=='离线文件分析'" title="{{item.alarmFileName}}">{{item.alarmFileName}}</td>
+            <td title="{{date(item.alarmTime)}}">{{date(item.alarmTime)}}</td>
+            <td title="{{item.duration.substring(0,4)}}">{{item.duration.substring(0,4)}}</td>
             <td>
-              <img src="../assets/warn/chakan.png" class="mrgr" (click)="seePhoto()"/>
-              <img src="../assets/warn/xiazai.png" class="mrgr" onclick="document.getElementById('down').click()"/>
-              <a id="down" href="{{SERVER_URL}}/download/{{item?.imagePath}}" download></a>
+              <img src="../assets/warn/chakan.png" class="mrgr" (click)="seePhoto(item.imagePath)" title="查看快照"/>
+              <img src="../assets/warn/xiazai.png" class="mrgr" onclick="document.getElementById('down').click()" title="下载快照"/>
+              <a id="down" href="{{SERVER_URL}}/download/{{item.imagePath}}" download></a>
             </td>
-            <td>{{item.alarmStatus}}</td>
+            <td title="{{item.alarmStatus}}">{{item.alarmStatus}}</td>
             <td>
-              <img src="../assets/warn/chuli.png" class="mrgr" (click)="handling(item)" *ngIf="item.alarmStatus=='未处理'"/>
-              <img src="../assets/warn/chuli--hui.png" class="mrgr" *ngIf="item.alarmStatus=='已处理'"/>
-              <img src="../assets/warn/chakanxiangqing.png" class="mrgr" (click)="lookPhoto(item)"/>
+              <img src="../assets/warn/chuli.png" class="mrgr" (click)="handling(item)" *ngIf="item.alarmStatus=='未处理'" title="处理"/>
+              <img src="../assets/warn/chuli--hui.png" class="mrgr" *ngIf="item.alarmStatus=='已处理'" title="处理"/>
+              <img src="../assets/warn/chakanxiangqing.png" class="mrgr" (click)="lookPhoto(item)" title="查看详情"/>
             </td>
             <div class="fangda" [style.display]="seeIndex==1?'':'none'">
             <span>
-              <img src="{{SERVER_URL}}/download/{{item?.imagePath}}" class="jietu"/>
+              <img src="{{SERVER_URL}}/download/{{imageUrl}}" class="jietu"/>
               <img src="../assets/appmanage/delete.png" class="close" (click)="close()"/>
             </span>
             </div>
@@ -101,13 +101,21 @@
         <span class="info_name">项目名称：</span>
         <span class="info_content">{{detaillist.applicationName}}</span>
       </div>
-      <div class="detail_info">
+      <div class="detail_info" *ngIf="appCate=='实时流分析'">
         <span class="info_name">通道名称：</span>
         <span class="info_content">{{detaillist.channelName}}</span>
       </div>
+      <div class="detail_info" *ngIf="appCate=='离线文件分析'">
+        <span class="info_name">告警任务：</span>
+        <span class="info_content">{{detaillist.taskName}}</span>
+      </div>
       <div class="detail_info">
         <span class="info_name">告警规则：</span>
-        <span class="info_content">嫌疑车辆</span>
+        <span class="info_content">{{detaillist.ruleName}}</span>
+      </div>
+      <div class="detail_info" *ngIf="appCate=='离线文件分析'">
+        <span class="info_name">告警文件：</span>
+        <span class="info_content">{{detaillist.alarmFileName}}</span>
       </div>
       <div class="detail_info">
         <span class="info_name">告警时间：</span>
@@ -132,7 +140,7 @@
       </div>
       <div class="detail_info">
         <span class="info_name">告警快照：</span>
-        <span class="info_content"><img src="{{SERVER_URL}}/download/{{detaillist?.imagePath}}" (click)="thumbnail()"/></span>
+        <span class="info_content"><img src="{{SERVER_URL}}/download/{{detaillist.imagePath}}" (click)="thumbnail()"/></span>
       </div>
       <div class="fangda" [style.display]="seeIndex==2?'':'none'">
             <span>
@@ -146,8 +154,9 @@
       </div>
       <div class="detail_info">
         <span class="info_name"></span>
-        <span class="info_content" [ngClass]="{marginLeft: detaillist.alarmStatus=='已处理'}">
-          <a href="#" onclick="return false" class="btn bgco save" (click)="save(detaillist)" *ngIf="detaillist.alarmStatus=='未处理'">保存</a>
+        <!--[ngClass]="{marginLeft: detaillist.alarmStatus=='已处理'}"-->
+        <span class="info_content">
+          <a href="#" onclick="return false" class="btn bgco save" (click)="save(detaillist)">保存</a>
           <a href="#" onclick="return false" class="btn bgcg cancel" (click)="cancel()">取消</a>
         </span>
       </div>

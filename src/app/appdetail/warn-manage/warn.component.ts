@@ -48,6 +48,7 @@ export class WarnComponent{
   interval: any;
   sessionRules:string;
   status:string;
+  imageUrl:string;
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -208,8 +209,10 @@ export class WarnComponent{
   thumbnail(){
     this.seeIndex = 2;
 }
-  seePhoto(){
+  seePhoto(url){
     this.seeIndex = 1;
+    this.imageUrl = url;
+    //console.log(this.imageUrl);
   }
   close(){
     this.seeIndex = 0;
@@ -222,7 +225,7 @@ export class WarnComponent{
   }
   date(item){
     var d = new Date(item);
-    return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + ((d.getHours()<10)?('0'+d.getHours()):d.getHours()) + ':' + ((d.getMinutes()<10)?('0'+d.getMinutes()):d.getMinutes()) + ':' + ((d.getSeconds()<10)?('0'+d.getSeconds()):d.getSeconds());
+    return ((d.getHours()<10)?('0'+(d.getHours()-8)):(d.getHours()-8)) + ':' + ((d.getMinutes()<10)?('0'+d.getMinutes()):d.getMinutes()) + ':' + ((d.getSeconds()<10)?('0'+d.getSeconds()):d.getSeconds());
   }
   handling(item){
     this.warnService.handlingWarn(item.alarmId,this.appId)
@@ -342,6 +345,7 @@ export class WarnComponent{
         }
       })
     this.lookIndex = 0;
+
   }
   cancel(){
     this.lookIndex = 0;
