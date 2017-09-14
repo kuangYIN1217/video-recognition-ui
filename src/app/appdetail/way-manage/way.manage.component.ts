@@ -216,7 +216,11 @@ export class WayManageComponent {
             //console.log(typeof result.map.num[0]);
             this.deleteIndex =1;
             this.tip_title = '提示';
-            this.tip_content = '无效数据，第'+(result.map.num[0]+1)+','+(result.map.num[1]+1)+','+(result.map.num[2]+1)+'行导入失败！';
+            let content = '';
+            for(let i=0;i<result.map.num.length;i++){
+              content += (result.map.num[i]+1)+',';
+            }
+           this.tip_content = '无效数据，第'+content.substring(0,content.length-1)+'行导入失败！';
           }else {
             //console.log(result.map.set.length);
             if(result.map.set.length==0){
