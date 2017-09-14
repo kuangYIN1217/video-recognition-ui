@@ -307,30 +307,36 @@ export class WarnComponent{
         this.sessionRules = this.warnRlueArr[i].ruleName;
       }
     }
-    if(this.startTime==''){
-      this.startTime=null;
-    }
-    if(this.endTime==''){
-      this.endTime=null;
-    }
   }
   search(){
     this.validation();
+    let startTime;
+    let endTime;
+    if(this.startTime==''){
+      startTime=null;
+    }else{
+      startTime=this.startTime;
+    }
+    if(this.endTime==''){
+      endTime=null;
+    }else{
+      endTime=this.endTime;
+    }
     if(this.appCate=='实时流分析'){
       sessionStorage.setItem("name" , this.chanName);
       this.sessionSet();
       if(this.chanName=='全部'){
-        this.searchWarn(this.appId,null,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime);
+        this.searchWarn(this.appId,null,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
       }else{
-        this.searchWarn(this.appId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime);
+        this.searchWarn(this.appId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
       }
     }else{
       sessionStorage.setItem("task" , this.warnTask);
       this.sessionSet();
       if(this.warnTask=='全部'){
-        this.searchWarn(this.appId,null,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime);
+        this.searchWarn(this.appId,null,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
       }else{
-        this.searchWarn(this.appId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.startTime,this.endTime);
+        this.searchWarn(this.appId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
       }
 
     }

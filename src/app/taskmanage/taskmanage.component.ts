@@ -153,7 +153,7 @@ export class TaskManageComponent {
         }else{
           this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
         }
-      }, 2000);
+      }, 5000);
     }else if(item.taskStatus=='进行中'){
       this.status='暂停';
       this.websocket.stopWebsocket();
@@ -207,7 +207,7 @@ export class TaskManageComponent {
               }else{
                 this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
               }
-            }, 2000);
+            }, 5000);
           }else{
             clearInterval(this.interval2);
           }
