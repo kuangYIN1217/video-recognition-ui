@@ -132,10 +132,10 @@ export class WarnComponent{
   }
   session(){
     if(sessionStorage.getItem("rule")){
-      this.warnTask = sessionStorage.getItem("rule");
+      this.warnRlue = sessionStorage.getItem("rule");
     }
     if(sessionStorage.getItem("status")){
-      this.warnRlue = sessionStorage.getItem("status");
+      this.warnStatus = sessionStorage.getItem("status");
     }
     if(sessionStorage.getItem("start")){
       $('#start').val(sessionStorage.getItem("start"));
@@ -241,7 +241,12 @@ export class WarnComponent{
   handling(item){
     this.warnService.handlingWarn(item.alarmId,this.appId)
       .subscribe(result=>{
-        this.searchWarn(this.appId,null,-1,'全部',this.page-1,this.pageMaxItem,null,null);
+        this.session();
+        if(this.warnRlue=='全部'){
+          this.searchWarn(this.appId,this.warnTask,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+        }else{
+          this.searchWarn(this.appId,this.warnTask,this.warnRlue,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+        }
       })
   }
   deleteChange(event){

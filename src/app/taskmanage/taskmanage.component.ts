@@ -30,6 +30,7 @@ export class TaskManageComponent {
   percent:any[]=[];
   interval: any;
   interval1: any;
+  interval2: any;
   pageNow:number;
   constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
@@ -56,6 +57,7 @@ export class TaskManageComponent {
   ngOnDestroy(){
     clearInterval(this.interval);
     clearInterval(this.interval1);
+    clearInterval(this.interval2);
     this.websocket.stopWebsocket();
   }
   getPageData(paraParam) {
@@ -143,7 +145,15 @@ export class TaskManageComponent {
   }
   runChannel(item){
     if(item.taskStatus!='进行中'){
+      debugger
       this.status='进行中';
+      this.interval2 = setInterval(() => {
+        if(this.taskName==undefined){
+          this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
+        }else{
+          this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
+        }
+      }, 2000);
     }else if(item.taskStatus=='进行中'){
       this.status='暂停';
       this.websocket.stopWebsocket();
@@ -189,13 +199,36 @@ export class TaskManageComponent {
     this.offlineService.searchTask(id,name,status,page,size)
       .subscribe(result=>{
         this.taskList = result.content;
+        for(let i=0;i<this.taskList.length;i++){
+          if(this.taskList[i].taskStatus=='进行中'){
+            this.interval2 = setInterval(() => {
+              if(this.taskName==undefined){
+                this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
+              }else{
+                this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
+              }
+            }, 2000);
+          }else{
+            clearInterval(this.interval2);
+          }
+        }
         if(this.alarmStatus=='进行中'){
           this.interval1 = setInterval(() => {
+            if(this.taskName==undefined){
+              this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
+            }
             this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
           }, 10000);
         }
       })
   }
+/*  ngAfterViewChecked(){
+    for(let i=0;i<this.taskList.length;i++){
+      if(this.taskList[i].taskStatus!='进行中'){
+        clearInterval(this.interval2);
+      }
+    }
+  }*/
   getPercent(item){
     return (item*100).toFixed(2)+'%';
   }
