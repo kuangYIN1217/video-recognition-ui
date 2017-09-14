@@ -162,7 +162,7 @@ export class TaskManageComponent {
 /*        this.interval = setInterval(() => {
           this.getAllTask(this.appId,this.page-1,this.pageMaxItem);
         }, 3000);*/
-
+        this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
         this.start_reply(reply);
       } );
   }

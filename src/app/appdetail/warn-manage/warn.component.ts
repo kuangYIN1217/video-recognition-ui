@@ -39,7 +39,7 @@ export class WarnComponent{
   lookIndex:number=0;
   detaillist:any={};
   seeIndex:number=0;
-  taskName:number;
+  taskName:string;
   alarmIds:string='';
   sourcePaths:string='';
   deleteIndex:number=0;
@@ -113,6 +113,17 @@ export class WarnComponent{
         }
       }
     });
+    this.route.queryParams.subscribe(params => {
+      if(JSON.stringify(params) != "{}"&& !params.pageNo){
+        console.log(params);
+        this.taskName = params['taskName'];
+        this.warnService.searchOffWarns(this.appId,this.taskName,-1,'全部',this.page-1,this.pageMaxItem,null,null)
+          .subscribe(result=>{
+            this.warnTask = this.taskName;
+            this.getWarnList(result);
+          })
+      }
+    });
 
   }
   ngAfterViewInit(){
@@ -151,16 +162,7 @@ export class WarnComponent{
 
     this.startTime = $('#start').val("");
     this.endTime = $('#end').val("");
-    this.route.queryParams.subscribe(params => {
-      if(JSON.stringify(params) != "{}"&& !params.pageNo){
-        console.log(params);
-        this.taskName = params['taskName'];
-        this.warnService.searchOffWarns(this.appId,this.taskName,-1,'全部',this.page-1,this.pageMaxItem,null,null)
-          .subscribe(result=>{
-            this.getWarnList(result);
-          })
-      }
-    });
+
 
   }
   getAllWarn(id,page,size){
@@ -227,6 +229,15 @@ export class WarnComponent{
     var d = new Date(item);
     return ((d.getHours()<10)?('0'+(d.getHours()-8)):(d.getHours()-8)) + ':' + ((d.getMinutes()<10)?('0'+d.getMinutes()):d.getMinutes()) + ':' + ((d.getSeconds()<10)?('0'+d.getSeconds()):d.getSeconds());
   }
+  getTime(item){
+    var d = new Date(item);
+    return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + ((d.getHours()<10)?('0'+d.getHours()):d.getHours()) + ':' + ((d.getMinutes()<10)?('0'+d.getMinutes()):d.getMinutes()) + ':' + ((d.getSeconds()<10)?('0'+d.getSeconds()):d.getSeconds());
+  }
+  duraTime(time){
+    if(time){
+      return time.substring(0,4);
+    }
+  }
   handling(item){
     this.warnService.handlingWarn(item.alarmId,this.appId)
       .subscribe(result=>{
@@ -285,7 +296,7 @@ export class WarnComponent{
     this.startTime = $('#start').val();
     this.endTime = $('#end').val();
     for(let i=0;i<this.warnRlueArr.length;i++){
-      console.log(this.warnRlueArr[i].ruleName);
+      //console.log(this.warnRlueArr[i].ruleName);
       if(this.warnRlueArr[i].ruleName == this.warnRlue){
         this.ruleId = this.warnRlueArr[i].ruleId;
         this.sessionRules = this.warnRlueArr[i].ruleName;
@@ -349,5 +360,6 @@ export class WarnComponent{
   }
   cancel(){
     this.lookIndex = 0;
+    this.searchWarn(this.appId,null,-1,'全部',this.page-1,this.pageMaxItem,null,null);
   }
 }

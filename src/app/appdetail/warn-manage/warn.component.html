@@ -119,13 +119,13 @@
       </div>
       <div class="detail_info">
         <span class="info_name">告警时间：</span>
-        <span class="info_content">{{detaillist.alarmTime}}</span>
+        <span class="info_content">{{date(detaillist.alarmTime)}}</span>
       </div>
       <div class="detail_info">
         <span class="info_name">告警时长：</span>
-        <span class="info_content">{{detaillist.duration}}</span>
+        <span class="info_content">{{duraTime(detaillist.duration)}}</span>
       </div>
-      <div class="detail_info">
+      <div class="detail_info" style="line-height: 32px;">
         <span class="info_name">告警状态：</span>
         <span class="info_content">{{detaillist.alarmStatus}}</span>
         <a class="btn bgcg inline" (click)="lookHandling(detaillist)" *ngIf="detaillist.alarmStatus=='未处理'">处理</a>
@@ -136,7 +136,7 @@
       </div>
       <div class="detail_info">
         <span class="info_name">创建时间：</span>
-        <span class="info_content">{{detaillist.createTime}}</span>
+        <span class="info_content">{{getTime(detaillist.createTime)}}</span>
       </div>
       <div class="detail_info">
         <span class="info_name">告警快照：</span>
