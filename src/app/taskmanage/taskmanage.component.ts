@@ -38,9 +38,9 @@ export class TaskManageComponent {
     //console.log(this.appId);
     //console.log(this.appCate);
     this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
-/*    this.interval = setInterval(() => {
+    this.interval = setInterval(() => {
       this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
-    }, 10000);*/
+    }, 10000);
     this.alarmStatus = this.alarmStatusArr[0];
     this.route.params.subscribe((param) => {
       if(JSON.stringify(param) != "{}"){
@@ -56,8 +56,6 @@ export class TaskManageComponent {
   }
   ngOnDestroy(){
     clearInterval(this.interval);
-    clearInterval(this.interval1);
-    clearInterval(this.interval2);
     this.websocket.stopWebsocket();
   }
   getPageData(paraParam) {
@@ -107,6 +105,7 @@ export class TaskManageComponent {
     this.websocket.stopWebsocket();
   }
   output(item){
+    console.log(item);
     let ruleName ='';
     for(let i=0;i<item.length;i++){
       ruleName += item[i].ruleName + ',';
@@ -147,9 +146,13 @@ export class TaskManageComponent {
     if(item.taskStatus!='进行中'){
       this.status='进行中';
         if(this.taskName==undefined){
+          this.interval = setInterval(() => {
           this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
+          },10000);
         }else{
+          this.interval = setInterval(() => {
           this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
+          },10000);
         }
     }else if(item.taskStatus=='进行中'){
       this.status='暂停';
@@ -196,22 +199,14 @@ export class TaskManageComponent {
     this.offlineService.searchTask(id,name,status,page,size)
       .subscribe(result=>{
         this.taskList = result.content;
-        console.log(this.taskList);
-        for(let i=0;i<this.taskList.length;i++){
-          if(this.taskList[i].taskStatus=='进行中'){
-            this.interval2 = setInterval(() => {
-              if(this.taskName==undefined){
-                this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
-              }else{
-                this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
-              }
-            }, 5000);
-          }/*else{
-            clearInterval(this.interval2);
-          }*/
-        }
+        //console.log(this.taskList);
+/*        for(let i=0;i<this.taskList.length;i++){
+          if(this.taskList[i].taskStatus!='进行中'){
+            clearInterval(this.interval);
+          }
+        }*/
         if(this.alarmStatus=='进行中'){
-          this.interval1 = setInterval(() => {
+          this.interval = setInterval(() => {
             if(this.taskName==undefined){
               this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
             }
