@@ -124,7 +124,6 @@ export class WarnComponent{
           })
       }
     });
-
   }
   ngAfterViewInit(){
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
@@ -243,9 +242,17 @@ export class WarnComponent{
       .subscribe(result=>{
         this.session();
         if(this.warnRlue=='全部'){
-          this.searchWarn(this.appId,this.warnTask,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+          if(this.warnTask=='全部'){
+            this.searchWarn(this.appId,null,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+          }else{
+            this.searchWarn(this.appId,this.warnTask,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+          }
         }else{
-          this.searchWarn(this.appId,this.warnTask,this.warnRlue,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+          if(this.warnTask=='全部'){
+            this.searchWarn(this.appId,null,this.warnRlue,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+          }else{
+            this.searchWarn(this.appId,this.warnTask,this.warnRlue,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+          }
         }
       })
   }

@@ -62,6 +62,7 @@ export class WayManageComponent {
   importPath:string;
   init_flag:boolean = true;
   pageNow:number;
+  pageMax:string;
   constructor(private appManageService: AppManageService,private channelService: ChannelService , private route: ActivatedRoute , private router: Router) {
 /*    this.route.params.subscribe((param) => {
       console.log(param);
@@ -167,6 +168,7 @@ export class WayManageComponent {
     console.log(this.statusCode);
     this.getAllChannel(this.appId,this.channelName,this.statusCode,paraParam.curPage-1,paraParam.pageMaxItem);
     this.pageNow=paraParam.curPage;
+    this.pageMax = paraParam.pageMaxItem;
 /*    sessionStorage['curPage'] = this.pageNow;
     console.log(sessionStorage['curPage']);*/
   }
@@ -268,7 +270,7 @@ export class WayManageComponent {
     this.channelService.delChannel(id)
       .subscribe(result=>{
         this.delDialog = 0;
-        this.getAllChannel(this.appId,null,null,this.page-1,this.pageMaxItem);
+        this.getAllChannel(this.appId,null,null,this.page-1,this.pageMax);
       })
   }
   radio(i){
