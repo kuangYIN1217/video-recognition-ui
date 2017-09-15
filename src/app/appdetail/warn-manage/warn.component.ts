@@ -226,7 +226,11 @@ export class WarnComponent{
   }
   date(item){
     var d = new Date(item);
-    return ((d.getHours()<10)?('0'+(d.getHours()-8)):(d.getHours()-8)) + ':' + ((d.getMinutes()<10)?('0'+d.getMinutes()):d.getMinutes()) + ':' + ((d.getSeconds()<10)?('0'+d.getSeconds()):d.getSeconds());
+    return ((d.getHours()<10)?('0'+d.getHours()):(d.getHours())) + ':' + ((d.getMinutes()<10)?('0'+d.getMinutes()):d.getMinutes()) + ':' + ((d.getSeconds()<10)?('0'+d.getSeconds()):d.getSeconds());
+  }
+  date1(item){
+    var d = new Date(item);
+    return ((d.getHours()<10)?('0'+(d.getHours()-8)):(d.getHours())) + ':' + ((d.getMinutes()<10)?('0'+d.getMinutes()):d.getMinutes()) + ':' + ((d.getSeconds()<10)?('0'+d.getSeconds()):d.getSeconds());
   }
   getTime(item){
     var d = new Date(item);
@@ -234,7 +238,7 @@ export class WarnComponent{
   }
   duraTime(time){
     if(time){
-      return time.substring(0,4);
+      return Number(time).toFixed(2);
     }
   }
   handling(item){
