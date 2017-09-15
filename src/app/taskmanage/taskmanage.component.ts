@@ -205,7 +205,7 @@ export class TaskManageComponent {
               }else{
                 this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
               }
-            }, 10000);
+            }, 5000);
           }/*else{
             clearInterval(this.interval2);
           }*/

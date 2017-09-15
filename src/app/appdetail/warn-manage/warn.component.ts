@@ -61,8 +61,10 @@ export class WarnComponent{
         this.session();
         if(this.pageNow){
           this.searchWarn(this.appId,null,-1,'全部',this.pageNow-1,this.pageMaxItem,null,null);
+        }else{
+          this.searchWarn(this.appId,null,-1,'全部',this.page-1,this.pageMaxItem,null,null);
         }
-      }, 30000);
+      }, 15000);
     }else{
       this.interval = setInterval(() => {
         if(sessionStorage.getItem("task")){
@@ -71,6 +73,8 @@ export class WarnComponent{
         this.session();
         if(this.pageNow){
           this.searchWarn(this.appId,null,-1,'全部',this.pageNow-1,this.pageMaxItem,null,null);
+        }else{
+          this.searchWarn(this.appId,null,-1,'全部',this.page-1,this.pageMaxItem,null,null);
         }
       }, 360000);
     }
@@ -226,11 +230,11 @@ export class WarnComponent{
   }
   date(item){
     var d = new Date(item);
-    return ((d.getHours()<10)?('0'+d.getHours()):(d.getHours())) + ':' + ((d.getMinutes()<10)?('0'+d.getMinutes()):d.getMinutes()) + ':' + ((d.getSeconds()<10)?('0'+d.getSeconds()):d.getSeconds());
+    return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' +((d.getHours()<10)?('0'+d.getHours()):(d.getHours())) + ':' + ((d.getMinutes()<10)?('0'+d.getMinutes()):d.getMinutes()) + ':' + ((d.getSeconds()<10)?('0'+d.getSeconds()):d.getSeconds());
   }
   date1(item){
     var d = new Date(item);
-    return ((d.getHours()<10)?('0'+(d.getHours()-8)):(d.getHours())) + ':' + ((d.getMinutes()<10)?('0'+d.getMinutes()):d.getMinutes()) + ':' + ((d.getSeconds()<10)?('0'+d.getSeconds()):d.getSeconds());
+    return ((d.getHours()<10)?('0'+(d.getHours())):(d.getHours())) + ':' + ((d.getMinutes()<10)?('0'+d.getMinutes()):d.getMinutes()) + ':' + ((d.getSeconds()<10)?('0'+d.getSeconds()):d.getSeconds());
   }
   getTime(item){
     var d = new Date(item);
