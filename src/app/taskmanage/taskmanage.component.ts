@@ -206,12 +206,10 @@ export class TaskManageComponent {
           }
         }*/
         if(this.alarmStatus=='进行中'){
-          this.interval = setInterval(() => {
             if(this.taskName==undefined){
               this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
             }
             this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
-          }, 10000);
         }
       })
   }

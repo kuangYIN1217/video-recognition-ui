@@ -49,6 +49,8 @@ export class WarnComponent{
   sessionRules:string;
   status:string;
   imageUrl:string;
+  start:string;
+  end:string;
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -217,16 +219,50 @@ export class WarnComponent{
   seePhoto(url){
     this.seeIndex = 1;
     this.imageUrl = url;
-    //console.log(this.imageUrl);
   }
   close(){
     this.seeIndex = 0;
   }
   getPageData(paraParam){
-    this.searchWarn(this.appId,null,-1,'全部',paraParam.curPage-1,paraParam.pageMaxItem,null,null);
-
+    if(this.appCate=="实时流分析"){
+      this.validation();
+      this.sessionSet();
+      this.session();
+      if(this.warnRlue=='全部'){
+        this.judgeTime();
+        this.searchWarn(this.appId,this.chanName,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+      }else{
+        this.judgeTime();
+        this.searchWarn(this.appId,this.chanName,this.warnRlue,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+      }
+      //this.searchWarn(this.appId,this.chanName,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,null,null);
+      //console.log(this.chanName,this.warnRlue,this.warnStatus,this.startTime,this.endTime);
+    }else{
+      if(this.warnRlue=='全部'){
+        this.judgeTime();
+        this.searchWarn(this.appId,this.warnTask,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+      }else{
+        this.judgeTime();
+        this.searchWarn(this.appId,this.warnTask,this.warnRlue,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+      }
+      //this.searchWarn(this.appId,this.warnTask,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,null,null);
+      //console.log(this.chanName,this.warnRlue,this.warnStatus,this.startTime,this.endTime);
+    }
     this.pageNow=paraParam.curPage;
     console.log(this.pageNow);
+  }
+  judgeTime(){
+    debugger
+    if($('#start').val()==''){
+      this.start = null;
+    }else{
+      this.start = this.startTime;
+    }
+    if($('#end').val()==''){
+      this.end = null;
+    }else{
+      this.end = this.endTime;
+    }
   }
   date(item){
     var d = new Date(item);
@@ -250,17 +286,9 @@ export class WarnComponent{
       .subscribe(result=>{
         this.session();
         if(this.warnRlue=='全部'){
-          if(this.warnTask=='全部'){
-            this.searchWarn(this.appId,null,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
-          }else{
-            this.searchWarn(this.appId,this.warnTask,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
-          }
+          this.searchWarn(this.appId,this.warnTask,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
         }else{
-          if(this.warnTask=='全部'){
-            this.searchWarn(this.appId,null,this.warnRlue,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
-          }else{
-            this.searchWarn(this.appId,this.warnTask,this.warnRlue,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
-          }
+          this.searchWarn(this.appId,this.warnTask,this.warnRlue,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
         }
       })
   }
@@ -340,19 +368,11 @@ export class WarnComponent{
     if(this.appCate=='实时流分析'){
       sessionStorage.setItem("name" , this.chanName);
       this.sessionSet();
-      if(this.chanName=='全部'){
-        this.searchWarn(this.appId,null,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
-      }else{
-        this.searchWarn(this.appId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
-      }
+      this.searchWarn(this.appId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
     }else{
       sessionStorage.setItem("task" , this.warnTask);
       this.sessionSet();
-      if(this.warnTask=='全部'){
-        this.searchWarn(this.appId,null,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
-      }else{
-        this.searchWarn(this.appId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
-      }
+      this.searchWarn(this.appId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
 
     }
 
