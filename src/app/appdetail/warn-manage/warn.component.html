@@ -74,7 +74,7 @@
             <td>
               <img src="../assets/warn/chakan.png" class="mrgr" (click)="seePhoto(item.imagePath)" title="查看快照"/>
               <img src="../assets/warn/xiazai.png" class="mrgr" onclick="document.getElementById('down').click()" title="下载快照"/>
-              <a id="down" href="{{SERVER_URL}}/download/{{item.imagePath}}" download></a>
+              <a id="down" href="{{SERVER_URL}}/download/{{imageUrl}}" download></a>
             </td>
             <td title="{{item.alarmStatus}}">{{item.alarmStatus}}</td>
             <td>

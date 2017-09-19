@@ -234,7 +234,7 @@ export class WarnComponent{
   }
   date1(item){
     var d = new Date(item);
-    return ((d.getHours()<10)?('0'+(d.getHours())):(d.getHours())) + ':' + ((d.getMinutes()<10)?('0'+d.getMinutes()):d.getMinutes()) + ':' + ((d.getSeconds()<10)?('0'+d.getSeconds()):d.getSeconds());
+    return ((d.getHours()<10)?('0'+(d.getHours()-8)):(d.getHours())) + ':' + ((d.getMinutes()<10)?('0'+d.getMinutes()):d.getMinutes()) + ':' + ((d.getSeconds()<10)?('0'+d.getSeconds()):d.getSeconds());
   }
   getTime(item){
     var d = new Date(item);
