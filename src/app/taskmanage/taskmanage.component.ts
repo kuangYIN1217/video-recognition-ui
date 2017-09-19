@@ -153,7 +153,7 @@ export class TaskManageComponent {
     }
     this.offlineService.offlineSwitch(item.taskId,this.status)
       .subscribe(reply =>{
-        if(reply.text().substring(0,2)=='NO'){
+        if(reply.text().substring(0,2)=='No'){
           this.deleteIndex = 1;
           this.tip_title = "提示";
           this.tip_content = "请开启规则！";
@@ -167,12 +167,12 @@ export class TaskManageComponent {
               this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
               this.interval = setInterval(() => {
                 this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
-              },1000);
+              },10000);
             }else{
               this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
               this.interval = setInterval(() => {
                 this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
-              },1000);
+              },10000);
             }
           }else{
             clearInterval(this.interval);
