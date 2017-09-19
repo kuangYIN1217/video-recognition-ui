@@ -49,6 +49,7 @@ export class WarnComponent{
   sessionRules:string;
   status:string;
   imageUrl:string;
+  downUrl:string;
   start:string;
   end:string;
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
@@ -61,10 +62,11 @@ export class WarnComponent{
           this.chanName = sessionStorage.getItem("name");
         }
         this.session();
+        this.getRuleId();
         if(this.pageNow){
-          this.searchWarn(this.appId,this.chanName,-1,this.warnStatus,this.pageNow-1,this.pageMaxItem,null,null);
+          this.searchWarn(this.appId,this.chanName,this.ruleId,this.warnStatus,this.pageNow-1,this.pageMaxItem,null,null);
         }else{
-          this.searchWarn(this.appId,this.chanName,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+          this.searchWarn(this.appId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
         }
       }, 15000);
     }else{
@@ -73,10 +75,11 @@ export class WarnComponent{
           this.warnTask = sessionStorage.getItem("task");
         }
         this.session();
+        this.getRuleId();
         if(this.pageNow){
-          this.searchWarn(this.appId,this.warnTask,-1,this.warnStatus,this.pageNow-1,this.pageMaxItem,null,null);
+          this.searchWarn(this.appId,this.warnTask,this.ruleId,this.warnStatus,this.pageNow-1,this.pageMaxItem,null,null);
         }else{
-          this.searchWarn(this.appId,this.warnTask,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+          this.searchWarn(this.appId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
         }
       }, 360000);
     }
@@ -220,6 +223,10 @@ export class WarnComponent{
     this.seeIndex = 1;
     this.imageUrl = url;
   }
+  downPhoto(url){
+    this.downUrl = url;
+    document.getElementById('down').click();
+  }
   close(){
     this.seeIndex = 0;
   }
@@ -233,10 +240,8 @@ export class WarnComponent{
         this.searchWarn(this.appId,this.chanName,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
       }else{
         this.judgeTime();
-        this.searchWarn(this.appId,this.chanName,this.warnRlue,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+        this.searchWarn(this.appId,this.chanName,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
       }
-      //this.searchWarn(this.appId,this.chanName,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,null,null);
-      //console.log(this.chanName,this.warnRlue,this.warnStatus,this.startTime,this.endTime);
     }else{
       this.validation();
       this.sessionSet();
@@ -246,13 +251,23 @@ export class WarnComponent{
         this.searchWarn(this.appId,this.warnTask,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
       }else{
         this.judgeTime();
-        this.searchWarn(this.appId,this.warnTask,this.warnRlue,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+        this.searchWarn(this.appId,this.warnTask,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
       }
-      //this.searchWarn(this.appId,this.warnTask,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,null,null);
-      //console.log(this.chanName,this.warnRlue,this.warnStatus,this.startTime,this.endTime);
     }
     this.pageNow=paraParam.curPage;
-    console.log(this.pageNow);
+    //console.log(this.pageNow);
+  }
+  getRuleId(){
+    if(this.warnRlue=='全部'){
+      this.ruleId = -1;
+    }else{
+      for(let i=0;i<this.warnRlueArr.length;i++){
+        //console.log(this.warnRlueArr[i].ruleName);
+        if(this.warnRlueArr[i].ruleName == this.warnRlue){
+          this.ruleId = this.warnRlueArr[i].ruleId;
+        }
+      }
+    }
   }
   judgeTime(){
     if($('#start').val()==''){
@@ -267,6 +282,23 @@ export class WarnComponent{
     }
   }
   date(item){
+/*    new Date(item).Format("yyyy-MM-dd hh:mm");
+    Date.prototype.Format = function (fmt) { //author: zhengsh 2016-9-5
+          var o = {
+            "M+": this.getMonth() + 1, //月份
+            "d+": this.getDate(), //日
+            "h+": this.getHours(), //小时
+            "m+": this.getMinutes(), //分
+            "s+": this.getSeconds(), //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds() //毫秒
+          };
+          if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+          if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+          return fmt;
+    }*/
+    console.log(item);
     var d = new Date(item);
     return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' +((d.getHours()<10)?('0'+d.getHours()):(d.getHours())) + ':' + ((d.getMinutes()<10)?('0'+d.getMinutes()):d.getMinutes()) + ':' + ((d.getSeconds()<10)?('0'+d.getSeconds()):d.getSeconds());
   }

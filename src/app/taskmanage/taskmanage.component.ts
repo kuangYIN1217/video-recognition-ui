@@ -145,22 +145,14 @@ export class TaskManageComponent {
   runChannel(item){
     if(item.taskStatus!='进行中'){
       this.status='进行中';
-        if(this.taskName==undefined){
-          this.interval = setInterval(() => {
-          this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
-          },10000);
-        }else{
-          this.interval = setInterval(() => {
-          this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
-          },10000);
-        }
+
     }else if(item.taskStatus=='进行中'){
       this.status='暂停';
-      this.websocket.stopWebsocket();
+
     }
     this.offlineService.offlineSwitch(item.taskId,this.status)
       .subscribe(reply =>{
-        if(reply.text().substring(0,2)=='No'){
+        if(reply.text().substring(0,2)=='NO'){
           this.deleteIndex = 1;
           this.tip_title = "提示";
           this.tip_content = "请开启规则！";
@@ -168,13 +160,27 @@ export class TaskManageComponent {
           this.deleteIndex = 1;
           this.tip_title = "提示";
           this.tip_content = reply.text().substring(5);
+        }else{
+          if(this.status=='进行中'){
+            if(this.taskName==undefined){
+              this.interval = setInterval(() => {
+                this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
+              },1000);
+            }else{
+              this.interval = setInterval(() => {
+                this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
+              },1000);
+            }
+          }else{
+            clearInterval(this.interval);
+            this.websocket.stopWebsocket();
+          }
         }
-/*        this.interval = setInterval(() => {
-          this.getAllTask(this.appId,this.page-1,this.pageMaxItem);
-        }, 3000);*/
-        this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
-        this.start_reply(reply);
+
+        //this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
+        //this.start_reply(reply);
       } );
+
   }
   start_reply(reply){
     if(reply.status==200){
@@ -200,16 +206,17 @@ export class TaskManageComponent {
       .subscribe(result=>{
         this.taskList = result.content;
         //console.log(this.taskList);
-/*        for(let i=0;i<this.taskList.length;i++){
+        for(let i=0;i<this.taskList.length;i++){
           if(this.taskList[i].taskStatus!='进行中'){
             clearInterval(this.interval);
           }
-        }*/
+        }
         if(this.alarmStatus=='进行中'){
             if(this.taskName==undefined){
               this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
             }
             this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
+
         }
       })
   }
