@@ -96,6 +96,10 @@ export class TaskManageComponent {
         console.log(item.taskId);
         this.websocket.subscribe('/taskPercent/' + item.taskId,(data) =>{
           this.percent = data.offlineFiles;
+          this.percent.sort(function(a,b){
+            return parseInt(a.fileId) - parseInt(b.fileId)
+          });
+          console.log(this.percent);
         });
       })
     }
@@ -108,7 +112,7 @@ export class TaskManageComponent {
     item.sort(function(a,b){
       return parseInt(a.ruleId) - parseInt(b.ruleId)
     });
-    console.log(item);
+    //console.log(item);
     let ruleName = '';
     for(let i=0;i<item.length;i++){
       ruleName += item[i].ruleName + ',';
@@ -148,6 +152,7 @@ export class TaskManageComponent {
   runChannel(item){
     if(item.taskStatus!='进行中'){
       this.status='进行中';
+      this.alarmStatus = '全部';
     }else if(item.taskStatus=='进行中'){
       this.status='暂停';
     }
@@ -209,11 +214,11 @@ export class TaskManageComponent {
       .subscribe(result=>{
         this.taskList = result.content;
         //console.log(this.taskList);
-        for(let i=0;i<this.taskList.length;i++){
+/*        for(let i=0;i<this.taskList.length;i++){
           if(this.taskList[i].taskStatus!='进行中'){
             clearInterval(this.interval);
           }
-        }
+        }*/
         if(this.alarmStatus=='进行中'){
             if(this.taskName==undefined){
               this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);

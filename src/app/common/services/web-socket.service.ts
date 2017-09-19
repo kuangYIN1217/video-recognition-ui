@@ -18,12 +18,10 @@ export class WebSocketService {
   }
 
   public subscribe(subscribe: string,callback:(data:any)=>void){
-
     // this.stomp.afterConnection().then(() => {
       this.subscribtions.push(this.stomp.subscribe(subscribe,(result)=>{
         callback(result);
       }))
-
       // }
     // );
 

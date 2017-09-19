@@ -95,6 +95,7 @@ export class OfflineService {
     return this.http.get(this.SERVER_URL+path, { headers : headers})
       .map((response: Response) => {
         if (response && response.json()) {
+
           return response.json();
         }
       });
