@@ -105,8 +105,11 @@ export class TaskManageComponent {
     this.websocket.stopWebsocket();
   }
   output(item){
+    item.sort(function(a,b){
+      return parseInt(a.ruleId) - parseInt(b.ruleId)
+    });
     console.log(item);
-    let ruleName ='';
+    let ruleName = '';
     for(let i=0;i<item.length;i++){
       ruleName += item[i].ruleName + ',';
     }
@@ -145,10 +148,8 @@ export class TaskManageComponent {
   runChannel(item){
     if(item.taskStatus!='进行中'){
       this.status='进行中';
-
     }else if(item.taskStatus=='进行中'){
       this.status='暂停';
-
     }
     this.offlineService.offlineSwitch(item.taskId,this.status)
       .subscribe(reply =>{
@@ -163,10 +164,12 @@ export class TaskManageComponent {
         }else{
           if(this.status=='进行中'){
             if(this.taskName==undefined){
+              this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
               this.interval = setInterval(() => {
                 this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
               },1000);
             }else{
+              this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
               this.interval = setInterval(() => {
                 this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
               },1000);
