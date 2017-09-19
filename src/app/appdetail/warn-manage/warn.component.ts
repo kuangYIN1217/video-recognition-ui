@@ -238,6 +238,9 @@ export class WarnComponent{
       //this.searchWarn(this.appId,this.chanName,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,null,null);
       //console.log(this.chanName,this.warnRlue,this.warnStatus,this.startTime,this.endTime);
     }else{
+      this.validation();
+      this.sessionSet();
+      this.session();
       if(this.warnRlue=='全部'){
         this.judgeTime();
         this.searchWarn(this.appId,this.warnTask,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
@@ -287,7 +290,8 @@ export class WarnComponent{
         if(this.warnRlue=='全部'){
           this.searchWarn(this.appId,this.warnTask,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
         }else{
-          this.searchWarn(this.appId,this.warnTask,this.warnRlue,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+          this.validation();
+          this.searchWarn(this.appId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
         }
       })
   }
@@ -374,7 +378,6 @@ export class WarnComponent{
       this.searchWarn(this.appId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
 
     }
-
   }
   searchWarn(id,nameTask,ruleId,status,page,size,start,end){
     if(this.appCate=='实时流分析'){
