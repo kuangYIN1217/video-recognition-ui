@@ -120,12 +120,12 @@
       </div>
       <div class="detail_info">
         <span class="info_name">告警时间：</span>
-        <span class="info_content" *ngIf="appCate=='实时流分析'">{{date(detaillist.alarmTime)}}(s)</span>
-        <span class="info_content" *ngIf="appCate=='离线文件分析'">{{date1(detaillist.alarmTime)}}(s)</span>
+        <span class="info_content" *ngIf="appCate=='实时流分析'">{{date(detaillist.alarmTime)}}</span>
+        <span class="info_content" *ngIf="appCate=='离线文件分析'">{{date1(detaillist.alarmTime)}}</span>
       </div>
       <div class="detail_info">
         <span class="info_name">告警时长：</span>
-        <span class="info_content">{{duraTime(detaillist.duration)}}</span>
+        <span class="info_content">{{duraTime(detaillist.duration)}}(s)</span>
       </div>
       <div class="detail_info" style="line-height: 32px;">
         <span class="info_name">告警状态：</span>
