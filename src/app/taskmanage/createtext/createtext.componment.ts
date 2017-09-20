@@ -251,6 +251,15 @@ export class CreateTextComponent {
     }else{
       this.required3 = 0;
     }
+    for(let i=0;i<this.uploader.queue.length;i++){
+      console.log(this.uploader.queue[i]);
+      if(this.uploader.queue[i].progress!=100){
+        this.required3 = 1;
+        return false;
+      }else{
+        this.required3 = 0;
+      }
+    }
 /*    for(let i in this.warnChanArr){
       if(this.ruleId==undefined){
         this.ruleId = this.warnChanArr[0].ruleId;
