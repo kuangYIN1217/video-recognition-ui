@@ -57,9 +57,9 @@
             </td>
             <td>
               <a class="operationBtn rerun" *ngIf="item.taskStatus=='完成'" (click)="runChannel(item)" title="重新运行"></a>
-              <a class="operationBtn stop" *ngIf="item.taskStatus!='进行中'&&item.taskStatus!='完成'" (click)="runChannel(item)" title="暂停"></a>
-              <a class="operationBtn start" *ngIf="item.taskStatus=='进行中'" (click)="runChannel(item)" title="开始"></a>
-              <a class="operationBtn look" (click)="look(item)" title="查看"></a>
+              <a class="operationBtn stop" *ngIf="item.taskStatus!='进行中'&&item.taskStatus!='完成'" (click)="runChannel(item)" title="开始"></a>
+              <a class="operationBtn start" *ngIf="item.taskStatus=='进行中'" (click)="runChannel(item)" title="暂停"></a>
+              <a class="operationBtn look" (click)="look(item)" title="查看告警"></a>
               <a class="operationBtn edit" *ngIf="item.taskStatus!='进行中'" (click)="edit(item)" title="修改"></a>
               <a class="operationBtn unedit" *ngIf="item.taskStatus=='进行中'" title="修改"></a>
             </td>
