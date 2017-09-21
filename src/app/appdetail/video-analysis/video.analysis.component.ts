@@ -17,7 +17,6 @@ declare var $:any;
   providers: [ChannelService , RecognitionService, AppManageService]
 })
 export class VideoAnalysisComoponent {
-
   addDialog: number=0;
   chanName: string;
   chanAddr: string;
