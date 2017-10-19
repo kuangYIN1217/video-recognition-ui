@@ -8,9 +8,9 @@
     <img class="home" (click)="gotoAppmanage()" src="../../../assets/appdetail/way.manage/home.png" />
     <div class="info">
       <label class="divider">|</label>
-      <label class="title">应用管理</label>
+      <label class="title">选择项目</label>
     </div>
-    <div class="createBtn" (click)="createJob()" [style.display]="createApp=='create'?'none':''"> <a href="javascript:void(0)"  class="back">新建应用</a></div>
+    <div class="createBtn" (click)="createJob()" [style.display]="createApp=='create'?'none':''"> <a href="javascript:void(0)"  class="back">新建项目</a></div>
   </div>
   <div class="appManage" [style.display]="createApp=='manage'?'':'none'">
     <div class="appBody">
@@ -89,8 +89,8 @@
 
 
   <div class="appManage" id="appManage" [style.display]="createApp=='create'?'':'none'">
-      <h3 [style.display]="btnIndex==0?'':'none'">新建应用</h3>
-      <h3 [style.display]="btnIndex==1?'':'none'">修改应用</h3>
+      <h3 [style.display]="btnIndex==0?'':'none'">新建项目</h3>
+      <h3 [style.display]="btnIndex==1?'':'none'">修改项目</h3>
       <div class="createLeft">
         <div class="form">
           <div class="createInfo">
@@ -217,7 +217,7 @@
   <div class="appManageSpace" [style.display]="createApp=='space'?'':'none'">
     <div class="spaceContent">
       <img src="../assets/appmanage/addAPP.png"/>
-      <span class="spaceText">暂无应用，请添加应用</span>
+      <span class="spaceText">暂无项目，请添加项目</span>
     </div>
   </div>
   <!-- 删除弹框 -->
@@ -228,7 +228,7 @@
       </div>
       <div class="dialogDelContent">
         <img src="../assets/appdetail/way.manage/warnning.png" class="middle"/>
-        <span class="middle" style="padding-left: 10px">删除所选应用？</span>
+        <span class="middle" style="padding-left: 10px">删除所选项目？</span>
       </div>
       <div class="del">
         <a href="javascript:void(0)" class="btn1 marg" (click)="delete()">确定</a>
