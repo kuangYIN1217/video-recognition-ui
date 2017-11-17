@@ -75,6 +75,16 @@ export class WarnService {
         }
       });
   }
+  getWarnObjOne(){
+    let path = "/api/findClassification";
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers})
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
   getAllRlues(id,page=0,size=10){
     let path = "/api/alarmRules/"+id+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
@@ -85,7 +95,7 @@ export class WarnService {
         }
       });
   }
-  createWarn(appId,chanId,name,obj,code,car,status){
+  createWarn(appId,chanId,name,obj,code,car,status,photoArr){
     let path = "/api/alarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
@@ -97,7 +107,8 @@ export class WarnService {
       "ruleId": 0,
       "ruleName":name ,
       "applicationChannels":null,
-      "targetFeature": car
+      "targetFeature": car,
+      "targetImages": photoArr
     });
     let headers = this.getHeaders();
     headers.append('channelIds',chanId);

@@ -282,10 +282,14 @@ export class WarnRlueComponent{
         }
         ],
       "recognitionCategor":{
-        "name":"人"
+        "cateId": 1,
+        "code": "person",
+        "name": "人",
+        "classificationId": 1
       },
       "createTime":null,
-      "targetFeature":''
+      "targetFeature":'',
+      "targetImages":''
     };
 ;  }
   delete(){

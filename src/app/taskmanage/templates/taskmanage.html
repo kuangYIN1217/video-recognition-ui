@@ -62,6 +62,7 @@
               <a class="operationBtn look" (click)="look(item)" title="查看告警"></a>
               <a class="operationBtn edit" *ngIf="item.taskStatus!='进行中'" (click)="edit(item)" title="修改"></a>
               <a class="operationBtn unedit" *ngIf="item.taskStatus=='进行中'" title="修改"></a>
+              <a class="operationBtn lookResult"  title="查看结果" (click)="lookResult(item)"></a>
             </td>
           </tr>
         </table>
@@ -69,5 +70,12 @@
       </div>
       <app-tips [style.display]="deleteIndex==1?'':'none'" [tip_title]="tip_title" [tip_content]="tip_content" [deleteIndex]="deleteIndex" [tip_btn]="tip_btn"  (deleteChange)="deleteChange($event)" (deletedChange)="deletedChange($event)"></app-tips>
     </div>
+  </div>
+</div>
+<div class="videoPlayer" *ngIf="playShow" (mouseenter)="show()" (mouseleave)="hide()">
+  <img src="assets/offline/task_close.png" class="videoClose" (click)="closeVideo()"/>
+  <video src="assets/offline/video.mp4" #offlineVideo></video>
+  <div *ngIf="videoBtn==1" class="videoStart">
+    <img [src]="showBtn?'assets/offline/zanting.png':'assets/offline/kaishi.png'" (click)="play()"/>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {OfflineService} from "../common/services/offline.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Page} from "app/common/defs/resources";
@@ -32,6 +32,10 @@ export class TaskManageComponent {
   interval1: any;
   interval2: any;
   pageNow:number;
+  playShow:boolean=false;
+  videoBtn:number=2;
+  showBtn:boolean=false;
+  @ViewChild('offlineVideo') offlineVideo: any;
   constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -86,6 +90,29 @@ export class TaskManageComponent {
         page.totalNum = result.totalElements;
         this.pageParams = page;
       })
+  }
+  lookResult(item){
+    this.playShow=true;
+    console.log(item);
+  }
+  closeVideo(){
+    this.playShow=false;
+  }
+  show(){
+    this.videoBtn = 1;
+  }
+  hide(){
+    this.videoBtn = 2;
+  }
+  play(event:any) {
+    /* let play = document.getElementById("offlineVideo");*/
+    if (this.offlineVideo.nativeElement.paused) {
+      this.offlineVideo.nativeElement.play();
+      this.showBtn = true;
+    } else {
+      this.offlineVideo.nativeElement.pause();
+      this.showBtn = false;
+    }
   }
   running(item){
     console.log(item);

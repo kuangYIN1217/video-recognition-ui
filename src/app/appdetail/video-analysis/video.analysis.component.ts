@@ -141,6 +141,7 @@ export class VideoAnalysisComoponent {
   // 数据命名 d_xxx-----------------------------------------------------------------
   d_applicationId: number;
   d_analysis_options = [];
+  d_analysis_options_detail = [];
   /* http://live.hkstv.hk.lxdns.com/live/hks/playlist.m3u8 */
   /* rtmp://live.hkstv.hk.lxdns.com/live/hks */
   d_video_list = [];
@@ -240,7 +241,7 @@ export class VideoAnalysisComoponent {
     /* 切换视图模式 是否清楚选中项 */
     if (this.s_selected_grid > number) {
       this.s_selected_grid = 0;
-      this.clearSelected();
+      //this.clearSelected();
     }
   }
   $grid_click (index: number , $event) {
@@ -277,23 +278,35 @@ export class VideoAnalysisComoponent {
   $popup_toggle () {
     this.s_popup_show = !this.s_popup_show;
   }
-  $popup_select_toggle (index: number) {
+  $popup_select_toggle (i,j) {
     if (this.s_popup_allselect) {
       this.s_popup_allselect = !this.s_popup_allselect;
 
     }
-    this.d_analysis_options[index].selected = !this.d_analysis_options[index].selected;
+    this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
+  }
+  arrow_toggle(index: number){
+    if(this.d_analysis_options[index].selected){
+      this.d_analysis_options[index].selected = !this.d_analysis_options[index].selected;
+    }else{
+      for(let i=0;i<this.d_analysis_options.length;i++){
+        this.d_analysis_options[i].selected=false;
+      }
+      this.d_analysis_options[index].selected = !this.d_analysis_options[index].selected;
+    }
   }
   $popup_select_all_toggle () {
     this.s_popup_allselect = !this.s_popup_allselect;
     if(this.s_popup_allselect){
       for(let i=0;i<this.d_analysis_options.length;i++){
-        this.d_analysis_options[i].selected = true;
+        for(let j=0;j<this.d_analysis_options[i].recognitionCategories.length;j++)
+        this.d_analysis_options[i].recognitionCategories[j].selected = true;
       }
       //console.log(this.d_analysis_options);
     }else{
       for(let i=0;i<this.d_analysis_options.length;i++){
-        this.d_analysis_options[i].selected = !this.d_analysis_options[i].selected;
+        for(let j=0;j<this.d_analysis_options[i].recognitionCategories.length;j++)
+          this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
       }
       //console.log(this.d_analysis_options);
     }
@@ -356,10 +369,13 @@ export class VideoAnalysisComoponent {
   getSelectedRecognitions() {
     let recognitions = '';
     for (let i = 0 ; i < this.d_analysis_options.length ; i++) {
-      if (this.d_analysis_options[i].selected || this.s_popup_allselect) {
-        recognitions += this.d_analysis_options[i].code + ',';
+      for (let j = 0 ; j < this.d_analysis_options[i].recognitionCategories.length ; j++) {
+        if (this.d_analysis_options[i].recognitionCategories[j].selected || this.s_popup_allselect) {
+          recognitions += this.d_analysis_options[i].recognitionCategories[j].code + ',';
+        }
       }
     }
+    console.log(recognitions.substring( 0 ,recognitions.length -1));
     return recognitions.substring( 0 ,recognitions.length -1);
   }
 
@@ -520,7 +536,7 @@ export class VideoAnalysisComoponent {
     }
   }
   changePopupOptions(str) {
-    this.clearSelected();
+    //this.clearSelected();
     if (str) {
       let recognitions = str.split(',');
       for (let i = 0 ; i < recognitions.length ; i ++) {
@@ -541,9 +557,11 @@ export class VideoAnalysisComoponent {
   }
 
   initRecognitions() {
-    this.recognitionService.getRecognitions().subscribe(rep => {
+    this.recognitionService.getRecognition().subscribe(rep => {
       console.log(rep);
       this.d_analysis_options = rep;
+      this.d_analysis_options[0].selected=true;
+      //this.d_analysis_options_detail= rep ;
     })
   }
   initChannelsNoSort(){

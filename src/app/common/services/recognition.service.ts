@@ -35,7 +35,18 @@ export class RecognitionService {
         }
       });
   }
-
+  getRecognition() {
+    let path = "/api/findClassification";
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL + path, {headers: headers})
+      .map((response: Response) => {
+        if (response && response.json()) {
+          if(response.status==200){
+            return response.json();
+          }
+        }
+      });
+  }
   setRecognitions( channelIds , recognitions) {
     console.log(channelIds);
     console.log(recognitions);

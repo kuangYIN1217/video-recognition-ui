@@ -138,7 +138,6 @@ export class WayManageComponent {
       .subscribe(result=>{
         if(result.content){
           this.channelInfo=result.content;
-          console.log(this.channelInfo);
           let page = new Page();
           page.pageMaxItem = result.size;
           page.curPage = result.number+1;
