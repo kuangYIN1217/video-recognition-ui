@@ -265,26 +265,26 @@ input{
   padding-left: 20px;
 }
 .task{
-  width:10%;
+  width:14%;
 }
 .rule{
-  width:10%;
+  width:16%;
 }
 .file{
-  width:20%;
+  width:18%;
 }
 .time{
   width:16%;
 }
 .durtion{
-  width:8%;
+  width:14%;
 }
 .photo{
   width:10%;
 }
 .status{
-  width:8%;
+  width:12%;
 }
 .operation{
-  width:10%;
+  width:12%;
 }

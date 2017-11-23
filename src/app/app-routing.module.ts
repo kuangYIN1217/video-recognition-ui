@@ -44,7 +44,6 @@ const routes: Routes = [
   {path: 'warndetail', component: WarnDetailComponent},
   {path: '', redirectTo: '/appmanage', pathMatch: 'full'},
   // { path: 'detail/:id', component: HeroDetailComponent },
-
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes,{useHash: true})],
