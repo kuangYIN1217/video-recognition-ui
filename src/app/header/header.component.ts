@@ -9,7 +9,7 @@ import {Router} from "@angular/router";
 declare var $:any;
 @Component({
   selector: 'ng-header',
-  styleUrls: ['../../../../../api-document/src/app/header/header.component.css'],
+  styleUrls: ['./css/header.component.css'],
   templateUrl: './template/header.component.html'
 })
 export class HeaderComponent {
