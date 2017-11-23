@@ -230,7 +230,7 @@ export class WarnWindowComponent{
     this.photoUrl=this.getPhoto();
     this.warnService.createWarn(this.appId,this.warnChannelId,this.ruleName,this.cateId,this.code,this.objName,this.status,this.photoUrl)
       .subscribe(result=>{
-        console.log(result);
+        //console.log(result);
         if(result.text().substring(0,2)=='Ok'){
         this.createIndex = 2;
         this.indexChange.emit(this.createIndex);
@@ -248,10 +248,11 @@ export class WarnWindowComponent{
   }
   editSave(){
     this.validation();
+    this.photoUrl=this.getPhoto();
     if(this.appCate=='实时流分析'){
-      this.warnService.editRuleSave(this.warnChannelId,this.ruleList.ruleId,this.ruleName,this.cateId,this.code,this.objName,this.status)
+      this.warnService.editRuleSave(this.warnChannelId,this.ruleList.ruleId,this.ruleName,this.cateId,this.code,this.objName,this.status,this.photoUrl)
         .subscribe(result=>{
-          console.log(result);
+          //console.log(result);
           if(result.text().substring(0,2)=='Ok'){
             this.createIndex = 2;
             this.indexChange.emit(this.createIndex);
@@ -269,7 +270,7 @@ export class WarnWindowComponent{
           }
         })
     }else{
-      this.warnService.editRuleSave1(this.ruleList.ruleId,this.ruleName,this.cateId,this.code,this.objName,this.status)
+      this.warnService.editRuleSave1(this.ruleList.ruleId,this.ruleName,this.cateId,this.code,this.objName,this.status,this.photoUrl)
         .subscribe(result=>{
           if(result.text().substring(0,2)=='Ok'){
             this.createIndex = 2;

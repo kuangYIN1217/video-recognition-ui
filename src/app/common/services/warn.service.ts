@@ -122,7 +122,7 @@ export class WarnService {
         }
       });
   }
-  editRuleSave(chanId,ruleId,name,obj,code,car,status){
+  editRuleSave(chanId,ruleId,name,obj,code,car,status,photoArr){
     let path = "/api/UpdateAlarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
@@ -132,8 +132,10 @@ export class WarnService {
       },
       "ruleId": ruleId,
       "ruleName": name,
-      "targetFeature": car
+      "targetFeature": car,
+      "targetImage":photoArr
     });
+    console.log(body);
     let headers = this.getHeaders();
     headers.append('channelIds',chanId);
     return this.http.put(this.SERVER_URL+path,body,{ headers: headers })
@@ -145,7 +147,7 @@ export class WarnService {
         }
       });
   }
-  editRuleSave1(ruleId,name,obj,code,car,status){
+  editRuleSave1(ruleId,name,obj,code,car,status,photoArr){
     let path = "/api/UpdateAlarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
@@ -155,8 +157,10 @@ export class WarnService {
       },
       "ruleId": ruleId,
       "ruleName": name,
-      "targetFeature": car
+      "targetFeature": car,
+      "targetImage":photoArr
     });
+    console.log(body);
     let headers = this.getHeaders();
     return this.http.put(this.SERVER_URL+path,body,{ headers: headers })
       .map((response: Response) => {

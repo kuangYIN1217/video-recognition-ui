@@ -41,8 +41,8 @@ export class WarnRlueComponent{
   constructor(private warnService: WarnService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
-    console.log(this.appId);
-    console.log(this.appCate);
+    //console.log(this.appId);
+    //console.log(this.appCate);
     if(this.appCate=="实时流分析"){
       this.warnService.getWarnChannel(this.appId)
         .subscribe(channel=>{
@@ -57,7 +57,7 @@ export class WarnRlueComponent{
       .subscribe(result=>{
         this.warnObjArr=result;
         this.warnObjArr.unshift({"cateId":-1, "name": "全部"});
-        console.log(this.warnObjArr);
+        //console.log(this.warnObjArr);
         if(this.warnObjArr){
           this.warnRule = this.warnObjArr[0].name;
         }
@@ -88,7 +88,7 @@ export class WarnRlueComponent{
         }
         this.rulesInfo = tem1.concat(tem2);*/
         this.rulesInfo = result.content;
-        console.log(this.rulesInfo);
+        //console.log(this.rulesInfo);
         let page = new Page();
         page.pageMaxItem = result.size;
         page.curPage = result.number+1;
@@ -138,7 +138,7 @@ export class WarnRlueComponent{
     console.log(event);
     if(event==1){
       for(let i in this.deleteIdArr){
-        console.log(this.deleteIdArr[i]);
+        //console.log(this.deleteIdArr[i]);
           this.warnService.deleteRule(this.deleteIdArr[i].ruleId)
             .subscribe(result=>{
               if(result.text().substring(0,2)=='Ok'){
@@ -203,11 +203,11 @@ export class WarnRlueComponent{
     }else if(item.alarmRuleStatus=='开启'){
       item.alarmRuleStatus='关闭';
     }
-    console.log(item);
+    //console.log(item);
     if(this.appCate=='实时流分析'){
       this.warnService.warnRuleSwitch(item.ruleId,item.alarmRuleStatus,this.appCate)
         .subscribe(reply =>{
-          console.log(reply.text());
+          //console.log(reply.text());
           if(reply.text().substring(0,2)=='No'){
             this.deleteIndex = 1;
             this.tip_title = "提示";
@@ -242,9 +242,9 @@ export class WarnRlueComponent{
   }
   start_reply(reply){
     if(reply.status==200){
-      console.log("Start Successfully!");
+      //console.log("Start Successfully!");
     }else{
-      console.log("Start Failed!");
+      //console.log("Start Failed!");
     }
     this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
   }
@@ -261,7 +261,7 @@ export class WarnRlueComponent{
     this.createIndex=1;
     this.warn_title="任务详情";
     this.ruleList = item;
-    console.log(this.ruleList);
+    //console.log(this.ruleList);
   }
   indexChange(event){
     this.createIndex = event;
