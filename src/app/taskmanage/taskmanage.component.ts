@@ -35,6 +35,7 @@ export class TaskManageComponent {
   playShow:boolean=false;
   videoBtn:number=2;
   showBtn:boolean=false;
+  outputPath:string;
   @ViewChild('offlineVideo') offlineVideo: any;
   constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
@@ -93,6 +94,7 @@ export class TaskManageComponent {
   }
   lookResult(item){
     this.playShow=true;
+    this.outputPath = item.outputPath;
     console.log(item);
   }
   closeVideo(){

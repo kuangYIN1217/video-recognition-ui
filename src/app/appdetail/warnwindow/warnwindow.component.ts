@@ -137,10 +137,12 @@ export class WarnWindowComponent{
     //console.log(this.warnChanArr);
     this.getObj();
     for(let i=0;i<this.warnObjArr.length;i++){
-      if(this.ruleList.recognitionCategor.classificationId==this.warnObjArr[i].classificationId){
-        this.warnObj = this.warnObjArr[i].classificationName;
-        this.warnObjDetail = this.ruleList.recognitionCategor.name;
-        this.warnObjDetailArr = this.warnObjArr[i].recognitionCategories;
+      for(let j=0;j<this.warnObjArr[i].recognitionCategories.length;j++){
+        if(this.ruleList.recognitionCategor.cateId==this.warnObjArr[i].recognitionCategories[j].cateId){
+          this.warnObj = this.warnObjArr[i].classificationName;
+          this.warnObjDetail = this.ruleList.recognitionCategor.name;
+          this.warnObjDetailArr = this.warnObjArr[i].recognitionCategories;
+        }
       }
     }
     this.objName = this.ruleList.targetFeature;

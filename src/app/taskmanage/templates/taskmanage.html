@@ -74,7 +74,7 @@
 </div>
 <div class="videoPlayer" *ngIf="playShow" (mouseenter)="show()" (mouseleave)="hide()">
   <img src="assets/offline/task_close.png" class="videoClose" (click)="closeVideo()"/>
-  <video src="assets/offline/video.mp4" #offlineVideo></video>
+  <video src={{outputPath}} #offlineVideo></video>
   <div *ngIf="videoBtn==1" class="videoStart">
     <img [src]="showBtn?'assets/offline/zanting.png':'assets/offline/kaishi.png'" (click)="play()"/>
   </div>

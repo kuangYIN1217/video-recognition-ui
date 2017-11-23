@@ -249,6 +249,7 @@ export class WarnRlueComponent{
     this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
   }
   edit(item){
+    console.log(item);
     if(item.alarmRuleStatus=='开启'){
       return false;
     }else{
