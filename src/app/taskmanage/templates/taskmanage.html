@@ -43,18 +43,19 @@
             <td>{{output(item.alarmRules)}}</td>
             <td>{{item.fileNumber}}</td>
             <td>{{item.taskStatus}}</td>
-            <td style="position: relative;"><span class="mouse" (mouseenter)="running(item)" (mouseleave)="stopped(item)">{{getPercent(item.percent)}}
+<!--            <td style="position: relative;"><span class="mouse" (mouseenter)="running(item)" (mouseleave)="stopped(item)">{{getPercent(item.percent)}}
               <div class="percentBox" *ngIf="item.show==1" [ngClass]="{border: item.show==1}">
                 <div class="percent"  *ngFor="let item of percent">
                   <p title="{{item.fileName}}（{{item.fileSize}}）">{{item.fileName}}<span>（{{item.fileSize}}）</span></p>
                   <div class="progressouter">
-                    <!--<span>100%</span>-->
+                    &lt;!&ndash;<span>100%</span>&ndash;&gt;
                     <div class="progressinner" [ngStyle]="{width: item.percent|percent:'.2'}"></div>
                   </div>
                 </div>
               </div>
               </span>
-            </td>
+            </td>-->
+            <td>{{item.percent}}%</td>
             <td>
               <a class="operationBtn rerun" *ngIf="item.taskStatus=='完成'" (click)="runChannel(item)" title="重新运行"></a>
               <a class="operationBtn stop" *ngIf="item.taskStatus!='进行中'&&item.taskStatus!='完成'" (click)="runChannel(item)" title="开始"></a>
@@ -72,10 +73,39 @@
     </div>
   </div>
 </div>
-<div class="videoPlayer" *ngIf="playShow" (mouseenter)="show()" (mouseleave)="hide()">
-  <img src="assets/offline/task_close.png" class="videoClose" (click)="closeVideo()"/>
-  <video src={{outputPath}} #offlineVideo></video>
-  <div *ngIf="videoBtn==1" class="videoStart">
-    <img [src]="showBtn?'assets/offline/zanting.png':'assets/offline/kaishi.png'" (click)="play()"/>
+  <div class="videoPlayer" *ngIf="playShow&&nameTem=='特定人识别-吴京'" (mouseenter)="show()" (mouseleave)="hide()">
+    <img src="assets/offline/task_close.png" class="videoClose" (click)="closeVideo()"/>
+    <div style="height:100%">
+      <video src="assets/offline/ren1.mp4" #offlineVideo ></video>
+    </div>
+    <div *ngIf="videoBtn==1" class="videoStart">
+      <img [src]="showBtn?'assets/offline/zanting.png':'assets/offline/kaishi.png'" (click)="play()"/>
+    </div>
   </div>
-</div>
+  <div class="videoPlayer" *ngIf="playShow&&nameTem=='威胁度识别-枪械'" (mouseenter)="show()" (mouseleave)="hide()">
+    <img src="assets/offline/task_close.png" class="videoClose" (click)="closeVideo()"/>
+    <div style="height:100%">
+      <video src="assets/offline/qiang1.mp4" #offlineVideo1></video>
+    </div>
+    <div *ngIf="videoBtn==1" class="videoStart">
+      <img [src]="showBtn1?'assets/offline/zanting.png':'assets/offline/kaishi.png'" (click)="play1()"/>
+    </div>
+  </div>
+  <div class="videoPlayer" *ngIf="playShow&&nameTem=='作战目标识别-车+直升机'" (mouseenter)="show()" (mouseleave)="hide()">
+    <img src="assets/offline/task_close.png" class="videoClose" (click)="closeVideo()"/>
+    <div style="height:100%">
+      <video src="assets/offline/chefeiji1.mp4" #offlineVideo2 ></video>
+    </div>
+    <div *ngIf="videoBtn==1" class="videoStart">
+      <img [src]="showBtn2?'assets/offline/zanting.png':'assets/offline/kaishi.png'" (click)="play2()"/>
+    </div>
+  </div>
+  <div class="videoPlayer" *ngIf="playShow&&nameTem=='作战目标识别-车+直升机+坦克'" (mouseenter)="show()" (mouseleave)="hide()">
+    <img src="assets/offline/task_close.png" class="videoClose" (click)="closeVideo()"/>
+    <div style="height:100%">
+      <video src="assets/offline/chefeijitanke1.mp4" #offlineVideo3 ></video>
+    </div>
+    <div *ngIf="videoBtn==1" class="videoStart">
+      <img [src]="showBtn3?'assets/offline/zanting.png':'assets/offline/kaishi.png'" (click)="play3()"/>
+    </div>
+  </div>
