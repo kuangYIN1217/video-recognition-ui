@@ -73,39 +73,12 @@
     </div>
   </div>
 </div>
-  <div class="videoPlayer" *ngIf="playShow&&nameTem=='特定人识别-吴京'" (mouseenter)="show()" (mouseleave)="hide()">
+  <div class="videoPlayer" *ngIf="playShow" (mouseenter)="show()" (mouseleave)="hide()">
     <img src="assets/offline/task_close.png" class="videoClose" (click)="closeVideo()"/>
     <div style="height:100%">
-      <video src="assets/offline/ren1.mp4" #offlineVideo ></video>
+      <video src={{outputPath}} #offlineVideo ></video>
     </div>
     <div *ngIf="videoBtn==1" class="videoStart">
       <img [src]="showBtn?'assets/offline/zanting.png':'assets/offline/kaishi.png'" (click)="play()"/>
-    </div>
-  </div>
-  <div class="videoPlayer" *ngIf="playShow&&nameTem=='威胁度识别-枪械'" (mouseenter)="show()" (mouseleave)="hide()">
-    <img src="assets/offline/task_close.png" class="videoClose" (click)="closeVideo()"/>
-    <div style="height:100%">
-      <video src="assets/offline/qiang1.mp4" #offlineVideo1></video>
-    </div>
-    <div *ngIf="videoBtn==1" class="videoStart">
-      <img [src]="showBtn1?'assets/offline/zanting.png':'assets/offline/kaishi.png'" (click)="play1()"/>
-    </div>
-  </div>
-  <div class="videoPlayer" *ngIf="playShow&&nameTem=='作战目标识别-车+直升机'" (mouseenter)="show()" (mouseleave)="hide()">
-    <img src="assets/offline/task_close.png" class="videoClose" (click)="closeVideo()"/>
-    <div style="height:100%">
-      <video src="assets/offline/chefeiji1.mp4" #offlineVideo2 ></video>
-    </div>
-    <div *ngIf="videoBtn==1" class="videoStart">
-      <img [src]="showBtn2?'assets/offline/zanting.png':'assets/offline/kaishi.png'" (click)="play2()"/>
-    </div>
-  </div>
-  <div class="videoPlayer" *ngIf="playShow&&nameTem=='作战目标识别-车+直升机+坦克'" (mouseenter)="show()" (mouseleave)="hide()">
-    <img src="assets/offline/task_close.png" class="videoClose" (click)="closeVideo()"/>
-    <div style="height:100%">
-      <video src="assets/offline/chefeijitanke1.mp4" #offlineVideo3 ></video>
-    </div>
-    <div *ngIf="videoBtn==1" class="videoStart">
-      <img [src]="showBtn3?'assets/offline/zanting.png':'assets/offline/kaishi.png'" (click)="play3()"/>
     </div>
   </div>
