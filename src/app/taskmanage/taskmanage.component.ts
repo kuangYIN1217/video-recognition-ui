@@ -81,8 +81,6 @@ export class TaskManageComponent {
             })
           }
         }
-        //console.log(result.content);
-
         this.taskList = result.content;
         let page = new Page();
         page.pageMaxItem = result.size;
@@ -95,7 +93,6 @@ export class TaskManageComponent {
   lookResult(item){
     this.playShow=true;
     this.outputPath = item.outputPath;
-    console.log(this.outputPath);
   }
   closeVideo(){
     this.playShow=false;
