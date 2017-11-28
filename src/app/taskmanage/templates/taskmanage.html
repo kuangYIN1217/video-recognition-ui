@@ -43,19 +43,18 @@
             <td>{{output(item.alarmRules)}}</td>
             <td>{{item.fileNumber}}</td>
             <td>{{item.taskStatus}}</td>
-<!--            <td style="position: relative;"><span class="mouse" (mouseenter)="running(item)" (mouseleave)="stopped(item)">{{getPercent(item.percent)}}
+            <td style="position: relative;"><span class="mouse" (mouseenter)="running(item)" (mouseleave)="stopped(item)">{{getPercent(item.percent)}}
               <div class="percentBox" *ngIf="item.show==1" [ngClass]="{border: item.show==1}">
                 <div class="percent"  *ngFor="let item of percent">
                   <p title="{{item.fileName}}（{{item.fileSize}}）">{{item.fileName}}<span>（{{item.fileSize}}）</span></p>
                   <div class="progressouter">
-                    &lt;!&ndash;<span>100%</span>&ndash;&gt;
+                    <!--<span>100%</span>-->
                     <div class="progressinner" [ngStyle]="{width: item.percent|percent:'.2'}"></div>
                   </div>
                 </div>
               </div>
               </span>
-            </td>-->
-            <td>{{item.percent}}%</td>
+            </td>
             <td>
               <a class="operationBtn rerun" *ngIf="item.taskStatus=='完成'" (click)="runChannel(item)" title="重新运行"></a>
               <a class="operationBtn stop" *ngIf="item.taskStatus!='进行中'&&item.taskStatus!='完成'" (click)="runChannel(item)" title="开始"></a>
@@ -76,7 +75,7 @@
   <div class="videoPlayer" *ngIf="playShow" (mouseenter)="show()" (mouseleave)="hide()">
     <img src="assets/offline/task_close.png" class="videoClose" (click)="closeVideo()"/>
     <div style="height:100%">
-      <video src={{outputPath}} #offlineVideo ></video>
+      <video src="{{SERVER_URL}}/download/{{output1(outputPath)}}" #offlineVideo ></video>
     </div>
     <div *ngIf="videoBtn==1" class="videoStart">
       <img [src]="showBtn?'assets/offline/zanting.png':'assets/offline/kaishi.png'" (click)="play()"/>

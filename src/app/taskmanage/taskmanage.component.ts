@@ -1,5 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {OfflineService} from "../common/services/offline.service";
+import {SERVER_URL} from "../app.constants";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Page} from "app/common/defs/resources";
 import {calc_height} from "../common/ts/calc_height";
@@ -12,6 +13,7 @@ declare var $:any;
   providers: [OfflineService,WebSocketService]
 })
 export class TaskManageComponent {
+  SERVER_URL = SERVER_URL;
   appId:string;
   appCate:string;
   taskList:any[]=[];
@@ -115,8 +117,11 @@ export class TaskManageComponent {
     }
 
   }
+  output1(item){
+    return item.substring(23,item.length);
+  }
   running(item){
-    console.log(item);
+    //console.log(item);
     this.percent = [];
     if(item.taskStatus=='进行中'){
       item.show = 1;
