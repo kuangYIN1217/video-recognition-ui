@@ -61,6 +61,7 @@ export class WarnWindowComponent{
     this.warnService.getWarnObjOne()
       .subscribe(result=>{
         this.warnObjArr=result;
+        this.changeWarn();
       });
   }
   public uploader:FileUploader = new FileUploader({
@@ -88,6 +89,7 @@ export class WarnWindowComponent{
     for(let i=0;i<this.warnObjArr.length;i++){
       if(this.warnObjArr[i].classificationName==this.warnObj){
         this.warnObjDetailArr=this.warnObjArr[i].recognitionCategories;
+        this.warnObjDetailArr.reverse();
         this.warnObjDetail = this.warnObjDetailArr[0].name;
       }
     }
