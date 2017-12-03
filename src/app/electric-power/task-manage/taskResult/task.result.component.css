@@ -1,0 +1,125 @@
+.resultTitle{
+  margin:20px 30px ;
+  background: #fff;
+  color: #333333;
+  font-size: 14px;
+}
+.titleBtn{
+  padding:20px 0 26px 20px;
+}
+.btn{
+  display: inline-block;
+  font-size: 14px;
+  height:30px;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 5px;
+  border:1px solid #d3d3d3;
+  box-sizing: border-box;
+}
+.bgco{
+  color: #ffffff;
+  background: #23a880;
+  width:102px;
+}
+.bgcg{
+  width:76px;
+  color: #333333;
+  background: #eeeeee;
+}
+.titleInfo{
+  display: inline-block;
+  margin-left: 108px;
+  margin-bottom: 20px;
+}
+.titleInfo span{
+  display: inline-block;
+  padding-left: 14px;
+}
+.resultContent{
+  margin:0 30px;
+  background: #fff;
+}
+.search{
+  padding:20px 0 30px;
+}
+.search-info{
+  overflow: hidden;
+  display: inline-block;
+  margin-left: 1.6vw;
+}
+.search-info label{
+  float: left;
+  color: #333;
+  height:36px;
+  line-height: 36px;
+  font-size: 14px;
+}
+.search-info select{
+  width:12vw;
+  height:36px;
+  box-sizing: border-box;
+  border:1px solid #d3d3d3;
+  float: left;
+  border-radius: 5px;
+  margin-left: 1vw;
+  margin-right: 6px;
+  color: #666666;
+}
+.search-info select{
+  background: url("../../../../assets/appdetail/way.manage/selectDown.png") no-repeat right 6px center;
+}
+select{
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-left: 8px;
+}
+select option{
+  padding-left: 8px;
+  color: #555555;
+}
+.channelList{
+  margin:0 20px;
+}
+.channelTable{
+  width:100%;
+  border:1px solid #d3d3d3;
+  table-layout:fixed;
+}
+.channelTable th{
+  color: #333333;
+  font-weight: normal;
+}
+.channelTable,.channelTable tr{
+  border-collapse: collapse;
+  border-top:1px solid #d3d3d3;
+}
+.channelTable tr{
+  height:36px;
+  text-align: left;
+  font-size: 14px;
+  color: #666666;
+}
+.channelTable tr:nth-child(even){
+  background: #eeeeee;
+}
+.channelTable td{
+  text-overflow:ellipsis;
+  overflow: hidden;
+  white-space:nowrap;
+}
+.middle{
+  display: inline-block;
+  vertical-align: middle;
+}
+.mrgr{
+  cursor: pointer;
+  margin-right: 12px;
+}
+.pad{
+  width:10%;
+  padding-left: 20px;
+}
+

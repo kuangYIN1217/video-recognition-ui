@@ -1,0 +1,48 @@
+<div class="create-user-wrap">
+  <div class="create-user">
+    <div class="create-user-title">
+      <label>{{userTitle}}</label>
+    </div>
+    <div class="create-user-body">
+      <div>
+        <label><span class="symbol">*</span>用户名：</label>
+        <input type="text" name="name" [(ngModel)]="name"/>
+        <span class="must" [style.display]="required==1?'':'none'">必填字段</span>
+        <span class="must" [style.display]="required==10?'':'none'">用户名已存在</span>
+      </div>
+      <div>
+        <label><span class="symbol">&nbsp;</span>真实姓名：</label>
+        <input type="text" name="realName" [(ngModel)]="realName"/>
+      </div>
+      <div>
+        <label><span class="symbol">*</span>手机号码：</label>
+        <input type="text" name="mobile" [(ngModel)]="mobile" (blur)="validMobile()"/>
+        <span class="must" [style.display]="required==2?'':'none'">必填字段</span>
+        <span class="must" [style.display]="required==9?'':'none'">手机号码格式错误</span>
+      </div>
+      <div>
+        <label><span class="symbol">*</span>邮箱：</label>
+        <input type="text" name="mail" [(ngModel)]="mail" (blur)="validMail()"/>
+        <span class="must" [style.display]="required==3?'':'none'">必填字段</span>
+        <span class="must" [style.display]="required==8?'':'none'">邮箱格式错误</span>
+        <span class="must" [style.display]="required==11?'':'none'">邮箱已存在</span>
+      </div>
+      <div>
+        <label><span class="symbol">*</span>密码：</label>
+        <input type="text" name="password" [(ngModel)]="password"/>
+        <span class="must" [style.display]="required==4?'':'none'">必填字段</span>
+      </div>
+      <div>
+        <label><span class="symbol">&nbsp;</span>所属群组：</label>
+        <select name="group" [(ngModel)]="group">
+          <option value="{{item.groupName}}" *ngFor="let item of groupArr">{{item.groupName}}</option>
+        </select>
+      </div>
+      <div class="createBtn">
+        <a class="btn bgco" (click)="create()" *ngIf="userTitle=='新增用户'">创建</a>
+        <a class="btn bgco" (click)="update()" *ngIf="userTitle=='修改用户'">保存</a>
+        <a class="btn bgcg back" (click)="back()">返回</a>
+      </div>
+    </div>
+  </div>
+</div>

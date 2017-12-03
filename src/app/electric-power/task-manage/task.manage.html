@@ -1,0 +1,56 @@
+<div class="container">
+  <div class="channel">
+    <div class="channelTitle">
+      <div class="channelName">
+        <label>任务名称：</label><input type="text" name="channelName" [(ngModel)]="taskName"/>
+      </div>
+      <div class="channelName">
+        <label>任务状态：</label>
+        <select [(ngModel)]="status" (ngModelChange)="status=$event;">
+          <option *ngFor="let item of taskStatusArr" value="{{item}}">{{item}}</option>
+        </select>
+      </div>
+      <a href="#" onclick="return false" class="btn searchBtn" (click)="search()">查询</a>
+    </div>
+    <div class="channelContent" id="channelContent">
+      <div class="headerBtn">
+        <a href="javascript:void(0)" class="btn pdl bgcg" (click)="create()">新增</a>
+        <a href="javascript:void(0)" class="btn bgcg" (click)="dia()">删除</a>
+      </div>
+      <div class="channelList">
+        <table class="channelTable" cellspacing="0">
+          <tr>
+            <th class="checked">
+              <img [src]="all_selected?'../assets/appdetail/way.manage/checked.png':'../assets/appdetail/way.manage/unchecked.png'" (click)="checkAll()"/>
+            </th>
+            <th class="order pad">任务名称</th>
+            <th class="name pad">识别缺陷</th>
+            <th class="channelAddr pad">文件大小</th>
+            <th class="protocol pad">运行状态</th>
+            <th class="switch pad">进度</th>
+            <th class="operation pad">操作</th>
+          </tr>
+          <tr *ngFor="let item of taskInfo let i=index;">
+            <td class="checked">
+              <img [src]="item.selected?'../assets/appdetail/way.manage/checked.png':'../assets/appdetail/way.manage/unchecked.png'" (click)="check(i)"/>
+            </td>
+            <td class="pad">{{item.taskName}}</td>
+            <td class="pad">{{getFlaw(item.flawCategorySet)}}</td>
+            <td class="pad">{{item.fileSize}}</td>
+            <td class="pad">{{item.taskStatus}}</td>
+            <td class="pad">{{item.percent}}</td>
+            <td class="operation pad">
+              <a class="operationBtn stop" *ngIf="item.taskStatus!='进行中'" (click)="runChannel(item)" title="暂停"></a>
+              <a class="operationBtn start" *ngIf="item.taskStatus=='进行中'" (click)="runChannel(item)" title="开启"></a>
+              <a class="operationBtn return" *ngIf="item.taskStatus=='完成'" (click)="runChannel(item)" title="重新运行"></a>
+              <a class="operationBtn look" (click)="look(item)" title="查看结果"></a>
+              <a class="operationBtn edit" *ngIf="item.taskStatus!='进行中'" (click)="edit(item)"></a>
+              <a class="operationBtn unedit" *ngIf="item.taskStatus=='进行中'"></a>
+            </td>
+          </tr>
+        </table>
+        <page [pageParams]="pageParams" (changeCurPage)="getPageData($event)" class="page"></page>
+      </div>
+    </div>
+  </div>
+</div>

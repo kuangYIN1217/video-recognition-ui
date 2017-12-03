@@ -1,0 +1,11 @@
+<div class="checkedRlue" id="checkedRlue" (click)="stopPropagetion($event)">
+  <h4>已选项目</h4>
+  <div class="rlueContent">
+    <div class="rlue">
+      <span *ngFor="let item of seeProject;let i=index">
+        <img [src]="getSrc(item)" (click)="check(item)"  class="middle"/>
+        <a class="middle">{{item.applicationName}}</a>
+      </span>
+    </div>
+  </div>
+</div>

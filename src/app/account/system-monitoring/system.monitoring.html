@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="account-manage" id="monitoring">
+    <div class="title">用户监控</div>
+    <div class="account-search">
+      <div>
+        <label>用户名：</label>
+        <input type="text" name="userName" [(ngModel)]="userName"/>
+      </div>
+      <div class="account-search-time">
+        <label>时间：</label>
+        <input type="text" id="userStart" class="time" readonly placeholder="请选择时间"/>
+        <span>--</span>
+        <input type="text" id="userEnd" class="time" readonly placeholder="请选择时间" style="margin-left: 0"/>
+      </div>
+      <div>
+        <a href="javascript:void(0)" class="btn bgco" (click)="search()">查询</a>
+      </div>
+    </div>
+    <table class="channelTable" cellspacing="0" >
+      <tr>
+        <th class="pad">访问时间</th>
+        <th class="pad">用户名</th>
+        <th class="pad">手机号码</th>
+      </tr>
+      <tr *ngFor="let item of monitoringArr let i=index;">
+        <td class="pad">{{outTime(item.auditEventDate)}}</td>
+        <td class="pad">{{item.principal}}</td>
+        <td class="pad">{{item.cellphoneNumber}}</td>
+      </tr>
+    </table>
+    <page [pageParams]="pageParams" (changeCurPage)="getPageData($event)" class="page"></page>
+  </div>
+</div>

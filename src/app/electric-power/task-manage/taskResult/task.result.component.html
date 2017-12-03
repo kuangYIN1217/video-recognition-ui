@@ -1,0 +1,87 @@
+<div class="container">
+  <div class="resultTitle">
+    <div class="titleBtn">
+      <a href="#" class="btn bgcg">返回</a>
+      <a href="#" class="btn bgco" style="margin-left: 20px">重新运行</a>
+    </div>
+    <div class="titleInfo" style="margin-left: 20px">
+      <label>任务名称：</label>
+      <span>{{allInfo.taskName}}</span>
+    </div>
+    <div class="titleInfo">
+      <label>识别对象：</label>
+      <span>{{identify(allInfo.flawCategorySet)}}</span>
+    </div>
+    <div class="titleInfo">
+      <label>创建时间：</label>
+      <span>{{allInfo.createTime}}</span>
+    </div>
+    <div class="titleInfo">
+      <label>创建者：</label>
+      <span>{{allInfo.createPerson}}</span>
+    </div>
+  </div>
+  <div class="resultContent">
+    <div class="search">
+      <div class="search-info" style="margin-left: 20px">
+        <label>线路名称：</label>
+        <select name="line" [(ngModel)]="line" (ngModelChange)="line=$event;lineChange()">
+          <option *ngFor="let item of lineSet">{{item.lineName}}</option>
+        </select>
+      </div>
+      <div class="search-info">
+        <label>杆塔号：</label>
+        <select name="tower" [(ngModel)]="tower" (ngModelChange)="tower=$event;towerChange()">
+          <option *ngFor="let item of towerSet">{{item.towerNum}}</option>
+        </select>
+      </div>
+      <div class="search-info">
+        <label>缺陷部件：</label>
+        <select name="towerPart" [(ngModel)]="towerPart" (ngModelChange)="towerPart=$event;towerPartChange()">
+          <option *ngFor="let item of towerPartSet">{{item.part}}</option>
+        </select>
+      </div>
+      <div class="search-info">
+        <label>缺陷状态：</label>
+        <select name="status" [(ngModel)]="status" (ngModelChange)="status=$event;statusChange()">
+          <option *ngFor="let item of infoStatusSet">{{item}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="channelList">
+      <table class="channelTable" cellspacing="0">
+        <tr>
+          <th class="pad">线路名称<th>
+          <th class="pad">杆塔号</th>
+          <th class="pad">识别原图</th>
+          <th class="pad">缺陷图</th>
+          <th class="pad">缺陷部件</th>
+          <th class="pad">缺陷描述</th>
+          <th class="pad">详细描述</th>
+          <th class="pad">缺陷性质</th>
+          <th class="pad">缺陷状态</th>
+          <th class="pad">操作</th>
+        </tr>
+        <tr>
+          <td class="pad"></td>
+          <td class="pad"></td>
+          <td class="pad"></td>
+          <td class="pad"></td>
+          <td class="pad"></td>
+          <td class="pad"></td>
+          <td class="pad"></td>
+          <td class="pad"></td>
+          <td class="pad"></td>
+          <td class="pad"></td>
+          <td class="pad">
+            <img src="../assets/electric/hulue.png" class="mrgr"/>
+            <img src="../assets/electric/hulue.png" class="mrgr"/>
+            <img src="../assets/appdetail/way.manage/edit.png" class="mrgr"/>
+            <img src="../assets/appdetail/way.manage/unedit.png" class="mrgr"/>
+          </td>
+        </tr>
+      </table>
+      <page [pageParams]="pageParams" (changeCurPage)="getPageData($event)" class="page"></page>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,9 @@
 @charset "UTF-8";
+ul,li{
+  list-style: none;
+  padding:0;
+  margin:0;
+}
 .header{
   width: 100%;
   height: 70px;
@@ -58,19 +63,61 @@
 }
 .entry span{
   font-family: "MicrosoftYaHei";
-  font-size: 12px;
+  font-size: 14px;
   color: #ffffff;
 }
 .user{
-  right: 120px;
+  right: 158px;
 }
 .user span{
   left: 81%;
+  margin-left: 6px;
 }
 .logout{
-  right: 44px;
+  right: 88px;
 }
 .logout span{
   left: 89%;
+}
+.line{
+  right:132px;
+}
+.line span{
+  color: #4d4d4d;
+  font-weight: bolder;
+}
+.entry span a{
+  height: 70px;
+  line-height:70px;
+  display: inline-block;
+}
+.user-menuBox{
+  display: none;
+  position: absolute;
+  top:70px;
+  left:-10px;
+  width:120px;
+  font-size: 12px;
+  color: #333333;
+  background: #ffffff;
+  box-shadow: 0 0 4px rgba(0,0,0,0.15);
 
+}
+.user-menuBox .user-menu li a{
+  text-decoration: none;
+  font-size: 12px;
+  color: #333333;
+  height:32px;
+  line-height: 32px;
+  display: block;
+  text-align: left;
+  padding-left: 24px;
+
+}
+.user-menuBox .user-menu li a:hover{
+  background: #e5e5e5;
+}
+.user-menu{
+  padding-top: 10px;
+  padding-bottom: 10px;
 }

@@ -1,0 +1,112 @@
+.create-user-wrap{
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1500;
+  background: rgba(0,0,0,0.2);
+}
+.create-user{
+  width:600px;
+  height:580px;
+  box-sizing: border-box;
+  background: #fff;
+  border-radius: 8px;
+  margin:200px auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.15);
+  font-size: 14px;
+}
+.create-user-title{
+  height:40px;
+  color: #333333;
+  line-height: 40px;
+  padding-left: 36px;
+  background: #eeeeee;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+.create-user-body{
+  margin-top: 50px;
+}
+.create-user-body div{
+  margin: 24px 0 24px 84px;
+}
+.create-user-body div label{
+  width:96px;
+  text-align: left;
+  display: inline-block;
+  color: #555555;
+}
+.symbol{
+  font-size: 12px;
+  color: #fe1c1c;
+  position: relative;
+  top:-2px;
+}
+.create-user-body div input{
+  width:280px;
+  height:36px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border:1px solid #d3d3d3;
+  padding-left: 8px;
+}
+.create-user-body div select{
+  width:280px;
+  height:36px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border:1px solid #d3d3d3;
+  padding-left: 8px;
+}
+.create-user-body div select option{
+  padding-left: 8px;
+}
+select:focus{
+  border:1px solid #23a880 !important;
+}
+input:focus{
+  border:1px solid #23a880 !important;
+}
+input{
+  outline: none;
+}
+select{
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: url("../../../assets/appdetail/way.manage/selectDown.png") no-repeat right 6px center;
+}
+.btn{
+  display: inline-block;
+  font-size: 14px;
+  width:76px;
+  height:30px;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 5px;
+  border:1px solid #d3d3d3;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.bgco{
+  color: #ffffff;
+  background: #ff7c35;
+}
+.bgcg{
+  color: #333333;
+  background: #eeeeee;
+}
+.createBtn{
+  margin-left: 184px !important;
+  margin-top: 42px !important;
+}
+.back{
+  margin-left: 12px;
+}
+.must{
+  font-size: 14px;
+  color: #fe1c1c;
+}

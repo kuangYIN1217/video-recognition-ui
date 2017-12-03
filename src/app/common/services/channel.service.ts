@@ -159,7 +159,7 @@ export class ChannelService {
       });
   }
   getDirection(id,direction){
-    console.log(id,direction);
+    //console.log(id,direction);
     let path = "/api/changeChannelOrder/"+ id+"/"+ direction ;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL + path, {headers: headers})

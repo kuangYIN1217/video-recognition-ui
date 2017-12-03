@@ -1,17 +1,30 @@
-<div class="header" [style.display]="focusTab==0?'none':''">
+<div class="header" *ngIf="focusTab!=0">
   <!--        <div class="logo">
               <img src="assets/navigation/logo.png">
           </div>-->
   <p>云思创智凝瞳视觉智能分析系统软件</p>
-  <div class="entry user">
+  <div class="entry user" (mouseenter)="enterMenu()" (mouseleave)="leaveMenu()">
     <img src="assets/navigation/admin.png">
-    <span>{{username}}</span>
+    <span><a>{{username}}</a></span>
+    <div class="user-menuBox">
+      <ul class="user-menu">
+        <li *ngIf="systemAuthority=='false'"><a routerLinkActive="active" [routerLink]="['/personalcenter/:accountmanage', {outlets: {aux: ['accountmanage']}}]">账号中心</a></li>
+        <li *ngIf="systemAuthority=='false'"><a routerLinkActive="active" [routerLink]="['/personalcenter/:accessmanage', {outlets: {aux: ['accessmanage']}}]">访问管理</a></li>
+        <li *ngIf="systemAuthority=='false'"><a routerLinkActive="active" [routerLink]="['/personalcenter/:systemmonitoring', {outlets: {aux: ['systemmonitoring']}}]">系统监控</a></li>
+        <li><a (click)="logout()">退出</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="entry line">
+<!--    <img (click)="logout()" src="assets/navigation/out.png">
+    <span (click)="logout()">退出</span>-->
+    <span><a>|</a></span>
   </div>
   <div class="entry logout">
-    <img (click)="logout()" src="assets/navigation/out.png">
-    <span (click)="logout()">退出</span>
+<!--    <img (click)="logout()" src="assets/navigation/out.png">
+    <span (click)="logout()">退出</span>-->
+    <span><a>费用</a></span>
   </div>
-
   <div class="logo-wrapper" >
     <img src="assets/navigation/logo1.png" class="logo">
   </div>

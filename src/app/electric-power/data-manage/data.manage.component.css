@@ -1,0 +1,273 @@
+.channel{
+  margin:20px 30px;
+  overflow: hidden;
+}
+a{
+  text-decoration: none;
+}
+input{
+  outline: none;
+}
+.focus{
+  color: #ff7c35;
+  border-bottom: 2px solid #ff7c35;
+}
+.search-content{
+  background: #ffffff;
+  margin-bottom:20px;
+  font-size: 14px;
+}
+.search-select{
+  overflow: hidden;
+}
+.search-info{
+  overflow: hidden;
+  float: left;
+  margin:20px 0;
+}
+.search-info label{
+  float: left;
+  line-height: 36px;
+  margin-left: 24px;
+}
+
+.search-info select,.search-info input{
+  width:14.5vw;
+  height:36px;
+  box-sizing: border-box;
+  border:1px solid #d3d3d3;
+  float: left;
+  border-radius: 5px;
+  margin-left: 1.67vw;
+  margin-right: 6px;
+  color: #666666;
+}
+.search-info select{
+  background: url("../../../assets/appdetail/way.manage/selectDown.png") no-repeat right 6px center;
+}
+.search-info input{
+  background: url("../../../assets/warn/rili.png") no-repeat right 6px center;
+}
+.search-time{
+  overflow: hidden;
+}
+.search-time .no-margin{
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+.search-time .search-info span{
+  float: left;
+  line-height: 36px;
+  margin-left: 4px;
+  margin-right: 10px;
+}
+.search-time .search-info .time-select{
+  margin-left: 0;
+}
+.time-select{
+  background: url("../../../assets/warn/rili.png") no-repeat right 6px center;
+}
+
+.headerBtn{
+  margin:20px;
+}
+.must{
+  font-size: 14px;
+  color: #fe1c1c;
+}
+.btn{
+  display: inline-block;
+  font-size: 14px;
+  width:80px;
+  height:30px;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 5px;
+  border:1px solid #d3d3d3;
+  box-sizing: border-box;
+}
+.bgco{
+  color: #ffffff;
+  background: #ff7c35;
+}
+.bgcg{
+  color: #333333;
+  background: #eeeeee;
+}
+.searchBtn{
+  float: right;
+}
+.pdl{
+  margin-right: 18px;
+  margin-top: 20px;
+}
+.downExcel{
+  width:130px !important;
+  margin-top: 20px;
+  margin-right: 18px;
+}
+.searchBtn{
+  float: right;
+  margin-right: 20px;
+  margin-top: 22px;
+  background: #ff7c35 !important;
+  color: #ffffff !important;
+}
+.channelName{
+  float: left;
+  overflow: hidden;
+  margin:20px 0 20px 20px;
+}
+.channelName input,.channelName select{
+  width:280px;
+  height:36px;
+  box-sizing: border-box;
+  border:1px solid #d3d3d3;
+  float: left;
+  border-radius: 5px;
+  margin-left: 20px;
+  margin-right: 14px;
+}
+.channelName select{
+  background: url("../../../assets/appdetail/way.manage/selectDown.png") no-repeat right 6px center;
+  color: #666666;
+}
+.channelTitle{
+  background: #ffffff;
+  margin-bottom: 20px;
+  font-size: 14px;
+  overflow: hidden;
+}
+.channelName label{
+  color: #333333;
+  float: left;
+  line-height: 36px;
+  display: inline-block;
+}
+.channelContent{
+  background: #ffffff;
+}
+.channelList{
+  clear: both;
+  margin:0 20px;
+}
+.channelTable{
+  width:100%;
+  border:1px solid #d3d3d3;
+}
+.channelTable th{
+  color: #333333;
+  font-weight: normal;
+}
+.channelTable,.channelTable tr{
+  border-collapse: collapse;
+  border-top:1px solid #d3d3d3;
+}
+.channelTable tr{
+  height:36px;
+  text-align: left;
+  font-size: 14px;
+  color: #666666;
+}
+.channelTable tr:nth-child(even){
+  background: #eeeeee;
+}
+.operationBtn {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 10px;
+  /*margin: 0 auto;*/
+}
+.edit{
+  background: url('../../../assets/appdetail/way.manage/edit.png') no-repeat center;
+}
+.unedit{
+  background: url('../../../assets/appdetail/way.manage/unedit.png') no-repeat center;
+}
+.look{
+  background: url('../../../assets/warn/chakan.png') no-repeat center;
+}
+.pad{
+  padding-left: 20px;
+}
+.checked{
+  width:6%;
+}
+.order{
+  width:12%;
+}
+.name{
+  width:12%;
+}
+.channelAddr{
+  width:22%;
+}
+.protocol{
+  width:12%;
+}
+.switch{
+  width:14%;
+}
+.operation{
+  width:20%;
+}
+.fontSize{
+  font-size: 14px;
+}
+#file{
+  display: none;
+}
+
+.infoBtn{
+  padding-top: 26px;
+  padding-left: 80px;
+  padding-bottom: 28px;
+}
+.radio{
+  display: inline-block;
+  padding-left: 34px;
+  font-size: 0px;
+}
+.radio img{
+  margin-right: 10px;
+}
+.middle{
+  display: inline-block;
+  vertical-align: middle;
+}
+.delSys{
+  text-align: center;
+  padding:50px 0 42px;
+}
+.bgcg{
+  background: #eeeeee;
+  color: #333333;
+}
+
+select:focus{
+  border:1px solid #23a880 !important;
+}
+select{
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-left: 8px;
+}
+select option{
+  padding-left: 8px;
+}
+input{
+  outline: none;
+  padding-left: 8px;
+}
+input:focus{
+  border:1px solid #23a880 !important;
+}
+
+
+
+
+

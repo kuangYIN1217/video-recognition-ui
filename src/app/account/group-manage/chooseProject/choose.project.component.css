@@ -1,0 +1,41 @@
+.checkedRlue{
+  width:490px;
+  border:1px solid #d3d3d3;
+  border-radius: 5px;
+  margin-left: 106px;
+  margin-top: 30px;
+  box-sizing: border-box;
+}
+.checkedRlue h4{
+  font-size: 14px;
+  padding:10px 30px;
+  background: #eeeeee;
+  color: #333333;
+  margin: 0;
+  font-weight: normal;
+}
+.rlueContent{
+  background: #ffffff;
+  height:163px;
+  overflow-y: auto;
+}
+.rlue{
+  margin:35px 50px 0 50px;
+}
+.rlue a{
+  padding-left: 12px;
+  font-size: 14px;
+  color: #333333;
+}
+.rlue span{
+  display: inline-block;
+  padding-right: 46px;
+  margin-bottom: 35px;
+}
+.rlue .right{
+  padding-right: 0px !important;
+}
+.middle{
+  display: inline-block;
+  vertical-align: middle;
+}

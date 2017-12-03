@@ -1,0 +1,69 @@
+<div class="container">
+  <div class="statisticTitle">
+    <div class="search searchOne">
+      <div class="info">
+        <label>线路名称：</label>
+        <select name="lineName" [(ngModel)]="lineName">
+          <option></option>
+        </select>
+      </div>
+      <div class="info">
+        <label>任务名称：</label>
+        <select  name="taskName" [(ngModel)]="taskName">
+          <option></option>
+        </select>
+      </div>
+      <div class="info">
+        <label>杆塔号：</label>
+        <select  name="towerNum" [(ngModel)]="towerNum">
+          <option></option>
+        </select>
+      </div>
+    </div>
+    <div class="search searchTwo">
+      <div class="info infoTime">
+        <label>识别日期：</label>
+        <input type="text" name="start" id="start" [(ngModel)]="start"/>
+        <span>--</span>
+        <input type="text" name="end" id="end" [(ngModel)]="end"/>
+      </div>
+      <div class="info">
+        <label>统计颗粒度：</label>
+        <select  name="particles" [(ngModel)]="particles">
+          <option></option>
+        </select>
+      </div>
+      <a href="#" onclick="return false" class="btn bgco searchBtn" (click)="search()">查询</a>
+    </div>
+  </div>
+  <div class="content">
+    <div id="charts" style="width: 860px;height:400px;"></div>
+  </div>
+  <div class="statisticDate">
+    <div class="dataTable">
+      <table>
+        <tr>
+          <th class="p1">线路名</th>
+          <th class="p1">杆塔数</th>
+          <th class="p1">缺陷杆塔数</th>
+          <th class="p1">正常杆塔数</th>
+          <th class="p1">总识别文件数</th>
+          <th class="p1">缺陷文件数</th>
+          <th class="p1">杆塔缺陷率</th>
+          <th class="p1">文件缺陷率</th>
+          <th class="p2">平均杆塔文件缺陷率</th>
+        </tr>
+      </table>
+<!--      <table>
+        <tr>
+          <th class="p3">杆塔号</th>
+          <th class="p3">所属线路</th>
+          <th class="p3">总识别文件数</th>
+          <th class="p3">缺陷文件数</th>
+          <th class="p3">正常文件数</th>
+          <th class="p3">文件缺陷率</th>
+        </tr>
+      </table>-->
+    </div>
+  </div>
+</div>

@@ -38,12 +38,21 @@ export class WarnRlueComponent{
   cateId:number;
   warnChannel:string;
   warnObj:string;
+  authority:boolean = false;
+  _realTime:any[]=[];
+  _offline:any[]=[];
   constructor(private warnService: WarnService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
     console.log(this.appId);
     console.log(this.appCate);
     if(this.appCate=="实时流分析"){
+      this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
+      for(let i=0;i<this._realTime.length;i++){
+        if(this._realTime[i].projectAuthorityId==8){
+          this.authority = true;
+        }
+      }
       this.warnService.getWarnChannel(this.appId)
         .subscribe(channel=>{
           this.warnChanArr=channel;
@@ -52,6 +61,13 @@ export class WarnRlueComponent{
           if(this.warnChanArr.length>0)
           this.warnChan = this.warnChanArr[0].channelName;
         });
+    }else{
+      this._offline = JSON.parse(window.sessionStorage.getItem("_offline"));
+      for(let i=0;i<this._offline.length;i++){
+        if(this._offline[i].projectAuthorityId==15){
+          this.authority = true;
+        }
+      }
     }
     this.warnService.getWarnObj()
       .subscribe(result=>{

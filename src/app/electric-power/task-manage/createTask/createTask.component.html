@@ -1,0 +1,60 @@
+<div class="container" (click)="hide()">
+  <div class="createTask" id="createTask">
+    <div class="taskTitle">
+      <span>{{taskTitle}}</span>
+    </div>
+    <div class="taskContent">
+      <div class="form">
+        <div class="createInfo">
+          <label><span class="symbol">*</span>任务名称：</label>
+          <input type="text" name="taskName" [(ngModel)]="taskName"/>
+          <span class="must" [style.display]="required==1?'':'none'">必填字段</span>
+        </div>
+        <div class="createInfo">
+          <label><span class="symbol">*</span>识别缺陷：</label>
+          <input type="text" required readonly name="flawName" [(ngModel)]="flawName"/>
+          <img src="../assets/createtext/jia.png" class="jia" id="jia" (click)="checkedFlaw($event)"/>
+          <span class="must" [style.display]="required==2?'':'none'">必填字段</span>
+          <app-flaw [style.display]="checked==1?'':'none'"  [title]="title" [flawArr]="flawArr" (flawCheckedChange)="flawCheckedChange($event)"></app-flaw>
+        </div>
+        <div class="createInfo" [ngClass]="{marginTop: checked==1}">
+          <label class="fl upText"><span class="symbol">*</span>上传文件：</label>
+          <div class="fl upload">
+            <span onclick="document.getElementById('file1').click()" class="browse btn" *ngIf="taskTitle!='查看任务'">浏览...</span>
+            <span class="notChoose">未选择文件</span>
+            <input type="file" id="file1" name="file1" ng2FileSelect multiple [uploader]="uploader" accept=".zip" (change)="selectedFileOnChanged($event)"/>
+            <p>注：1、上传文件格式：Zip，建议总文件大小不超过1G；</p>
+            <p style="padding-left: 24px"><span style="vertical-align: top;display: inline-block">2、</span><span style="width: 445px;display: inline-block">压缩包规则：一级目录为所属单位，二级目录为线路文件夹，三级目录为杆塔号文件夹，四级目录为杆塔拍摄文件；
+支持格式：png\jpg；</span> </p>
+            <p style="padding-left: 24px">3、请确保压缩包中线路与杆塔号已在基础数据中维护，否则，请先维护数据；</p>
+          </div>
+          <div class="createInfo">
+            <table class="uploadShow" *ngIf="lookIndex==1">
+              <tr *ngFor="let item of showFile;let i =index" class="uploadTr border">
+                <td class="uploadTxt paddingLeft">{{item.fileName}}<span>（{{item.size}}）</span></td>
+                <td class="uploadImg paddingRight"><img src="../assets/appmanage/delete.png" class="imgMiddle" (click)="removeArr(i)" *ngIf="taskTitle=='修改任务'"/></td>
+              </tr>
+            </table>
+            <table class="uploadShow" *ngIf="showArr.length>0">
+              <tr *ngFor="let item of showArr;let i =index" class="uploadTr" [ngClass]="{border: item.headers.flag==1}">
+                <td class="uploadTxt paddingLeft"><img src="../assets/appmanage/shangchuan.png" class="imgMiddle right" *ngIf="item.progress==0"/><img src="../assets/appmanage/shangchuan.png" class="imgMiddle right"  *ngIf="item.progress!=100&&(item.progress!=0)"/>{{item.file.name}}<span *ngIf="(item.file.size/1024)>=1024">（{{item.file.size/1024/1024|number:'1.2-2'}}）MB</span><span *ngIf="(item.file.size/1024)<1024">（{{item.file.size/1024|number:'1.2-2'}}）KB</span></td>
+                <td class="uploadImg paddingRight"><img src="../assets/appmanage/delete.png" class="imgMiddle" (click)="remove(i)"/></td>
+                <div class="progressouter" *ngIf="item.headers.flag==0||(!item.headers.flag)">
+                  <span>{{item.progress}}%</span>
+                  <div class="progressinner" [ngStyle]="{width: item.progress + '%'}"></div>
+                </div>
+              </tr>
+            </table>
+          <span class="must" [style.display]="required==3?'':'none'">必填字段</span>
+          <span class="must" [style.display]="required==4?'':'none'">压缩包层级结构有误</span>
+          </div>
+        </div>
+        <div class="taskBtn">
+          <a href="#" onclick="return false" class="btn create" (click)="create()"  *ngIf="taskTitle=='新建任务'">创建</a>
+          <a href="#" onclick="return false" class="btn create" (click)="update()"  *ngIf="taskTitle=='修改任务'">保存</a>
+          <a href="#" onclick="return false" class="btn back" routerLinkActive="active" routerLink="/electaskmanage">返回</a>
+        </div>
+    </div>
+    <app-tips [style.display]="deleteIndex==1?'':'none'" [tip_title]="tip_title" [tip_content]="tip_content" [deleteIndex]="deleteIndex" [tip_btn]="tip_btn" (deleteChange)="deleteChange($event)" (deletedChange)="deletedChange($event)"></app-tips>
+  </div>
+</div>

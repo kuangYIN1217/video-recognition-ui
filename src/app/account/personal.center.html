@@ -1,0 +1,31 @@
+<div class="detail-header">
+  <img title="返回应用管理" (click) = "gotoAppmanage()" src="../../../assets/appdetail/way.manage/home.png" />
+  <div class="detail-header-info">
+    <label class="divider">|</label>
+    <label class="title">选择项目</label>
+  </div>
+</div>
+<div class="personal-center">
+<nav>
+  <div class="nav_element nav_title">
+    <a>{{modelName}}</a>
+  </div>
+    <div class="nav_element" *ngIf="status==':accountmanage'" [class.personalTab] = "personalTab==1" [routerLink]="['/personalcenter/:accountmanage', {outlets: {aux: ['accountmanage']}}]" (click)="changeTab(1);">
+      <a href="#" onclick="return false">基础资料</a>
+    </div>
+    <div class="nav_element" *ngIf="status==':accountmanage'" [class.personalTab] = "personalTab==2"  [routerLink]="['/personalcenter/:accountmanage', {outlets: {aux: ['accountmanage']}}]" (click)="changeTab(2);">
+      <a href="#" onclick="return false">安全设置</a>
+    </div>
+    <div class="nav_element" *ngIf="status==':accessmanage'||status==':groupmanage'||status==':creategroup'||status==':creategroup2'" [class.personalTab] = "personalTab==3"  [routerLink]="['/personalcenter/:accessmanage', {outlets: {aux: ['accessmanage']}}]" (click)="changeTab(3);">
+      <a href="#" onclick="return false">用户管理</a>
+    </div>
+    <div class="nav_element" *ngIf="status==':accessmanage'||status==':groupmanage'||status==':creategroup'||status==':creategroup2'" [class.personalTab] = "personalTab==4"  [routerLink]="['/personalcenter/:groupmanage', {outlets: {aux: ['groupmanage']}}]" (click)="changeTab(4);">
+      <a href="#" onclick="return false">群组管理</a>
+    </div>
+    <div class="nav_element" *ngIf="status==':systemmonitoring'" [class.personalTab] = "personalTab==5"  [routerLink]="['/personalcenter/:systemmonitoring', {outlets: {aux: ['systemmonitoring']}}]" (click)="changeTab(5);">
+      <a href="#" onclick="return false">用户监控</a>
+    </div>
+  </nav>
+  <router-outlet name="aux"></router-outlet>
+</div>
+

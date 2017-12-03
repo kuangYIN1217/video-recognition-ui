@@ -42,7 +42,8 @@
       </div>
     </div>
     <div class="warn-content" id="warn-content">
-      <a href="#" onclick="return false" class="btn bgcg" (click)="export()">导出</a>
+      <a href="#" onclick="return false" class="btn bgcg" (click)="export()" *ngIf="authority">导出</a>
+      <a href="#" onclick="return false" class="btn bgcg" *ngIf="!authority">导出</a>
       <div class="table-margin" >
         <table class="channelTable" cellspacing="0">
           <tr>

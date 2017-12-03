@@ -1,0 +1,149 @@
+.container{
+  background: #ffffff !important;
+}
+.account-manage{
+  padding: 30px 20px 0;
+}
+.account-manage .title{
+  font-weight: bold;
+  font-size: 16px;
+  color: #333333;
+  border-left: 3px solid #2d66a6;
+  line-height: 16px;
+  height:16px;
+  padding-left: 8px;
+}
+.account-search{
+  margin:35px 0 0 0;
+  overflow: hidden;
+  padding-bottom: 30px;
+  border-bottom:1px solid #d3d3d3;
+}
+.account-search div{
+  float: left;
+}
+.account-search div:nth-of-type(1){
+  margin-left: 30px;
+}
+.account-search div:nth-of-type(2){
+  margin-left: 66px;
+}
+.account-search div:nth-of-type(3){
+  float: right;
+}
+.account-search div label{
+  color: #555555;
+  font-size: 14px;
+}
+.account-search div input{
+  padding-left: 8px;
+  margin-left: 18px;
+  width:280px;
+  height:36px;
+  box-sizing: border-box;
+  border: 1px solid #d3d3d3;
+  border-radius: 5px;
+}
+.account-operation{
+  margin:30px 0 20px;
+}
+.channelTable{
+  width:100%;
+  table-layout: fixed;
+  border:1px solid #d3d3d3;
+}
+.channelTable th{
+  color: #333333;
+  font-weight: normal;
+}
+.channelTable,.channelTable tr{
+  border-collapse: collapse;
+  border-top:1px solid #d3d3d3;
+}
+.channelTable td{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.channelTable tr{
+  height:36px;
+  text-align: left;
+  font-size: 14px;
+  color: #666666;
+}
+.channelTable tr:nth-child(even){
+  background: #eeeeee;
+}
+.operationBtn {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 10px;
+  /*margin: 0 auto;*/
+}
+.edit{
+  background: url('../../../assets/appdetail/way.manage/edit.png') no-repeat center;
+}
+.unedit{
+  background: url('../../../assets/appdetail/way.manage/unedit.png') no-repeat center;
+}
+.permissions{
+  background: url('../../../assets/account/quanxian.png') no-repeat center;
+}
+.btn{
+  display: inline-block;
+  font-size: 14px;
+  width:76px;
+  height:30px;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 5px;
+  border:1px solid #d3d3d3;
+  box-sizing: border-box;
+}
+.bgco{
+  color: #ffffff;
+  background: #ff7c35;
+}
+.bgcg{
+  color: #333333;
+  background: #eeeeee;
+}
+select:focus{
+  border:1px solid #23a880 !important;
+}
+input{
+  outline: none;
+}
+select{
+  outline: none;
+}
+input:focus{
+  border:1px solid #23a880 !important;
+}
+.delete{
+  margin-left: 12px;
+}
+.checked{
+  width:8%;
+  padding-left: 12px;
+}
+.pad{
+  width:14%;
+  padding-left: 12px;
+}
+.padTime{
+  width:15%;
+  padding-left: 12px;
+}
+.padName{
+  width:20%;
+  padding-left: 12px;
+}
+.middle{
+  display: inline-block;
+  vertical-align: middle;
+}
+

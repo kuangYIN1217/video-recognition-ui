@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="title">
+    <span>群组管理&nbsp;</span>
+    <img src="assets/account/you.png"/>
+    <span>&nbsp;创建群组</span>
+  </div>
+  <div class="step">
+    <div class="step1 middle">
+      <img src="assets/account/step1.png" class="middle"/>
+      <span class="middle paddingLeft colorg">填写群组基本信息</span>
+    </div>
+    <img src="assets/account/arrow.png" class="middle"/>
+    <div class="step1 middle">
+      <img src="assets/account/step2hui.png" class="middle"/>
+      <span class="middle paddingLeft">配置群组权限</span>
+    </div>
+  </div>
+  <div class="createContent" id="createContent">
+    <div class="createInfo">
+      <label><span class="symbol">*</span>群组名：</label>
+      <input name="groupName" [(ngModel)]="groupName" (keyup)="sureNext()"/>
+    </div>
+    <div class="createInfo">
+      <label style="vertical-align: top"><span class="symbol">&nbsp;&nbsp;</span>群组描述：</label>
+      <textarea [(ngModel)]="groupDescribe" name="groupDescribe"></textarea>
+    </div>
+    <a href="#" onclick="return false" class="btn bgcg" [class.bgco]="nameIndex==1" style="margin-left: 106px" (click)="next()" *ngIf="editIndex==0">下一步</a>
+    <a href="#" onclick="return false" class="btn bgcg" [class.bgco]="nameIndex==1" style="margin-left: 106px" (click)="next()" *ngIf="editIndex==1">保存</a>
+  </div>
+</div>

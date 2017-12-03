@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="account-manage" id="account-manage">
+    <div class="title">用户管理</div>
+    <div class="account-search">
+      <div>
+        <label>群组名：</label>
+        <input type="text" name="groupName" [(ngModel)]="groupName"/>
+      </div>
+      <div>
+        <a href="javascript:void(0)" class="btn bgco" (click)="search()">查询</a>
+      </div>
+    </div>
+    <div class="account-operation">
+      <a href="javascript:void(0)" class="btn bgcg" (click)="create()" >新建</a>
+      <a href="javascript:void(0)" class="btn bgcg delete" (click)="delete()">删除</a>
+    </div>
+    <table class="channelTable" cellspacing="0">
+      <tr>
+        <th class="checked">
+          <img [src]="all_select?'assets/appdetail/way.manage/checked.png':'assets/appdetail/way.manage/unchecked.png'"  class="middle" (click)="allSelect()"/>
+        </th>
+        <th class="pad">群组名</th>
+        <th class="padName">权限</th>
+        <th class="pad">用户数</th>
+        <th class="padTime">群组描述</th>
+        <th class="padTime">创建时间</th>
+        <th class="pad">操作</th>
+      </tr>
+      <tr *ngFor="let item of groupManageList let i=index;">
+        <td class="checked">
+          <img [src]="item.selected?'assets/appdetail/way.manage/checked.png':'assets/appdetail/way.manage/unchecked.png'" class="middle" (click)="check(i)"/>
+        </td>
+        <td class="pad">{{item.groupName}}</td>
+        <td class="padName" title="{{output(item.projectAuthoritys)}}">{{output(item.projectAuthoritys)}}</td>
+        <td class="pad">{{item.groupMembers}}</td>
+        <td class="padTime">{{item.detailedDescription}}</td>
+        <td class="padTime">{{outTime(item.createTime)}}</td>
+        <td class="operation pad">
+          <a class="operationBtn edit"  (click)="edit(item,1)"></a>
+          <a class="operationBtn permissions"  (click)="permissions(item,1)"></a>
+        </td>
+      </tr>
+    </table>
+    <page [pageParams]="pageParams" (changeCurPage)="getPageData($event)" class="page"></page>
+  </div>
+</div>
+<delete-tip *ngIf="deleteShow" [tip_title]="tip_title" [tip_content]="tip_content" [groupId]="groupId" (deleteChange)="deleteChange($event)"></delete-tip>

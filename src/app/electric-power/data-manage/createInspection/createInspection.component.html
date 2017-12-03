@@ -1,0 +1,62 @@
+<div class="container">
+  <div class="create">
+    <div class="title">{{title}}</div>
+    <div class="content" id="content">
+      <div class="createInfo">
+        <label><span class="symbol">*</span>所属单位：</label>
+        <select [(ngModel)]="unit" (ngModelChange)="unit=$event;changeUnit()" *ngIf="title!='查看巡检信息'">
+          <option *ngFor="let item of unitArr" value="{{item.unitName}}">{{item.unitName}}</option>
+        </select>
+        <select [(ngModel)]="unit" (ngModelChange)="unit=$event;changeUnit()" disabled *ngIf="title=='查看巡检信息'">
+          <option *ngFor="let item of unitArr" value="{{item.unitName}}">{{item.unitName}}</option>
+        </select>
+        <span class="must" [style.display]="required==5?'':'none'">必填字段</span>
+      </div>
+      <div class="createInfo">
+        <label><span class="symbol">*</span>电压等级：</label>
+        <input type="text" [(ngModel)]="voltageGrade" *ngIf="title!='查看巡检信息'"/>
+        <input type="text" [(ngModel)]="voltageGrade" *ngIf="title=='查看巡检信息'" readonly/>千伏
+        <span class="must" [style.display]="required==1?'':'none'">必填字段</span>
+      </div>
+      <div class="createInfo">
+        <label><span class="symbol">*</span>所属线路：</label>
+        <select [(ngModel)]="line" (ngModelChange)="line=$event;changeLine()" *ngIf="title!='查看巡检信息'">
+          <option *ngFor="let item of lineArr" value="{{item.lineName}}">{{item.lineName}}</option>
+        </select>
+        <select [(ngModel)]="line" (ngModelChange)="line=$event;changeLine()" disabled *ngIf="title=='查看巡检信息'">
+          <option *ngFor="let item of lineArr" value="{{item.lineName}}">{{item.lineName}}</option>
+        </select>
+        <span class="must" [style.display]="required==6?'':'none'">必填字段</span>
+      </div>
+      <div class="createInfo">
+        <label><span class="symbol">*</span>杆塔号：</label>
+        <input type="text" [(ngModel)]="towerNo" *ngIf="title!='查看巡检信息'"/>
+        <input type="text" [(ngModel)]="towerNo" *ngIf="title=='查看巡检信息'" readonly/>号
+        <span class="must" [style.display]="required==2?'':'none'">必填字段</span>
+      </div>
+      <div class="createInfo">
+        <label><span class="symbol">*</span>杆塔经度：</label>
+        <input type="text" [(ngModel)]="longitude" *ngIf="title!='查看巡检信息'"/>
+        <input type="text" [(ngModel)]="longitude" *ngIf="title=='查看巡检信息'" readonly/>
+        <span class="must" [style.display]="required1==3?'':'none'">必填字段</span>
+      </div>
+      <div class="createInfo">
+        <label><span class="symbol">*</span>杆塔纬度：</label>
+        <input type="text" [(ngModel)]="latitude" *ngIf="title!='查看巡检信息'"/>
+        <input type="text" [(ngModel)]="latitude" *ngIf="title=='查看巡检信息'" readonly/>
+        <span class="must" [style.display]="required1==4?'':'none'">必填字段</span>
+      </div>
+      <div class="createInfo">
+        <label class="beizhu"><span>&nbsp;</span>备注：</label>
+        <textarea [(ngModel)]="notes" *ngIf="title!='查看巡检信息'"></textarea>
+        <textarea [(ngModel)]="notes" *ngIf="title=='查看巡检信息'" readonly></textarea>
+      </div>
+      <div class="createBtn">
+        <a href="#" class="btn bgco" onclick="return false" (click)="create()" *ngIf="title=='新建巡检信息'">创建</a>
+        <a href="#" class="btn bgco" onclick="return false" (click)="update()" *ngIf="title=='修改巡检信息'">保存</a>
+        <a href="#" class="btn bgcg" style="margin-left: 8px" onclick="return false" (click)="back()" >返回</a>
+      </div>
+    </div>
+  </div>
+</div>
+<apt-custom [(show)]="show" [name]="name" [unitId]="unitId" (unitNameChange)="unitNameChange($event)" (lineNameChange)="lineNameChange($event)"></apt-custom>

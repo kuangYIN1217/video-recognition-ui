@@ -52,11 +52,20 @@ export class WarnComponent{
   downUrl:string;
   start:string;
   end:string;
+  authority:boolean = false;
+  _realTime:any[]=[];
+  _offline:any[]=[];
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
     this.searchWarn(this.appId,'全部',-1,'全部',this.page-1,this.pageMaxItem,null,null);
     if(this.appCate=="实时流分析"){
+      this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
+      for(let i=0;i<this._realTime.length;i++){
+        if(this._realTime[i].projectAuthorityId==6){
+          this.authority = true;
+        }
+      }
       this.interval = setInterval(() => {
         if(sessionStorage.getItem("name")){
           this.chanName = sessionStorage.getItem("name");
@@ -70,6 +79,12 @@ export class WarnComponent{
         }
       }, 15000);
     }else{
+      this._offline = JSON.parse(window.sessionStorage.getItem("_offline"));
+      for(let i=0;i<this._offline.length;i++){
+        if(this._offline[i].projectAuthorityId==13){
+          this.authority = true;
+        }
+      }
       this.interval = setInterval(() => {
         if(sessionStorage.getItem("task")){
           this.warnTask = sessionStorage.getItem("task");
@@ -170,8 +185,6 @@ export class WarnComponent{
 
     this.startTime = $('#start').val("");
     this.endTime = $('#end').val("");
-
-
   }
 /*  getAllWarn(id,page,size){
     this.warnService.getAllWarn(id,page,size)

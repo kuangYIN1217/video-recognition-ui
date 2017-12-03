@@ -1,0 +1,12 @@
+<div class="checkedRlue"  id="checkedRlue" (click)="stopPropagetion($event)">
+  <h4>{{title}}</h4>
+  <div class="rlueContent">
+    <div class="rlue" >
+      <span *ngFor="let item of flawArr;let i=index">
+         <img [src]="getSrc(item)" (click)="check(item)"  class="middle"/>
+        <a class="middle">{{item.flawName}}</a>
+      </span>
+    </div>
+  </div>
+
+</div>

@@ -10,18 +10,20 @@ import {appManageInfo} from "../common/defs/resources";
 import {Router} from "@angular/router";
 import {stringify} from "querystring";
 import {calc_height} from "../common/ts/calc_height";
+import {AccountService} from "app/common/services/account.service";
 declare var $:any;
 @Component({
   selector: 'app-manage',
   styleUrls: ['./css/appmanage.component.css'],
   templateUrl: './templates/appmanage.html',
-  providers: [AppManageService]
+  providers: [AppManageService,AccountService]
 })
 export class AppManageComponent {
   SERVER_URL = SERVER_URL;
   createApp: string = "manage";
   scene:number=0;
   appName:string;
+  userId:string;
   appManageInfo: appManageInfo[] = [];
   showDialog:number=0;
   delId:number;
@@ -49,20 +51,82 @@ export class AppManageComponent {
   importPath:string;
   id1:any;
   id2:any;
+  id3:any;
   type1:string;
   type2:string;
+  type3:string;
   realTime:any[]=[];
   offline:any[]=[];
+  electric:any[]=[];
   url:any;
   deleteIndex:number=0;
   tip_title:string;
   tip_content:string;
   requiredFile:number=0;
   createFlag:boolean=true;
+  newProject:boolean = false;
+  username:string;
+  unClick:number=0;
+  allApplications:any[]=[];
+  applicationType:string='';
+  _realTime:any[]=[];
+  _offline:any[]=[];
+  _electric:any[]=[];
   sceneArr:any[]=[{"name":"道路识别",'flag':1}, {"name":"故障检测"}, {"name":"字母图形分类"}, {"name":"图形识别"}, {"name":"雷暴检测"}, {"name":"神经区域分割"}, {"name":"大数据回归"}];
   systemArr:any[]=[{"name":"ios",'flag':1},{"name":"Android"},{"name":"Windows"},{"name":"HTML5"},{"name":"Linux"},{"name":"其他"}];
-  constructor(private appManageService: AppManageService,private router:Router) {
-    this.getAllInfo();
+  constructor(private appManageService: AppManageService,private router:Router,private accountService:AccountService) {
+    this.username = sessionStorage.getItem('username');
+    this.userId = sessionStorage.getItem('userId');
+    this.accountService.getAllAuthories(this.username)
+      .subscribe(result=>{
+        //console.log(result.content);
+        if(result.content.length>1){
+          for(let i=0;i<result.content.length;i++){
+            if(result.content[i].systemAuthority==true){
+              this.unClick = 0;
+              this.allApplications = result.content[i].projectAuthoritys;
+              this.getAuth();
+              break;
+            }
+          }
+        }else{
+            if(result.content[0].systemAuthority==true){
+              this.unClick = 0;
+              this.allApplications = result.content[0].projectAuthoritys;
+              this.getAuth();
+            }else{
+             this.unClick = 1;
+              this.allApplications = result.content[0].applications;
+              for(let i=0;i<result.content[0].projectAuthoritys.length;i++){
+                if(result.content[0].projectAuthoritys[i].project=='实时流分析'){
+                  this._realTime.push(result.content[0].projectAuthoritys[i]);
+                  sessionStorage.setItem("_realTime" , JSON.stringify(this._realTime));
+                }else if(result.content[0].projectAuthoritys[i].project=='离线文件分析'){
+                  this._offline.push(result.content[0].projectAuthoritys[i]);
+                  sessionStorage.setItem("_offline" , JSON.stringify(this._offline));
+                }
+                else if(result.content[0].projectAuthoritys[i].project=='电力巡检分析'){
+                  this._electric.push(result.content[0].projectAuthoritys[i]);
+                  sessionStorage.setItem("_electric" , JSON.stringify(this._electric));
+                }
+              }
+             }
+        }
+        if(this.unClick == 0){
+          let project='';
+          for(let i=0;i<this.allApplications.length;i++){
+            project += this.allApplications[i].project+',';
+          }
+          this.applicationType = project.substring(0,project.length-1);
+          this.appManageService.getApplicationType(this.applicationType,this.userId)
+            .subscribe(result=>{
+              this.allApplications = result;
+              this.getAllInfo(this.allApplications);
+            })
+        }else{
+          this.getAllInfo(this.allApplications);
+        }
+      });
     this.appManageService.getCategory()
       .subscribe(result=>{
           this.appCates=result;
@@ -71,6 +135,26 @@ export class AppManageComponent {
       .subscribe(protocols=>{
         this.protocols=protocols;
       });
+  }
+  getAuth(){
+    for(let i=2;i<9;i=i+2){
+      let obj:any={};
+      obj.projectAuthorityId = i;
+      this._realTime.push(obj);
+    };
+    console.log(this._realTime);
+    for(let i=11;i<16;i=i+2){
+      let obj:any={};
+      obj.projectAuthorityId = i;
+      this._offline.push(obj);
+    };
+    console.log(this._offline);
+    for(let i=18;i<5;i=i+2){
+      let obj:any={};
+      obj.projectAuthorityId = i;
+      this._electric.push(obj);
+    };
+    console.log(this._electric);
   }
   Headers: Headers = this.appManageService.getHeaders();
   public uploader:FileUploader = new FileUploader({
@@ -103,14 +187,17 @@ export class AppManageComponent {
       reader.readAsDataURL(file);
     }*/
   }
-  getAllInfo(){
-    this.appManageService.getAppInfo()
-      .subscribe(result=>{
-        // this.appManageInfo = result;
+  newProjectChange(event){
+    this.newProject = event;
+    this.getAllInfo(this.allApplications);
+  }
+  getAllInfo(result){
         this.id1="";
         this.id2="";
+        this.id3="";
         this.type1="";
         this.type2="";
+        this.type3="";
           for(let i in result){
             if(result[i].applicationType=="实时流分析"){
               if(!this.id1){
@@ -119,13 +206,21 @@ export class AppManageComponent {
               }else{
                 this.id1 += ','+result[i].applicationId;
               }
-            }else if(result[i].applicationType=="离线文件分析")
+            }else if(result[i].applicationType=="离线文件分析"){
               if(!this.id2){
                 this.id2 = result[i].applicationId;
                 this.type2 = result[i].applicationType;
               }else{
                 this.id2 += ','+result[i].applicationId;
               }
+            }else if(result[i].applicationType=="电力巡检分析"){
+              if(!this.id3){
+                this.id3 = result[i].applicationId;
+                this.type3 = result[i].applicationType;
+              }else{
+                this.id3 += ','+result[i].applicationId;
+              }
+            }
           };
           if(this.type1){
             this.appManageService.getAllDate(this.type1,this.id1)
@@ -139,7 +234,12 @@ export class AppManageComponent {
              this.offline = date;
            });
         }
-
+        if(this.type3){
+          this.appManageService.getAllDate(this.type3,this.id3)
+            .subscribe(date=>{
+              this.electric = date;
+            });
+        }
 /*        this.appManageService.getAllDate("实时流分析",id1)
          .subscribe(date=>{
          });*/
@@ -148,7 +248,6 @@ export class AppManageComponent {
          .subscribe(date=>{
 
          });*/
-      });
   }
   download(){
       // this.appManageService.downTemplate()
@@ -202,7 +301,7 @@ export class AppManageComponent {
         this.createFlag = true;
         console.log(result);
         this.createApp='manage';
-        this.getAllInfo();
+        this.getAllInfo(this.allApplications);
       });
   }
   deleteChange(event){
@@ -221,7 +320,7 @@ export class AppManageComponent {
           this.tip_content = '无效数据，第'+(result.map.num[0]+1)+'行导入失败！';
           //return
           this.createApp='manage';
-          this.getAllInfo();
+          this.getAllInfo(this.allApplications);
         }else {
           //console.log(result.map.set.length);
           if(result.map.set.length==0){
@@ -235,7 +334,7 @@ export class AppManageComponent {
           this.tip_content = '成功导入'+result.map.set.length+'条通道！';
         }
         this.createApp='manage';
-        this.getAllInfo();
+        this.getAllInfo(this.allApplications);
       });
   }
   createOffline(){
@@ -246,7 +345,7 @@ export class AppManageComponent {
         this.createFlag = true;
         console.log(result);
         this.createApp='manage';
-        this.getAllInfo();
+        this.getAllInfo(this.allApplications);
       });
   }
   editTitle(item){
@@ -262,7 +361,7 @@ export class AppManageComponent {
     this.appManageService.updateApp(this.appId,this.appName)
       .subscribe(result=>{
         console.log(result);
-      this.getAllInfo();
+        this.getAllInfo(this.allApplications);
       });
     setTimeout(() => item.flag=2, 1000);
   }
@@ -326,7 +425,7 @@ export class AppManageComponent {
     this.showDialog=0;
     this.appManageService.delInfo(this.delId)
       .subscribe(result=>{
-        this.getAllInfo();
+        this.getAllInfo(this.allApplications);
       });
   }
   update(item){
@@ -360,10 +459,12 @@ export class AppManageComponent {
     this.createFlag = true;
   }
   createJob(){
+    this.newProject = true;
+  }
+/*  createJob(){
     this.appName = '';
     this.icon = '';
     this.arr=[{}];
-    //$('#image').attr('src','');
     this.btnIndex = 0;
     this.createApp = 'create';
     this.channel = 0;
@@ -372,7 +473,7 @@ export class AppManageComponent {
     if(this.uploader.queue.length>0){
       this.uploader.queue[0].remove();
     }
-  }
+  }*/
   buyScene(){
     this.scene = 1;
   }

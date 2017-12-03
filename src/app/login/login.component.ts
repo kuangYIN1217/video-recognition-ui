@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ResourcesService } from '../common/services/resources.service'
 import { UserService } from '../common/services/user.service'
 import {Router} from "@angular/router";
+import {AccountService} from "../common/services/account.service";
 
 declare var $:any;
 @Component({
@@ -9,7 +10,7 @@ declare var $:any;
     selector: 'login',
     styleUrls: ['./css/login.component.css'],
     templateUrl: './templates/login.html',
-    providers: [ResourcesService,UserService]
+    providers: [ResourcesService,UserService,AccountService]
 })
 export class LoginComponent implements OnInit{
     validCode: string = "";
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit{
     msg_show = false;
     tabIndex:number=0;
     hg:any;
-    constructor(private resourcesService: ResourcesService, private userService: UserService,private router: Router){
+    constructor(private accountService: AccountService,private resourcesService: ResourcesService, private userService: UserService,private router: Router){
         if((!sessionStorage['authenticationToken'])||sessionStorage['authenticationToken']==""){
             // this.logined = 0;
             // console.log(sessionStorage['authenticationToken']);
@@ -104,20 +105,48 @@ export class LoginComponent implements OnInit{
         // }else{
             // let token: string = "";
             let result = this.userService.authorize(username, pwd)
-            .subscribe(returnToken => this.validToken(returnToken,username));
+            .subscribe(returnToken => this.validToken(returnToken,username,pwd));
         // }
     }
-    validToken(returnToken,username){
-        console.log(returnToken);
+    validToken(returnToken,username,pwd){
+        //console.log(returnToken);
         if(returnToken=="fail"){
             this.showMessage("登陆失败");
         }else if(returnToken&&returnToken.id_token){
             sessionStorage['authenticationToken'] = returnToken.id_token;
             sessionStorage['username']= username;
-            console.log(sessionStorage['authenticationToken']);
-            console.log("登陆成功");
-            // this.showMessage("登陆成功");
-          this.router.navigate(['/appmanage'])
+            sessionStorage.setItem("username" , username);
+            sessionStorage.setItem("password" , pwd);
+            this.accountService.getUserInfo(username)
+            .subscribe(result=>{
+              sessionStorage.setItem("userId" , result.id);
+              this.accountService.getAllAuthories(username)
+                .subscribe(result=>{
+                  if(result.content.length>1){
+                    for(let i=0;i<result.content.length;i++){
+                      if(result.content[i].systemAuthority==true){
+                        //this.systemAuthority = 'false';
+                        sessionStorage.setItem("systemAuthority" , 'false');
+                        break;
+                      }
+                    }
+                  }else{
+                    if(result.content[0].systemAuthority==true){
+                      //this.systemAuthority = 'false';
+                      sessionStorage.setItem("systemAuthority" , 'false');
+                    }else{
+                      //this.systemAuthority = 'true';
+                      sessionStorage.setItem("systemAuthority" , 'true');
+                    }
+                  }
+                  console.log("登陆成功");
+                  // this.showMessage("登陆成功");
+                  this.router.navigate(['/appmanage'])
+                })
+            });
+
+/*            console.log(sessionStorage['username']);
+            console.log(sessionStorage['authenticationToken']);*/
 
           // window.location.href = "/overview";
         }

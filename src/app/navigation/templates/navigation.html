@@ -7,35 +7,45 @@
       </div>
     </div>
     <nav [style.display]="(focusTab>0)?'':'none'">
-        <div class="nav_element" *ngIf="online" [class.focusTab] = "focusTab==1" routerLinkActive="active" routerLink="/videoanalysis" (click)="changeTab(1);focusCollapse='0'">
-            <img [src]="focusTab!=1?'assets/appdetail/icon_analysis_n.png':'assets/appdetail/icon_analysis_h.png'">
-            <a href="#" onclick="return false">实时分析</a>
-        </div>
-
-        <div class="nav_element"  *ngIf="online" [class.focusTab] = "focusTab==2" routerLinkActive="active" routerLink="/waymanage" (click)="changeTab(2);focusCollapse='0'">
-            <img [src]="focusTab!=2?'assets/appdetail/icon_way_n.png':'assets/appdetail/icon_way_h.png'">
-            <a href="#" onclick="return false">通道管理</a>
-        </div>
-      <div class="nav_element" *ngIf="!online" [class.focusTab] = "focusTab==5" routerLinkActive="active" routerLink="/taskmanage" (click)="changeTab(5);focusCollapse='0'">
+      <div class="nav_element" *ngIf="online&&elector" [class.focusTab] = "focusTab==1" routerLinkActive="active" routerLink="/videoanalysis" (click)="changeTab(1);focusCollapse='0'">
+        <img [src]="focusTab!=1?'assets/appdetail/icon_analysis_n.png':'assets/appdetail/icon_analysis_h.png'">
+        <a href="#" onclick="return false">实时分析</a>
+      </div>
+      <div class="nav_element"  *ngIf="online&&elector" [class.focusTab] = "focusTab==2" routerLinkActive="active" routerLink="/waymanage" (click)="changeTab(2);focusCollapse='0'">
+        <img [src]="focusTab!=2?'assets/appdetail/icon_way_n.png':'assets/appdetail/icon_way_h.png'">
+        <a href="#" onclick="return false">通道管理</a>
+      </div>
+      <div class="nav_element" *ngIf="!online&&elector" [class.focusTab] = "focusTab==5" routerLinkActive="active" routerLink="/taskmanage" (click)="changeTab(5);focusCollapse='0'">
         <img [src]="focusTab!=5?'assets/appdetail/icon_way_n.png':'assets/appdetail/icon_way_h.png'">
         <a href="#" onclick="return false">任务管理</a>
       </div>
-
-      <div class="nav_element" [class.focusTab] = "focusTab==6" routerLinkActive="active" routerLink="/warnmanage" (click)="changeTab(6);focusCollapse='0'">
+      <div class="nav_element" *ngIf="elector" [class.focusTab] = "focusTab==6" routerLinkActive="active" routerLink="/warnmanage" (click)="changeTab(6);focusCollapse='0'">
         <img [src]="focusTab!=6?'assets/appdetail/icon_warn_n.png':'assets/appdetail/icon_warn_h.png'">
         <a href="#" onclick="return false">告警管理</a>
       </div>
-
-        <div class="nav_element" [class.focusTab] = "focusTab==3" routerLinkActive="active" routerLink="/monitorreport" (click)="changeTab(3);focusCollapse='0'">
-          <img [src]="focusTab!=3?'assets/appdetail/icon_monitor_n.png':'assets/appdetail/icon_monitor_h.png'">
-          <a href="#" onclick="return false">监控报表</a>
-        </div>
-        <div class="nav_element" [class.focusTab] = "focusTab==4" routerLinkActive="active" routerLink="/technologysupport" (click)="changeTab(4);focusCollapse='0'">
-          <img [src]="focusTab!=4?'assets/appdetail/icon_technology_n.png':'assets/appdetail/icon_technology_h.png'">
-          <a href="#" onclick="return false">技术支持</a>
-        </div>
-
-
-
-   </nav>
+      <div class="nav_element" *ngIf="elector" [class.focusTab] = "focusTab==3" routerLinkActive="active" routerLink="/monitorreport" (click)="changeTab(3);focusCollapse='0'">
+        <img [src]="focusTab!=3?'assets/appdetail/icon_monitor_n.png':'assets/appdetail/icon_monitor_h.png'">
+        <a href="#" onclick="return false">监控报表</a>
+      </div>
+      <div class="nav_element" *ngIf="elector" [class.focusTab] = "focusTab==4" routerLinkActive="active" routerLink="/technologysupport" (click)="changeTab(4);focusCollapse='0'">
+        <img [src]="focusTab!=4?'assets/appdetail/icon_technology_n.png':'assets/appdetail/icon_technology_h.png'">
+        <a href="#" onclick="return false">技术支持</a>
+      </div>
+      <div class="nav_element" *ngIf="!elector" [class.focusTab] = "focusTab==7" routerLinkActive="active" routerLink="/overviewmap" (click)="changeTab(7);focusCollapse='0'">
+        <img [src]="focusTab!=7?'assets/appdetail/map_h.png':'assets/appdetail/map_n.png'">
+        <a href="#" onclick="return false">地图总览</a>
+      </div>
+      <div class="nav_element" *ngIf="!elector" [class.focusTab] = "focusTab==8" routerLinkActive="active" routerLink="/datamanage" (click)="changeTab(8);focusCollapse='0'">
+        <img [src]="focusTab!=8?'assets/appdetail/manage_h.png':'assets/appdetail/manage_n.png'">
+        <a href="#" onclick="return false">数据管理</a>
+      </div>
+      <div class="nav_element" *ngIf="!elector" [class.focusTab] = "focusTab==9" routerLinkActive="active" routerLink="/electaskmanage" (click)="changeTab(9);focusCollapse='0'">
+        <img [src]="focusTab!=9?'assets/appdetail/task_h.png':'assets/appdetail/task_n.png'">
+        <a href="#" onclick="return false">任务管理</a>
+      </div>
+      <div class="nav_element" *ngIf="!elector" [class.focusTab] = "focusTab==10" routerLinkActive="active" routerLink="/datastatistics" (click)="changeTab(10);focusCollapse='0'">
+        <img [src]="focusTab!=10?'assets/appdetail/data_h.png':'assets/appdetail/data_n.png'">
+        <a href="#" onclick="return false">数据统计</a>
+      </div>
+    </nav>
     <router-outlet></router-outlet>

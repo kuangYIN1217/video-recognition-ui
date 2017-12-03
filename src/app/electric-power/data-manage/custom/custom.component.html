@@ -1,0 +1,21 @@
+<div class="custom" *ngIf="show">
+  <div class="content">
+    <div class="title">
+      <span>{{name}}</span>
+    </div>
+    <div class="info" *ngIf="name=='新建单位'">
+      <label><span class="symbol">*</span>单位名称</label>
+      <input type="text" [(ngModel)]="unitName"/>
+      <span class="must" [style.display]="required==1?'':'none'">必填字段</span>
+    </div>
+    <div class="info" *ngIf="name=='新建线路'">
+      <label><span class="symbol">*</span>线路名称</label>
+      <input type="text" [(ngModel)]="lineName"/>
+      <span class="must" [style.display]="required==1?'':'none'">必填字段</span>
+    </div>
+    <div style="margin-left: 170px">
+      <a href="#" onclick="return false" class="btn bgco" (click)="save()">保存</a>
+      <a href="#" onclick="return false" class="btn bgcg" style="margin-left: 18px" (click)="back()">取消</a>
+    </div>
+  </div>
+</div>

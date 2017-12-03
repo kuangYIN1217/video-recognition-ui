@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="account-manage" id="account-manage">
+    <div class="title borderL">基础资料</div>
+    <div class="title marginT">基本信息</div>
+    <div class="basic">
+      <div class="basic-info">
+        <label><span class="symbol">*</span>会员身份：</label>
+        <span class="identity">{{personInfo.identity}}</span>
+      </div>
+      <div class="basic-info">
+        <label><span class="symbol">*</span>用户名：</label>
+        <input type="text" name="accountName" [(ngModel)]="accountName"/>
+        <span class="must" [style.display]="required==1?'':'none'">必填字段</span>
+        <span class="must" [style.display]="required==10?'':'none'">用户名已存在</span>
+      </div>
+      <div class="basic-info">
+        <label><span class="symbol">*</span>真实姓名：</label>
+        <input type="text" name="realName" [(ngModel)]="realName"/>
+        <span class="must" [style.display]="required==2?'':'none'">必填字段</span>
+      </div>
+    </div>
+    <div class="title marginT">联系信息</div>
+    <div class="contact">
+      <div class="basic-info">
+        <label><span class="symbol">*</span>国家/地区：</label>
+        <input type="text" name="country" [(ngModel)]="country"/>
+        <span class="must" [style.display]="required==3?'':'none'">必填字段</span>
+      </div>
+      <div class="basic-info">
+        <label class="area"><span class="symbol">*</span>所在地区：</label>
+        <div id="city_4" data-toggle="distpicker">
+          <select class="prov" [(ngModel)]="prov" name="prov" id="province1">
+          </select>
+          <select class="city" [(ngModel)]="city" name="city" id="city1">
+          </select>
+          <select class="dist" [(ngModel)]="dist" name="dist" id="district1">
+          </select>
+        </div>
+        <span class="must left" [style.display]="required==4?'':'none'">必填字段</span>
+        <textarea [(ngModel)]="detailAddress" name="detailAddress" style="display: block"></textarea>
+        <span class="must top" [style.display]="required==7?'':'none'">必填字段</span>
+      </div>
+      <div class="basic-info">
+        <label><span class="symbol">*</span>联系电话：</label>
+        <input type="text" name="contactPhone" [(ngModel)]="contactPhone"/>
+        <span class="must" [style.display]="required==8?'':'none'">必填字段</span>
+      </div>
+    </div>
+    <a class="btn bgcg save" (click)="save()">保存</a>
+  </div>
+</div>

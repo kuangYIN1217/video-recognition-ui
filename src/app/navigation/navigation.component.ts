@@ -19,8 +19,9 @@ export class NavigationComponent {
   focusCollapse: string = "0";
   username: string = "";
   online: boolean = true;
+  elector:boolean = true;
   // location: Location;
-
+  systemAuthority:string;
   changeCollapse() {
     this.collapse = 1 - this.collapse;
   }
@@ -41,6 +42,7 @@ export class NavigationComponent {
   }
 
   ngAfterContentChecked(){
+    this.systemAuthority = sessionStorage.getItem('systemAuthority');
     // this.location = location;
     // console.log("navigation initial");
     if (!this.location.isCurrentPathEqualTo('/login')) {
@@ -57,6 +59,11 @@ export class NavigationComponent {
       this.online = false;
     } else {
       this.online = true;
+    }
+    if (sessionStorage['applicationType'] === '电力巡检分析') {
+      this.elector = false;
+    } else {
+      this.elector = true;
     }
     if (this.location.isCurrentPathEqualTo('/login') || this.location.isCurrentPathEqualTo('') ) {
       this.focusTab = 0;
@@ -81,6 +88,18 @@ export class NavigationComponent {
       // this.needhide = 0;
     }else if (this.location.path().match(/\/warnmanage/)||this.location.path().match(/\/warnrlue/)){
       this.focusTab = 6;
+      // this.needhide = 0;
+    }else if (this.location.isCurrentPathEqualTo('/overviewmap')||this.location.path().match(/\/overviewmap/) ) {
+      this.focusTab = 7;
+      // this.needhide = 0;
+    }else if (this.location.isCurrentPathEqualTo('/datamanage')||this.location.path().match(/\/createinspection/)){
+      this.focusTab = 8;
+      // this.needhide = 0;
+    }else if (this.location.isCurrentPathEqualTo('/electaskmanage')||this.location.path().match('/createtask')||this.location.path().match('/taskresult') ) {
+      this.focusTab = 9;
+      // this.needhide = 0;
+    }else if (this.location.isCurrentPathEqualTo('/datastatistics') ) {
+      this.focusTab = 10;
       // this.needhide = 0;
     }
   }

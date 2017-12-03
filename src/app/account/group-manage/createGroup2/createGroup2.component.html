@@ -1,0 +1,95 @@
+<div class="container" (click)="hide()">
+  <div class="title">
+    <span>群组管理&nbsp;</span>
+    <img src="assets/account/you.png"/>
+    <span>&nbsp;创建群组</span>
+  </div>
+  <div class="step">
+    <div class="step1 middle">
+      <img src="assets/account/step1.png" class="middle"/>
+      <span class="middle paddingLeft">填写群组基本信息</span>
+    </div>
+    <img src="assets/account/arrow.png" class="middle"/>
+    <div class="step1 middle">
+      <img src="assets/account/step2.png" class="middle"/>
+      <span class="middle paddingLeft">配置群组权限</span>
+    </div>
+  </div>
+  <div class="createContent" id="createContent2">
+    <div class="createInfo addImg">
+      <label><span class="symbol">*</span>可见项目：</label>
+      <input name="groupName" [(ngModel)]="groupName" readonly/>
+      <img src="../assets/createtext/jia.png" class="jia" id="jia" (click)="checkedProject($event)"/>
+      <span class="must" [style.display]="required==1?'':'none'">必填字段</span>
+      <choose-project [style.display]="checked==1?'':'none'" [seeProject]="seeProject" (groupChange)="groupChange($event)" [valueArr]="valueArr" [groupName]="groupName"></choose-project>
+    </div>
+    <div class="createInfo">
+      <label><span class="symbol">&nbsp;&nbsp;</span>项目权限：</label>
+      <div *ngFor="let item of permissions;let i=index" class="radio">
+        <img [src]="item.selected?'assets/appdetail/way.manage/radio.png':'assets/appdetail/way.manage/unradio.png'" class="middle" (click)="checkRadio(item)"/>
+        <span class="middle">{{item.name}}</span>
+      </div>
+      <div class="assign">
+        <div class="assign-all">
+          <img [src]="all_select?'assets/appdetail/way.manage/checked.png':'assets/appdetail/way.manage/unchecked.png'" class="middle" (click)="select_all()"/>
+          <span class="middle" style="padding-left: 10px">全部</span>
+        </div>
+        <ul class="all-permissions height3" *ngIf="assignIndex==3">
+          <li *ngFor="let item of assignArr let i =index;">
+            <i class="line" [class.top]="item.all.length>0"></i>
+            <div [class.branch]="item.all.length>0" class="one">
+              <div class="all">
+                <img [src]="(item.selected)?'assets/appdetail/way.manage/checked.png':'assets/appdetail/way.manage/unchecked.png'" class="middle" (click)="select_toggle(i)"/>
+                <span class="middle" style="padding-left: 8px">{{item.name}}</span>
+              </div>
+              <div class="all-choose" *ngIf="item.all.length>0">
+                <div *ngFor="let re of item.all let j=index;">
+                  <img [src]="re.selected?'assets/appdetail/way.manage/radio.png':'assets/appdetail/way.manage/unradio.png'" class="middle" (click)="radio_toggle(re,i)"/>
+                  <span class="middle" style="padding-left: 8px">{{re.name}}</span>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <ul class="all-permissions height2" *ngIf="assignIndex==2">
+          <li *ngFor="let item of assignOffline let i =index;">
+            <i class="line" [class.top]="item.all.length>0"></i>
+            <div [class.branch]="item.all.length>0" class="one">
+              <div class="all">
+                <img [src]="(item.selected)?'assets/appdetail/way.manage/checked.png':'assets/appdetail/way.manage/unchecked.png'" class="middle" (click)="select_toggle(i)"/>
+                <span class="middle" style="padding-left: 8px">{{item.name}}</span>
+              </div>
+              <div class="all-choose" *ngIf="item.all.length>0">
+                <div *ngFor="let re of item.all let j=index;">
+                  <img [src]="re.selected?'assets/appdetail/way.manage/radio.png':'assets/appdetail/way.manage/unradio.png'" class="middle" (click)="radio_toggle(re,i)"/>
+                  <span class="middle" style="padding-left: 8px">{{re.name}}</span>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <ul class="all-permissions height1"  *ngIf="assignIndex==1">
+          <li *ngFor="let item of assignReal let i =index;">
+            <i class="line" [class.top]="item.all.length>0"></i>
+            <div [class.branch]="item.all.length>0" class="one">
+              <div class="all">
+                <img [src]="(item.selected)?'assets/appdetail/way.manage/checked.png':'assets/appdetail/way.manage/unchecked.png'" class="middle" (click)="select_toggle(i)"/>
+                <span class="middle" style="padding-left: 8px">{{item.name}}</span>
+              </div>
+              <div class="all-choose" *ngIf="item.all.length>0">
+                <div *ngFor="let re of item.all let j=index;">
+                  <img [src]="re.selected?'assets/appdetail/way.manage/radio.png':'assets/appdetail/way.manage/unradio.png'" class="middle" (click)="radio_toggle(re,i)"/>
+                  <span class="middle" style="padding-left: 8px">{{re.name}}</span>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <a href="#" onclick="return false" class="btn bgcg" style="margin-left: 106px" (click)="prev()" *ngIf="editIndex!=1">上一步</a>
+    <a href="#" onclick="return false" class="btn bgco" style="margin-left: 16px" (click)="create()" *ngIf="editIndex!=1">创建</a>
+    <a href="#" onclick="return false" class="btn bgco" style="margin-left: 116px" (click)="save()" *ngIf="editIndex==1">保存</a>
+    <a href="#" onclick="return false" class="btn bgcg" style="margin-left: 16px" (click)="cancel()" *ngIf="editIndex==1">取消</a>
+  </div>
+</div>

@@ -69,7 +69,6 @@ export class AlarmRluesComponent {
         this.warnChanCheckedChange.emit(this.warnChanCheckedArr);
       }
     }
-
 /*    for(let i=0;i<this.warnChanChecked.length;i++){
       if(this.warnChanChecked){
         this.warnChanChecked[i].flag=2;

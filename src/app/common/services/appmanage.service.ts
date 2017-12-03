@@ -136,4 +136,16 @@ export class AppManageService {
         }
       });
   }
+  getApplicationType(appType,userId){
+    let path = "/api/getApplicationByTypeAndUserId/"+appType+"/"+userId;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers} )
+      .map((response: Response) => {
+        if (response && response.json()) {
+          if(response.status==200){
+            return response.json();
+          }
+        }
+      });
+  }
 }

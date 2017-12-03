@@ -22,6 +22,10 @@ export class Cpu{
     hz: string;
 }
 
+export class OfflineOptions{
+  retryInterval?: number;
+  txt?: string;
+}
 export class Page{
   pageMaxItem: number;
   curPage: number;

@@ -1,0 +1,68 @@
+<div class="container">
+  <div class="channel">
+    <div class="search-content">
+      <div class="search-select">
+        <div class="search-info">
+          <label>单位名称：</label>
+          <select [(ngModel)]="unitName" (ngModelChange)="unitName=$event;unitChange()">
+            <option *ngFor="let item of unitNameArr" value="{{item.unitName}}">{{item.unitName}}</option>
+          </select>
+        </div>
+        <div class="search-info">
+          <label>线路名称：</label>
+          <select [(ngModel)]="lineName" (ngModelChange)="lineName=$event;lineChange()">
+            <option *ngFor="let item of lineNameArr" value="{{item.lineName}}">{{item.lineName}}</option>
+          </select>
+        </div>
+        <div class="search-info">
+          <label>杆塔号：</label>
+          <select [(ngModel)]="towerNo" (ngModelChange)="towerNo=$event;">
+            <option *ngFor="let item of towerNoArr" value="{{item.towerNum}}">{{item.towerNum}}</option>
+          </select>
+        </div>
+        <a href="#" onclick="return false" class="btn bgco searchBtn" (click)="search()">查询</a>
+      </div>
+    </div>
+    <div class="channelContent" id="channelContent">
+      <div class="headerBtn">
+        <a href="javascript:void(0)" class="btn pdl bgcg" (click)="addInspection()">新建</a>
+        <a href="javascript:void(0)" class="btn pdl bgcg" onclick="document.getElementById('file').click()">导入</a>
+        <input type="file" id="file" name="file" ng2FileSelect [uploader]="uploader" accept=".xlsx" multiple (change)="selectedFileOnChanged($event)"/>
+        <a href="javascript:void(0)" class="btn downExcel bgcg" (click)="download()">下载模板</a>
+        <a href="javascript:void(0)" class="btn pdl bgcg" (click)="dia()">删除</a>
+      </div>
+      <div class="channelList">
+        <table class="channelTable" cellspacing="0">
+          <tr>
+            <th class="checked">
+              <img [src]="all_selected?'../assets/appdetail/way.manage/checked.png':'../assets/appdetail/way.manage/unchecked.png'" class="middle pad" (click)="checkAll()"/>
+            </th>
+            <th class="order pad">巡检杆塔号</th>
+            <th class="name pad">线路名称</th>
+            <th class="channelAddr pad">电压等级(千伏)</th>
+            <th class="protocol pad">巡检单位</th>
+            <th class="switch pad">创建时间</th>
+            <th class="operation pad">操作</th>
+          </tr>
+          <tr *ngFor="let item of dataInfo let i=index;">
+            <td>
+              <img [src]="item.selected?'../assets/appdetail/way.manage/checked.png':'../assets/appdetail/way.manage/unchecked.png'" class="middle pad" (click)="check(i)"/>
+            </td>
+            <td class="pad">{{item.towerNum}}</td>
+            <td class="pad">{{item.patrolLine.lineName}}</td>
+            <td class="pad">{{item.voltageGrade}}</td>
+            <td class="pad">{{item.patrolUnit.unitName}}</td>
+            <td class="pad">{{item.createTime}}</td>
+            <td class="operation pad">
+              <a class="operationBtn look" (click)="look(item)"></a>
+              <a class="operationBtn edit" (click)="edit(item)" *ngIf="item.patrolTaskSet.length==0"></a>
+              <a class="operationBtn unedit" onclick="return false" *ngIf="item.patrolTaskSet.length>0"></a>
+            </td>
+          </tr>
+        </table>
+        <page [pageParams]="pageParams" (changeCurPage)="getPageData($event)" class="page"></page>
+      </div>
+    </div>
+  </div>
+</div>
+<delete-tips *ngIf="deleteShow" [delete_towerIds]="delete_towerIds" [tip_content]="tip_content" (deleteShowChange)="deleteShowChange(event)"></delete-tips>

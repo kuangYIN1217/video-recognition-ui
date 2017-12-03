@@ -63,11 +63,16 @@ export class WayManageComponent {
   init_flag:boolean = true;
   pageNow:number;
   pageMax:string;
+  authority:boolean = false;
+  _realTime:any[]=[];
   constructor(private appManageService: AppManageService,private channelService: ChannelService , private route: ActivatedRoute , private router: Router) {
-/*    this.route.params.subscribe((param) => {
-      console.log(param);
-    })*/
     this.appId = window.sessionStorage.getItem("applicationId");
+    this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
+    for(let i=0;i<this._realTime.length;i++){
+      if(this._realTime[i].projectAuthorityId==4){
+        this.authority = true;
+      }
+    }
     this.appManageService.getProtocol()
       .subscribe(protocols=>{
         this.protocols=protocols;

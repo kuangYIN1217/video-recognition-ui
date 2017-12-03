@@ -1,0 +1,26 @@
+<div class="dialog">
+  <div class="dialogContainer addDialogContainer">
+    <div class="dialogHeader">
+      <span>系统提示</span>
+    </div>
+    <div class="dialogContent" style="text-align: center" *ngIf="synchronizeIndex==0">
+      <img src="../assets/tips/warn-tip.png" class="middle"/>
+      <span class="middle" style="padding-left: 10px">{{tip_content}}</span>
+    </div>
+    <div class="dialogContent stepTwo" style="text-align: center" *ngIf="synchronizeIndex==1">
+      <img src="../assets/tips/warn-tip.png" class="middle" *ngIf="titleShow==0"/>
+      <span class="middle" style="padding-left: 10px" *ngIf="titleShow==0">{{tip_content}}</span>
+      <div class="checkeShow">
+        <span *ngFor="let item of info" class="check" (click)="checked(item)" [class.selected]="item.flag==1" [ngClass]="{top: titleShow==1}">{{item.applicationName}}</span>
+      </div>
+    </div>
+    <div class="delSys" *ngIf="synchronizeIndex==0">
+      <a href="javascript:void(0)" class="btn bgcg" (click)="synchronize()">同步</a>
+      <a href="javascript:void(0)" class="btn bgcg" (click)="cancel()" style="margin-left: 18px">不同步</a>
+    </div>
+    <div class="delSys delTwo" *ngIf="synchronizeIndex==1">
+      <a href="javascript:void(0)" class="btn bgcg" (click)="sure()">确定</a>
+      <a href="javascript:void(0)" class="btn bgcg" (click)="cancel()" style="margin-left: 18px">取消</a>
+    </div>
+  </div>
+</div>

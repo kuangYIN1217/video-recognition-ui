@@ -1,0 +1,133 @@
+.statisticTitle{
+  margin:20px 30px;
+  background: #fff;
+}
+.info{
+  display: inline-block;
+}
+.info label{
+  float: left;
+  line-height: 36px;
+  margin-left: 53px;
+  color: #333333;
+  font-size: 14px;
+}
+.info:nth-of-type(1) label{
+  margin-left: 20px !important;
+}
+.info select,.info input{
+  width:14.5vw;
+  height:36px;
+  box-sizing: border-box;
+  border:1px solid #d3d3d3;
+  float: left;
+  border-radius: 5px;
+  margin-left: 1vw;
+  margin-right: 6px;
+  color: #666666;
+  padding-left: 8px;
+}
+select{
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+.info select{
+  background: url("../../../assets/appdetail/way.manage/selectDown.png") no-repeat right 6px center;
+}
+.infoTime span{
+  float: left;
+  display: inline-block;
+  line-height: 36px;
+  height:36px;
+  margin-left: 0.8vw;
+}
+.infoTime input{
+  width:150px !important;
+  margin-right: 0px !important;
+}
+.searchOne{
+  padding:20px 0;
+}
+.searchTwo{
+  padding-bottom: 26px;
+}
+select:focus{
+  border:1px solid #23a880 !important;
+}
+input:focus{
+  border:1px solid #23a880 !important;
+}
+input{
+  outline: none;
+}
+.btn{
+  display: inline-block;
+  font-size: 14px;
+  width:80px;
+  height:30px;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 5px;
+  border:1px solid #d3d3d3;
+  box-sizing: border-box;
+}
+.bgco{
+  color: #ffffff;
+  background: #ff7c35;
+}
+.searchBtn{
+  float: right;
+  margin-right: 20px;
+}
+.content{
+  margin:0px 30px 20px 30px;
+  background: #fff;
+  height:420px;
+}
+#charts{
+  margin:20px 0 30px 20px;
+  padding-top: 30px;
+}
+.statisticDate{
+  margin:0 30px 20px 30px;
+  background: #fff;
+}
+.dataTable{
+  padding:20px;
+}
+.dataTable table{
+  width:100%;
+  border:1px solid #d3d3d3;
+}
+.dataTable table th{
+  padding-left: 12px;
+  color: #333333;
+  font-weight: normal;
+}
+.dataTable table,.dataTable table tr{
+  border-collapse: collapse;
+  border-top:1px solid #d3d3d3;
+}
+.dataTable table tr{
+  height:36px;
+  text-align: left;
+  font-size: 14px;
+  color: #666666;
+}
+.dataTable table tr:nth-child(even){
+  background: #eeeeee;
+}
+.p1{
+  width:10%;
+}
+.p2{
+  width:20%;
+}
+.p3{
+  width:16%;
+}
+.p4{
+  width:20%;
+}

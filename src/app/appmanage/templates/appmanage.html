@@ -4,84 +4,118 @@
     <span class="xian">&nbsp;</span>
     <h3>应用管理</h3>
     <div class="createBtn" (click)="createJob()" [style.display]="createApp=='create'?'none':''"> <a href="javascript:void(0)"  class="back"><img src="../assets/appmanage/jiahao.png" class="addicon" alt="">新建应用</a></div>-->
-
     <img class="home" (click)="gotoAppmanage()" src="../../../assets/appdetail/way.manage/home.png" />
     <div class="info">
       <label class="divider">|</label>
       <label class="title">选择项目</label>
     </div>
-    <div class="createBtn" (click)="createJob()" [style.display]="createApp=='create'?'none':''"> <a href="javascript:void(0)"  class="back">新建项目</a></div>
+    <div class="createBtn" (click)="createJob()" *ngIf="unClick==0"> <a href="javascript:void(0)" class="back">新建项目</a></div>
+    <div class="createBtn" *ngIf="unClick==1"> <a href="javascript:void(0)" class="backg">新建项目</a></div>
+    <create-project [style.display]="newProject?'':'none'" [(newProject)]="newProject" (newProjectChange)="newProjectChange($event)"></create-project>
   </div>
   <div class="appManage" [style.display]="createApp=='manage'?'':'none'">
     <div class="appBody">
       <div class="app">
         <div class="topSpace"></div>
-      <div class="appModel" *ngFor="let item of realTime">
-        <div *ngIf="item.applicationType=='实时流分析'">
-        <div class="appModel_header" >
-          <img src="../assets/appmanage/shipin.png" class="icon"/>
-          <span class="index_title" title="{{item.applicationName}}" *ngIf="item.flag==undefined||item.flag!=1">{{item.applicationName}}</span>
-          <input type="text" value={{item.applicationName}} id="name" class="index_editTitle" *ngIf="item.flag==1" (blur)="updateName(item)" name="appName" [(ngModel)]="appName"/>
-          <span class="index_operation">
-            <label for="name"><img src="../assets/appmanage/xiugai.png" class="edit" (click)="editTitle(item)" *ngIf="item.flag==undefined||item.flag!=1"/></label>
-            <img src="../assets/appmanage/shouyexiugai.png" class="edit" *ngIf="item.flag==1"/>
-            <img src="../assets/appmanage/shanchu--hui.png" *ngIf="item.notProcessAlarmCount!=0||(item.startChannel!=0)"/>
-            <img src="../assets/appmanage/shanchu.png" *ngIf="(item.startChannel==0)&&(item.notProcessAlarmCount==0)" (click)="dia(item)"/>
-          </span>
-        </div>
-        <table class="appModel_content">
-          <tr>
-            <td class="one">已建通道</td>
-            <td class="two" routerLinkActive="active" routerLink="/waymanage" (click)="jump(item)">{{item.totalChannel}}</td>
-          </tr>
-          <tr>
-            <td class="one">已开通道</td>
-            <td class="two" routerLinkActive="active" routerLink="/waymanage/开启" (click)="jump(item)">{{item.startChannel}}</td>
-          </tr>
-          <tr>
-            <td class="one">系统告警</td>
-            <td class="two" routerLinkActive="active" routerLink="/warnmanage" (click)="jump(item)">{{item.alarmCount}}</td>
-          </tr>
-          <tr>
-            <td class="one">待处理告警</td>
-            <td class="two" routerLinkActive="active" routerLink="/warnmanage/未处理" (click)="jump(item)">{{item.notProcessAlarmCount}}</td>
-          </tr>
-        </table>
-        </div>
-      </div>
-        <div class="appModel" *ngFor="let item of offline">
-        <div *ngIf="item.applicationType=='离线文件分析'">
-          <div class="appModel_header" >
-            <img src="../assets/appmanage/wenben.png" class="icon"/>
-            <span class="index_title" title="{{item.applicationName}}" *ngIf="item.flag==undefined||item.flag!=1">{{item.applicationName}}</span>
-            <input type="text" value={{item.applicationName}} class="index_editTitle" *ngIf="item.flag==1" (blur)="updateName(item)" name="appName" [(ngModel)]="appName"/>
-            <span class="index_operation">
-            <img src="../assets/appmanage/xiugai.png" class="edit" (click)="editTitle(item)" *ngIf="item.flag==undefined||item.flag!=1"/>
-            <img src="../assets/appmanage/shouyexiugai.png" class="edit" *ngIf="item.flag==1"/>
-            <img src="../assets/appmanage/shanchu--hui.png" *ngIf="(item.totalTask!=item.finishTask)||item.notProcessAlarmCount!=0"/>
-            <img src="../assets/appmanage/shanchu.png" *ngIf="(item.totalTask==item.finishTask)&&item.notProcessAlarmCount==0" (click)="dia(item)"/>
-          </span>
+          <div class="appModel" *ngFor="let item of realTime">
+            <div *ngIf="item.applicationType=='实时流分析'">
+              <div class="appModel_header" >
+                <img src="../assets/appmanage/shipin.png" class="icon"/>
+                <span class="index_title" title="{{item.applicationName}}" *ngIf="item.flag==undefined||item.flag!=1">{{item.applicationName}}</span>
+                <input type="text" value={{item.applicationName}} id="name" class="index_editTitle" *ngIf="item.flag==1" (blur)="updateName(item)" name="appName" [(ngModel)]="appName"/>
+                <span class="index_operation">
+                  <label for="name"><img src="../assets/appmanage/xiugai.png" class="edit" (click)="editTitle(item)" *ngIf="item.flag==undefined||item.flag!=1"/></label>
+                  <img src="../assets/appmanage/shouyexiugai.png" class="edit" *ngIf="item.flag==1"/>
+                  <img src="../assets/appmanage/shanchu--hui.png" *ngIf="item.notProcessAlarmCount!=0||(item.startChannel!=0)"/>
+                  <img src="../assets/appmanage/shanchu.png" *ngIf="(item.startChannel==0)&&(item.notProcessAlarmCount==0)" (click)="dia(item)"/>
+                </span>
+              </div>
+              <table class="appModel_content">
+                <tr>
+                  <td class="one">已建通道</td>
+                  <td class="two" routerLinkActive="active" routerLink="/waymanage" (click)="jump(item)">{{item.totalChannel}}</td>
+                </tr>
+                <tr>
+                  <td class="one">已开通道</td>
+                  <td class="two" routerLinkActive="active" routerLink="/waymanage/开启" (click)="jump(item)">{{item.startChannel}}</td>
+                </tr>
+                <tr>
+                  <td class="one">系统告警</td>
+                  <td class="two" routerLinkActive="active" routerLink="/warnmanage" (click)="jump(item)">{{item.alarmCount}}</td>
+                </tr>
+                <tr>
+                  <td class="one">待处理告警</td>
+                  <td class="two" routerLinkActive="active" routerLink="/warnmanage/未处理" (click)="jump(item)">{{item.notProcessAlarmCount}}</td>
+                </tr>
+              </table>
+            </div>
           </div>
-          <table class="appModel_content">
-            <tr>
-              <td class="one">总任务数</td>
-              <td class="two" routerLinkActive="active" routerLink="/taskmanage" (click)="jump(item)">{{item.totalTask}}</td>
-            </tr>
-            <tr>
-              <td class="one">已完成任务</td>
-              <td class="two" routerLinkActive="active" routerLink="/taskmanage/完成" (click)="jump(item)">{{item.finishTask}}</td>
-            </tr>
-            <tr>
-              <td class="one">系统告警</td>
-              <td class="two" routerLinkActive="active" routerLink="/warnmanage" (click)="jump(item)">{{item.alarmCount}}</td>
-            </tr>
-            <tr>
-              <td class="one">待处理告警</td>
-              <td class="two" routerLinkActive="active" routerLink="/warnmanage/未处理" (click)="jump(item)">{{item.notProcessAlarmCount}}</td>
-            </tr>
-          </table>
+            <div class="appModel" *ngFor="let item of offline">
+              <div *ngIf="item.applicationType=='离线文件分析'">
+                <div class="appModel_header" >
+                  <img src="../assets/appmanage/wenben.png" class="icon"/>
+                  <span class="index_title" title="{{item.applicationName}}" *ngIf="item.flag==undefined||item.flag!=1">{{item.applicationName}}</span>
+                  <input type="text" value={{item.applicationName}} class="index_editTitle" *ngIf="item.flag==1" (blur)="updateName(item)" name="appName" [(ngModel)]="appName"/>
+                  <span class="index_operation">
+                  <img src="../assets/appmanage/xiugai.png" class="edit" (click)="editTitle(item)" *ngIf="item.flag==undefined||item.flag!=1"/>
+                  <img src="../assets/appmanage/shouyexiugai.png" class="edit" *ngIf="item.flag==1"/>
+                  <img src="../assets/appmanage/shanchu--hui.png" *ngIf="(item.totalTask!=item.finishTask)||item.notProcessAlarmCount!=0"/>
+                  <img src="../assets/appmanage/shanchu.png" *ngIf="(item.totalTask==item.finishTask)&&item.notProcessAlarmCount==0" (click)="dia(item)"/>
+                </span>
+                </div>
+                <table class="appModel_content">
+                  <tr>
+                    <td class="one">总任务数</td>
+                    <td class="two" routerLinkActive="active" routerLink="/taskmanage" (click)="jump(item)">{{item.totalTask}}</td>
+                  </tr>
+                  <tr>
+                    <td class="one">已完成任务</td>
+                    <td class="two" routerLinkActive="active" routerLink="/taskmanage/完成" (click)="jump(item)">{{item.finishTask}}</td>
+                  </tr>
+                  <tr>
+                    <td class="one">系统告警</td>
+                    <td class="two" routerLinkActive="active" routerLink="/warnmanage" (click)="jump(item)">{{item.alarmCount}}</td>
+                  </tr>
+                  <tr>
+                    <td class="one">待处理告警</td>
+                    <td class="two" routerLinkActive="active" routerLink="/warnmanage/未处理" (click)="jump(item)">{{item.notProcessAlarmCount}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+        <div class="appModel" *ngFor="let item of electric">
+          <div *ngIf="item.applicationType=='电力巡检分析'">
+            <div class="appModel_header" >
+              <img src="../assets/appmanage/xunjian.png" class="icon"/>
+              <span class="index_title" title="{{item.applicationName}}" *ngIf="item.flag==undefined||item.flag!=1">{{item.applicationName}}</span>
+              <input type="text" value={{item.applicationName}} class="index_editTitle" *ngIf="item.flag==1" (blur)="updateName(item)" name="appName" [(ngModel)]="appName"/>
+              <span class="index_operation">
+                  <img src="../assets/appmanage/xiugai.png" class="edit" (click)="editTitle(item)" *ngIf="item.flag==undefined||item.flag!=1"/>
+                  <img src="../assets/appmanage/shouyexiugai.png" class="edit" *ngIf="item.flag==1"/>
+                  <img src="../assets/appmanage/shanchu--hui.png" *ngIf="(item.totalTask!=item.finishTask)||item.notProcessAlarmCount!=0"/>
+                  <img src="../assets/appmanage/shanchu.png" *ngIf="(item.totalTask==item.finishTask)&&item.notProcessAlarmCount==0" (click)="dia(item)"/>
+                </span>
+            </div>
+            <table class="appModel_content">
+              <tr>
+                <td class="one">总线路数</td>
+                <td class="two" routerLinkActive="active" routerLink="/datamanage" (click)="jump(item)">{{item.lineCount}}</td>
+              </tr>
+              <tr>
+                <td class="one">总杆塔数</td>
+                <td class="two" routerLinkActive="active" routerLink="/datamanage/完成" (click)="jump(item)">{{item.towerCount}}</td>
+              </tr>
+              <tr>
+                <td class="one">已巡检杆塔数</td>
+                <td class="two" routerLinkActive="active" routerLink="/overviewmap" (click)="jump(item)">{{item.TowerPatOverCount}}</td>
+              </tr>
+              <tr>
+                <td class="one">巡检缺陷数</td>
+                <td class="two" routerLinkActive="active" routerLink="/overviewmap/未处理" (click)="jump(item)">{{item.flawCount}}</td>
+              </tr>
+            </table>
+          </div>
         </div>
-      </div>
       </div>
     </div>
   </div>

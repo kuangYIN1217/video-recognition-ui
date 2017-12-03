@@ -71,6 +71,21 @@ a{
   font-size: 14px;
   font-style: normal;
 }
+.backg{
+  text-decoration:none;
+  width: 114px;
+  float: right;
+  height: 30px;
+  margin-top: 5px;
+  margin-right: 1.56vw;
+  border-radius: 5px;
+  color: #d3d3d3;
+  text-align: center;
+  border:1px solid #d3d3d3;
+  line-height: 30px;
+  font-size: 14px;
+  font-style: normal;
+}
 .back:hover{
   text-decoration:none;
   width: 114px;

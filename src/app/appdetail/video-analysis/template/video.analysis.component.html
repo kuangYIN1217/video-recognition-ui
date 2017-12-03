@@ -120,7 +120,8 @@
         </div>
       </div>
       <div class="analysis-submit-wrapper">
-        <div (click)="$change_analysis_submit()" class="submit-btn">保 存</div>
+        <div (click)="$change_analysis_submit()" class="submit-btn" *ngIf="authority">保 存</div>
+        <div class="submit-btn" *ngIf="!authority">保 存</div>
       </div>
 
     </div>

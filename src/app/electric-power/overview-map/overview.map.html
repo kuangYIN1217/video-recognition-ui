@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="mapInfo">
+    <div class="searchInfo">
+      <div class="info">
+        <label>线路名称：</label>
+        <select [(ngModel)]="lineName">
+          <option></option>
+        </select>
+      </div>
+      <div class="info">
+        <label>任务名称：</label>
+        <select [(ngModel)]="taskName">
+          <option></option>
+        </select>
+      </div>
+      <div class="searchBtn">
+        <a href="#" onclick="return false" (click)="search()">查询</a>
+      </div>
+    </div>
+    <div class="map">
+      <div class="describe">
+        <label>全部线路全部任务：</label>
+        <div>总计识别塔数<span>120</span>座，缺陷塔<span>80</span>座，缺陷问题<span>300</span>个，缺陷塔率<span>66.7</span>%，平均问题数<span>3.75</span></div>
+      </div>
+      <div class="mapContent">
+          <!--<baidu-map ak="bLf1IX78tWQ8tBzu6m5GvnbxSsxLYWNA"  [options]="opts" [offline]="offlineOpts" (onMapLoaded)="loadMap($event)" (onMarkerClicked)="clickMarker($event)" style="height: 700px"></baidu-map>-->
+        <!--<baidu-map [options]="options" style="display: block; width: 550px; height: 350px;"></baidu-map>-->
+        <!--<baidu-map [options]="options" style="display: block; width: 550px; height: 350px;"></baidu-map>-->
+        <!--<baidu-map mapKey="bLf1IX78tWQ8tBzu6m5GvnbxSsxLYWNA" [options]="opts" style="display: block; width: 550px; height: 350px;"></baidu-map>-->
+        <!--<baidu-map [options]="options" style="display: block; width: 550px; height: 350px;"></baidu-map>-->
+      </div>
+      </div>
+  </div>
+</div>
+<app-synchronization *ngIf="synchronizationShow" [synchronizeIndex]="synchronizeIndex" [info]="info" [tip_content]="tip_content" (synchronizationShowChange)="synchronizationShowChange($event)"></app-synchronization>
