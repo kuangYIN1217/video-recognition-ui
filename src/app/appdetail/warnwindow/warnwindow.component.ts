@@ -44,6 +44,7 @@ export class WarnWindowComponent{
   photoContainer:any[]=[];
   container:any[]=[];
   photoUrl:string='';
+  identifyName:string='';
   @Output() indexChange: EventEmitter<any> = new EventEmitter();
 
   constructor(private warnService: WarnService) {
@@ -86,12 +87,24 @@ export class WarnWindowComponent{
     return item.slice(25);
   }
   changeWarn(){
+    this.identifyName = '';
     for(let i=0;i<this.warnObjArr.length;i++){
       if(this.warnObjArr[i].classificationName==this.warnObj){
         this.warnObjDetailArr=this.warnObjArr[i].recognitionCategories;
-        this.warnObjDetailArr.reverse();
+        this.warnObjDetailArr.sort(function(a,b){
+          return parseInt(b.cateId) - parseInt(a.cateId)
+        })
+        //this.warnObjDetailArr.reverse();
         this.warnObjDetail = this.warnObjDetailArr[0].name;
       }
+    }
+    this.changeDetail();
+  }
+  changeDetail(){
+    if(this.warnObjDetail=='人'){
+      this.identifyName = '人';
+    }else{
+      this.identifyName = '';
     }
   }
   warnChanCheckedChange(event){

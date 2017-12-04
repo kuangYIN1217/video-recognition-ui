@@ -32,7 +32,7 @@
         <select [(ngModel)]="warnObj" (ngModelChange)="warnObj=$event;changeWarn()" *ngIf="warn_title!='任务详情'">
           <option value="{{item.classificationName}}" *ngFor="let item of warnObjArr">{{item.classificationName}}</option>
         </select>
-        <select class="detail" [(ngModel)]="warnObjDetail" (ngModelChange)="warnObjDetail=$event;" *ngIf="warn_title!='任务详情'">
+        <select class="detail" [(ngModel)]="warnObjDetail" (ngModelChange)="warnObjDetail=$event;changeDetail()" *ngIf="warn_title!='任务详情'">
           <option value="{{item.name}}" *ngFor="let item of warnObjDetailArr">{{item.name}}</option>
         </select>
         <select [(ngModel)]="warnObj" (ngModelChange)="warnObj=$event;" disabled *ngIf="warn_title=='任务详情'">
@@ -42,13 +42,13 @@
           <option value="{{item.name}}" *ngFor="let item of warnObjDetailArr">{{item.name}}</option>
         </select>
       </div>
-      <div class="info">
+      <div class="info" *ngIf="identifyName=='人'">
         <label>对象特征：</label>
-        <span class="carNum">对象名</span>
+        <span class="carNum">人名</span>
         <input type="text" class="car" name="objNamw" [(ngModel)]="objName" *ngIf="warn_title!='任务详情'"/>
         <input type="text" class="car" name="objNamw" [(ngModel)]="objName" readonly *ngIf="warn_title=='任务详情'"/>
       </div>
-      <div class="info">
+      <div class="info" *ngIf="identifyName=='人'">
         <span class="pohotText">特征图片</span>
         <div class="showPhoto">
              <span  *ngFor="let item of photoContainer;let i=index">
