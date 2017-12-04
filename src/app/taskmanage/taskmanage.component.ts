@@ -278,7 +278,8 @@ export class TaskManageComponent {
     this.router.navigate(['../createtext'],{queryParams: {'taskId':item.taskId,'taskName':item.taskName,'alarmRules':JSON.stringify(item.alarmRules),'taskTitle':"修改任务"}});
   }
   look(item){
-    this.router.navigate(['../warnmanage'],{queryParams: {'taskName':item.taskName}});
+    console.log(item);
+    this.router.navigate(['../warnmanage'],{queryParams: {'taskName':item.taskName,'taskId':item.taskId}});
   }
 
   dia(){
