@@ -14,8 +14,10 @@ export class CreateProjectComponent {
   projectCate:string;
   @Input()newProject:boolean;
   required:number=0;
+  userId:string;
   @Output() newProjectChange: EventEmitter<any> = new EventEmitter();
   constructor(private appManageService: AppManageService){
+    this.userId = sessionStorage.getItem('userId');
     this.appManageService.getCategory()
       .subscribe(result=>{
         this.projectCates=result;
@@ -29,7 +31,7 @@ export class CreateProjectComponent {
     }else{
       this.required = 0;
     }
-    this.appManageService.createApp(this.projectName,this.projectCate,null,null)
+    this.appManageService.createApplication(this.projectName,this.projectCate,this.userId)
       .subscribe(result=>{
         this.back();
       })

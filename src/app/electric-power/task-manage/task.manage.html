@@ -54,3 +54,4 @@
     </div>
   </div>
 </div>
+<delete-tips *ngIf="deleteShow" [delete_taskIds]="delete_taskIds" [tip_content]="tip_content" (deleteShowChange)="deleteShowChange(event)"></delete-tips>

@@ -8,8 +8,9 @@
       <span class="middle" style="padding-left: 10px">{{tip_content}}</span>
     </div>
     <div class="delSys">
-      <a href="javascript:void(0)" class="btn bgcg" (click)="delete()" *ngIf="tip_content=='是否确认删除该杆塔号'">确定</a>
-      <a href="javascript:void(0)" class="btn bgcg" (click)="cancel()" *ngIf="tip_content!='是否确认删除该杆塔号'">确定</a>
+      <a href="javascript:void(0)" class="btn bgcg" (click)="deleteTask()" *ngIf="tip_content=='是否确认删除该任务！'">确定</a>
+      <a href="javascript:void(0)" class="btn bgcg" (click)="delete()" *ngIf="tip_content=='是否确认删除该杆塔号！'">确定</a>
+      <a href="javascript:void(0)" class="btn bgcg" (click)="cancel()" *ngIf="tip_content=='有杆塔号下存在任务，不可删除！'||tip_content=='该任务正在运行，不可删除！'">确定</a>
       <a href="javascript:void(0)" class="btn bgcg" (click)="cancel()" style="margin-left: 18px">取消</a>
     </div>
   </div>

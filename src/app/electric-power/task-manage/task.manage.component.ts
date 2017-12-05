@@ -19,6 +19,9 @@ export class ElecTaskManageComponent {
   taskStatusArr:any[]=["全部","完成","进行中","未启动","暂停"];
   taskInfo:any[]=[];
   all_selected:boolean = false;
+  delete_taskIds:string;
+  tip_content:string;
+  deleteShow:boolean=false;
   constructor(private electricService:ElectricService,private route: ActivatedRoute ,private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.status = this.taskStatusArr[0];
@@ -74,10 +77,34 @@ export class ElecTaskManageComponent {
     this.router.navigate(['../createtask'],{queryParams: {'taskTitle':"新建任务"}});
   }
   edit(item){
-    this.router.navigate(['../createtask'],{queryParams: {'taskId':item.taskId,'taskName':item.taskName,'flawCategorySet':JSON.stringify(item.flawCategorySet),'taskTitle':"修改任务"}});
+    console.log(item);
+    this.router.navigate(['../createtask'],{queryParams: {'taskId':item.taskId,'taskName':item.taskName,'flawCategorySet':JSON.stringify(item.flawCategorySet),'taskTitle':"修改任务",'patrolTaskZipFileSet':JSON.stringify(item.patrolTaskZipFileSet)}});
   }
   look(item){
     //console.log(JSON.stringify(item));
     this.router.navigate(['../taskresult'],{queryParams: {'allInfo':JSON.stringify(item)}});
+  }
+  dia(){
+    let taskId = '';
+    for(let i=0;i<this.taskInfo.length;i++){
+      if(this.taskInfo[i].selected){
+        taskId+=this.taskInfo[i].taskId+',';
+        this.delete_taskIds = taskId.substring(0,taskId.length-1);
+        if(this.taskInfo[i].taskStatus.length!='进行中'){
+          this.tip_content = '是否确认删除该任务！';
+        }else{
+          this.electricService.deleteTask(this.delete_taskIds)
+            .subscribe(result=>{
+              this.tip_content = '该任务正在运行，不可删除！';
+            })
+          break;
+        }
+      }
+    }
+    this.deleteShow = true;
+  }
+  deleteShowChange(event){
+    this.deleteShow = event;
+    this.search();
   }
 }

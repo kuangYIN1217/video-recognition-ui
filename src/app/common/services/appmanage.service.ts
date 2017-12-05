@@ -25,7 +25,7 @@ export class AppManageService {
     headers.append('Authorization',this.getAuthorization());
     return headers;
   }
-  createApp(appName,appCate,applicationChannels,importPath){
+  createApp(appName,appCate,applicationChannels,importPath,userId){
     let path = "/api/application";
     let body = JSON.stringify({
       "applicationChannels":applicationChannels ,
@@ -33,6 +33,7 @@ export class AppManageService {
       "applicationName": appName,
       "applicationType": appCate,
       "createTime": null,
+      "userId": userId
     });
     if(importPath){
       this.inputPath = encodeURI(importPath);
@@ -47,6 +48,14 @@ export class AppManageService {
             return response.json();
           }
         }
+      });
+  }
+  createApplication(appName,appCate,userId){
+    let path = "/api/createApplication/"+appName+"/"+appCate+"/"+userId;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers} )
+      .map((response: Response) => {
+        return response;
       });
   }
   downTemplate(){

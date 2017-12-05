@@ -39,7 +39,7 @@ export class TaskManageComponent {
     this.appCate = window.sessionStorage.getItem("applicationType");
     //console.log(window.sessionStorage.getItem("_offline"));
     this._offline = JSON.parse(window.sessionStorage.getItem("_offline"));
-    //console.log(this._offline);
+    console.log(this._offline);
     for(let i=0;i<this._offline.length;i++){
       if(this._offline[i].projectAuthorityId==11){
         this.authority = true;

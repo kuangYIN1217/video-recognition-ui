@@ -1,6 +1,7 @@
 import { Component} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ElectricService} from "../../../common/services/electric.service";
+import {Page} from "../../../common/defs/resources";
 @Component({
   selector: 'task-result',
   styleUrls: ['./task.result.component.css'],
@@ -21,6 +22,9 @@ export class TaskResultComponent {
   lineId:number;
   towerId:number;
   flawPartId:number;
+  pageParams = new Page();
+  page: number = 0;
+  pageMaxItem: number = 10;
     constructor(private router:Router,private route: ActivatedRoute,private electricService:ElectricService) {
 
   }
@@ -39,6 +43,21 @@ export class TaskResultComponent {
     }
     return obj.substring(0,obj.length-1);
   }
+  getPageData(paraParam){
+    this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPartId,this.status,paraParam.curPage-1,paraParam.pageMaxItem);
+  }
+  getTaskResult(taskId,lineId,towerId,flawPartId,infoStatus,page,size){
+    this.electricService.getTaskResult(taskId,lineId,towerId,flawPartId,infoStatus,page,size)
+      .subscribe(result=>{
+        let page = new Page();
+        page.pageMaxItem = result.size;
+        page.curPage = result.number+1;
+        page.totalPage = result.totalPages;
+        page.totalNum = result.totalElements;
+        this.pageParams = page;
+      })
+  }
+
   getTaskResultSearch(taskId,lineId,towerId,flawPartId,infoStatus){
     this.electricService.getTaskResultSearch(taskId,lineId,towerId,flawPartId,infoStatus)
       .subscribe(result=>{

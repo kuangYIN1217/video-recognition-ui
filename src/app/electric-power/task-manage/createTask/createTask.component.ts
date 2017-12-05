@@ -32,6 +32,9 @@ export class CreateTaskComponent {
   lookIndex:number=0;
   showFile:any[]=[];
   fileObj:any={};
+  taskId:number;
+  patrolTaskZipFileSet:any[]=[];
+  upPathArr:any[]=[];
   constructor(private electricService:ElectricService,private router:Router,private route: ActivatedRoute) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.electricService.getAllFlaw()
@@ -80,7 +83,6 @@ export class CreateTaskComponent {
       this.uploader.queue[j].onSuccess = (response: any, status: any, headers: any) => {
         this.pathArr.push(response);
         for(let i=0;i<this.sizeArr.length;i++){
-          console.log(typeof this.sizeArr[i]);
           this.size = this.size+Number(this.sizeArr[i]);
         }
         this.fileSize = this.formatSize(this.size);
@@ -161,10 +163,12 @@ export class CreateTaskComponent {
         this.required = 0;
       }
     }
-    this.electricService.createTask(this.appId,["C:\Users\yangxiaoguang\Desktop\test3.zip"],this.flawId,this.taskName,this.fileSize)
+    console.log(this.pathArr);
+    console.log(this.fileSize);
+    this.electricService.createTask(this.appId,this.pathArr,this.flawId,this.taskName,this.fileSize)
       .subscribe(
         (data)=>{
-            this.router.navigate(['../taskmanage']);
+            this.router.navigate(['../electaskmanage']);
         },
         (err)=>{
           if(err.text()=='压缩包层级结构有误'){
@@ -174,41 +178,78 @@ export class CreateTaskComponent {
           }
         })
   }
+  update(){
+    if(!this.taskName){
+      this.required = 1;
+      return false;
+    }else{
+      this.required = 0;
+    }
+    if(!this.flawName){
+      this.required = 2;
+      return false;
+    }else{
+      this.required = 0;
+    }
+    if(this.pathArr.length==0&&this.showFile.length==0){
+      this.required = 3;
+      return false;
+    }else{
+      this.required = 0;
+    }
+    if(this.showFile.length!=0){
+      for(let i=0;i<this.showFile.length;i++){
+        this.pathArr.unshift(this.showFile[this.showFile.length-1].inputPath);
+        this.sizeArr.unshift(this.getByte(this.showFile[this.showFile.length-1].size));
+      }
+      for(let i=0;i<this.sizeArr.length;i++){
+        this.size = this.size+Number(this.sizeArr[i]);
+      }
+      this.fileSize = this.formatSize(this.size);
+      console.log(this.pathArr);
+      console.log(this.fileSize);
+    }
+    this.electricService.updateTask(this.appId,this.pathArr,this.flawId,this.taskId,this.taskName,this.fileSize)
+      .subscribe(result=>{
+        console.log(result);
+        this.router.navigate(['../taskmanage']);
+      })
+  }
+  getByte(item){
+    if(item.substring(item.length-2,item.length-1)=='MB'){
+      return (item/1024/1024).toFixed(0);
+    }else if(item.substring(item.length-2,item.length-1)=='KB'){
+      return (item/1024).toFixed(0);
+    }else{
+      return item;
+    }
+  }
   ngOnInit() {
     calc_height(document.getElementById('createTask'));
     this.route.queryParams.subscribe(params => {
       if(params['taskTitle']=='修改任务'){
         this.taskTitle = params['taskTitle'];
         this.taskName = params['taskName'];
+        this.taskId = params['taskId'];
         this.flawCheckedArr = JSON.parse(params['flawCategorySet']);
+        this.patrolTaskZipFileSet = JSON.parse(params['patrolTaskZipFileSet']);
         this.flawCheckedChange(this.flawCheckedArr);
-/*        if(this.taskId){
-          this.offlineService.getSize(this.taskId)
-            .subscribe(result=>{
-              console.log(result);
-              let name:string='';
-              let path:string='';
-              for(let i=0;i<result.fileSize.length;i++){
-                this.fileObj = {};
-                this.fileObj.fileName = result.offlineTasks.offlineFiles[i].fileName;
-                name +=result.offlineTasks.offlineFiles[i].fileName+',';
-                this.fileObj.inputPath = result.offlineTasks.offlineFiles[i].inputPath;
-                path +=result.offlineTasks.offlineFiles[i].inputPath+',';
-                this.fileObj.size = result.fileSize[i];
-                this.showFile.push(this.fileObj);
-              }
-              console.log(this.showFile);
-              /!*            this.fileNames = name.substring(0,name.length-1);
-               this.inputPath = path.substring(0,path.length-1);
-               console.log(this.fileNames);
-               console.log(this.inputPath);*!/
-            })
-        }*/
+        console.log(this.patrolTaskZipFileSet);
+        for(let i=0;i<this.patrolTaskZipFileSet.length;i++){
+          this.fileObj = {};
+          this.fileObj.fileName = this.patrolTaskZipFileSet[i].fileName;
+          this.fileObj.inputPath = this.patrolTaskZipFileSet[i].filePath;
+          this.fileObj.size = this.patrolTaskZipFileSet[i].fileSize;
+          this.showFile.push(this.fileObj);
+        }
+        console.log(this.showFile);
+        this.lookIndex = 1;
       }
     });
-
   }
-
+  removeArr(i){
+    this.showFile.splice(i,1);
+  }
   checkedFlaw(e:any){
     this.checked=1;
     let oev = e || event;

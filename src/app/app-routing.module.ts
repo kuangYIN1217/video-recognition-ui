@@ -32,6 +32,7 @@ import {CreateGroup2Component} from "./account/group-manage/createGroup2/createG
 import {CreateInspectionComponent} from "./electric-power/data-manage/createInspection/createInspection.component";
 import {CreateTaskComponent} from "./electric-power/task-manage/createTask/createTask.component";
 import {TaskResultComponent} from "./electric-power/task-manage/taskResult/task.result.component";
+import {EditResultComponent} from "./electric-power/task-manage/editResult/editResult.component";
 
 const routes: Routes = [
   //{ path: '', component: NavigationComponent },
@@ -76,6 +77,7 @@ const routes: Routes = [
   {path: 'createinspection', component: CreateInspectionComponent},
   {path: 'createtask', component: CreateTaskComponent},
   {path: 'taskresult', component: TaskResultComponent},
+  {path: 'editresult', component: EditResultComponent},
   {path: '', redirectTo: '/appmanage', pathMatch: 'full'},
   // { path: 'detail/:id', component: HeroDetailComponent },
 ];

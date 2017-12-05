@@ -1,11 +1,9 @@
 import {BrowserModule} from "@angular/platform-browser";
-import {NgModule} from "@angular/core";
 import {FormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {AppComponent} from "./app.component";
 import {LoginComponent} from "./login/login.component";
 import {FileUploadModule} from "ng2-file-upload";
-// import {BaiduMap} from "angular2-baidu-map";
 import {AppRoutingModule} from "./app-routing.module";
 import {TestComponent} from "./test/test.component";
 import {AmChartsModule} from "amcharts3-angular2";
@@ -52,7 +50,9 @@ import {FlawComponent} from "./electric-power/task-manage/flaw/flaw.component";
 import {DeleteTipComponent} from "app/account/deleteTip/deleteTip.component";
 import {EchartsNg2Module} from "echarts-ng2";
 import {TaskResultComponent} from "./electric-power/task-manage/taskResult/task.result.component";
-/*import {BaiduMapModule} from "angular2-baidu-map";*/
+import {NgModule} from "@angular/core";
+import {BaiduMapModule} from "angular2-baidu-map";
+import {EditResultComponent} from "./electric-power/task-manage/editResult/editResult.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -97,7 +97,8 @@ import {TaskResultComponent} from "./electric-power/task-manage/taskResult/task.
     CreateTaskComponent,
     FlawComponent,
     DeleteTipComponent,
-    TaskResultComponent
+    TaskResultComponent,
+    EditResultComponent
     //InputReadonlyDirective
   ],
   imports: [

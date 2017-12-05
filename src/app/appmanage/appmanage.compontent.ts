@@ -77,6 +77,17 @@ export class AppManageComponent {
   constructor(private appManageService: AppManageService,private router:Router,private accountService:AccountService) {
     this.username = sessionStorage.getItem('username');
     this.userId = sessionStorage.getItem('userId');
+    this.getAll();
+    this.appManageService.getCategory()
+      .subscribe(result=>{
+          this.appCates=result;
+      });
+    this.appManageService.getProtocol()
+      .subscribe(protocols=>{
+        this.protocols=protocols;
+      });
+  }
+  getAll(){
     this.accountService.getAllAuthories(this.username)
       .subscribe(result=>{
         //console.log(result.content);
@@ -90,27 +101,27 @@ export class AppManageComponent {
             }
           }
         }else{
-            if(result.content[0].systemAuthority==true){
-              this.unClick = 0;
-              this.allApplications = result.content[0].projectAuthoritys;
-              this.getAuth();
-            }else{
-             this.unClick = 1;
-              this.allApplications = result.content[0].applications;
-              for(let i=0;i<result.content[0].projectAuthoritys.length;i++){
-                if(result.content[0].projectAuthoritys[i].project=='实时流分析'){
-                  this._realTime.push(result.content[0].projectAuthoritys[i]);
-                  sessionStorage.setItem("_realTime" , JSON.stringify(this._realTime));
-                }else if(result.content[0].projectAuthoritys[i].project=='离线文件分析'){
-                  this._offline.push(result.content[0].projectAuthoritys[i]);
-                  sessionStorage.setItem("_offline" , JSON.stringify(this._offline));
-                }
-                else if(result.content[0].projectAuthoritys[i].project=='电力巡检分析'){
-                  this._electric.push(result.content[0].projectAuthoritys[i]);
-                  sessionStorage.setItem("_electric" , JSON.stringify(this._electric));
-                }
+          if(result.content[0].systemAuthority==true){
+            this.unClick = 0;
+            this.allApplications = result.content[0].projectAuthoritys;
+            this.getAuth();
+          }else{
+            this.unClick = 1;
+            this.allApplications = result.content[0].applications;
+            for(let i=0;i<result.content[0].projectAuthoritys.length;i++){
+              if(result.content[0].projectAuthoritys[i].project=='实时流分析'){
+                this._realTime.push(result.content[0].projectAuthoritys[i]);
+                sessionStorage.setItem("_realTime" , JSON.stringify(this._realTime));
+              }else if(result.content[0].projectAuthoritys[i].project=='离线文件分析'){
+                this._offline.push(result.content[0].projectAuthoritys[i]);
+                sessionStorage.setItem("_offline" , JSON.stringify(this._offline));
               }
-             }
+              else if(result.content[0].projectAuthoritys[i].project=='电力巡检分析'){
+                this._electric.push(result.content[0].projectAuthoritys[i]);
+                sessionStorage.setItem("_electric" , JSON.stringify(this._electric));
+              }
+            }
+          }
         }
         if(this.unClick == 0){
           let project='';
@@ -126,14 +137,6 @@ export class AppManageComponent {
         }else{
           this.getAllInfo(this.allApplications);
         }
-      });
-    this.appManageService.getCategory()
-      .subscribe(result=>{
-          this.appCates=result;
-      });
-    this.appManageService.getProtocol()
-      .subscribe(protocols=>{
-        this.protocols=protocols;
       });
   }
   getAuth(){
@@ -189,7 +192,7 @@ export class AppManageComponent {
   }
   newProjectChange(event){
     this.newProject = event;
-    this.getAllInfo(this.allApplications);
+    this.getAll();
   }
   getAllInfo(result){
         this.id1="";
@@ -296,7 +299,7 @@ export class AppManageComponent {
         this.arr[i].flag1=2;
       }
     }
-    this.appManageService.createApp(appName,appCate,this.arr,null)
+    this.appManageService.createApp(appName,appCate,this.arr,null,this.userId)
       .subscribe(result=>{
         this.createFlag = true;
         console.log(result);
@@ -310,7 +313,7 @@ export class AppManageComponent {
   createImport(){
     let appName = this.appName;
     let appCate = this.appCate;
-    this.appManageService.createApp(appName,appCate,null,this.importPath)
+    this.appManageService.createApp(appName,appCate,null,this.importPath,this.userId)
       .subscribe(result=>{
         this.createFlag = true;
         if(result.map.num[0]>0){
@@ -340,7 +343,7 @@ export class AppManageComponent {
   createOffline(){
     let appName = this.appName;
     let appCate = this.appCate;
-    this.appManageService.createApp(appName,appCate,null,null)
+    this.appManageService.createApp(appName,appCate,null,null,this.userId)
       .subscribe(result=>{
         this.createFlag = true;
         console.log(result);

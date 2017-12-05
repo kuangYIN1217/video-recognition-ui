@@ -37,6 +37,16 @@ export class ElectricService {
         }
       });
   }
+  getTaskByAppId(appId){
+    let path = "/api/getTaskByApplicationId/"+appId;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers} )
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
   getAllUnit(id){
     let path = "/api/getUnitInfoByApplicationId/"+id;
     let headers = this.getHeaders();
@@ -206,8 +216,39 @@ export class ElectricService {
         }
       })
   }
+  updateTask(appId,pathArr,flawId,taskId,name,size){
+    let path = "/api/createOrUpdatePatrolTask";
+    let body = JSON.stringify(
+      {
+        "applicationId": appId,
+        "filePaths": pathArr,
+        "firstFilePaths": [],
+        "patrolFlawIds": flawId,
+        "taskId": taskId,
+        "taskName": name,
+        "zipSize": size
+      }
+    );
+    let headers = this.getHeaders();
+    return this.http.post(this.SERVER_URL+path,body,{ headers: headers })
+      .map((response: Response) => {
+        if (response) {
+          return response;
+        }
+      })
+  }
   getTaskResultSearch(taskId,lineId,towerId,flawPartId,infoStatus){
     let path = "/api/getFlawInfoByTaskId/"+taskId+"/"+lineId+"/"+towerId+"/"+flawPartId+"/"+infoStatus;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers} )
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
+  getTaskResult(taskId,lineId,towerId,flawPartId,infoStatus,page=0,size=10){
+    let path = "/api/getFlawInfoByConditions/"+taskId+"/"+lineId+"/"+towerId+"/"+flawPartId+"/"+infoStatus+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path, { headers : headers} )
       .map((response: Response) => {
@@ -247,5 +288,15 @@ export class ElectricService {
           return response;
         }
       })
+  }
+  deleteTask(id){
+    let path = "/api/deleteTaskByIds/"+id;
+    let headers = this.getHeaders();
+    return this.http.delete(this.SERVER_URL+path, { headers : headers} )
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
   }
 }
