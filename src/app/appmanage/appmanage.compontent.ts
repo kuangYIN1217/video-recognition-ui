@@ -145,18 +145,21 @@ export class AppManageComponent {
       obj.projectAuthorityId = i;
       this._realTime.push(obj);
     };
+    sessionStorage.setItem("_realTime" , JSON.stringify(this._realTime));
     console.log(this._realTime);
     for(let i=11;i<16;i=i+2){
       let obj:any={};
       obj.projectAuthorityId = i;
       this._offline.push(obj);
     };
+    sessionStorage.setItem("_offline" , JSON.stringify(this._offline));
     console.log(this._offline);
     for(let i=18;i<5;i=i+2){
       let obj:any={};
       obj.projectAuthorityId = i;
       this._electric.push(obj);
     };
+    sessionStorage.setItem("_electric" , JSON.stringify(this._electric));
     console.log(this._electric);
   }
   Headers: Headers = this.appManageService.getHeaders();

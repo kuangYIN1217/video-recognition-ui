@@ -237,6 +237,36 @@ export class ElectricService {
         }
       })
   }
+  searchMapInfo(appId,lineId,taskId){
+    let path = "/api/getElectricalPatrolInfoForMap/"+appId+"/"+lineId+"/"+taskId;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers} )
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
+  getMapTask(appId){
+    let path = "/api/getTaskByApplicationId/"+appId;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers} )
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
+  getMapLine(appId){
+    let path = "/api/getLineInfoByApplicationId/"+appId;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers} )
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
   getTaskResultSearch(taskId,lineId,towerId,flawPartId,infoStatus){
     let path = "/api/getFlawInfoByTaskId/"+taskId+"/"+lineId+"/"+towerId+"/"+flawPartId+"/"+infoStatus;
     let headers = this.getHeaders();
@@ -267,6 +297,16 @@ export class ElectricService {
     );
     let headers = this.getHeaders();
     return this.http.post(this.SERVER_URL+path,body,{ headers: headers })
+      .map((response: Response) => {
+        if (response) {
+          return response;
+        }
+      })
+  }
+  neglect(flawInfoId){
+    let path = "/api/ignoreFlawInfo/"+flawInfoId;
+    let headers = this.getHeaders();
+    return this.http.put(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {
         if (response) {
           return response;

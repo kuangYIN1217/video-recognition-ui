@@ -1,7 +1,7 @@
 <div class="container">
   <div class="resultTitle">
     <div class="titleBtn">
-      <a href="#" class="btn bgcg">返回</a>
+      <a href="#" class="btn bgcg" (click)="back()">返回</a>
       <a href="#" class="btn bgco" style="margin-left: 20px">重新运行</a>
     </div>
     <div class="titleInfo" style="margin-left: 20px">
@@ -62,7 +62,7 @@
           <th class="pad">缺陷状态</th>
           <th class="pad">操作</th>
         </tr>
-        <tr>
+        <tr *ngFor="let item of taskInfo">
           <td class="pad"></td>
           <td class="pad"></td>
           <td class="pad"></td>
@@ -74,10 +74,10 @@
           <td class="pad"></td>
           <td class="pad"></td>
           <td class="pad">
-            <img src="../assets/electric/hulue.png" class="mrgr middle"/>
-            <img src="../assets/electric/unhulue.png" class="mrgr middle"/>
-            <img src="../assets/appdetail/way.manage/edit.png" class="mrgr middle"/>
-            <img src="../assets/appdetail/way.manage/unedit.png" class="mrgr middle"/>
+            <a class="operationBtn hulue middle" (click)="neglect(item)"></a>
+            <a class="operationBtn unhulue middle"></a>
+            <a class="operationBtn edit middle" (click)="edit(item)"></a>
+            <a class="operationBtn unedit middle"></a>
           </td>
         </tr>
       </table>

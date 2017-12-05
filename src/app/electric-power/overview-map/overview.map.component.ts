@@ -14,6 +14,12 @@ export class OverviewMapComponent {
   tip_content:string;
   synchronizeIndex:number;
   info:any[]=[];
+  lineName:string='';
+  taskName:string='';
+  lineArr:any[]=[];
+  taskArr:any[]=[];
+  lineId:number;
+  taskId:number;
   /*options: MapOptions;
   point: Point;
   navOptions: NavigationControlOptions;
@@ -33,6 +39,34 @@ export class OverviewMapComponent {
         }
       });
     this.electricService.getTaskByAppId(this.appId)
+      .subscribe(result=>{
+        console.log(result);
+      })
+    this.electricService.getMapTask(this.appId)
+      .subscribe(result=>{
+        console.log(result);
+        this.taskArr = result;
+        //this.taskName = result
+      })
+    this.electricService.getMapLine(this.appId)
+      .subscribe(result=>{
+        console.log(result);
+        this.lineArr = result;
+        this.lineName = this.lineArr[0].lineName;
+      })
+  }
+  search(){
+    for(let i=0;i<this.lineArr.length;i++){
+      if(this.lineName==this.lineArr[i].lineName){
+          this.lineId = this.lineArr[i].lineId;
+      }
+    }
+    for(let i=0;i<this.taskArr.length;i++){
+      if(this.taskName==this.taskArr[i].taskName){
+        this.taskId = this.taskArr[i].taskId;
+      }
+    }
+    this.electricService.searchMapInfo(this.appId,this.lineId,this.taskId)
       .subscribe(result=>{
         console.log(result);
       })

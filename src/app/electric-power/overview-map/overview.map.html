@@ -4,7 +4,7 @@
       <div class="info">
         <label>线路名称：</label>
         <select [(ngModel)]="lineName">
-          <option></option>
+          <option *ngFor="let item of lineArr">{{item.lineName}}</option>
         </select>
       </div>
       <div class="info">

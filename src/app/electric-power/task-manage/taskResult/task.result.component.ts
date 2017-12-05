@@ -25,6 +25,9 @@ export class TaskResultComponent {
   pageParams = new Page();
   page: number = 0;
   pageMaxItem: number = 10;
+  pageNo:number=0;
+  pageSize:number=10;
+  taskInfo:any[]=[];
     constructor(private router:Router,private route: ActivatedRoute,private electricService:ElectricService) {
 
   }
@@ -43,12 +46,31 @@ export class TaskResultComponent {
     }
     return obj.substring(0,obj.length-1);
   }
+  neglect(item){
+    this.electricService.neglect(item.flawInfoId)
+      .subscribe(result=>{
+        console.log(result);
+        if(this.pageNo==0){
+          this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPartId,this.status,this.page,this.pageMaxItem);
+        }else{
+          this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPartId,this.status,this.pageNo,this.pageSize);
+        }
+      })
+  }
+  edit(item){
+    console.log(item);
+    this.router.navigate(['../editresult'],{queryParams: {'allInfo':JSON.stringify(item)}});
+  }
   getPageData(paraParam){
     this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPartId,this.status,paraParam.curPage-1,paraParam.pageMaxItem);
+    this.pageNo = paraParam.curPage-1;
+    this.pageSize = paraParam.pageMaxItem;
   }
   getTaskResult(taskId,lineId,towerId,flawPartId,infoStatus,page,size){
     this.electricService.getTaskResult(taskId,lineId,towerId,flawPartId,infoStatus,page,size)
       .subscribe(result=>{
+        console.log(result);
+        this.taskInfo = result.content;
         let page = new Page();
         page.pageMaxItem = result.size;
         page.curPage = result.number+1;
@@ -73,34 +95,41 @@ export class TaskResultComponent {
           this.status = this.infoStatusSet[0];
           this.tower = this.towerSet[0].towerNum;
           this.towerId = this.towerSet[0].towerId;
+          if(this.pageNo==0){
+            this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPartId,this.status,this.page,this.pageMaxItem);
+          }else{
+            this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPartId,this.status,this.pageNo,this.pageSize);
+          }
       })
   }
-  lineChange(item){
+  lineChange(){
     for(let i=0;i<this.lineSet.length;i++){
-      if(item==this.lineSet[i].lineName){
+      if(this.line==this.lineSet[i].lineName){
         this.lineId = this.lineSet[i].lineId;
       }
     }
     this.getTaskResultSearch(this.taskId,this.lineId,this.towerId,this.flawPartId,this.status);
   }
-  towerChange(item){
+  towerChange(){
     for(let i=0;i<this.towerSet.length;i++){
-      if(item==this.towerSet[i].towerNum){
+      if(this.tower==this.towerSet[i].towerNum){
         this.towerId = this.towerSet[i].towerId;
       }
     }
     this.getTaskResultSearch(this.taskId,this.lineId,this.towerId,this.flawPartId,this.status);
   }
-  towerPartChange(item){
+  towerPartChange(){
     for(let i=0;i<this.towerPartSet.length;i++){
-      if(item==this.towerPartSet[i].part){
+      if(this.towerPart==this.towerPartSet[i].part){
         this.flawPartId = this.towerPartSet[i].partId;
       }
     }
     this.getTaskResultSearch(this.taskId,this.lineId,this.towerId,this.flawPartId,this.status);
   }
-  statusChange(item){
-    this.status = item;
+  statusChange(){
     this.getTaskResultSearch(this.taskId,this.lineId,this.towerId,this.flawPartId,this.status);
+  }
+  back(){
+    this.router.navigate(['../electaskmanage']);
   }
 }

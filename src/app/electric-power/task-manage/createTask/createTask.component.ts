@@ -95,11 +95,11 @@ export class CreateTaskComponent {
     if (size < 1024) {
       return size + ' bytes';
     } else if (size < 1024 * 1024) {
-      return (size / 1024.0).toFixed(0) + ' KB';
+      return (size / 1024.0).toFixed(2) + ' KB';
     } else if (size < 1024 * 1024 * 1024) {
-      return (size / 1024.0 / 1024.0).toFixed(1) + ' MB';
+      return (size / 1024.0 / 1024.0).toFixed(2) + ' MB';
     } else {
-      return (size / 1024.0 / 1024.0 / 1024.0).toFixed(1) + ' GB';
+      return (size / 1024.0 / 1024.0 / 1024.0).toFixed(2) + ' GB';
     }
   };
   remove(i){
@@ -206,8 +206,8 @@ export class CreateTaskComponent {
         this.size = this.size+Number(this.sizeArr[i]);
       }
       this.fileSize = this.formatSize(this.size);
-      console.log(this.pathArr);
-      console.log(this.fileSize);
+      //console.log(this.pathArr);
+      //console.log(this.fileSize);
     }
     this.electricService.updateTask(this.appId,this.pathArr,this.flawId,this.taskId,this.taskName,this.fileSize)
       .subscribe(result=>{
@@ -216,12 +216,13 @@ export class CreateTaskComponent {
       })
   }
   getByte(item){
-    if(item.substring(item.length-2,item.length-1)=='MB'){
-      return (item/1024/1024).toFixed(0);
-    }else if(item.substring(item.length-2,item.length-1)=='KB'){
-      return (item/1024).toFixed(0);
+    console.log(item.substring(item.length-2,item.length));
+    if(item.substring(item.length-2,item.length)=='MB'){
+      return (Number(item.substring(0,item.length-2))*1024*1024).toFixed(0);
+    }else if(item.substring(item.length-2,item.length)=='KB'){
+      return (Number(item.substring(0,item.length-2))).toFixed(0);
     }else{
-      return item;
+      return Number(item.substring(0,item.length-2));
     }
   }
   ngOnInit() {

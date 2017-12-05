@@ -122,4 +122,23 @@ select option{
   width:10%;
   padding-left: 20px;
 }
+.operationBtn {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 10px;
+}
+.hulue{
+  background: url('../../../../assets/electric/hulue.png') no-repeat center;
+}
+.unhulue{
+  background: url('../../../../assets/electric/unhulue.png') no-repeat center;
+}
+.edit{
+  background: url('../../../../assets/appdetail/way.manage/edit.png') no-repeat center;
+}
+.unedit{
+  background: url('../../../../assets/appdetail/way.manage/unedit.png') no-repeat center;
+}
 

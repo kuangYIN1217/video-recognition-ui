@@ -15,8 +15,10 @@
         <img src=""/>
       </div>
       <div class="info">
-        <label>杆塔号：</label>
+        <label>缺陷图：</label>
         <img src=""/>
+        <span onclick="document.getElementById('flawImg').click()" class="reUpload btn bgcg">重新上传</span>
+        <input type="file" id="flawImg" name="file" ng2FileSelect [uploader]="uploader" accept=".png,.jpj" (change)="selectedFileOnChanged($event)"/>
       </div>
       <div class="info">
         <label>缺陷部件：</label>
@@ -32,19 +34,23 @@
       </div>
       <div class="info">
         <label>缺陷性质：</label>
-        <input type="text" name="detailDescribe" [(ngModel)]="detailDescribe"/>
+        <select name="flawNature" [(ngModel)]="flawNature">
+          <option></option>
+        </select>
       </div>
       <div class="info">
         <label>缺陷状态：</label>
-        <input type="text" name="detailDescribe" [(ngModel)]="detailDescribe"/>
+        <select name="flawStatus" [(ngModel)]="flawStatus">
+          <option></option>
+        </select>
       </div>
       <div class="info">
         <label>缺陷时间：</label>
         <span></span>
       </div>
       <div class="saveBtn">
-        <a href="#" class="btn bgco">保存</a>
-        <a href="#" class="btn bgcg">取消</a>
+        <a href="#" class="btn bgco" (click)="save()">保存</a>
+        <a href="#" class="btn bgcg" style="margin-left: 8px" (click)="cancel()">取消</a>
       </div>
     </div>
   </div>
