@@ -1,5 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {ElectricService} from "../../common/services/electric.service";
+// import { MapOptions } from 'angular2-baidu-map';
+
 @Component({
   selector: 'overview-map',
   styleUrls: ['./overview.map.component.css'],
@@ -19,6 +21,7 @@ export class OverviewMapComponent {
   taskArr:any[]=[];
   lineId:number;
   taskId:number;
+  /*public opts: MapOptions;*/
   constructor(private electricService:ElectricService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.electricService.getSynchronizationInfo(this.appId)
@@ -65,6 +68,15 @@ export class OverviewMapComponent {
       .subscribe(result=>{
         console.log(result);
       })
+  }
+  ngOnInit(){
+/*    this.opts = {
+      centerAndZoom: {
+        lng: 121.506191,
+        lat: 31.245554,
+        zoom: 15
+      }
+    };*/
   }
 /*    ngOnInit() {
       this.options = {
