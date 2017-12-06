@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {ElectricService} from "../../common/services/electric.service";
-//import {ControlAnchor, MapOptions, MarkerOptions, NavigationControlOptions, NavigationControlType, Point} from 'angular2-baidu-map';
 @Component({
   selector: 'overview-map',
   styleUrls: ['./overview.map.component.css'],
@@ -20,10 +19,6 @@ export class OverviewMapComponent {
   taskArr:any[]=[];
   lineId:number;
   taskId:number;
-  /*options: MapOptions;
-  point: Point;
-  navOptions: NavigationControlOptions;
-  markers: Array<{ point: Point; options?: MarkerOptions }>*/
   constructor(private electricService:ElectricService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.electricService.getSynchronizationInfo(this.appId)

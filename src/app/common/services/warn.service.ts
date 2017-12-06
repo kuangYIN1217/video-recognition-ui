@@ -75,6 +75,16 @@ export class WarnService {
         }
       });
   }
+  getWarnObjOne(){
+    let path = "/api/findClassification";
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers})
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
   getAllRlues(id,page=0,size=10){
     let path = "/api/alarmRules/"+id+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
@@ -85,7 +95,7 @@ export class WarnService {
         }
       });
   }
-  createWarn(appId,chanId,name,obj,code,car,status){
+  createWarn(appId,chanId,name,obj,code,car,status,photoArr){
     let path = "/api/alarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
@@ -97,7 +107,8 @@ export class WarnService {
       "ruleId": 0,
       "ruleName":name ,
       "applicationChannels":null,
-      "targetFeature": car
+      "targetFeature": car,
+      "targetImages": photoArr
     });
     let headers = this.getHeaders();
     headers.append('channelIds',chanId);
@@ -111,7 +122,7 @@ export class WarnService {
         }
       });
   }
-  editRuleSave(chanId,ruleId,name,obj,code,car,status){
+  editRuleSave(chanId,ruleId,name,obj,code,car,status,photoArr){
     let path = "/api/UpdateAlarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
@@ -121,8 +132,10 @@ export class WarnService {
       },
       "ruleId": ruleId,
       "ruleName": name,
-      "targetFeature": car
+      "targetFeature": car,
+      "targetImage":photoArr
     });
+    console.log(body);
     let headers = this.getHeaders();
     headers.append('channelIds',chanId);
     return this.http.put(this.SERVER_URL+path,body,{ headers: headers })
@@ -134,7 +147,7 @@ export class WarnService {
         }
       });
   }
-  editRuleSave1(ruleId,name,obj,code,car,status){
+  editRuleSave1(ruleId,name,obj,code,car,status,photoArr){
     let path = "/api/UpdateAlarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
@@ -144,8 +157,10 @@ export class WarnService {
       },
       "ruleId": ruleId,
       "ruleName": name,
-      "targetFeature": car
+      "targetFeature": car,
+      "targetImage":photoArr
     });
+    console.log(body);
     let headers = this.getHeaders();
     return this.http.put(this.SERVER_URL+path,body,{ headers: headers })
       .map((response: Response) => {
@@ -193,8 +208,8 @@ export class WarnService {
         }
       });
   }
-  searchWarns(id,name,ruleId,status,page=0,size=10,start,end){
-    let path = "/api/findAlarmLiveDynamic/"+id+"/"+name+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size+"&sort=alarmTime,desc";
+  searchWarns(id,taskId,name,ruleId,status,page=0,size=10,start,end){
+    let path = "/api/findAlarmLiveDynamic/"+id+"/"+taskId+"/"+name+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size+"&sort=alarmTime,desc";
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {
@@ -217,8 +232,8 @@ export class WarnService {
         }
       });
   }
-  searchOffWarns(id,task,ruleId,status,page=0,size=10,start,end){
-    let path = "/api/findAlarmListDynamic/"+id+"/"+task+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size;
+  searchOffWarns(id,taskId,task,ruleId,status,page=0,size=10,start,end){
+    let path = "/api/findAlarmListDynamic/"+id+"/"+taskId+"/"+task+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {

@@ -109,21 +109,33 @@
     <!-- 人机识别 popup -->
     <div class="analysis-popup" *ngIf="s_popup_show">
       <div class="scroll-wrapper">
+        <div>
+          <label class="classification level-text">分类：</label>
+        </div>
         <div class="popup-item all">
           <img (click)="$popup_select_all_toggle()" [src]="s_popup_allselect ? 'assets/appdetail/video-analysis/icon_select_h.png' : 'assets/appdetail/video-analysis/icon_select_n.png'">
           <label [ngStyle]="ngStyle_popup_allselect()" class="popup-title">全选</label>
         </div>
-        <div class="popup-item" *ngFor="let item of d_analysis_options; let i = index">
+        <div *ngFor="let re of d_analysis_options;let i = index" class="levelOne level-text">
+          <div class="level"  (click)="arrow_toggle(i)" [class.focusColor]="re.selected">
+          <label class="middle levelOne-label">{{re.classificationName}}</label>
+          <img [src]="(re.selected)?'assets/appdetail/video-analysis/shang.png':'assets/appdetail/video-analysis/xia.png'" class="middle"/>
+          </div>
+            <div class="levelTwo" *ngFor="let item of re.recognitionCategories; let j = index" [style.display]="re.selected?'':'none'">
+            <img class="middle" (click)="$popup_select_toggle(i,j)" [src]="(item.selected) ? 'assets/appdetail/video-analysis/icon_select_h.png' : 'assets/appdetail/video-analysis/icon_select_n.png'">
+            <label class="middle">{{item.name}}</label>
+          </div>
+        </div>
+<!--        <div class="popup-item" *ngFor="let item of d_analysis_options; let i = index">
           <img (click)="$popup_select_toggle(i)" [src]="(item.selected) ? 'assets/appdetail/video-analysis/icon_select_h.png' : 'assets/appdetail/video-analysis/icon_select_n.png'">
           <label class="popup-title">{{item.name}}</label>
-          <!--[ngStyle]="ngStyle_popup_select(item.selected)"-->
-        </div>
+          &lt;!&ndash;[ngStyle]="ngStyle_popup_select(item.selected)"&ndash;&gt;
+        </div>-->
       </div>
       <div class="analysis-submit-wrapper">
         <div (click)="$change_analysis_submit()" class="submit-btn" *ngIf="authority">保 存</div>
         <div class="submit-btn" *ngIf="!authority">保 存</div>
       </div>
-
     </div>
   </div>
 
@@ -177,6 +189,4 @@
       </div>
     </div>
   </div>
-
-
 </div>

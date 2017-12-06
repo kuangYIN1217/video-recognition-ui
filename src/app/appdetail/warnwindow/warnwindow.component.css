@@ -4,8 +4,9 @@
   top: 0;
   height: 100%;
   width: 100%;
-  background-color: rgba(111, 111, 111, 0.3);
+  background-color: rgba(0, 0, 0, 0.3);
   opacity: 1;
+  z-index: 77777;
 }
 .dialogContainer{
   position: absolute;
@@ -181,4 +182,55 @@ input:focus{
 .must{
   font-size: 14px;
   color: #fe1c1c;
+}
+.detail{
+  margin-left: 106px !important;
+  margin-top: 24px;
+}
+#file{
+  display: none;
+}
+.pdl{
+  margin-left: 104px;
+  display: block;
+  clear: left;
+}
+.space{
+  display: block;
+  height:20px;
+  clear: left;
+}
+.zhushi{
+  display: block;
+  font-size: 12px;
+  color:#bf533a;
+  margin-top: 10px;
+  margin-left: 104px;
+}
+.pohotText{
+  margin-left: 104px;
+  float: left;
+}
+.showPhoto{
+  float: left;
+  width:216px;
+  height:100%;
+}
+.showPhoto .photo{
+  width:60px;
+  height:60px;
+  border: 1px solid #d3d3d3;
+  border-radius: 5px;
+
+}
+.showPhoto span{
+  position: relative;
+  margin-left: 10px;
+  display: inline-block;
+}
+.showPhoto .del{
+  cursor: pointer;
+  position: absolute;
+  top:0;
+  right:0;
 }

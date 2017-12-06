@@ -82,8 +82,8 @@ export class CreateTextComponent {
         this.tip_content = this.uploader.queue[j].file.name +'文件大于500M！';
         return false;
       }
-      if(Number(j)>4){
-        this.uploader.queue[5].remove();
+      if(Number(j)>0){
+        this.uploader.queue[1].remove();
         j-=1;
         continue
       }else{
@@ -100,8 +100,8 @@ export class CreateTextComponent {
     //this.uploader.queue[0].upload();
   }
   getProgress(j){
-    if(j>4){
-      this.showArr.splice(5,1);
+    if(j>0){
+      this.showArr.splice(1,1);
       return
     }else{
       this.uploader.onProgressItem=(fileItem: FileItem, progress: any)=>{

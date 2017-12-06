@@ -1,5 +1,7 @@
 import { Component,Input, Output,EventEmitter} from '@angular/core';
 import {WarnService} from "../../common/services/warn.service";
+import {FileUploader} from "ng2-file-upload";
+import {SERVER_URL} from "../../app.constants";
 declare var $:any;
 @Component({
   selector: 'warn-window',
@@ -8,11 +10,12 @@ declare var $:any;
   providers: [WarnService]
 })
 export class WarnWindowComponent{
+  SERVER_URL = SERVER_URL;
   allFlag:boolean=false;
   channelInfo:any[]=[];
   radioIndex:number;
   ruleName:string;
-  car:string;
+  objName:string;
   appId:string;
   warnChanArr:any[]=[];
   warnObjArr:any[]=[];
@@ -22,6 +25,8 @@ export class WarnWindowComponent{
   code:string;
   checked:number=0;
   warnChanChecked:any[]=[];
+  warnObjDetail:string;
+  warnObjDetailArr:any[]=[];
   @Input() warn_title:string;
   @Input() createIndex:number;
   @Input() ruleList:any;
@@ -36,6 +41,10 @@ export class WarnWindowComponent{
   chanRequired2:number=0;
   title:string='已选通道';
   warnChecked:any[]=[];
+  photoContainer:any[]=[];
+  container:any[]=[];
+  photoUrl:string='';
+  identifyName:string='';
   @Output() indexChange: EventEmitter<any> = new EventEmitter();
 
   constructor(private warnService: WarnService) {
@@ -47,14 +56,56 @@ export class WarnWindowComponent{
       .subscribe(channel=>{
         this.warnChanArr=channel;
       });
-    this.warnService.getWarnObj()
+    this.getObj();
+  }
+  getObj(){
+    this.warnService.getWarnObjOne()
       .subscribe(result=>{
         this.warnObjArr=result;
-        if(this.warnObj){
-          this.warnObj = this.warnObjArr[0].name;
-          console.log(this.warnObj);
-        }
+        this.changeWarn();
       });
+  }
+  public uploader:FileUploader = new FileUploader({
+    url: SERVER_URL+"/api/upload",
+    method: "POST",
+    itemAlias: "file",
+  });
+  selectedFileOnChanged(event){
+    for(let i=0;i<this.uploader.queue.length;i++){
+      this.uploader.queue[i].onSuccess = (response: any, status: any, headers: any) => {
+        this.photoContainer.push(response);
+        console.log(this.photoContainer);
+      };
+    }
+    this.uploader.uploadAll(); // 开始上传
+  }
+  delPhoto(index){
+    //this.container.splice(index,1);
+    this.photoContainer.splice(index,1);
+  }
+  outputImg(item){
+    return item.slice(25);
+  }
+  changeWarn(){
+    this.identifyName = '';
+    for(let i=0;i<this.warnObjArr.length;i++){
+      if(this.warnObjArr[i].classificationName==this.warnObj){
+        this.warnObjDetailArr=this.warnObjArr[i].recognitionCategories;
+        this.warnObjDetailArr.sort(function(a,b){
+          return parseInt(b.cateId) - parseInt(a.cateId)
+        })
+        //this.warnObjDetailArr.reverse();
+        this.warnObjDetail = this.warnObjDetailArr[0].name;
+      }
+    }
+    this.changeDetail();
+  }
+  changeDetail(){
+    if(this.warnObjDetail=='人'){
+      this.identifyName = '人';
+    }else{
+      this.identifyName = '';
+    }
   }
   warnChanCheckedChange(event){
     console.log(event);
@@ -81,6 +132,8 @@ export class WarnWindowComponent{
     this.warnChanChecked = [];
     this.warnChannel='';
     this.warnChannelId='';
+    this.photoContainer=[];
+    this.photoUrl='';
     this.ruleName = this.ruleList.ruleName;
     if(this.ruleList.applicationChannels){
       for(let i=0;i< this.ruleList.applicationChannels.length;i++){
@@ -92,15 +145,25 @@ export class WarnWindowComponent{
           this.warnChannelId+= ','+this.ruleList.applicationChannels[i].channelId;
         }
         this.warnChanChecked.push(this.ruleList.applicationChannels[i]);
-        console.log(this.warnChanChecked);
+        //console.log(this.warnChanChecked);
       }
-      console.log(this.warnChannelId);
+      //console.log(this.warnChannelId);
     }
     //console.log(this.warnChanArr);
-    if(this.ruleList.recognitionCategor){
-      this.warnObj = this.ruleList.recognitionCategor.name;
+    this.getObj();
+    for(let i=0;i<this.warnObjArr.length;i++){
+      for(let j=0;j<this.warnObjArr[i].recognitionCategories.length;j++){
+        if(this.ruleList.recognitionCategor.cateId==this.warnObjArr[i].recognitionCategories[j].cateId){
+          this.warnObj = this.warnObjArr[i].classificationName;
+          this.warnObjDetail = this.ruleList.recognitionCategor.name;
+          this.warnObjDetailArr = this.warnObjArr[i].recognitionCategories;
+        }
+      }
     }
-    this.car = this.ruleList.targetFeature;
+    this.objName = this.ruleList.targetFeature;
+    if(this.ruleList.targetImages!=''&&this.ruleList.targetImages!=undefined){
+      this.photoContainer=this.ruleList.targetImages.split(',');
+    }
     if(this.ruleList.alarmRuleStatus=='开启'){
       this.radioIndex = 1;
     }else{
@@ -153,26 +216,38 @@ export class WarnWindowComponent{
         this.chanRequired2=0;
       }
     }
-    if(this.car==undefined){
-      this.car=null;
+    if(this.objName==undefined){
+      this.objName=null;
     }
-    if(this.warnObj!='车牌识别'){
+/*    if(this.warnObj!='车牌识别'){
       this.car = null;
-    }
+    }*/
     this.warnStatus();
     for(let i in this.warnObjArr){
-      if(this.warnObj==this.warnObjArr[i].name){
-        this.cateId = this.warnObjArr[i].cateId;
-        this.code = this.warnObjArr[i].code;
-        return
+      if(this.warnObj==this.warnObjArr[i].classificationName){
+        for(let j=0;j<this.warnObjArr[i].recognitionCategories.length;j++){
+          if(this.warnObjDetail==this.warnObjArr[i].recognitionCategories[j].name){
+            this.cateId = this.warnObjArr[i].recognitionCategories[j].cateId;
+            this.code = this.warnObjArr[i].recognitionCategories[j].code;
+            return
+          }
+        }
       }
     }
   }
+  getPhoto(){
+    let temp='';
+    for(let i=0;i<this.photoContainer.length;i++){
+      temp=temp+this.photoContainer[i]+",";
+    }
+    return temp.substring(0,temp.length -1);
+  }
   create(){
     this.validation();
-    this.warnService.createWarn(this.appId,this.warnChannelId,this.ruleName,this.cateId,this.code,this.car,this.status)
+    this.photoUrl=this.getPhoto();
+    this.warnService.createWarn(this.appId,this.warnChannelId,this.ruleName,this.cateId,this.code,this.objName,this.status,this.photoUrl)
       .subscribe(result=>{
-        console.log(result);
+        //console.log(result);
         if(result.text().substring(0,2)=='Ok'){
         this.createIndex = 2;
         this.indexChange.emit(this.createIndex);
@@ -190,10 +265,11 @@ export class WarnWindowComponent{
   }
   editSave(){
     this.validation();
+    this.photoUrl=this.getPhoto();
     if(this.appCate=='实时流分析'){
-      this.warnService.editRuleSave(this.warnChannelId,this.ruleList.ruleId,this.ruleName,this.cateId,this.code,this.car,this.status)
+      this.warnService.editRuleSave(this.warnChannelId,this.ruleList.ruleId,this.ruleName,this.cateId,this.code,this.objName,this.status,this.photoUrl)
         .subscribe(result=>{
-          console.log(result);
+          //console.log(result);
           if(result.text().substring(0,2)=='Ok'){
             this.createIndex = 2;
             this.indexChange.emit(this.createIndex);
@@ -211,7 +287,7 @@ export class WarnWindowComponent{
           }
         })
     }else{
-      this.warnService.editRuleSave1(this.ruleList.ruleId,this.ruleName,this.cateId,this.code,this.car,this.status)
+      this.warnService.editRuleSave1(this.ruleList.ruleId,this.ruleName,this.cateId,this.code,this.objName,this.status,this.photoUrl)
         .subscribe(result=>{
           if(result.text().substring(0,2)=='Ok'){
             this.createIndex = 2;

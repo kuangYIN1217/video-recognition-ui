@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {OfflineService} from "../common/services/offline.service";
+import {SERVER_URL} from "../app.constants";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Page} from "app/common/defs/resources";
 import {calc_height} from "../common/ts/calc_height";
@@ -12,6 +13,7 @@ declare var $:any;
   providers: [OfflineService,WebSocketService]
 })
 export class TaskManageComponent {
+  SERVER_URL = SERVER_URL;
   appId:string;
   appCate:string;
   taskList:any[]=[];
@@ -34,17 +36,23 @@ export class TaskManageComponent {
   pageNow:number;
   _offline:any[]=[];
   authority:boolean = false;
+  playShow:boolean=false;
+  videoBtn:number=2;
+  showBtn:boolean=false;
+  outputPath:string;
+  nameTem:string;
+  @ViewChild('offlineVideo') offlineVideo: any;
   constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
-    console.log(window.sessionStorage.getItem("_offline"));
-    this._offline = JSON.parse(window.sessionStorage.getItem("_offline"));
-    //console.log(this._offline);
-    for(let i=0;i<this._offline.length;i++){
-      if(this._offline[i].projectAuthorityId==11){
-        this.authority = true;
+      console.log(window.sessionStorage.getItem("_offline"));
+      this._offline = JSON.parse(window.sessionStorage.getItem("_offline"));
+      //console.log(this._offline);
+      for(let i=0;i<this._offline.length;i++){
+        if(this._offline[i].projectAuthorityId==11){
+          this.authority = true;
+        }
       }
-    }
     //console.log(this.appId);
     //console.log(this.appCate);
     this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
@@ -78,7 +86,7 @@ export class TaskManageComponent {
   getAllTask(id,page,size){
     this.offlineService.getWarnTask(id,page,size)
       .subscribe(result=>{
-        this.taskList = result.content;
+        //this.taskList = result.content;
         for(let i=0;i<result.content.length;i++){
           if(result.content[i].taskStatus=='进行中'){
             this.websocket.connect().then(() => {
@@ -89,6 +97,7 @@ export class TaskManageComponent {
           }
         }
         console.log(result.content);
+        this.taskList = result.content;
         let page = new Page();
         page.pageMaxItem = result.size;
         page.curPage = result.number+1;
@@ -97,8 +106,36 @@ export class TaskManageComponent {
         this.pageParams = page;
       })
   }
+  lookResult(item){
+    this.playShow=true;
+    this.outputPath = item.outputPath;
+  }
+  closeVideo(){
+    this.playShow=false;
+    this.showBtn = false;
+  }
+  show(){
+    this.videoBtn = 1;
+  }
+  hide(){
+    this.videoBtn = 2;
+    this.showBtn = false;
+  }
+  play() {
+    if (this.offlineVideo.nativeElement.paused) {
+      this.offlineVideo.nativeElement.play();
+      this.showBtn = true;
+    } else {
+      this.offlineVideo.nativeElement.pause();
+      this.showBtn = false;
+    }
+
+  }
+  output1(item){
+    return item.substring(23,item.length);
+  }
   running(item){
-    console.log(item);
+    //console.log(item);
     this.percent = [];
     if(item.taskStatus=='进行中'){
       item.show = 1;
@@ -223,7 +260,6 @@ export class TaskManageComponent {
     this.offlineService.searchTask(id,name,status,page,size)
       .subscribe(result=>{
         this.taskList = result.content;
-        //console.log(this.taskList);
 /*        for(let i=0;i<this.taskList.length;i++){
           if(this.taskList[i].taskStatus!='进行中'){
             clearInterval(this.interval);
@@ -256,7 +292,8 @@ export class TaskManageComponent {
     this.router.navigate(['../createtext'],{queryParams: {'taskId':item.taskId,'taskName':item.taskName,'alarmRules':JSON.stringify(item.alarmRules),'taskTitle':"修改任务"}});
   }
   look(item){
-    this.router.navigate(['../warnmanage'],{queryParams: {'taskName':item.taskName}});
+    console.log(item);
+    this.router.navigate(['../warnmanage'],{queryParams: {'taskName':item.taskName,'taskId':item.taskId}});
   }
 
   dia(){

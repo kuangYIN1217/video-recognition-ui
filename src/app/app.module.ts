@@ -51,7 +51,6 @@ import {DeleteTipComponent} from "app/account/deleteTip/deleteTip.component";
 import {EchartsNg2Module} from "echarts-ng2";
 import {TaskResultComponent} from "./electric-power/task-manage/taskResult/task.result.component";
 import {NgModule} from "@angular/core";
-import {BaiduMapModule} from "angular2-baidu-map";
 import {EditResultComponent} from "./electric-power/task-manage/editResult/editResult.component";
 @NgModule({
   declarations: [
@@ -110,7 +109,6 @@ import {EditResultComponent} from "./electric-power/task-manage/editResult/editR
     AmChartsModule,
     ToastyModule,
     EchartsNg2Module,
-    //BaiduMapModule.forRoot({ak: 'bLf1IX78tWQ8tBzu6m5GvnbxSsxLYWNA'})
     //BrowserAnimationsModule,
   ],
   providers: [StompService],
