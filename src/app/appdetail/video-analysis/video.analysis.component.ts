@@ -112,7 +112,7 @@ export class VideoAnalysisComoponent {
     this.d_applicationId = parseInt(window.sessionStorage.getItem('applicationId'));
     this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
     for(let i=0;i<this._realTime.length;i++){
-      if(this._realTime[i].projectAuthorityId==1){
+      if(this._realTime[i].projectAuthorityId==2){
         this.authority = true;
       }
     }
@@ -339,7 +339,7 @@ export class VideoAnalysisComoponent {
     $event = $event || window.event;
     $event.preventDefault();
     $event.stopPropagation();
-    if(!this.authority){
+    if(this.authority){
       this.addDialog = 1;
       this.protocol = this.protocols[0];
       this.channelType = this.channelTypes[0];
