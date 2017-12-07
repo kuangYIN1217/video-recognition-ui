@@ -18,6 +18,19 @@
   width:70px;
   text-align: right;
 }
+.infoSub{
+  vertical-align: top;
+}
+.info img{
+  display: inline-block;
+  width:150px;
+  height:116px;
+  margin-left: 14px;
+}
+.info span{
+  display: inline-block;
+  margin-left: 14px;
+}
 .info input,.info select{
   width:490px;
   height:36px;

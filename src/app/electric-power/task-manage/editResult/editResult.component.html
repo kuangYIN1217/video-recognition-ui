@@ -4,20 +4,20 @@
     <div class="info-content">
       <div class="info">
         <label>线路名称：</label>
-        <span></span>
+        <span>{{allInfo.patrolLine.lineName}}</span>
       </div>
       <div class="info">
         <label>杆塔号：</label>
-        <span></span>
+        <span>{{allInfo.patrolTower.towerNum}}</span>
       </div>
       <div class="info">
-        <label>识别原图：</label>
+        <label class="infoSub">识别原图：</label>
         <img src=""/>
       </div>
       <div class="info">
-        <label>缺陷图：</label>
+        <label class="infoSub">缺陷图：</label>
         <img src=""/>
-        <span onclick="document.getElementById('flawImg').click()" class="reUpload btn bgcg">重新上传</span>
+        <span onclick="document.getElementById('flawImg').click()" class="reUpload btn bgcg" style="margin-left: 89px">重新上传</span>
         <input type="file" id="flawImg" name="file" ng2FileSelect [uploader]="uploader" accept=".png,.jpj" (change)="selectedFileOnChanged($event)"/>
       </div>
       <div class="info">
@@ -35,18 +35,18 @@
       <div class="info">
         <label>缺陷性质：</label>
         <select name="flawNature" [(ngModel)]="flawNature">
-          <option></option>
+          <option *ngFor="let item of flawNatureArr" value="{{item}}">{{item}}</option>
         </select>
       </div>
       <div class="info">
         <label>缺陷状态：</label>
         <select name="flawStatus" [(ngModel)]="flawStatus">
-          <option></option>
+          <option *ngFor="let item of flawStatusArr" value="{{item}}">{{item}}</option>
         </select>
       </div>
       <div class="info">
         <label>缺陷时间：</label>
-        <span></span>
+        <span>{{allInfo.recogTime}}</span>
       </div>
       <div class="saveBtn">
         <a href="#" class="btn bgco" (click)="save()">保存</a>

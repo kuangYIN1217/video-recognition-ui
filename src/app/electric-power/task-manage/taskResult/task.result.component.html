@@ -10,7 +10,7 @@
     </div>
     <div class="titleInfo">
       <label>识别对象：</label>
-      <span>{{identify(allInfo.flawCategorySet)}}</span>
+      <span>{{allInfo.flawCategorys}}</span>
     </div>
     <div class="titleInfo">
       <label>创建时间：</label>
@@ -37,21 +37,21 @@
       </div>
       <div class="search-info">
         <label>缺陷部件：</label>
-        <select name="towerPart" [(ngModel)]="towerPart" (ngModelChange)="towerPart=$event;towerPartChange()">
-          <option *ngFor="let item of towerPartSet">{{item.part}}</option>
+        <select name="flawPart" [(ngModel)]="flawPart" (ngModelChange)="flawPart=$event;flawPartChange()">
+          <option *ngFor="let item of flawPartSet" value="{{item}}">{{item}}</option>
         </select>
       </div>
       <div class="search-info">
         <label>缺陷状态：</label>
-        <select name="status" [(ngModel)]="status" (ngModelChange)="status=$event;statusChange()">
-          <option *ngFor="let item of infoStatusSet">{{item}}</option>
+        <select name="status" [(ngModel)]="status" (ngModelChange)="status=$event;flawPartChange()">
+          <option *ngFor="let item of statusArr" value="{{item}}">{{item}}</option>
         </select>
       </div>
     </div>
     <div class="channelList">
       <table class="channelTable" cellspacing="0">
         <tr>
-          <th class="pad">线路名称<th>
+          <th class="pad">线路名称</th>
           <th class="pad">杆塔号</th>
           <th class="pad">识别原图</th>
           <th class="pad">缺陷图</th>
@@ -63,21 +63,19 @@
           <th class="pad">操作</th>
         </tr>
         <tr *ngFor="let item of taskInfo">
-          <td class="pad"></td>
-          <td class="pad"></td>
-          <td class="pad"></td>
-          <td class="pad"></td>
-          <td class="pad"></td>
-          <td class="pad"></td>
-          <td class="pad"></td>
-          <td class="pad"></td>
-          <td class="pad"></td>
-          <td class="pad"></td>
+          <td class="pad">{{item.patrolLine.lineName}}</td>
+          <td class="pad">{{item.patrolTower.towerNum}}</td>
+          <td class="pad"><img src="assets/electric/yuantu.png" class="middle" (click)="photo(item.taskFile.filePath)"/></td>
+          <td class="pad"><img src="assets/electric/quexiantu.png" class="middle" (click)="flawPhoto(item.flawFilePath)"/></td>
+          <td class="pad">{{item.patrolTowerPart}}</td>
+          <td class="pad">{{item.flawCategory}}</td>
+          <td class="pad">{{item.flawInfo}}</td>
+          <td class="pad">{{item.flawProperty}}</td>
+          <td class="pad">{{item.infoStatus}}</td>
           <td class="pad">
-            <a class="operationBtn hulue middle" (click)="neglect(item)"></a>
-            <a class="operationBtn unhulue middle"></a>
+            <a class="operationBtn hulue middle" (click)="neglect(item)" *ngIf="item.infoStatus=='正常'"></a>
+            <a class="operationBtn unhulue middle" *ngIf="item.infoStatus=='已忽略'"></a>
             <a class="operationBtn edit middle" (click)="edit(item)"></a>
-            <a class="operationBtn unedit middle"></a>
           </td>
         </tr>
       </table>

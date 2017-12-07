@@ -35,7 +35,8 @@
               <img [src]="item.selected?'../assets/appdetail/way.manage/checked.png':'../assets/appdetail/way.manage/unchecked.png'" (click)="check(i)"/>
             </td>
             <td class="pad">{{item.taskName}}</td>
-            <td class="pad">{{getFlaw(item.flawCategorySet)}}</td>
+            <!--<td class="pad">{{getFlaw(item.flawCategorySet)}}</td>-->
+            <td class="pad">{{item.flawCategorys}}</td>
             <td class="pad">{{item.fileSize}}</td>
             <td class="pad">{{item.taskStatus}}</td>
             <td class="pad">{{item.percent}}</td>

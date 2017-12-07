@@ -3,34 +3,34 @@
     <div class="search searchOne">
       <div class="info">
         <label>线路名称：</label>
-        <select name="lineName" [(ngModel)]="lineName">
-          <option></option>
+        <select name="lineName" [(ngModel)]="lineName" (ngModelChange)="lineName=$event;lineChange()">
+          <option *ngFor="let item of lineArr" value="{{item.lineName}}">{{item.lineName}}</option>
         </select>
       </div>
       <div class="info">
         <label>任务名称：</label>
         <select  name="taskName" [(ngModel)]="taskName">
-          <option></option>
+          <option *ngFor="let item of taskArr" value="{{item.taskName}}">{{item.taskName}}</option>
         </select>
       </div>
       <div class="info">
         <label>杆塔号：</label>
         <select  name="towerNum" [(ngModel)]="towerNum">
-          <option></option>
+          <option *ngFor="let item of towerArr" value="{{item.towerNum}}">{{item.towerNum}}</option>
         </select>
       </div>
     </div>
     <div class="search searchTwo">
       <div class="info infoTime">
         <label>识别日期：</label>
-        <input type="text" name="start" id="start" [(ngModel)]="start"/>
+        <input type="text" id="start" readonly placeholder="请选择时间"/>
         <span>--</span>
-        <input type="text" name="end" id="end" [(ngModel)]="end"/>
+        <input type="text" id="end" readonly placeholder="请选择时间"/>
       </div>
       <div class="info">
         <label>统计颗粒度：</label>
         <select  name="particles" [(ngModel)]="particles">
-          <option></option>
+          <option *ngFor="let item of particlesArr" value="{{item}}">{{item}}</option>
         </select>
       </div>
       <a href="#" onclick="return false" class="btn bgco searchBtn" (click)="search()">查询</a>
@@ -51,7 +51,6 @@
           <th class="p1">缺陷文件数</th>
           <th class="p1">杆塔缺陷率</th>
           <th class="p1">文件缺陷率</th>
-          <th class="p2">平均杆塔文件缺陷率</th>
         </tr>
       </table>
 <!--      <table>

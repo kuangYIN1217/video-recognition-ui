@@ -1,24 +1,140 @@
 import { Component } from '@angular/core';
+import {ElectricService} from "../../common/services/electric.service";
+import {Router, ActivatedRoute} from "@angular/router";
 declare var $:any;
 declare var echarts: any;
 @Component({
   selector: 'data-statistics',
   styleUrls: ['./data.statistics.component.css'],
   templateUrl: './data.statistics.html',
-  providers: []
+  providers: [ElectricService]
 })
 
 export class DataStatisticsComponent {
   startTime:string;
   endTime:string;
   d_word_list:any;
-  constructor() {
+  appId:string;
+  lineName:string='';
+  lineId:number;
+  lineArr:any[]=[];
+  towerNum:string;
+  towerArr:any[]=[];
+  taskName:string='';
+  taskArr:any[]=[];
+  particles:string;
+  particlesArr:any[]=["线路","杆塔"];
+  towerId:number;
+  lineOrTower:number;
+  taskId:number;
+  constructor(private electricService:ElectricService,private route: ActivatedRoute ,private router: Router) {
+    this.appId = window.sessionStorage.getItem("applicationId");
+    this.particles = this.particlesArr[0];
+    this.electricService.getMapLine(this.appId)
+      .subscribe(result=>{
+        console.log(result);
+        if(result.length>0){
+          this.lineArr = result;
+          let obj:any={};
+          obj.lineName = "全部";
+          obj.lineId = "0";
+          this.lineArr.unshift(obj);
+          this.lineName = this.lineArr[0].lineName;
+          this.lineId = this.lineArr[0].lineId;
+        }
+      });
+      this.getAllTowerByAppId();
+    this.electricService.getMapTask(this.appId)
+      .subscribe(result=>{
+        console.log(result);
+        if(result.length>0){
+          this.taskArr = result;
+          let obj:any={};
+          obj.taskName = "全部";
+          this.taskArr.unshift(obj);
+          this.taskName = this.taskArr[0].taskName;
+        }
+
+      });
+  }
+  getAllTowerByAppId(){
+    this.electricService.getAllTowersByAppId(this.appId)
+      .subscribe(result=>{
+        console.log(result);
+        this.setTower(result);
+      });
+  }
+  lineChange(){
+    if(this.lineName=='全部'){
+      this.getAllTowerByAppId();
+    }else{
+      for(let i=0;i<this.lineArr.length;i++){
+        if(this.lineName==this.lineArr[i].lineName){
+          this.lineId = this.lineArr[i].lineId;
+        }
+      }
+      this.getTower(this.lineId);
+    }
+  }
+  getTower(lineId){
+    this.electricService.getAllTower(lineId)
+      .subscribe(result=>{
+        console.log(result);
+        this.setTower(result);
+      })
+  }
+  setTower(result){
+    if(result.length>0){
+      this.towerArr = result;
+      let obj:any={};
+      obj.towerNum = "全部";
+      obj.towerId = "0";
+      this.towerArr.unshift(obj);
+      this.towerNum = this.towerArr[0].towerNum;
+    }else{
+      this.towerArr = [{"towerNum":"全部","towerId":0}];
+    }
+  }
+  search(){
+    if(this.lineName=='全部'){
+      this.lineId = 0;
+    }else{
+      for(let i=0;i<this.lineArr.length;i++){
+        if(this.lineName==this.lineArr[i].lineName){
+          this.lineId = this.lineArr[i].lineId;
+        }
+      }
+    }
+    if(this.towerNum=='全部'){
+      this.towerId = 0;
+    }else{
+      for(let i=0;i<this.towerArr.length;i++){
+        if(this.towerNum==this.towerArr[i].towerNum){
+          this.towerId = this.towerArr[i].towerId;
+        }
+      }
+    }
+    if(this.particles=='线路'){
+      this.lineOrTower = 0;
+    }else{
+      this.lineOrTower = 1;
+    }
+    if(this.startTime){
+
+    }
+    //this.searchResult(this.appId);
+  }
+  searchResult(appId,lineId,towerId,lineOrTower,startTime,endTime){
+    this.electricService.dataStaticSearch(appId,lineId,towerId,lineOrTower,startTime,endTime)
+      .subscribe(result=>{
+        console.log(result);
+      })
   }
   ngOnInit() {
     $("#start").jeDate({
       isinitVal:true,
       festival: false,
-      format: 'YYYY-MM-DD',
+      format:  'YYYY-MM-DD'
     });
     $("#end").jeDate({
       isinitVal:true,

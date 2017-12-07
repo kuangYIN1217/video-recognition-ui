@@ -67,6 +67,16 @@ export class ElectricService {
         }
       });
   }
+  getAllTowersByAppId(appId){
+    let path = "/api/getAllTowers/"+appId;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers} )
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
   getAllTower(id){
     let path = "/api/getPatrolInfoByLineId/"+id;
     let headers = this.getHeaders();
@@ -267,8 +277,8 @@ export class ElectricService {
         }
       });
   }
-  getTaskResultSearch(taskId,lineId,towerId,flawPartId,infoStatus){
-    let path = "/api/getFlawInfoByTaskId/"+taskId+"/"+lineId+"/"+towerId+"/"+flawPartId+"/"+infoStatus;
+  getTaskResultSearch(taskId,lineId,towerId){
+    let path = "/api/getFlawInfoByTaskId/"+taskId+"/"+lineId+"/"+towerId;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path, { headers : headers} )
       .map((response: Response) => {
@@ -277,8 +287,18 @@ export class ElectricService {
         }
       });
   }
-  getTaskResult(taskId,lineId,towerId,flawPartId,infoStatus,page=0,size=10){
-    let path = "/api/getFlawInfoByConditions/"+taskId+"/"+lineId+"/"+towerId+"/"+flawPartId+"/"+infoStatus+"?page="+page+"&size="+size;
+  getFlawPart(taskId){
+    let path = "/api/getFlawPartForConditions/"+taskId;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers} )
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
+  getTaskResult(taskId,lineId,towerId,flawPart,infoStatus,page=0,size=10){
+    let path = "/api/getFlawInfoByConditions/"+taskId+"/"+lineId+"/"+towerId+"/"+flawPart+"/"+infoStatus+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path, { headers : headers} )
       .map((response: Response) => {
@@ -333,6 +353,37 @@ export class ElectricService {
     let path = "/api/deleteTaskByIds/"+id;
     let headers = this.getHeaders();
     return this.http.delete(this.SERVER_URL+path, { headers : headers} )
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
+  modifyFlaw(flawCategory,flawFilePath,flawInfo,flawProperty,infoId,infoStatus,patrolTowerPart){
+    let path = "/api/modifyFlawInfo";
+    let body = JSON.stringify(
+      {
+        "flawCategory": flawCategory,
+        "flawFilePath": flawFilePath,
+        "flawInfo": flawInfo,
+        "flawProperty": flawProperty,
+        "infoId": infoId,
+        "infoStatus": infoStatus,
+        "patrolTowerPart": patrolTowerPart
+      }
+    );
+    let headers = this.getHeaders();
+    return this.http.put(this.SERVER_URL+path,body,{ headers: headers })
+      .map((response: Response) => {
+        if (response) {
+          return response;
+        }
+      })
+  }
+  dataStaticSearch(appId,lineId,towerId,lineOrTower,startTime,endTime){
+    let path = "/api/patrolDataCount/"+appId+"/"+lineId+"/"+towerId+"/"+lineOrTower+"/"+startTime+"/"+endTime;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers})
       .map((response: Response) => {
         if (response && response.json()) {
           return response.json();
