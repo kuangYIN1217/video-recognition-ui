@@ -82,9 +82,8 @@ select{
 select:focus{
   border:1px solid #23a880 !important;
 }
-.baidu-map {
+.demo-map {
   display: block;
-  width: 550px;
-  height: 350px;
+  height: 600px;
 }
 

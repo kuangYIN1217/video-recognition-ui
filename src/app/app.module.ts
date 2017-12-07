@@ -52,6 +52,7 @@ import {EchartsNg2Module} from "echarts-ng2";
 import {TaskResultComponent} from "./electric-power/task-manage/taskResult/task.result.component";
 import {NgModule} from "@angular/core";
 import {EditResultComponent} from "./electric-power/task-manage/editResult/editResult.component";
+import { NgxAmapModule } from 'ngx-amap';
 //import { BaiduMapModule } from 'angular2-baidu-map';
 @NgModule({
   declarations: [
@@ -110,6 +111,9 @@ import {EditResultComponent} from "./electric-power/task-manage/editResult/editR
     AmChartsModule,
     ToastyModule,
     EchartsNg2Module,
+    NgxAmapModule.forRoot({
+      apiKey: '187907670e75adc7c356266ef96b29d1'
+    })
     //BaiduMapModule.forRoot({ ak: 'bLf1IX78tWQ8tBzu6m5GvnbxSsxLYWNA' })
     //BrowserAnimationsModule,
   ],

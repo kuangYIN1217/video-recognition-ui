@@ -1,7 +1,6 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {ElectricService} from "../../common/services/electric.service";
-// import { MapOptions } from 'angular2-baidu-map';
-
+import {IIcon, ILabel} from "ngx-amap/types/interface";
 @Component({
   selector: 'overview-map',
   styleUrls: ['./overview.map.component.css'],
@@ -21,7 +20,9 @@ export class OverviewMapComponent {
   taskArr:any[]=[];
   lineId:number;
   taskId:number;
-  /*public opts: MapOptions;*/
+  icon: IIcon;
+  label: ILabel;
+  markers:any[]=[];
   constructor(private electricService:ElectricService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.electricService.getSynchronizationInfo(this.appId)
@@ -36,20 +37,28 @@ export class OverviewMapComponent {
           this.info = result;
         }
       });
-    this.electricService.getTaskByAppId(this.appId)
+/*    this.electricService.getTaskByAppId(this.appId)
       .subscribe(result=>{
         console.log(result);
-      })
+      })*/
     this.electricService.getMapTask(this.appId)
       .subscribe(result=>{
         console.log(result);
         this.taskArr = result;
-        //this.taskName = result
+        let obj:any={};
+        obj.taskName = "全部";
+        obj.taskId = 0;
+        this.taskArr.unshift(obj);
+        this.taskName = this.taskArr[0].taskName;
       })
     this.electricService.getMapLine(this.appId)
       .subscribe(result=>{
         console.log(result);
         this.lineArr = result;
+        let obj:any={};
+        obj.lineName = "全部";
+        obj.lineId = 0;
+        this.lineArr.unshift(obj);
         this.lineName = this.lineArr[0].lineName;
       })
   }
@@ -69,50 +78,73 @@ export class OverviewMapComponent {
         console.log(result);
       })
   }
+  onMarkerEvent(event){
+    console.log(event);
+    if(event.type=="mouseover"){
+/*      label : {
+        offset: {
+          x: 55,
+            y: 50
+        },
+        content: '苏宁'
+      }*/
+    }else if(event.type=="mouseout"){
+      this.label = null;
+    }
+
+  }
+  output(item){
+    console.log(item);
+  }
   ngOnInit(){
-/*    this.opts = {
-      centerAndZoom: {
-        lng: 121.506191,
-        lat: 31.245554,
-        zoom: 15
-      }
-    };*/
-  }
-/*    ngOnInit() {
-      this.options = {
-        centerAndZoom: {
-          lat: 32.093016,
-          lng: 118.893665,
-          zoom: 16
+    this.icon = this.icon ? null : {
+      size: {
+        width: 46,
+        height: 46
+      },
+      image: 'assets/electric/detect.png',
+    };
+    this.markers=[
+      {
+        point: {
+          lat: 32.08637,
+          lng: 118.88831
         },
-        enableScrollWheelZoom:true
-      };
-/!*      this.point = {
-        lat: 32.093016,
-        lng: 118.893665
-      };*!/
-      this.markers = [
-        {
-          options: {
-            icon: {
-              imageUrl: '/assets/electric/detect.png',
-              size: {
-                height: 46,
-                width: 46
-              }
-            }
+        icon :{
+          size: {
+            width: 46,
+            height: 46
           },
-          point: {
-            lat: 32.093016,
-            lng: 118.893665,
-          }
+          image: 'assets/electric/detect.png'
         },
-        {
-          point: {
-            lat: 32.093010,
-            lng: 118.893660,
-          }
+        label : {
+          offset: {
+            x: 55,
+            y: 50
+          },
+        content: `&nbsp;&nbsp;江苏软件园&nbsp;&nbsp;${20}&nbsp;&nbsp;`
         }
-      ]
-    }*/
+      },
+      {
+        point: {
+          lat: 32.087696,
+          lng: 118.892735
+        },
+        icon :{
+          size: {
+            width: 46,
+            height: 46
+          },
+          image: 'assets/electric/undetect.png'
+        },
+        label : {
+          offset: {
+            x: 55,
+            y: 50
+          },
+          content: `&nbsp;&nbsp;苏宁&nbsp;&nbsp;${30}&nbsp;&nbsp;`
+        }
+      }
+    ]
   }
+}

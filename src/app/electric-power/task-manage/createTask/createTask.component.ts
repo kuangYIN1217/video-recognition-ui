@@ -43,7 +43,7 @@ export class CreateTaskComponent {
         if(this.flawCheckedArr.length>0){
           for(let i=0;i<this.flawArr.length;i++){
             for(let j=0;j<this.flawCheckedArr.length;j++){
-              if(this.flawCheckedArr[j].flawId==this.flawArr[i].flawId){
+              if(this.flawCheckedArr[j]==this.flawArr[i].flawName){
                 this.flawArr[i].flag=1;
               }
             }
@@ -212,7 +212,7 @@ export class CreateTaskComponent {
     this.electricService.updateTask(this.appId,this.pathArr,this.flawName,this.taskId,this.taskName,this.fileSize)
       .subscribe(result=>{
         console.log(result);
-        this.router.navigate(['../taskmanage']);
+        this.router.navigate(['../electaskmanage']);
       })
   }
   getByte(item){
@@ -232,9 +232,12 @@ export class CreateTaskComponent {
         this.taskTitle = params['taskTitle'];
         this.taskName = params['taskName'];
         this.taskId = params['taskId'];
-        this.flawCheckedArr = JSON.parse(params['flawCategorySet']);
+        //this.flawCheckedArr = JSON.parse(params['flawCategorySet']);
+        this.flawName = params['flawCategorys'];
+        this.flawCheckedArr = this.flawName.split(',');
+        console.log(this.flawCheckedArr);
         this.patrolTaskZipFileSet = JSON.parse(params['patrolTaskZipFileSet']);
-        this.flawCheckedChange(this.flawCheckedArr);
+        //this.flawCheckedChange(this.flawCheckedArr);
         console.log(this.patrolTaskZipFileSet);
         for(let i=0;i<this.patrolTaskZipFileSet.length;i++){
           this.fileObj = {};

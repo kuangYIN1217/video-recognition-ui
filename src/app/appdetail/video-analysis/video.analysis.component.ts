@@ -339,7 +339,7 @@ export class VideoAnalysisComoponent {
     $event = $event || window.event;
     $event.preventDefault();
     $event.stopPropagation();
-    if(this.authority){
+    if(!this.authority){
       this.addDialog = 1;
       this.protocol = this.protocols[0];
       this.channelType = this.channelTypes[0];
@@ -572,6 +572,11 @@ export class VideoAnalysisComoponent {
     this.recognitionService.getRecognition().subscribe(rep => {
       console.log(rep);
       this.d_analysis_options = rep;
+      for(let i=0;i<this.d_analysis_options.length;i++){
+        this.d_analysis_options[i].recognitionCategories.sort(function(a,b){
+          return parseInt(b.cateId) - parseInt(a.cateId)
+        })
+      }
       this.d_analysis_options[0].selected=true;
       //this.d_analysis_options_detail= rep ;
     })

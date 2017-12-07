@@ -78,7 +78,7 @@ export class ElecTaskManageComponent {
   }
   edit(item){
     console.log(item);
-    this.router.navigate(['../createtask'],{queryParams: {'taskId':item.taskId,'taskName':item.taskName,'flawCategorySet':JSON.stringify(item.flawCategorySet),'taskTitle':"修改任务",'patrolTaskZipFileSet':JSON.stringify(item.patrolTaskZipFileSet)}});
+    this.router.navigate(['../createtask'],{queryParams: {'taskId':item.taskId,'taskName':item.taskName,'flawCategorys':item.flawCategorys,'taskTitle':"修改任务",'patrolTaskZipFileSet':JSON.stringify(item.patrolTaskZipFileSet)}});
   }
   look(item){
     //console.log(JSON.stringify(item));
