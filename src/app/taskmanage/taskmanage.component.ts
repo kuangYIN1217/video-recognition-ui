@@ -212,7 +212,7 @@ export class TaskManageComponent {
         }else if(reply.text().substring(0,2)=='Er'){
           this.deleteIndex = 1;
           this.tip_title = "提示";
-          this.tip_content = reply.text().substring(5);
+          this.tip_content = "运行过程发生意外啦，请您重试！";
         }else{
           if(this.status=='进行中'){
             if(this.taskName==undefined){

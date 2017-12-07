@@ -232,7 +232,7 @@ export class WarnRlueComponent{
           }else if(reply.text().substring(0,2)=='Er'){
             this.deleteIndex = 1;
             this.tip_title = "提示";
-            this.tip_content = reply.text().substring(5);
+            this.tip_content = "运行过程发生意外啦，请您重试！";
           }
           this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
           //this.start_reply(reply);
@@ -248,7 +248,7 @@ export class WarnRlueComponent{
           }else if(reply.text().substring(0,2)=='Er'){
             this.deleteIndex = 1;
             this.tip_title = "提示";
-            this.tip_content = reply.text().substring(5);
+            this.tip_content = "运行过程发生意外啦，请您重试！";
           }
           this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
           //this.start_reply(reply);
