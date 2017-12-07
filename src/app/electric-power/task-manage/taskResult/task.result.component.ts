@@ -15,8 +15,8 @@ export class TaskResultComponent {
   towerSet:any[]=[];
   line:string;
   tower:string;
-  flawPart:any='';
-  status:any='';
+  flawPart:string;
+  status:string;
   taskId:number;
   lineId:number;
   towerId:number;
@@ -26,8 +26,11 @@ export class TaskResultComponent {
   pageNo:number=0;
   pageSize:number=10;
   taskInfo:any[]=[];
+  flawPartId:number=0;
+  statusId:number=0;
   statusArr:any[]=["全部","正常","已忽略"];
     constructor(private router:Router,private route: ActivatedRoute,private electricService:ElectricService) {
+      this.status = this.statusArr[0];
       this.route.queryParams.subscribe(params => {
         if(params['allInfo']){
           console.log(JSON.parse(params['allInfo']));
@@ -37,6 +40,7 @@ export class TaskResultComponent {
             .subscribe(result=>{
               this.flawPartSet = result;
               this.flawPartSet.unshift("全部");
+              this.flawPart = this.flawPartSet[0];
             })
           this.getTaskResultSearch(this.taskId,0,0);
         }
@@ -108,15 +112,31 @@ export class TaskResultComponent {
           this.lineId = this.lineSet[0].lineId;
           this.tower = this.towerSet[0].towerNum;
           this.towerId = this.towerSet[0].towerId;
-          this.flawPart = this.flawPartSet[0];
-          this.status = this.statusArr[0];
           this.getFlawPart();
-          if(this.pageNo==0){
-            this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPart,this.status,this.page,this.pageMaxItem);
-          }else{
-            this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPart,this.status,this.pageNo,this.pageSize);
-          }
       })
+  }
+  getFlawPart(){
+    if(this.pageNo==0){
+      if(this.flawPart=="全部"&&this.status=="全部"){
+        this.getTaskResult(this.taskId,this.lineId,this.towerId,-1,-1,this.page,this.pageMaxItem);
+      }else if(this.flawPart=="全部"&&this.status!="全部"){
+        this.getTaskResult(this.taskId,this.lineId,this.towerId,-1,this.status,this.page,this.pageMaxItem);
+      }else if(this.flawPart!="全部"&&this.status!="全部"){
+        this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPart,this.status,this.page,this.pageMaxItem);
+      }else if(this.flawPart!="全部"&&this.status=="全部"){
+        this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPart,-1,this.page,this.pageMaxItem);
+      }
+    }else{
+      if(this.flawPart=="全部"&&this.status=="全部"){
+        this.getTaskResult(this.taskId,this.lineId,this.towerId,-1,-1,this.pageNo,this.pageSize);
+      }else if(this.flawPart=="全部"&&this.status!="全部"){
+        this.getTaskResult(this.taskId,this.lineId,this.towerId,-1,this.status,this.pageNo,this.pageSize);
+      }else if(this.flawPart!="全部"&&this.status!="全部"){
+        this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPart,this.status,this.pageNo,this.pageSize);
+      }else if(this.flawPart!="全部"&&this.status=="全部"){
+        this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPart,-1,this.pageNo,this.pageSize);
+      }
+    }
   }
   getTaskResultSearch1(taskId,lineId,towerId){
     this.electricService.getTaskResultSearch(taskId,lineId,towerId)
@@ -132,20 +152,7 @@ export class TaskResultComponent {
         obj1.towerId = 0;
         this.towerSet.unshift(obj1);
         this.getFlawPart();
-        if(this.pageNo==0){
-          this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPart,this.status,this.page,this.pageMaxItem);
-        }else{
-          this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPart,this.status,this.pageNo,this.pageSize);
-        }
       })
-  }
-  getFlawPart(){
-    if(this.flawPart=="全部"){
-      this.flawPart = -1;
-    }
-    if(this.status=="全部"){
-      this.status = -1;
-    }
   }
   lineChange(){
     for(let i=0;i<this.lineSet.length;i++){
@@ -165,11 +172,6 @@ export class TaskResultComponent {
   }
   flawPartChange(){
     this.getFlawPart();
-    if(this.pageNo==0){
-      this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPart,this.status,this.page,this.pageMaxItem);
-    }else{
-      this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPart,this.status,this.pageNo,this.pageSize);
-    }
   }
   back(){
     this.router.navigate(['../electaskmanage']);

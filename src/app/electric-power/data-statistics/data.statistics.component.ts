@@ -119,13 +119,22 @@ export class DataStatisticsComponent {
     }else{
       this.lineOrTower = 1;
     }
-    if(this.startTime){
-
+    if(this.taskName=='全部'){
+      this.taskId = 0;
+    }else{
+      for(let i=0;i<this.taskArr.length;i++){
+        if(this.taskName==this.taskArr[i].taskName){
+          this.taskId = this.taskArr[i].taskId;
+        }
+      }
     }
-    //this.searchResult(this.appId);
+    this.startTime = $('#start').val();
+    this.endTime = $('#end').val();
+
+    this.searchResult(this.appId,this.lineId,this.towerId,this.taskId,this.lineOrTower,this.startTime,this.endTime);
   }
-  searchResult(appId,lineId,towerId,lineOrTower,startTime,endTime){
-    this.electricService.dataStaticSearch(appId,lineId,towerId,lineOrTower,startTime,endTime)
+  searchResult(appId,lineId,towerId,taskId,lineOrTower,startTime,endTime){
+    this.electricService.dataStaticSearch(appId,lineId,towerId,taskId,lineOrTower,startTime,endTime)
       .subscribe(result=>{
         console.log(result);
       })
@@ -141,8 +150,19 @@ export class DataStatisticsComponent {
       festival: false,
       format: 'YYYY-MM-DD'
     });
-    this.startTime = $('#start').val("");
-    this.endTime = $('#end').val("");
+    var data = new Date();
+    let year = data.getFullYear();
+    let month:number = data.getMonth()+1;
+    let day:number = data.getDate();
+    let day1:any= data.getDate()-7;
+    console.log(day1);
+    if(day1==0){
+      let day2 = new Date(year,month,day1);
+      this.startTime = year+"-"+(month-1)+"-"+(day2.getDate());
+    }else{
+      this.startTime = year+"-"+month+"-"+day1;
+    }
+    this.endTime = year+"-"+month+"-"+day;
     this.initEcharts();
   }
   initEcharts() {

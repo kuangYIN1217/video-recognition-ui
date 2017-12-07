@@ -130,10 +130,10 @@ export class CreateTaskComponent {
     let flawId = '';
     for(let i=0;i<event.length;i++){
       flaw+=event[i].flawName+',';
-      flawId+=event[i].flawId+',';
+      //flawId+=event[i].flawId+',';
     }
     this.flawName = flaw.substring(0,flaw.length-1);
-    this.flawId = flawId.substring(0,flawId.length-1);
+    //this.flawId = flawId.substring(0,flawId.length-1);
   }
   create(){
     if(this.taskName==''){
@@ -165,7 +165,7 @@ export class CreateTaskComponent {
     }
     console.log(this.pathArr);
     console.log(this.fileSize);
-    this.electricService.createTask(this.appId,this.pathArr,this.flawId,this.taskName,this.fileSize)
+    this.electricService.createTask(this.appId,this.pathArr,this.flawName,this.taskName,this.fileSize)
       .subscribe(
         (data)=>{
             this.router.navigate(['../electaskmanage']);
@@ -209,7 +209,7 @@ export class CreateTaskComponent {
       //console.log(this.pathArr);
       //console.log(this.fileSize);
     }
-    this.electricService.updateTask(this.appId,this.pathArr,this.flawId,this.taskId,this.taskName,this.fileSize)
+    this.electricService.updateTask(this.appId,this.pathArr,this.flawName,this.taskId,this.taskName,this.fileSize)
       .subscribe(result=>{
         console.log(result);
         this.router.navigate(['../taskmanage']);

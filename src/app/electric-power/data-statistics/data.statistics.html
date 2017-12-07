@@ -23,9 +23,9 @@
     <div class="search searchTwo">
       <div class="info infoTime">
         <label>识别日期：</label>
-        <input type="text" id="start" readonly placeholder="请选择时间"/>
+        <input type="text" id="start" readonly [(ngModel)]="startTime"/>
         <span>--</span>
-        <input type="text" id="end" readonly placeholder="请选择时间"/>
+        <input type="text" id="end" readonly [(ngModel)]="endTime"/>
       </div>
       <div class="info">
         <label>统计颗粒度：</label>

@@ -205,14 +205,13 @@ export class ElectricService {
         }
       });
   }
-  createTask(appId,pathArr,flawId,name,size){
+  createTask(appId,pathArr,flaw,name,size){
     let path = "/api/createOrUpdatePatrolTask";
     let body = JSON.stringify(
       {
         "applicationId": appId,
         "filePaths": pathArr,
-        "firstFilePaths": [],
-        "patrolFlawIds": flawId,
+        "flawCategorys": flaw,
         "taskId": 0,
         "taskName": name,
         "zipSize": size
@@ -226,14 +225,13 @@ export class ElectricService {
         }
       })
   }
-  updateTask(appId,pathArr,flawId,taskId,name,size){
+  updateTask(appId,pathArr,flaw,taskId,name,size){
     let path = "/api/createOrUpdatePatrolTask";
     let body = JSON.stringify(
       {
         "applicationId": appId,
         "filePaths": pathArr,
-        "firstFilePaths": [],
-        "patrolFlawIds": flawId,
+        "flawCategorys": flaw,
         "taskId": taskId,
         "taskName": name,
         "zipSize": size
@@ -380,8 +378,8 @@ export class ElectricService {
         }
       })
   }
-  dataStaticSearch(appId,lineId,towerId,lineOrTower,startTime,endTime){
-    let path = "/api/patrolDataCount/"+appId+"/"+lineId+"/"+towerId+"/"+lineOrTower+"/"+startTime+"/"+endTime;
+  dataStaticSearch(appId,lineId,towerId,taskId,lineOrTower,startTime,endTime){
+    let path = "/api/patrolDataCount/"+appId+"/"+lineId+"/"+towerId+"/"+taskId+"/"+lineOrTower+"/"+startTime+"/"+endTime;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path, { headers : headers})
       .map((response: Response) => {
