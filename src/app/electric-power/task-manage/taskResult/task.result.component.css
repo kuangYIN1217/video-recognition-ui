@@ -141,4 +141,30 @@ select option{
 .unedit{
   background: url('../../../../assets/appdetail/way.manage/unedit.png') no-repeat center;
 }
+.fangda{
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(111, 111, 111, 0.3);
+  opacity: 1;
+  z-index: 999999;
+}
+.fangda span{
+  position: absolute;
+  width:70%;
+  margin-left: -35%;
+  left:50%;
+  top:20%;
+}
+.fangda .jietu{
+  width:100%;
+}
+.fangda .close{
+  position: absolute;
+  top:0;
+  right:0;
+  cursor: pointer;
+}
 

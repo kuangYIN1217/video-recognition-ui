@@ -2,6 +2,8 @@ import { Component} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ElectricService} from "../../../common/services/electric.service";
 import {Page} from "../../../common/defs/resources";
+import {SERVER_URL} from "../../../app.constants";
+declare var $:any;
 @Component({
   selector: 'task-result',
   styleUrls: ['./task.result.component.css'],
@@ -9,6 +11,7 @@ import {Page} from "../../../common/defs/resources";
   providers: [ElectricService]
 })
 export class TaskResultComponent {
+  SERVER_URL = SERVER_URL;
   allInfo:any={};
   flawPartSet:any[]=[];
   lineSet:any[]=[];
@@ -29,6 +32,9 @@ export class TaskResultComponent {
   flawPartId:number=0;
   statusId:number=0;
   statusArr:any[]=["全部","正常","已忽略"];
+  seeIndex:number=0;
+  imageUrl:string;
+  imageFlawUrl:string;
     constructor(private router:Router,private route: ActivatedRoute,private electricService:ElectricService) {
       this.status = this.statusArr[0];
       this.route.queryParams.subscribe(params => {
@@ -45,6 +51,9 @@ export class TaskResultComponent {
           this.getTaskResultSearch(this.taskId,0,0);
         }
       });
+  }
+  ngAfterViewInit() {
+    $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
   }
   ngOnInit() {
   }
@@ -67,11 +76,18 @@ export class TaskResultComponent {
         }
       })
   }
-  photo(item){
-
+  photo(url){
+    console.log(url);
+    this.seeIndex = 1;
+    this.imageUrl = url;
   }
-  flawPhoto(item){
-
+  flawPhoto(url){
+    console.log(url);
+    this.seeIndex = 1;
+    this.imageFlawUrl = url;
+  }
+  close(){
+    this.seeIndex = 0;
   }
   edit(item){
     this.router.navigate(['../editresult'],{queryParams: {'allInfo':JSON.stringify(item)}});
@@ -151,12 +167,15 @@ export class TaskResultComponent {
         obj1.towerNum="全部";
         obj1.towerId = 0;
         this.towerSet.unshift(obj1);
+        console.log(this.towerSet);
+        console.log(this.lineSet);
         this.getFlawPart();
       })
   }
   lineChange(){
     for(let i=0;i<this.lineSet.length;i++){
       if(this.line==this.lineSet[i].lineName){
+        this.line = this.lineSet[i].lineName;
         this.lineId = this.lineSet[i].lineId;
       }
     }

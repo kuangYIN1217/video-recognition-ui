@@ -378,8 +378,18 @@ export class ElectricService {
         }
       })
   }
-  dataStaticSearch(appId,lineId,towerId,taskId,lineOrTower,startTime,endTime){
-    let path = "/api/patrolDataCount/"+appId+"/"+lineId+"/"+towerId+"/"+taskId+"/"+lineOrTower+"/"+startTime+"/"+endTime;
+  dataStaticSearch(lineId,towerId,taskId,lineOrTower,startTime,endTime){
+    let path = "/api/patrolDataCount/"+lineId+"/"+towerId+"/"+taskId+"/"+lineOrTower+"/"+startTime+"/"+endTime;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers})
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
+  dataStaticResult(lineId,towerId,taskId,lineOrTower,startTime,endTime,page=0,size=10){
+    let path = "/api/patrolDataCountForPage/"+lineId+"/"+towerId+"/"+taskId+"/"+lineOrTower+"/"+startTime+"/"+endTime+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path, { headers : headers})
       .map((response: Response) => {

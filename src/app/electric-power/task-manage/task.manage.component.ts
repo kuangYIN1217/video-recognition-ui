@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {ElectricService} from "../../common/services/electric.service";
 import {Page} from "app/common/defs/resources";
 import {Router, ActivatedRoute} from "@angular/router";
+declare var $:any;
 @Component({
   selector: 'electric-task-manage',
   styleUrls: ['./task.manage.component.css'],
@@ -106,5 +107,8 @@ export class ElecTaskManageComponent {
   deleteShowChange(event){
     this.deleteShow = event;
     this.search();
+  }
+  ngAfterViewInit() {
+    $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
   }
 }

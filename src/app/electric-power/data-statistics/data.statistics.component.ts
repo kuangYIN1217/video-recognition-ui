@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {ElectricService} from "../../common/services/electric.service";
 import {Router, ActivatedRoute} from "@angular/router";
+import {Page} from "../../common/defs/resources";
 declare var $:any;
 declare var echarts: any;
 @Component({
@@ -27,6 +28,12 @@ export class DataStatisticsComponent {
   towerId:number;
   lineOrTower:number;
   taskId:number;
+  page: number = 0;
+  pageMaxItem: number = 10;
+  pageParams = new Page();
+  tableList:any[]=[];
+  pageNow:number;
+  showTable:boolean=true;
   constructor(private electricService:ElectricService,private route: ActivatedRoute ,private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.particles = this.particlesArr[0];
@@ -95,7 +102,7 @@ export class DataStatisticsComponent {
       this.towerArr = [{"towerNum":"全部","towerId":0}];
     }
   }
-  search(){
+  valid(){
     if(this.lineName=='全部'){
       this.lineId = 0;
     }else{
@@ -116,8 +123,15 @@ export class DataStatisticsComponent {
     }
     if(this.particles=='线路'){
       this.lineOrTower = 0;
+      this.showTable = true;
     }else{
       this.lineOrTower = 1;
+    }
+    if(this.particles=='杆塔'){
+      this.showTable = false;
+      this.lineOrTower = 1;
+    }else{
+      this.lineOrTower = 0;
     }
     if(this.taskName=='全部'){
       this.taskId = 0;
@@ -130,13 +144,37 @@ export class DataStatisticsComponent {
     }
     this.startTime = $('#start').val();
     this.endTime = $('#end').val();
-
-    this.searchResult(this.appId,this.lineId,this.towerId,this.taskId,this.lineOrTower,this.startTime,this.endTime);
   }
-  searchResult(appId,lineId,towerId,taskId,lineOrTower,startTime,endTime){
-    this.electricService.dataStaticSearch(appId,lineId,towerId,taskId,lineOrTower,startTime,endTime)
+  search(){
+    this.valid();
+    this.searchChart(this.lineId,this.towerId,this.taskId,this.lineOrTower,this.startTime,this.endTime);
+    this.searchResult(this.lineId,this.towerId,this.taskId,this.lineOrTower,this.startTime,this.endTime,this.page,this.pageMaxItem);
+  }
+  getPageData(paraParam) {
+    this.valid();
+    this.searchChart(this.lineId,this.towerId,this.taskId,this.lineOrTower,this.startTime,this.endTime);
+    this.searchResult(this.lineId,this.towerId,this.taskId,this.lineOrTower,this.startTime,this.endTime,paraParam.curPage-1,paraParam.pageMaxItem);
+    this.pageNow=paraParam.curPage;
+    /*    sessionStorage['taskCurPage'] = this.pageNow;
+     console.log(sessionStorage['taskCurPage']);*/
+  }
+  searchChart(lineId,towerId,taskId,lineOrTower,startTime,endTime){
+    this.electricService.dataStaticSearch(lineId,towerId,taskId,lineOrTower,startTime,endTime)
       .subscribe(result=>{
         console.log(result);
+      })
+  }
+  searchResult(lineId,towerId,taskId,lineOrTower,startTime,endTime,page,size){
+    this.electricService.dataStaticResult(lineId,towerId,taskId,lineOrTower,startTime,endTime,page,size)
+      .subscribe(result=>{
+        console.log(result);
+        this.tableList = result.content;
+        let page = new Page();
+        page.pageMaxItem = result.size;
+        page.curPage = result.number+1;
+        page.totalPage = result.totalPages;
+        page.totalNum = result.totalElements;
+        this.pageParams = page;
       })
   }
   ngOnInit() {
@@ -175,6 +213,8 @@ export class DataStatisticsComponent {
     }else{
       this.endTime = year+"-"+month+"-"+day;
     }
+    this.searchChart(0,0,0,0,this.startTime,this.endTime);
+    this.searchResult(0,0,0,0,this.startTime,this.endTime,this.page,this.pageMaxItem);
     this.initEcharts();
   }
   initEcharts() {
@@ -273,5 +313,8 @@ export class DataStatisticsComponent {
         }
       ]
     });
+  }
+  ngAfterViewInit() {
+    $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
   }
 }

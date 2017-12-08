@@ -462,7 +462,7 @@ export class WarnComponent{
     if(this.appCate=='实时流分析'){
       //console.log(this.appId);
       //console.log(this.ruleId);
-      this.warnService.searchWarns(id,taskId,nameTask,ruleId,status,page,size,start,end)
+      this.warnService.searchWarns(id,nameTask,ruleId,status,page,size,start,end)
         .subscribe(result=>{
           this.getWarnList(result);
         })
