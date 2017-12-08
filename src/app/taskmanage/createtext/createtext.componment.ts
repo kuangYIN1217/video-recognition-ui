@@ -64,7 +64,7 @@ export class CreateTextComponent {
       .subscribe(result=>{
         this.warnChanArr = result.content;
         //this.warnRule = this.warnChanArr[0].ruleName;
-        console.log(this.warnChanArr);
+        //console.log(this.warnChanArr);
       })
   }
   public uploader:FileUploader = new FileUploader({

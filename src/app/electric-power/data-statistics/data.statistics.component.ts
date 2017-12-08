@@ -158,11 +158,23 @@ export class DataStatisticsComponent {
     console.log(day1);
     if(day1==0){
       let day2 = new Date(year,month,day1);
-      this.startTime = year+"-"+(month-1)+"-"+(day2.getDate());
+      if(day2.getDate()<10){
+        this.startTime = year+"-"+(month-1)+"-0"+(day2.getDate());
+      }else{
+        this.startTime = year+"-"+(month-1)+"-"+(day2.getDate());
+      }
     }else{
-      this.startTime = year+"-"+month+"-"+day1;
+      if(day1<10){
+        this.startTime = year+"-"+month+"-0"+day1;
+      }else{
+        this.startTime = year+"-"+month+"-"+day1;
+      }
     }
-    this.endTime = year+"-"+month+"-"+day;
+    if(day<10){
+      this.endTime = year+"-"+month+"-0"+day;
+    }else{
+      this.endTime = year+"-"+month+"-"+day;
+    }
     this.initEcharts();
   }
   initEcharts() {

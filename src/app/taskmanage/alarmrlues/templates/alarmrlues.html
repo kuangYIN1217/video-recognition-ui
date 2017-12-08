@@ -8,7 +8,8 @@
         <!--<img src="../assets/alarmrlues/unchecked.png" (click)="check(item)" *ngIf="item.flag==undefined||item.flag==2" class="middle"/>
         <img src="../assets/alarmrlues/checked.png" (click)="check(item)" *ngIf="item.flag==1" class="middle"/>-->
         <a class="middle" *ngIf="item.channelName">{{item.channelName}}</a>
-        <a class="middle" *ngIf="item.ruleName">{{item.ruleName}}</a>
+        <a class="middle" *ngIf="item.ruleName&&item.selected==1" style="color:#999">{{item.ruleName}}</a>
+        <a class="middle" *ngIf="item.ruleName&&item.selected!=1">{{item.ruleName}}</a>
       </span>
     </div>
   </div>

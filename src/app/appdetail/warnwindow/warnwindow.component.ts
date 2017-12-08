@@ -62,6 +62,7 @@ export class WarnWindowComponent{
     this.warnService.getWarnObjOne()
       .subscribe(result=>{
         this.warnObjArr=result;
+        this.warnObj = this.warnObjArr[0].classificationName;
         this.changeWarn();
       });
   }
@@ -150,24 +151,36 @@ export class WarnWindowComponent{
       //console.log(this.warnChannelId);
     }
     //console.log(this.warnChanArr);
-    this.getObj();
-    for(let i=0;i<this.warnObjArr.length;i++){
-      for(let j=0;j<this.warnObjArr[i].recognitionCategories.length;j++){
-        if(this.ruleList.recognitionCategor.cateId==this.warnObjArr[i].recognitionCategories[j].cateId){
-          this.warnObj = this.warnObjArr[i].classificationName;
-          this.warnObjDetail = this.ruleList.recognitionCategor.name;
-          this.warnObjDetailArr = this.warnObjArr[i].recognitionCategories;
-        }
+    //this.getObj();
+    if(JSON.stringify(this.ruleList)!="{}"&&this.ruleList.ruleName!=""){
+      this.warnService.getWarnObjOne()
+        .subscribe(result=>{
+          this.warnObjArr=result;
+          for(let i=0;i<this.warnObjArr.length;i++){
+            for(let j=0;j<this.warnObjArr[i].recognitionCategories.length;j++){
+              if(this.ruleList.recognitionCategor.cateId==this.warnObjArr[i].recognitionCategories[j].cateId){
+                this.warnObj = this.warnObjArr[i].classificationName;
+                this.warnObjDetail = this.ruleList.recognitionCategor.name;
+                this.warnObjDetailArr = this.warnObjArr[i].recognitionCategories;
+                this.warnObjDetailArr.sort(function(a,b){
+                  return parseInt(b.cateId) - parseInt(a.cateId)
+                })
+                this.changeDetail();
+              }
+            }
+          }
+        });
+      this.objName = this.ruleList.targetFeature;
+      if(this.ruleList.targetImages!=''&&this.ruleList.targetImages!=undefined){
+        this.photoContainer=this.ruleList.targetImages.split(',');
       }
-    }
-    this.objName = this.ruleList.targetFeature;
-    if(this.ruleList.targetImages!=''&&this.ruleList.targetImages!=undefined){
-      this.photoContainer=this.ruleList.targetImages.split(',');
-    }
-    if(this.ruleList.alarmRuleStatus=='开启'){
-      this.radioIndex = 1;
+      if(this.ruleList.alarmRuleStatus=='开启'){
+        this.radioIndex = 1;
+      }else{
+        this.radioIndex = 0;
+      }
     }else{
-      this.radioIndex = 0;
+      this.getObj();
     }
   }
   ngAfterViewInit() {

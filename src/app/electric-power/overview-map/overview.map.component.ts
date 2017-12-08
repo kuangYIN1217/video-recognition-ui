@@ -97,13 +97,13 @@ export class OverviewMapComponent {
     console.log(item);
   }
   ngOnInit(){
-    this.icon = this.icon ? null : {
+/*    this.icon = this.icon ? null : {
       size: {
         width: 46,
         height: 46
       },
       image: 'assets/electric/detect.png',
-    };
+    };*/
     this.markers=[
       {
         point: {

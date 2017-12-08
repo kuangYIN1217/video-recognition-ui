@@ -22,11 +22,13 @@ export class AlarmRluesComponent {
   warnChanCheckedArr:any[]=[];
   bool:boolean=true;
   //appCate:string;
+  otherArr:any[]=[];
+  indexLabel:number=0;
   constructor() {
     //this.appCate = window.sessionStorage.getItem("applicationType");
   }
   ngOnChanges(...args: any[]) {
-    //console.log(this.title);
+    console.log(this.warnChanArr);
     if(this.warn_title=='新建规则'||this.taskTitle=='新建任务'){
       this.warnChan=[];
       this.warnChanId=[];
@@ -54,6 +56,18 @@ export class AlarmRluesComponent {
                 }
               }
             }else{
+              if(this.warnChanChecked[i].recognitionCategor.cateId==1||this.warnChanChecked[i].recognitionCategor.cateId==26){
+                if(this.warnChanChecked[i].targetFeature==''){
+                  if((this.warnChanArr[j].recognitionCategor.cateId==1||this.warnChanArr[j].recognitionCategor.cateId==26)&&this.warnChanArr[j].targetFeature!=''){
+                    this.warnChanArr[j].selected=1;
+                  }
+                }else if(this.warnChanChecked[i].targetFeature!=''){
+                  if((this.warnChanArr[j].recognitionCategor.cateId==1||this.warnChanArr[j].recognitionCategor.cateId==26)&&this.warnChanArr[j].targetFeature==''){
+                    this.warnChanArr[j].selected=1;
+                  }
+                }
+              }
+              console.log(this.warnChanArr);
               if(this.warnChanChecked[i].ruleId == this.warnChanArr[j].ruleId){
                 this.warnChanArr[j].flag = 1;
                 if(this.bool = true) {
@@ -76,6 +90,41 @@ export class AlarmRluesComponent {
     }*/
   }
   check(item){
+    console.log(item);
+    if(item.selected==1){
+      return false;
+    }
+    if(item.flag==1&&(item.recognitionCategor.cateId==1||item.recognitionCategor.cateId==26)){
+      for(let i=0;i<this.warnChanArr.length;i++){
+        if(((this.warnChanArr[i].recognitionCategor.cateId==1||this.warnChanArr[i].recognitionCategor.cateId==26)&&this.warnChanArr[i].flag==1)&&(this.warnChanArr[i].ruleId!=item.ruleId)){
+              this.indexLabel = 1;
+        }else{
+          this.indexLabel = 0;
+        }
+      }
+      if(this.indexLabel == 0){
+        for(let i=0;i<this.warnChanArr.length;i++) {
+          if (this.warnChanArr[i].recognitionCategor.cateId == 1 || this.warnChanArr[i].recognitionCategor.cateId == 26) {
+            this.warnChanArr[i].selected = 2;
+          }
+        }
+      }
+      console.log(this.warnChanArr);
+    }else{
+      if((item.recognitionCategor.cateId==1||item.recognitionCategor.cateId==26)&&item.targetFeature==''){
+        for(let i=0;i<this.warnChanArr.length;i++){
+          if((this.warnChanArr[i].recognitionCategor.cateId==1||this.warnChanArr[i].recognitionCategor.cateId==26)&&this.warnChanArr[i].targetFeature!=''){
+            this.warnChanArr[i].selected=1;
+          }
+        }
+      }else if((item.recognitionCategor.cateId==1||item.recognitionCategor.cateId==26)&&item.targetFeature!=''){
+        for(let i=0;i<this.warnChanArr.length;i++){
+          if((this.warnChanArr[i].recognitionCategor.cateId==1||this.warnChanArr[i].recognitionCategor.cateId==26)&&this.warnChanArr[i].targetFeature==''){
+            this.warnChanArr[i].selected=1;
+          }
+        }
+      }
+    }
     if(!item.flag||item.flag==2){
       item.flag=1;
       if(item.channelName){
@@ -108,6 +157,9 @@ export class AlarmRluesComponent {
           }
         }
       }
+    }
+    if(item.selected==1){
+
     }
   }
   stopPropagetion(e:any){
