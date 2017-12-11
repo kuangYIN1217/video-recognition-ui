@@ -20,16 +20,20 @@
     <div class="map">
       <div class="describe">
         <label>全部线路全部任务：</label>
-        <div>总计识别塔数<span>120</span>座，缺陷塔<span>80</span>座，缺陷问题<span>300</span>个，缺陷塔率<span>66.7</span>%，平均问题数<span>3.75</span></div>
+        <div>总计识别塔数<span>{{allInfo?.towerCount}}</span>座，缺陷塔<span>{{allInfo?.flawTowerCount}}</span>座，缺陷问题<span>{{allInfo?.flawCount}}</span>个，缺陷塔率<span>{{allInfo?.flawTowerRate}}</span>%，平均问题数<span>{{allInfo?.flawTowerAvgCount}}</span></div>
       </div>
       <div class="mapContent">
 
         <ngx-amap class="demo-map" [center]="[118.892735,32.087696]" [zoom]="16">
-          <amap-marker *ngFor="let marker of markers" [position]="[marker.point.lng,marker.point.lat]" [icon]="marker.icon" [label]="marker.label" (mouseOver)="onMarkerEvent($event, 'mouseOver')" (mouseOut)="onMarkerEvent($event, 'mouseOut')"></amap-marker>
+          <amap-marker *ngFor="let marker of markers;let i=index" [position]="[marker.point.lng,marker.point.lat]" [icon]="marker.icon" [label]="marker.label" [title]="marker.title" [hidden]="marker.hidden" (mouseOver)="onMarkerEvent($event, 'mouseOver')" (mouseOut)="onMarkerEvent($event, 'mouseOut')">
+            <amap-info-window [offset]="infoWindowOffset">
+              我是第 <span class="text-danger">{{i+1}}</span> 个marker
+            </amap-info-window>
+          </amap-marker>
         </ngx-amap>
       </div>
       </div>
   </div>
 </div>
-<app-synchronization *ngIf="synchronizationShow" [synchronizeIndex]="synchronizeIndex" [info]="info" [tip_content]="tip_content" (synchronizationShowChange)="synchronizationShowChange($event)"></app-synchronization>
+<app-synchronization *ngIf="synchronizationShow" [synchronizeIndex]="synchronizeIndex" [info]="info" [tip_content]="tip_content"  (synchronizationShowChange)="synchronizationShowChange($event)"></app-synchronization>
 <!--<control type="navigation" [options]="navOptions"></control>-->

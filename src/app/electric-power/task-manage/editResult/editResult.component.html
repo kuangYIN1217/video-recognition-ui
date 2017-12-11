@@ -12,11 +12,11 @@
       </div>
       <div class="info">
         <label class="infoSub">识别原图：</label>
-        <img src=""/>
+        <img src="{{SERVER_URL}}/download/{{allInfo.taskFile.filePath}}"/>
       </div>
       <div class="info">
         <label class="infoSub">缺陷图：</label>
-        <img src=""/>
+        <img src="{{SERVER_URL}}/download/{{allInfo.flawFilePath}}"/>
         <span onclick="document.getElementById('flawImg').click()" class="reUpload btn bgcg" style="margin-left: 89px">重新上传</span>
         <input type="file" id="flawImg" name="file" ng2FileSelect [uploader]="uploader" accept=".png,.jpj" (change)="selectedFileOnChanged($event)"/>
       </div>
@@ -49,8 +49,8 @@
         <span>{{allInfo.recogTime}}</span>
       </div>
       <div class="saveBtn">
-        <a href="#" class="btn bgco" (click)="save()">保存</a>
-        <a href="#" class="btn bgcg" style="margin-left: 8px" (click)="cancel()">取消</a>
+        <a href="#" onclick="return false" class="btn bgco" (click)="save()">保存</a>
+        <a href="#" onclick="return false" class="btn bgcg" style="margin-left: 8px" (click)="cancel()">取消</a>
       </div>
     </div>
   </div>

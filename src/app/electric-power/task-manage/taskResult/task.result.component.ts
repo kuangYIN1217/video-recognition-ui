@@ -69,11 +69,6 @@ export class TaskResultComponent {
       .subscribe(result=>{
         console.log(result);
         this.getFlawPart()
-        if(this.pageNo==0){
-          this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPart,this.status,this.page,this.pageMaxItem);
-        }else{
-          this.getTaskResult(this.taskId,this.lineId,this.towerId,this.flawPart,this.status,this.pageNo,this.pageSize);
-        }
       })
   }
   photo(url){
@@ -81,10 +76,10 @@ export class TaskResultComponent {
     this.seeIndex = 1;
     this.imageUrl = url;
   }
-  flawPhoto(url){
-    console.log(url);
+  flawPhoto(item){
+    console.log(item);
     this.seeIndex = 1;
-    this.imageFlawUrl = url;
+    this.imageUrl = item;
   }
   close(){
     this.seeIndex = 0;

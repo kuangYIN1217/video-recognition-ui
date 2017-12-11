@@ -77,13 +77,13 @@
             <a class="operationBtn unhulue middle" *ngIf="item.infoStatus=='已忽略'"></a>
             <a class="operationBtn edit middle" (click)="edit(item)"></a>
           </td>
-          <div class="fangda" [style.display]="seeIndex==1?'':'none'">
+          <div class="fangda" *ngIf="seeIndex==1">
               <span>
                 <img src="{{SERVER_URL}}/download/{{imageUrl}}" class="jietu"/>
                 <img src="../assets/appmanage/delete1.png" class="close" (click)="close()"/>
               </span>
           </div>
-          <div class="fangda" [style.display]="seeIndex==2?'':'none'">
+          <div class="fangda" *ngIf="seeIndex==2">
               <span>
                 <img src="{{SERVER_URL}}/download/{{imageFlawUrl}}" class="jietu"/>
                 <img src="../assets/appmanage/delete1.png" class="close" (click)="close()"/>

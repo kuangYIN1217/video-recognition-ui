@@ -55,11 +55,23 @@ export class CreateInspectionComponent {
         let obj:any = {};
         obj.unitName = "自定义";
         this.unitArr.push(obj);
-        this.unit = result[0].unitName;
+        if(this.title=="新建巡检信息"){
+          this.unit = result[0].unitName;
+        }
         if(this.unit=='自定义'){
           this.changeUnit();
         }
-        this.getLine(result[0].unitId);
+        if(this.title=="新建巡检信息"){
+          this.getLine(result[0].unitId);
+        }else{
+          for(let i=0;i<this.unitArr.length;i++){
+            if(this.unit==this.unitArr[i].unitName){
+              this.unitId = this.unitArr[i].unitId;
+            }
+          }
+          this.getLine(this.unitId);
+        }
+
       })
   }
   changeUnit(){

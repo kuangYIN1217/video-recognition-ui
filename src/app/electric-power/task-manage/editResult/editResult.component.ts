@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ElectricService} from "../../../common/services/electric.service";
 import {SERVER_URL} from "../../../app.constants";
 import {FileUploader} from "ng2-file-upload";
+declare var $:any;
 @Component({
   selector: 'edit-result',
   styleUrls: ['./editResult.component.css'],
@@ -10,6 +11,7 @@ import {FileUploader} from "ng2-file-upload";
   providers: [ElectricService]
 })
 export class EditResultComponent {
+  SERVER_URL = SERVER_URL;
   allInfo:any={};
   part:string='';
   describe:string='';
@@ -48,10 +50,13 @@ export class EditResultComponent {
     this.electricService.modifyFlaw(this.describe,this.flawPhoto,this.detailDescribe,this.flawNature,this.allInfo.infoId,this.flawStatus,this.part)
       .subscribe(result=>{
         console.log(result);
-        this.router.navigate(['../taskresult']);
+        window.history.back();
       })
   }
+  ngAfterViewInit() {
+    $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
+  }
     cancel(){
-      this.router.navigate(['../taskresult']);
+      window.history.back();
     }
 }

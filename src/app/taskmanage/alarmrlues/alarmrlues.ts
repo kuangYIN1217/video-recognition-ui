@@ -24,6 +24,7 @@ export class AlarmRluesComponent {
   //appCate:string;
   otherArr:any[]=[];
   indexLabel:number=0;
+  indexTarget:number=0;
   constructor() {
     //this.appCate = window.sessionStorage.getItem("applicationType");
   }
@@ -57,13 +58,24 @@ export class AlarmRluesComponent {
               }
             }else{
               if(this.warnChanChecked[i].recognitionCategor.cateId==1||this.warnChanChecked[i].recognitionCategor.cateId==26){
-                if(this.warnChanChecked[i].targetFeature==''){
-                  if((this.warnChanArr[j].recognitionCategor.cateId==1||this.warnChanArr[j].recognitionCategor.cateId==26)&&this.warnChanArr[j].targetFeature!=''){
+                if(this.warnChanChecked[i].targetFeature==''||this.warnChanChecked[i].targetFeature==null){
+                  if((this.warnChanArr[j].recognitionCategor.cateId==1||this.warnChanArr[j].recognitionCategor.cateId==26)&&(this.warnChanArr[j].targetFeature!=''&&this.warnChanArr[j].targetFeature!=null)){
                     this.warnChanArr[j].selected=1;
                   }
-                }else if(this.warnChanChecked[i].targetFeature!=''){
-                  if((this.warnChanArr[j].recognitionCategor.cateId==1||this.warnChanArr[j].recognitionCategor.cateId==26)&&this.warnChanArr[j].targetFeature==''){
+                }else if(this.warnChanChecked[i].targetFeature!=''&&this.warnChanChecked[i].targetFeature!=null){
+                  if((this.warnChanArr[j].recognitionCategor.cateId==1||this.warnChanArr[j].recognitionCategor.cateId==26)&&(this.warnChanArr[j].targetFeature==''||this.warnChanArr[j].targetFeature==null)){
                     this.warnChanArr[j].selected=1;
+                  }
+                }
+              }
+              if(this.warnChanChecked[i].recognitionCategor.cateId==8||this.warnChanChecked[i].recognitionCategor.cateId==10||this.warnChanChecked[i].recognitionCategor.cateId==23||this.warnChanChecked[i].recognitionCategor.cateId==25||this.warnChanChecked[i].recognitionCategor.cateId==30){
+                if(this.warnChanChecked[i].recognitionCategor.cateId==8||this.warnChanChecked[i].recognitionCategor.cateId==10||this.warnChanChecked[i].recognitionCategor.cateId==23||this.warnChanChecked[i].recognitionCategor.cateId==25){
+                  if(this.warnChanArr[j].recognitionCategor.cateId==30){
+                    this.warnChanArr[j].selected1=1;
+                  }
+                }else if(this.warnChanChecked[i].recognitionCategor.cateId==30){
+                  if(this.warnChanArr[j].recognitionCategor.cateId==8||this.warnChanArr[j].recognitionCategor.cateId==10||this.warnChanArr[j].recognitionCategor.cateId==23||this.warnChanArr[j].recognitionCategor.cateId==25){
+                    this.warnChanArr[j].selected1=1;
                   }
                 }
               }
@@ -91,36 +103,74 @@ export class AlarmRluesComponent {
   }
   check(item){
     console.log(item);
-    if(item.selected==1){
-      return false;
-    }
-    if(item.flag==1&&(item.recognitionCategor.cateId==1||item.recognitionCategor.cateId==26)){
-      for(let i=0;i<this.warnChanArr.length;i++){
-        if(((this.warnChanArr[i].recognitionCategor.cateId==1||this.warnChanArr[i].recognitionCategor.cateId==26)&&this.warnChanArr[i].flag==1)&&(this.warnChanArr[i].ruleId!=item.ruleId)){
-              this.indexLabel = 1;
-        }else{
-          this.indexLabel = 0;
-        }
+    if(item.ruleName){
+      if(item.selected==1){
+        return false;
       }
-      if(this.indexLabel == 0){
-        for(let i=0;i<this.warnChanArr.length;i++) {
-          if (this.warnChanArr[i].recognitionCategor.cateId == 1 || this.warnChanArr[i].recognitionCategor.cateId == 26) {
-            this.warnChanArr[i].selected = 2;
+      if(item.selected1==1){
+        return false;
+      }
+      if(item.flag==1&&(item.recognitionCategor.cateId==1||item.recognitionCategor.cateId==26)){
+        for(let i=0;i<this.warnChanArr.length;i++){
+          if(((this.warnChanArr[i].recognitionCategor.cateId==1||this.warnChanArr[i].recognitionCategor.cateId==26)&&this.warnChanArr[i].flag==1)&&(this.warnChanArr[i].ruleId!=item.ruleId)){
+            this.indexLabel = 1;
+            break;
+          }else{
+            this.indexLabel = 0;
+          }
+        }
+        if(this.indexLabel == 0){
+          for(let i=0;i<this.warnChanArr.length;i++) {
+            if (this.warnChanArr[i].recognitionCategor.cateId == 1 || this.warnChanArr[i].recognitionCategor.cateId == 26) {
+              this.warnChanArr[i].selected = 2;
+            }
+          }
+        }
+        console.log(this.warnChanArr);
+      }else{
+        if((item.recognitionCategor.cateId==1||item.recognitionCategor.cateId==26)&&(item.targetFeature==''||item.targetFeature==null)){
+          for(let i=0;i<this.warnChanArr.length;i++){
+            if((this.warnChanArr[i].recognitionCategor.cateId==1||this.warnChanArr[i].recognitionCategor.cateId==26)&&(this.warnChanArr[i].targetFeature!=''&&this.warnChanArr[i].targetFeature!=null)){
+              this.warnChanArr[i].selected=1;
+            }
+          }
+        }else if((item.recognitionCategor.cateId==1||item.recognitionCategor.cateId==26)&&(item.targetFeature!=''&&item.targetFeature!=null)){
+          for(let i=0;i<this.warnChanArr.length;i++){
+            if((this.warnChanArr[i].recognitionCategor.cateId==1||this.warnChanArr[i].recognitionCategor.cateId==26)&&(this.warnChanArr[i].targetFeature==''||this.warnChanArr[i].targetFeature==null)){
+              this.warnChanArr[i].selected=1;
+            }
           }
         }
       }
-      console.log(this.warnChanArr);
-    }else{
-      if((item.recognitionCategor.cateId==1||item.recognitionCategor.cateId==26)&&item.targetFeature==''){
+      if(item.flag==1&&(item.recognitionCategor.cateId==8||item.recognitionCategor.cateId==10||item.recognitionCategor.cateId==23||item.recognitionCategor.cateId==25||item.recognitionCategor.cateId==30)){
         for(let i=0;i<this.warnChanArr.length;i++){
-          if((this.warnChanArr[i].recognitionCategor.cateId==1||this.warnChanArr[i].recognitionCategor.cateId==26)&&this.warnChanArr[i].targetFeature!=''){
-            this.warnChanArr[i].selected=1;
+          if(((this.warnChanArr[i].recognitionCategor.cateId==8||this.warnChanArr[i].recognitionCategor.cateId==10||this.warnChanArr[i].recognitionCategor.cateId==23||this.warnChanArr[i].recognitionCategor.cateId==25||this.warnChanArr[i].recognitionCategor.cateId==30)&&this.warnChanArr[i].flag==1)&&(this.warnChanArr[i].ruleId!=item.ruleId)){
+            this.indexTarget = 1;
+            break;
+          }else{
+            this.indexTarget = 0;
           }
         }
-      }else if((item.recognitionCategor.cateId==1||item.recognitionCategor.cateId==26)&&item.targetFeature!=''){
-        for(let i=0;i<this.warnChanArr.length;i++){
-          if((this.warnChanArr[i].recognitionCategor.cateId==1||this.warnChanArr[i].recognitionCategor.cateId==26)&&this.warnChanArr[i].targetFeature==''){
-            this.warnChanArr[i].selected=1;
+        if(this.indexTarget == 0){
+          for(let i=0;i<this.warnChanArr.length;i++) {
+            if (this.warnChanArr[i].recognitionCategor.cateId == 8 || this.warnChanArr[i].recognitionCategor.cateId == 10|| this.warnChanArr[i].recognitionCategor.cateId == 23|| this.warnChanArr[i].recognitionCategor.cateId == 25|| this.warnChanArr[i].recognitionCategor.cateId == 30) {
+              this.warnChanArr[i].selected1 = 2;
+            }
+          }
+        }
+        console.log(this.warnChanArr);
+      }else{
+        if(item.recognitionCategor.cateId==8||item.recognitionCategor.cateId==10||item.recognitionCategor.cateId==23||item.recognitionCategor.cateId==25){
+          for(let i=0;i<this.warnChanArr.length;i++){
+            if(this.warnChanArr[i].recognitionCategor.cateId==30){
+              this.warnChanArr[i].selected1=1;
+            }
+          }
+        }else if(item.recognitionCategor.cateId==30){
+          for(let i=0;i<this.warnChanArr.length;i++){
+            if(this.warnChanArr[i].recognitionCategor.cateId==8||this.warnChanArr[i].recognitionCategor.cateId==10||this.warnChanArr[i].recognitionCategor.cateId==23||this.warnChanArr[i].recognitionCategor.cateId==25){
+              this.warnChanArr[i].selected1=1;
+            }
           }
         }
       }
@@ -157,9 +207,6 @@ export class AlarmRluesComponent {
           }
         }
       }
-    }
-    if(item.selected==1){
-
     }
   }
   stopPropagetion(e:any){

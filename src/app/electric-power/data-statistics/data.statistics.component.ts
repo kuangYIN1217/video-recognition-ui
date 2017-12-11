@@ -34,6 +34,13 @@ export class DataStatisticsComponent {
   tableList:any[]=[];
   pageNow:number;
   showTable:boolean=true;
+  dataList_x:any[]=[];
+  dataList_y1:any[]=[];
+  dataList_y2:any[]=[];
+  intervaly1:number;
+  intervaly2:number;
+  maxy1:number;
+  maxy2:number;
   constructor(private electricService:ElectricService,private route: ActivatedRoute ,private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.particles = this.particlesArr[0];
@@ -159,9 +166,38 @@ export class DataStatisticsComponent {
      console.log(sessionStorage['taskCurPage']);*/
   }
   searchChart(lineId,towerId,taskId,lineOrTower,startTime,endTime){
+    this.dataList_x = [];
+    this.dataList_y1 = [];
+    this.dataList_y2 = [];
+    this.maxy1 = null;
+    this.maxy2 = null;
+    this.intervaly1 = null;
+    this.intervaly2 = null;
     this.electricService.dataStaticSearch(lineId,towerId,taskId,lineOrTower,startTime,endTime)
       .subscribe(result=>{
         console.log(result);
+        for(let i=0;i<result.length;i++){
+          if(this.particles=='线路'){
+            this.dataList_x.push(result[i].lineName);
+            this.dataList_y1.push(result[i].flawTowerCount);
+            this.dataList_y2.push(result[i].flawTowerRate*100);
+          }else{
+            this.dataList_x.push(result[i].towerNum);
+            this.dataList_y1.push(result[i].flawFileCount);
+            this.dataList_y2.push(result[i].flawFileRate*100);
+          }
+        }
+        this.intervaly1 = Math.ceil(Number(Math.max.apply(null, this.dataList_y1))/5);
+        this.maxy1 = this.intervaly1*6;
+        this.intervaly2 = Math.ceil(Number(Math.max.apply(null, this.dataList_y2))/5);
+        this.maxy2 = this.intervaly2*6;
+        console.log(this.maxy1);
+        console.log(this.intervaly1);
+        console.log(this.maxy2);
+
+        console.log(this.intervaly2);
+        this.initEcharts();
+
       })
   }
   searchResult(lineId,towerId,taskId,lineOrTower,startTime,endTime,page,size){
@@ -215,23 +251,9 @@ export class DataStatisticsComponent {
     }
     this.searchChart(0,0,0,0,this.startTime,this.endTime);
     this.searchResult(0,0,0,0,this.startTime,this.endTime,this.page,this.pageMaxItem);
-    this.initEcharts();
   }
   initEcharts() {
     // 获取data数据
-/*    let legend_data = [];
-    let series_data = [];
-    for (let i = 0 ; i < this.d_word_list.length ; i++) {
-      legend_data.push(this.d_word_list[i].des);
-      series_data.push({
-        value: this.d_word_list[i].ratio,
-        name: this.d_word_list[i].des,
-        itemStyle: {
-          normal: {
-            color: this.d_word_list[i].color
-          }
-        }})
-    }*/
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('charts'));
     // 绘制图表
@@ -258,10 +280,15 @@ export class DataStatisticsComponent {
       legend: {
         data:['降水量','平均温度']
       },
+      dataZoom : {
+        show : true,
+        start : 0,
+        end : 100
+      },
       xAxis: [
         {
           type: 'category',
-          data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+          data: this.dataList_x,
           axisPointer: {
             type: 'shadow'
           }
@@ -270,38 +297,38 @@ export class DataStatisticsComponent {
       yAxis: [
         {
           type: 'value',
-          name: '水量',
+          name: '数量',
           min: 0,
-          max: 250,
-          interval: 50,
+          max: this.maxy1,
+          interval: this.intervaly1,
           axisLabel: {
-            formatter: '{value} ml'
+            formatter: '{value} 个'
           }
         },
         {
           type: 'value',
-          name: '温度',
+          name: '比率',
           min: 0,
-          max: 25,
-          interval: 5,
+          max: this.maxy2,
+          interval: this.intervaly2,
           axisLabel: {
-            formatter: '{value} °C'
+            formatter: '{value} %'
           }
         }
       ],
       series: [
         {
-          name:'降水量',
+          name:'缺陷杆塔量',
           type:'bar',
           itemStyle: {
             normal: {
               color: '#23a880'
             }
           },
-          data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+          data:this.dataList_y1
         },
         {
-          name:'平均温度',
+          name:'缺陷杆塔比率',
           type:'line',
           yAxisIndex: 1,
           itemStyle: {
@@ -309,7 +336,7 @@ export class DataStatisticsComponent {
               color: '#ff7c35'
             }
           },
-          data:[2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+          data:this.dataList_y2
         }
       ]
     });
