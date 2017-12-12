@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ElectricService} from "../../common/services/electric.service";
 import {IIcon, ILabel, IPixel} from "ngx-amap/types/interface";
+import {LngLat} from 'ngx-amap/types/class';
 declare var $:any;
 @Component({
   selector: 'overview-map',
@@ -21,12 +22,16 @@ export class OverviewMapComponent {
   taskArr:any[]=[];
   lineId:number;
   taskId:number;
-  icon: IIcon;
   label: ILabel;
   markers:any[]=[];
+  marker:any={};
   allInfo:any={};
   flawArr:any[]=[];
   infoWindowOffset:IPixel;
+  center:any={};
+  @Input() set setLabel(label:any){
+    console.log(label);
+  }
   constructor(private electricService:ElectricService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.electricService.getSynchronizationInfo(this.appId)
@@ -41,16 +46,7 @@ export class OverviewMapComponent {
           this.info = result;
         }
       });
-    this.electricService.searchMapInfo(this.appId,0,0)
-      .subscribe(result=>{
-        if(result){
-          console.log(result);
-          this.allInfo = result;
-          console.log(this.allInfo.towerList);
-          this.flawArr = this.allInfo.towerList;
-          console.log(this.flawArr);
-        }
-      })
+
     this.electricService.getMapTask(this.appId)
       .subscribe(result=>{
         console.log(result);
@@ -91,77 +87,77 @@ export class OverviewMapComponent {
         console.log(result);
       })
   }
-  onMarkerEvent(event){
-    console.log(event);
-    if(event.type=="mouseover"){
-/*      label : {
-        offset: {
-          x: 55,
-            y: 50
-        },
-        content: '苏宁'
-      }*/
-    }else if(event.type=="mouseout"){
-      this.label = null;
-    }
-
-  }
   output(item){
     console.log(item);
   }
-  ngOnInit(){
-/*    this.icon = this.icon ? null : {
-      size: {
-        width: 46,
-        height: 46
-      },
-      image: 'assets/electric/detect.png',
-    };*/
+  getTitle(item){
+    if(item.towerInfo.status=='未检测'){
+      return `${item.towerInfo.status}:${item.flawCount}`;
+    }else{
+      return item.towerInfo.status;
+    }
+  }
+  getImage(item){
+    if(item=='未检测'){
+      return 'assets/electric/undetect.png';
+    }else if(item=='检测正常'){
+      return 'assets/electric/detect.png';
+    }else if(item=='检测异常'){
+      return 'assets/electric/detecterror.png';
+    }
+  }
+  onMarkerEvent(event: any, type: string) {
+    console.log('marker event:', type, event);
+    console.log(event.target.Xg);
+  }
+
+  ngOnInit() {
+    this.electricService.searchMapInfo(this.appId,0,0)
+      .subscribe(result=>{
+        if(result) {
+          console.log(result);
+          this.allInfo = result;
+          //console.log(this.allInfo);
+          this.flawArr = this.allInfo.towerList;
+          //console.log(this.flawArr);
+        }
+
+    this.markers = [];
     this.infoWindowOffset = {
-      x: 0,
+      x: 14,
       y: -30
     };
-    this.markers=[
-      {
+    this.center = {
+        lat:this.allInfo.latitude,
+        lng:this.allInfo.longitude
+        };
+    console.log(this.center);
+    for (let i = 0; i < this.flawArr.length; i++) {
+      this.marker = {
         point: {
-          lat: 32.08637,
-          lng: 118.88831
+           lat: this.flawArr[i].towerInfo.towerLatitude,
+           lng: this.flawArr[i].towerInfo.towerLongitude
         },
-        icon :{
+        icon: {
           size: {
             width: 46,
             height: 46
           },
-          image: 'assets/electric/detect.png'
+         image: this.getImage(this.flawArr[i].towerInfo.status)
         },
-        label : {
+        label: {
           offset: {
-            x: 55,
+            x: 8,
             y: 50
           },
-        content: '<div style="border:none;font-size:18px; color: red; font-weight: bold;background: transparent;">12</div>'
-        }
-      },
-      {
-        point: {
-          lat: 32.087696,
-          lng: 118.892735
+          content: `<div style="font-size:18px; color: red; font-weight: bold;">${this.flawArr[i].towerInfo.towerNum}</div>`
         },
-        icon :{
-          size: {
-            width: 46,
-            height: 46
-          },
-          image: 'assets/electric/undetect.png'
-        },
-        label : {
-          offset: {
-            x: 55,
-            y: 50
-          },
-          content: `&nbsp;&nbsp;苏宁&nbsp;&nbsp;${30}&nbsp;&nbsp;`
-        }
-      }
-    ]
+        title:this.getTitle(this.flawArr[i]),
+        extData:this.flawArr[i].towerInfo.towerId
+      };
+      this.markers.push(this.marker);
+    }
+      console.log(this.markers);
+      })
   }
 }

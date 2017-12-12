@@ -23,14 +23,33 @@
         <div>总计识别塔数<span>{{allInfo?.towerCount}}</span>座，缺陷塔<span>{{allInfo?.flawTowerCount}}</span>座，缺陷问题<span>{{allInfo?.flawCount}}</span>个，缺陷塔率<span>{{allInfo?.flawTowerRate}}</span>%，平均问题数<span>{{allInfo?.flawTowerAvgCount}}</span></div>
       </div>
       <div class="mapContent">
-
-        <ngx-amap class="demo-map" [center]="[118.892735,32.087696]" [zoom]="16">
-          <amap-marker *ngFor="let marker of markers;let i=index" [position]="[marker.point.lng,marker.point.lat]" [icon]="marker.icon" [label]="marker.label" [title]="marker.title" [hidden]="marker.hidden" (mouseOver)="onMarkerEvent($event, 'mouseOver')" (mouseOut)="onMarkerEvent($event, 'mouseOut')">
-            <amap-info-window [offset]="infoWindowOffset">
+        <ngx-amap class="demo-map" [center]="[119.0652240,31.8388310]" [zoom]="15">
+          <amap-marker *ngFor="let marker of markers;let i=index" [position]="[marker.point.lng,marker.point.lat]" [icon]="marker.icon" [label]="marker.label" [title]="marker.title" [extData]="marker.extData"(markerClick)="onMarkerEvent($event, 'markerClick')">
+           <!-- <amap-info-window [offset]="infoWindowOffset">
               我是第 <span class="text-danger">{{i+1}}</span> 个marker
-            </amap-info-window>
+            </amap-info-window>-->
           </amap-marker>
         </ngx-amap>
+        <div class="map-tips">
+          <div class="map-tips-title">图例</div>
+          <div class="map-tips-content">
+            <div>
+              <img src="assets/electric/undetect.png"/>
+              <span>......</span>
+              <span>未检测</span>
+            </div>
+            <div>
+              <img src="assets/electric/detect.png"/>
+              <span>......</span>
+              <span>检测正常</span>
+            </div>
+            <div>
+              <img src="assets/electric/detecterror.png"/>
+              <span>......</span>
+              <span>检测异常</span>
+            </div>
+          </div>
+        </div>
       </div>
       </div>
   </div>

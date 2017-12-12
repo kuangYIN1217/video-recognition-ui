@@ -5,12 +5,12 @@
     </div>
     <div class="dialogContent">
       <div class="info">
-        <label><span class="symbol">*</span>应用名称：</label>
+        <label><span class="symbol">*</span>项目名称：</label>
         <input type="text" name="projectName" [(ngModel)]="projectName"/>
         <span class="must" [style.display]="required==1?'':'none'">必填字段</span>
       </div>
       <div class="info">
-        <label><span class="symbol">*</span>应用类型：</label>
+        <label><span class="symbol">*</span>项目类型：</label>
         <select [(ngModel)]="projectCate">
           <option value="{{i}}" *ngFor="let i of projectCates">{{i}}</option>
         </select>
