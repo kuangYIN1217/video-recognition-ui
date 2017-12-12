@@ -84,10 +84,10 @@
               <img src="../assets/warn/chakanxiangqing.png" class="mrgr" (click)="lookPhoto(item)" title="查看详情"/>
             </td>
             <div class="fangda" [style.display]="seeIndex==1?'':'none'">
-              <span>
-                <img src="{{SERVER_URL}}/download/{{imageUrl}}" class="jietu"/>
-                <img src="../assets/appmanage/delete1.png" class="close" (click)="close()"/>
-              </span>
+            <span>
+              <img src="{{SERVER_URL}}/download/{{imageUrl}}" class="jietu"/>
+              <img src="../assets/appmanage/delete1.png" class="close" (click)="close()"/>
+            </span>
             </div>
           </tr>
         </table>
@@ -146,10 +146,10 @@
         <span class="info_content"><img src="{{SERVER_URL}}/download/{{detaillist.imagePath}}" (click)="thumbnail()"/></span>
       </div>
       <div class="fangda" [style.display]="seeIndex==2?'':'none'">
-            <span>
-              <img src="{{SERVER_URL}}/download/{{detaillist?.imagePath}}" class="jietu"/>
-              <img src="../assets/appmanage/delete.png" class="close" (click)="close()"/>
-            </span>
+        <span>
+          <img src="{{SERVER_URL}}/download/{{detaillist?.imagePath}}" class="jietu"/>
+          <img src="../assets/appmanage/delete.png" class="close" (click)="close()"/>
+        </span>
       </div>
       <div class="detail_info">
         <span class="info_name"></span>
@@ -158,7 +158,7 @@
       <div class="detail_info">
         <span class="info_name"></span>
         <!--[ngClass]="{marginLeft: detaillist.alarmStatus=='已处理'}"-->
-        <span class="info_content">
+        <span class="info_content" style="margin-bottom: 10px">
           <a href="#" onclick="return false" class="btn bgco save" (click)="save(detaillist)">保存</a>
           <a href="#" onclick="return false" class="btn bgcg cancel" (click)="cancel()">取消</a>
         </span>

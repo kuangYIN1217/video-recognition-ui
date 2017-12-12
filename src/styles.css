@@ -383,6 +383,9 @@ canvas{
 .table tr:nth-child(odd) {
   background: #ffffff;
 }
-
+.amap-marker-label {
+  border:none !important;
+  background: none !important;
+}
 
 

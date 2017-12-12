@@ -28,10 +28,7 @@ export class OverviewMapComponent {
   allInfo:any={};
   flawArr:any[]=[];
   infoWindowOffset:IPixel;
-  center:any={};
-  @Input() set setLabel(label:any){
-    console.log(label);
-  }
+  map:any={};
   constructor(private electricService:ElectricService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.electricService.getSynchronizationInfo(this.appId)
@@ -110,7 +107,9 @@ export class OverviewMapComponent {
     console.log('marker event:', type, event);
     console.log(event.target.Xg);
   }
-
+  ngOnChanges(...args: any[]) {
+    //console.log(this.center);
+  }
   ngOnInit() {
     this.electricService.searchMapInfo(this.appId,0,0)
       .subscribe(result=>{
@@ -127,11 +126,16 @@ export class OverviewMapComponent {
       x: 14,
       y: -30
     };
-    this.center = {
+    //$("#map").setCenter([this.allInfo.longitude,this.allInfo.latitude]);
+/*
+    this.map={
+      center:{
         lat:this.allInfo.latitude,
         lng:this.allInfo.longitude
-        };
-    console.log(this.center);
+      }
+    };
+*/
+
     for (let i = 0; i < this.flawArr.length; i++) {
       this.marker = {
         point: {
@@ -155,6 +159,7 @@ export class OverviewMapComponent {
         title:this.getTitle(this.flawArr[i]),
         extData:this.flawArr[i].towerInfo.towerId
       };
+      //this.marker.setFitView();
       this.markers.push(this.marker);
     }
       console.log(this.markers);

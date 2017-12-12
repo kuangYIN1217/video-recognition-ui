@@ -23,7 +23,7 @@
         <div>总计识别塔数<span>{{allInfo?.towerCount}}</span>座，缺陷塔<span>{{allInfo?.flawTowerCount}}</span>座，缺陷问题<span>{{allInfo?.flawCount}}</span>个，缺陷塔率<span>{{allInfo?.flawTowerRate}}</span>%，平均问题数<span>{{allInfo?.flawTowerAvgCount}}</span></div>
       </div>
       <div class="mapContent">
-        <ngx-amap class="demo-map" [center]="[119.0652240,31.8388310]" [zoom]="15">
+        <ngx-amap class="demo-map" id="map" [center]="[119.0652240,31.8388310]" [zoom]="15">
           <amap-marker *ngFor="let marker of markers;let i=index" [position]="[marker.point.lng,marker.point.lat]" [icon]="marker.icon" [label]="marker.label" [title]="marker.title" [extData]="marker.extData"(markerClick)="onMarkerEvent($event, 'markerClick')">
            <!-- <amap-info-window [offset]="infoWindowOffset">
               我是第 <span class="text-danger">{{i+1}}</span> 个marker

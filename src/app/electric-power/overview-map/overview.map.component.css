@@ -125,8 +125,4 @@ select:focus{
   display: inline-block;
   vertical-align: middle;
 }
-.mapContent .amap-marker-label{
-  border: none !important;
-  background: none !important;
-}
 

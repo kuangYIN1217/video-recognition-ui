@@ -56,6 +56,7 @@ export class WarnWindowComponent{
       .subscribe(channel=>{
         this.warnChanArr=channel;
       });
+    this.objName='';
     this.getObj();
   }
   getObj(){
@@ -180,6 +181,7 @@ export class WarnWindowComponent{
         this.radioIndex = 0;
       }
     }else{
+      this.objName="";
       this.getObj();
     }
   }

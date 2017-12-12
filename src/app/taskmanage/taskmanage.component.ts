@@ -34,6 +34,7 @@ export class TaskManageComponent {
   interval1: any;
   interval2: any;
   pageNow:number;
+  pageChange:number;
   _offline:any[]=[];
   authority:boolean = false;
   playShow:boolean=false;
@@ -57,7 +58,11 @@ export class TaskManageComponent {
     //console.log(this.appCate);
     this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
     this.interval = setInterval(() => {
-      this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
+      if(this.pageNow){
+        this.getTask(this.appId,null,'全部',this.pageNow-1,this.pageChange);
+      }else{
+        this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
+      }
     }, 10000);
     this.alarmStatus = this.alarmStatusArr[0];
     this.route.params.subscribe((param) => {
@@ -78,12 +83,17 @@ export class TaskManageComponent {
   }
   getPageData(paraParam) {
     //this.getAllTask(this.appId,paraParam.curPage-1,paraParam.pageMaxItem);
-    this.getTask(this.appId,this.taskName,this.alarmStatus,paraParam.curPage-1,paraParam.pageMaxItem);
+    if(this.taskName==undefined){
+      this.getTask(this.appId,null,this.alarmStatus,paraParam.curPage-1,paraParam.pageMaxItem);
+    }else{
+      this.getTask(this.appId,this.taskName,this.alarmStatus,paraParam.curPage-1,paraParam.pageMaxItem);
+    }
     this.pageNow=paraParam.curPage;
+    this.pageChange = paraParam.pageMaxItem;
 /*    sessionStorage['taskCurPage'] = this.pageNow;
     console.log(sessionStorage['taskCurPage']);*/
   }
-  getAllTask(id,page,size){
+/*  getAllTask(id,page,size){
     this.offlineService.getWarnTask(id,page,size)
       .subscribe(result=>{
         //this.taskList = result.content;
@@ -105,7 +115,7 @@ export class TaskManageComponent {
         page.totalNum = result.totalElements;
         this.pageParams = page;
       })
-  }
+  }*/
   lookResult(item){
     this.playShow=true;
     this.outputPath = item.outputPath;
@@ -218,12 +228,20 @@ export class TaskManageComponent {
             if(this.taskName==undefined){
               this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
               this.interval = setInterval(() => {
-                this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
+                if(this.pageNow){
+                  this.getTask(this.appId,null,this.alarmStatus,this.pageNow-1,this.pageChange);
+                }else{
+                  this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
+                }
               },10000);
             }else{
               this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
               this.interval = setInterval(() => {
-                this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
+                if(this.pageNow){
+                  this.getTask(this.appId,this.taskName,this.alarmStatus,this.pageNow-1,this.pageChange);
+                }else{
+                  this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
+                }
               },10000);
             }
           }else{
@@ -254,7 +272,12 @@ export class TaskManageComponent {
   }
   search(){
     this.searchTask();
-    this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
+    if(this.pageNow){
+      this.getTask(this.appId,this.taskName,this.alarmStatus,this.pageNow-1,this.pageChange);
+    }else{
+      this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
+    }
+
   }
   getTask(id,name,status,page,size){
     this.offlineService.searchTask(id,name,status,page,size)
@@ -271,7 +294,13 @@ export class TaskManageComponent {
             }
             this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
 
-        }
+        };
+        let page = new Page();
+        page.pageMaxItem = result.size;
+        page.curPage = result.number+1;
+        page.totalPage = result.totalPages;
+        page.totalNum = result.totalElements;
+        this.pageParams = page;
       })
   }
 /*  ngAfterViewChecked(){
