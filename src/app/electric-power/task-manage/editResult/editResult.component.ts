@@ -23,14 +23,14 @@ export class EditResultComponent {
   flawPhoto:string;
   photo:string;
   public uploader:FileUploader = new FileUploader({
-    url: SERVER_URL+"/api/uploadPatrolZipFile",
+    url: SERVER_URL+"/api/uploadFlawPic",
     method: "POST",
     itemAlias: "file",
   });
     constructor(private router:Router,private route: ActivatedRoute,private electricService:ElectricService){
       this.route.queryParams.subscribe(params => {
           this.allInfo = JSON.parse(params["allInfo"]);
-          console.log(this.allInfo);
+          //console.log(this.allInfo);
           this.part = this.allInfo.patrolTowerPart;
           this.describe = this.allInfo.flawCategory;
           this.detailDescribe = this.allInfo.flawInfo;
@@ -41,6 +41,7 @@ export class EditResultComponent {
       })
     }
     selectedFileOnChanged(){
+      console.log(this.uploader.queue[0]);
       this.uploader.queue[0].upload();
       this.uploader.queue[0].onSuccess = (response: any, status: any, headers: any) => {
           this.flawPhoto = response;
@@ -49,7 +50,7 @@ export class EditResultComponent {
   save(){
     this.electricService.modifyFlaw(this.describe,this.flawPhoto,this.detailDescribe,this.flawNature,this.allInfo.infoId,this.flawStatus,this.part)
       .subscribe(result=>{
-        console.log(result);
+        //console.log(result);
         window.history.back();
       })
   }

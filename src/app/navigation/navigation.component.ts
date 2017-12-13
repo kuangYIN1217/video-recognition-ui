@@ -92,10 +92,10 @@ export class NavigationComponent {
     }else if (this.location.isCurrentPathEqualTo('/overviewmap')||this.location.path().match(/\/overviewmap/) ) {
       this.focusTab = 7;
       // this.needhide = 0;
-    }else if (this.location.isCurrentPathEqualTo('/datamanage')||this.location.path().match(/\/createinspection/)){
+    }else if (this.location.path().match(/\/datamanage/)||this.location.path().match(/\/createinspection/)){
       this.focusTab = 8;
       // this.needhide = 0;
-    }else if (this.location.isCurrentPathEqualTo('/electaskmanage')||this.location.path().match('/createtask')||this.location.path().match('/taskresult') ) {
+    }else if (this.location.isCurrentPathEqualTo('/electaskmanage')||this.location.path().match('/createtask')||this.location.path().match('/taskresult')||this.location.path().match('/editresult') ) {
       this.focusTab = 9;
       // this.needhide = 0;
     }else if (this.location.isCurrentPathEqualTo('/datastatistics') ) {

@@ -1,7 +1,7 @@
 <div class="container">
-  <div class="create">
+  <div class="create" id="create">
     <div class="title">{{title}}</div>
-    <div class="content" id="content">
+    <div class="content">
       <div class="createInfo">
         <label><span class="symbol">*</span>所属单位：</label>
         <select [(ngModel)]="unit" (ngModelChange)="unit=$event;changeUnit()" *ngIf="title!='查看巡检信息'">

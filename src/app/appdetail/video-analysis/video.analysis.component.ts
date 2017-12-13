@@ -570,13 +570,19 @@ export class VideoAnalysisComoponent {
 
   initRecognitions() {
     this.recognitionService.getRecognition().subscribe(rep => {
-      console.log(rep);
+      //console.log(rep);
       this.d_analysis_options = rep;
       for(let i=0;i<this.d_analysis_options.length;i++){
         this.d_analysis_options[i].recognitionCategories.sort(function(a,b){
           return parseInt(b.cateId) - parseInt(a.cateId)
         })
       }
+      for(let j=0;j<this.d_analysis_options[0].recognitionCategories.length;j++){
+        if(this.d_analysis_options[0].recognitionCategories[j].cateId==1){
+          this.d_analysis_options[0].recognitionCategories.splice(j,1);
+        }
+      }
+      console.log(this.d_analysis_options);
       this.d_analysis_options[0].selected=true;
       //this.d_analysis_options_detail= rep ;
     })

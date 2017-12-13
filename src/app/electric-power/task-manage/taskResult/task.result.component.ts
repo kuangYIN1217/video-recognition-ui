@@ -47,8 +47,8 @@ export class TaskResultComponent {
               this.flawPartSet = result;
               this.flawPartSet.unshift("全部");
               this.flawPart = this.flawPartSet[0];
+              this.getTaskResultSearch(this.taskId,0,0);
             })
-          this.getTaskResultSearch(this.taskId,0,0);
         }
       });
   }

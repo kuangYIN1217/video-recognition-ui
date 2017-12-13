@@ -189,6 +189,6 @@ export class CreateInspectionComponent {
     this.router.navigate(['../datamanage']);
   }
   ngOnInit() {
-    calc_height(document.getElementById('content'));
+    calc_height(document.getElementById('create'));
   }
 }

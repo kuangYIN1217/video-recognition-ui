@@ -1,8 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
 import {ElectricService} from "../../common/services/electric.service";
 import {IIcon, ILabel, IPixel} from "ngx-amap/types/interface";
-import {LngLat} from 'ngx-amap/types/class';
-import {NgxAmapComponent} from "ngx-amap";
+import {Router} from "@angular/router";
+import {calc_height} from "../../common/ts/calc_height";
 declare var $:any;
 @Component({
   selector: 'overview-map',
@@ -32,7 +32,7 @@ export class OverviewMapComponent {
   //infoWindowOffset:IPixel;
   @ViewChild("map") map:any;
   //@ViewChild(NgxAmapComponent) map:NgxAmapComponent;
-  constructor(private electricService:ElectricService) {
+  constructor(private electricService:ElectricService,private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.electricService.getSynchronizationInfo(this.appId)
       .subscribe(result=>{
@@ -83,17 +83,22 @@ export class OverviewMapComponent {
       }
     }
     this.electricService.searchMapInfo(this.appId,this.lineId,this.taskId)
-      .subscribe(result=>{
-        console.log(result);
-        this.setMap(result);
-      })
+      .subscribe(
+        (result)=>{
+          console.log(result);
+          this.setMap(result);
+      },
+        (err)=>{
+          console.log(err.text());
+          //this.setMap(result);
+        })
   }
   output(item){
     console.log(item);
   }
   getTitle(item){
-    if(item.towerInfo.status=='未检测'){
-      return `${item.towerInfo.status}:${item.flawCount}`;
+    if(item.towerInfo.status=='检测异常'){
+      return `${item.towerInfo.status}：${item.flawCount}，请点击查看`;
     }else{
       return item.towerInfo.status;
     }
@@ -108,47 +113,28 @@ export class OverviewMapComponent {
     }
   }
   onMarkerEvent(event: any, type: string) {
-    console.log('marker event:', type, event);
-    console.log(event.target.Xg);
-  }
-
-/*  ngOnChanges(changes: SimpleChanges) {
-    const filter = ChangeFilter.of(changes);
-    if (this._inited) {
-      filter.has<number>('zoom').subscribe(v => this.setZoom(v));
-      filter.has<number[]>('center').subscribe(v => this.setCenter(v));
+    //console.log(event.target.Xg.extData);
+    if(JSON.stringify(event.target.Xg.extData)!="{}"){
+      this.router.navigate(['/taskresult'],{queryParams: {'allInfo':JSON.stringify(event.target.Xg.extData),}});
+    }else{
+      return false
     }
-  }*/
+  }
   onMarkerReady(map: any) {
     map.setFitView();
-    console.log(map);
-    //if(this.map){
-      //this.mainmap.setCenter().then(map => map.setCenter(this.allInfo.longitude,this.allInfo.latitude));
-      //this.map.setCenter().then(map => console.log('setCenter():', map));
-      //.toolbar.getLocation().then(v => console.log('getLocation():', v));
-    //}
   }
   onReady(map: any){
-    map.setCenter(Number(this.allInfo.longitude),Number(this.allInfo.latitude));
+    //map.setCenter(Number(this.allInfo.longitude),Number(this.allInfo.latitude));
+  }
+  outRate(item){
+    return Number(item).toFixed(2);
   }
   setMap(result){
     if(result) {
-      console.log(result);
       this.allInfo = result;
-      //console.log(this.allInfo);
       this.flawArr = this.allInfo.towerList;
-      //console.log(this.flawArr);
     }
-    console.log(this.allInfo.longitude,this.allInfo.latitude);
-
-    //this.map.setCenter(Number(this.allInfo.longitude),Number(this.allInfo.latitude));
-    //console.log(this.map);
-    //this.mainmap.setCenter(this.allInfo.longitude,this.allInfo.latitude);
     this.markers = [];
-/*    this.infoWindowOffset = {
-      x: 14,
-      y: -30
-    };*/
     for (let i = 0; i < this.flawArr.length; i++) {
       this.marker = {
         point: {
@@ -170,12 +156,20 @@ export class OverviewMapComponent {
           content: `<div style="font-size:18px; color: red; font-weight: bold;">${this.flawArr[i].towerInfo.towerNum}</div>`
         },
         title:this.getTitle(this.flawArr[i]),
-        extData:this.flawArr[i].towerInfo.towerId
+        extData:this.flawArr[i].taskInfo
       };
       this.markers.push(this.marker);
     }
   }
+
   ngOnInit() {
+    calc_height(document.getElementById('map'));
+    let dom = document.querySelector('.demo-map');
+    let height = $("#map").height();
+    $(dom).css({
+      'height': (height-79) + 'px',
+      'display':'block',
+    })
     this.electricService.searchMapInfo(this.appId,0,0)
       .subscribe(result=>{
           this.setMap(result);

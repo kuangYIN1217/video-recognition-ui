@@ -17,17 +17,14 @@
         <a href="#" onclick="return false" (click)="search()">查询</a>
       </div>
     </div>
-    <div class="map">
+    <div class="map" id="map">
       <div class="describe">
         <label>全部线路全部任务：</label>
-        <div>总计识别塔数<span>{{allInfo?.towerCount}}</span>座，缺陷塔<span>{{allInfo?.flawTowerCount}}</span>座，缺陷问题<span>{{allInfo?.flawCount}}</span>个，缺陷塔率<span>{{allInfo?.flawTowerRate}}</span>%，平均问题数<span>{{allInfo?.flawTowerAvgCount}}</span></div>
+        <div>总计识别塔数<span>{{allInfo?.towerCount}}</span>座，缺陷塔<span>{{allInfo?.flawTowerCount}}</span>座，缺陷问题<span>{{allInfo?.flawCount}}</span>个，缺陷塔率<span>{{outRate(allInfo?.flawTowerRate)}}</span>%，平均问题数<span>{{outRate(allInfo?.flawTowerAvgCount)}}</span></div>
       </div>
       <div class="mapContent">
-        <ngx-amap #map class="demo-map" [zoom]="15" (ready)="onReady(map)">
+        <ngx-amap #map class="demo-map" [zoom]="15" [center]=[0,0] (ready)="onReady(map)">
           <amap-marker *ngFor="let marker of markers;let i=index" [position]="[marker.point.lng,marker.point.lat]" [icon]="marker.icon" [label]="marker.label" [title]="marker.title" [extData]="marker.extData"(markerClick)="onMarkerEvent($event, 'markerClick')" (ready)="onMarkerReady(map)">
-           <!-- <amap-info-window [offset]="infoWindowOffset">
-              我是第 <span class="text-danger">{{i+1}}</span> 个marker
-            </amap-info-window>-->
           </amap-marker>
         </ngx-amap>
         <div class="map-tips">

@@ -23,6 +23,8 @@ export class DataManageComponent {
   page: number = 0;
   pageMaxItem: number = 10;
   pageParams = new Page();
+  pageNow:number;
+  pageMax:number;
   dataInfo:any[]=[];
   all_selected:boolean = false;
   unitId:number;
@@ -63,11 +65,24 @@ export class DataManageComponent {
               this.electricService.saveExcel(this.appId,path)
                 .subscribe(result=>{
                   console.log(result);
+                  this.search();
                   this.uploader.queue=[];
                 })
           }
       }
     }
+  }
+  getPageData(paraParam){
+    if(this.unitName=='全部'){
+      this.getDateInfo(this.appId,0,0,0,paraParam.curPage-1,paraParam.pageMaxItem);
+    }else if(this.unitName!='全部'){
+      this.getUnitId();
+      this.getLineId();
+      this.getTowerId();
+      this.getDateInfo(this.appId,this.unitId,this.lineId,this.towerId,paraParam.curPage-1,paraParam.pageMaxItem);
+    }
+    this.pageNow = paraParam.curPage-1;
+    this.pageMax = paraParam.pageMaxItem;
   }
   download(){
     window.open(SERVER_URL+"/download/patrolModel.xlsx ");
@@ -150,6 +165,12 @@ export class DataManageComponent {
     this.electricService.getDateManage(appId,unitId,lineId,towerId,page,size)
       .subscribe(result=>{
         this.dataInfo = result.content;
+        let page = new Page();
+        page.pageMaxItem = result.size;
+        page.curPage = result.number+1;
+        page.totalPage = result.totalPages;
+        page.totalNum = result.totalElements;
+        this.pageParams = page;
       })
   }
   checkAll(){

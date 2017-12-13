@@ -1,6 +1,6 @@
 .result-content{
   background: #fff;
-  margin:20px 30px;
+  margin:20px 30px 0;
 }
 .result-content h4{
   padding:20px 0 0 20px;
@@ -88,6 +88,9 @@ input:focus{
 }
 .saveBtn{
   margin:112px 0 0 170px;
+}
+.saveBtn a{
+  margin-bottom: 20px;
 }
 .reUpload{
   display: block !important;
