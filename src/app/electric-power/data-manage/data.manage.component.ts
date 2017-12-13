@@ -4,6 +4,7 @@ import {ElectricService} from "../../common/services/electric.service";
 import {Page} from "app/common/defs/resources";
 import {SERVER_URL} from "../../app.constants";
 import { FileUploader} from "ng2-file-upload";
+declare var $:any;
 @Component({
   selector: 'data-manage',
   styleUrls: ['./data.manage.component.css'],
@@ -70,6 +71,9 @@ export class DataManageComponent {
   }
   download(){
     window.open(SERVER_URL+"/download/patrolModel.xlsx ");
+  }
+  ngAfterViewInit() {
+    $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
   }
   getInit(){
     this.lineNameArr=[];

@@ -1,7 +1,8 @@
-import {Component, Input} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {ElectricService} from "../../common/services/electric.service";
 import {IIcon, ILabel, IPixel} from "ngx-amap/types/interface";
 import {LngLat} from 'ngx-amap/types/class';
+import {NgxAmapComponent} from "ngx-amap";
 declare var $:any;
 @Component({
   selector: 'overview-map',
@@ -27,8 +28,10 @@ export class OverviewMapComponent {
   marker:any={};
   allInfo:any={};
   flawArr:any[]=[];
-  infoWindowOffset:IPixel;
-  map:any={};
+  timeOut:any;
+  //infoWindowOffset:IPixel;
+  @ViewChild("map") map:any;
+  //@ViewChild(NgxAmapComponent) map:NgxAmapComponent;
   constructor(private electricService:ElectricService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.electricService.getSynchronizationInfo(this.appId)
@@ -82,6 +85,7 @@ export class OverviewMapComponent {
     this.electricService.searchMapInfo(this.appId,this.lineId,this.taskId)
       .subscribe(result=>{
         console.log(result);
+        this.setMap(result);
       })
   }
   output(item){
@@ -107,47 +111,56 @@ export class OverviewMapComponent {
     console.log('marker event:', type, event);
     console.log(event.target.Xg);
   }
-  ngOnChanges(...args: any[]) {
-    //console.log(this.center);
-  }
-  ngOnInit() {
-    this.electricService.searchMapInfo(this.appId,0,0)
-      .subscribe(result=>{
-        if(result) {
-          console.log(result);
-          this.allInfo = result;
-          //console.log(this.allInfo);
-          this.flawArr = this.allInfo.towerList;
-          //console.log(this.flawArr);
-        }
 
+/*  ngOnChanges(changes: SimpleChanges) {
+    const filter = ChangeFilter.of(changes);
+    if (this._inited) {
+      filter.has<number>('zoom').subscribe(v => this.setZoom(v));
+      filter.has<number[]>('center').subscribe(v => this.setCenter(v));
+    }
+  }*/
+  onMarkerReady(map: any) {
+    map.setFitView();
+    console.log(map);
+    //if(this.map){
+      //this.mainmap.setCenter().then(map => map.setCenter(this.allInfo.longitude,this.allInfo.latitude));
+      //this.map.setCenter().then(map => console.log('setCenter():', map));
+      //.toolbar.getLocation().then(v => console.log('getLocation():', v));
+    //}
+  }
+  onReady(map: any){
+    map.setCenter(Number(this.allInfo.longitude),Number(this.allInfo.latitude));
+  }
+  setMap(result){
+    if(result) {
+      console.log(result);
+      this.allInfo = result;
+      //console.log(this.allInfo);
+      this.flawArr = this.allInfo.towerList;
+      //console.log(this.flawArr);
+    }
+    console.log(this.allInfo.longitude,this.allInfo.latitude);
+
+    //this.map.setCenter(Number(this.allInfo.longitude),Number(this.allInfo.latitude));
+    //console.log(this.map);
+    //this.mainmap.setCenter(this.allInfo.longitude,this.allInfo.latitude);
     this.markers = [];
-    this.infoWindowOffset = {
+/*    this.infoWindowOffset = {
       x: 14,
       y: -30
-    };
-    //$("#map").setCenter([this.allInfo.longitude,this.allInfo.latitude]);
-/*
-    this.map={
-      center:{
-        lat:this.allInfo.latitude,
-        lng:this.allInfo.longitude
-      }
-    };
-*/
-
+    };*/
     for (let i = 0; i < this.flawArr.length; i++) {
       this.marker = {
         point: {
-           lat: this.flawArr[i].towerInfo.towerLatitude,
-           lng: this.flawArr[i].towerInfo.towerLongitude
+          lat: this.flawArr[i].towerInfo.towerLatitude,
+          lng: this.flawArr[i].towerInfo.towerLongitude
         },
         icon: {
           size: {
             width: 46,
             height: 46
           },
-         image: this.getImage(this.flawArr[i].towerInfo.status)
+          image: this.getImage(this.flawArr[i].towerInfo.status)
         },
         label: {
           offset: {
@@ -159,10 +172,13 @@ export class OverviewMapComponent {
         title:this.getTitle(this.flawArr[i]),
         extData:this.flawArr[i].towerInfo.towerId
       };
-      //this.marker.setFitView();
       this.markers.push(this.marker);
     }
-      console.log(this.markers);
+  }
+  ngOnInit() {
+    this.electricService.searchMapInfo(this.appId,0,0)
+      .subscribe(result=>{
+          this.setMap(result);
       })
   }
 }
