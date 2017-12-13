@@ -8,9 +8,10 @@
       <span class="middle" style="padding-left: 10px">{{tip_content}}</span>
     </div>
     <div class="delSys">
-      <a href="javascript:void(0)" class="btn bgcg" (click)="delete()" *ngIf="tip_title=='删除'&&(tip_btn!='开启通道'||tip_btn==undefined)">确定</a>
-      <a href="javascript:void(0)" class="btn bgcg" (click)="cancel()" *ngIf="tip_title=='提示'&&tip_btn!='开启通道'">确定</a>
+      <a href="javascript:void(0)" class="btn bgcg" (click)="delete()" *ngIf="tip_title=='删除'&&(tip_btn!='开启通道'||tip_btn==undefined)&&tip_btn!='map'">确定</a>
+      <a href="javascript:void(0)" class="btn bgcg" (click)="cancel()" *ngIf="tip_title=='提示'&&tip_btn!='开启通道'&&tip_btn!='map'">确定</a>
       <a href="javascript:void(0)" class="btn bgcg" *ngIf="tip_btn=='开启通道'" routerLinkActive="active" routerLink="/waymanage">{{tip_btn}}</a>
+      <a href="javascript:void(0)" class="btn bgcg" (click)="cancel()" *ngIf="tip_title=='提示'&&tip_btn=='map'">确定</a>
       <a href="javascript:void(0)" class="btn bgcg" (click)="cancel()" style="margin-left: 18px">取消</a>
     </div>
   </div>

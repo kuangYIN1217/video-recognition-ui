@@ -25,7 +25,7 @@ export class EditResultComponent {
   public uploader:FileUploader = new FileUploader({
     url: SERVER_URL+"/api/uploadFlawPic",
     method: "POST",
-    itemAlias: "file",
+    itemAlias: "flawPic",
   });
     constructor(private router:Router,private route: ActivatedRoute,private electricService:ElectricService){
       this.route.queryParams.subscribe(params => {

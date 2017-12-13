@@ -4,6 +4,7 @@ import {ElectricService} from "../../common/services/electric.service";
 import {Page} from "app/common/defs/resources";
 import {SERVER_URL} from "../../app.constants";
 import { FileUploader} from "ng2-file-upload";
+import {calc_height} from "../../common/ts/calc_height";
 declare var $:any;
 @Component({
   selector: 'data-manage',
@@ -89,6 +90,9 @@ export class DataManageComponent {
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
+  }
+  ngOnInit(){
+    calc_height(document.getElementById('dataContent'));
   }
   getInit(){
     this.lineNameArr=[];

@@ -578,7 +578,7 @@ export class VideoAnalysisComoponent {
         })
       }
       for(let j=0;j<this.d_analysis_options[0].recognitionCategories.length;j++){
-        if(this.d_analysis_options[0].recognitionCategories[j].cateId==1){
+        if(this.d_analysis_options[0].recognitionCategories[j].cateId==26){
           this.d_analysis_options[0].recognitionCategories.splice(j,1);
         }
       }

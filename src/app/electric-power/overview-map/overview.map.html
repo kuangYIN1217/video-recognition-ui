@@ -52,4 +52,4 @@
   </div>
 </div>
 <app-synchronization *ngIf="synchronizationShow" [synchronizeIndex]="synchronizeIndex" [info]="info" [tip_content]="tip_content"  (synchronizationShowChange)="synchronizationShowChange($event)"></app-synchronization>
-<!--<control type="navigation" [options]="navOptions"></control>-->
+<app-tips [style.display]="deleteIndex==1?'':'none'" [tip_title]="tip_title" [tip_content]="tip_content1" [deleteIndex]="deleteIndex" [tip_btn]="tip_btn" (deleteChange)="deleteChange($event)" (deletedChange)="deletedChange($event)"></app-tips>

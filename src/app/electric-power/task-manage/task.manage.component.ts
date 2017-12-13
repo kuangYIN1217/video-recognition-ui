@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {ElectricService} from "../../common/services/electric.service";
 import {Page} from "app/common/defs/resources";
 import {Router, ActivatedRoute} from "@angular/router";
+import {calc_height} from "../../common/ts/calc_height";
 declare var $:any;
 @Component({
   selector: 'electric-task-manage',
@@ -110,5 +111,8 @@ export class ElecTaskManageComponent {
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
+  }
+  ngOnInit(){
+    calc_height(document.getElementById('taskContent'));
   }
 }

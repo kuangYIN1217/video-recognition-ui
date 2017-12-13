@@ -324,7 +324,7 @@ export class ElectricService {
   neglect(flawInfoId){
     let path = "/api/ignoreFlawInfo/"+flawInfoId;
     let headers = this.getHeaders();
-    return this.http.get(this.SERVER_URL+path,{ headers: headers })
+    return this.http.put(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {
         if (response) {
           return response;

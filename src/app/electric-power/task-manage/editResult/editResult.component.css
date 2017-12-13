@@ -6,7 +6,7 @@
   padding:20px 0 0 20px;
 }
 .info{
-  margin-bottom: 36px;
+  margin-bottom: 26px;
   margin-left: 85px;
 }
 .info label,.info span{
@@ -38,7 +38,7 @@
   border-radius: 5px;
   margin-left: 12px;
   text-indent: 6px;
-  color: #888888;
+  color: #666666;
   box-sizing: border-box;
 }
 .info select{

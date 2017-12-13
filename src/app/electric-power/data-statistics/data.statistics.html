@@ -39,7 +39,7 @@
   <div class="content">
     <div id="charts" style="width: 860px;height:400px;"></div>
   </div>
-  <div class="statisticDate">
+  <div class="statisticDate" id="statisticDate">
     <div class="dataTable">
       <table *ngIf="showTable">
         <tr>
@@ -85,3 +85,4 @@
     </div>
   </div>
 </div>
+<app-tips [style.display]="deleteIndex==1?'':'none'" [tip_title]="tip_title" [tip_content]="tip_content" [deleteIndex]="deleteIndex" [tip_btn]="tip_btn" (deleteChange)="deleteChange($event)" (deletedChange)="deletedChange($event)"></app-tips>

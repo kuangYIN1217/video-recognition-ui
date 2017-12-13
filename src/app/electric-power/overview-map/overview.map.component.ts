@@ -28,7 +28,10 @@ export class OverviewMapComponent {
   marker:any={};
   allInfo:any={};
   flawArr:any[]=[];
-  timeOut:any;
+  deleteIndex:number=0;
+  tip_title:string='提示';
+  tip_content1:string='暂无杆塔信息';
+  tip_btn:string='map';
   //infoWindowOffset:IPixel;
   @ViewChild("map") map:any;
   //@ViewChild(NgxAmapComponent) map:NgxAmapComponent;
@@ -71,6 +74,9 @@ export class OverviewMapComponent {
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
   }
+  deleteChange(event){
+    this.deleteIndex = event;
+  }
   search(){
     for(let i=0;i<this.lineArr.length;i++){
       if(this.lineName==this.lineArr[i].lineName){
@@ -85,12 +91,12 @@ export class OverviewMapComponent {
     this.electricService.searchMapInfo(this.appId,this.lineId,this.taskId)
       .subscribe(
         (result)=>{
-          console.log(result);
+          //console.log(result);
           this.setMap(result);
       },
         (err)=>{
-          console.log(err.text());
-          //this.setMap(result);
+          //console.log(err.text());
+          this.deleteIndex = 1;
         })
   }
   output(item){
@@ -113,8 +119,8 @@ export class OverviewMapComponent {
     }
   }
   onMarkerEvent(event: any, type: string) {
-    //console.log(event.target.Xg.extData);
-    if(JSON.stringify(event.target.Xg.extData)!="{}"){
+    console.log(event.target.Xg.title.substring(0,4));
+    if(event.target.Xg.title.substring(0,4)=='检测异常'){
       this.router.navigate(['/taskresult'],{queryParams: {'allInfo':JSON.stringify(event.target.Xg.extData),}});
     }else{
       return false

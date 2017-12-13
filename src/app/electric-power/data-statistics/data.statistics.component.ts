@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {ElectricService} from "../../common/services/electric.service";
 import {Router, ActivatedRoute} from "@angular/router";
 import {Page} from "../../common/defs/resources";
+import {calc_height} from "../../common/ts/calc_height";
 declare var $:any;
 declare var echarts: any;
 @Component({
@@ -41,6 +42,10 @@ export class DataStatisticsComponent {
   intervaly2:number;
   maxy1:number;
   maxy2:number;
+  deleteIndex:number=0;
+  tip_title:string='提示';
+  tip_content:string;
+  tip_btn:string='map';
   constructor(private electricService:ElectricService,private route: ActivatedRoute ,private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.particles = this.particlesArr[0];
@@ -68,7 +73,6 @@ export class DataStatisticsComponent {
           this.taskArr.unshift(obj);
           this.taskName = this.taskArr[0].taskName;
         }
-
       });
   }
   getAllTowerByAppId(){
@@ -200,20 +204,33 @@ export class DataStatisticsComponent {
 
       })
   }
+  deleteChange(event){
+    this.deleteIndex = event;
+  }
   searchResult(lineId,towerId,taskId,lineOrTower,startTime,endTime,page,size){
     this.electricService.dataStaticResult(lineId,towerId,taskId,lineOrTower,startTime,endTime,page,size)
-      .subscribe(result=>{
-        console.log(result);
-        this.tableList = result.content;
-        let page = new Page();
-        page.pageMaxItem = result.size;
-        page.curPage = result.number+1;
-        page.totalPage = result.totalPages;
-        page.totalNum = result.totalElements;
-        this.pageParams = page;
-      })
+      .subscribe(
+        (result)=>{
+          console.log(result);
+          this.tableList = result.content;
+          let page = new Page();
+          page.pageMaxItem = result.size;
+          page.curPage = result.number+1;
+          page.totalPage = result.totalPages;
+          page.totalNum = result.totalElements;
+          this.pageParams = page;
+      },
+        (err)=>{
+          this.deleteIndex = 1;
+          if(err.text()=='统计颗粒度为线路，不能选择杆塔'){
+            this.tip_content='特定杆塔不支持线路颗粒度统计，请重新选择';
+          }else if(err.text()=='未查询到信息'){
+            this.tip_content='未查询到信息';
+          }
+        })
   }
   ngOnInit() {
+      calc_height(document.getElementById('statisticDate'));
     $("#start").jeDate({
       isinitVal:true,
       festival: false,
