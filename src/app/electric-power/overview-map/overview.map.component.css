@@ -91,7 +91,7 @@ select:focus{
   position: absolute;
   z-index: 7777;
   top:0;
-  right:0;
+  right:20px;
 }
 .map-tips-title{
  font-size: 24px;
