@@ -59,11 +59,7 @@ export class TaskManageComponent {
     //console.log(this.appCate);
     this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
     this.interval = setInterval(() => {
-      if(this.pageNow){
-        this.getTask(this.appId,null,'全部',this.pageNow-1,this.pageChange);
-      }else{
         this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
-      }
     }, 10000);
     this.alarmStatus = this.alarmStatusArr[0];
     this.route.params.subscribe((param) => {
@@ -89,8 +85,8 @@ export class TaskManageComponent {
     }else{
       this.getTask(this.appId,this.taskName,this.alarmStatus,paraParam.curPage-1,paraParam.pageMaxItem);
     }
-    this.pageNow=paraParam.curPage;
-    this.pageChange = paraParam.pageMaxItem;
+    this.page=paraParam.curPage;
+    this.pageMaxItem = paraParam.pageMaxItem;
 /*    sessionStorage['taskCurPage'] = this.pageNow;
     console.log(sessionStorage['taskCurPage']);*/
   }
@@ -242,20 +238,12 @@ export class TaskManageComponent {
             if(this.taskName==undefined){
               this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
               this.interval = setInterval(() => {
-                if(this.pageNow){
-                  this.getTask(this.appId,null,this.alarmStatus,this.pageNow-1,this.pageChange);
-                }else{
                   this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
-                }
               },10000);
             }else{
               this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
               this.interval = setInterval(() => {
-                if(this.pageNow){
-                  this.getTask(this.appId,this.taskName,this.alarmStatus,this.pageNow-1,this.pageChange);
-                }else{
                   this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
-                }
               },10000);
             }
           }else{
@@ -286,11 +274,7 @@ export class TaskManageComponent {
   }
   search(){
     this.searchTask();
-    if(this.pageNow){
-      this.getTask(this.appId,this.taskName,this.alarmStatus,this.pageNow-1,this.pageChange);
-    }else{
       this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
-    }
 
   }
   getTask(id,name,status,page,size){
