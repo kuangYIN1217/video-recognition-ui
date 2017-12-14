@@ -42,6 +42,7 @@ export class TaskManageComponent {
   showBtn:boolean=false;
   outputPath:string;
   nameTem:string;
+  tip_btn:string;
   @ViewChild('offlineVideo') offlineVideo: any;
   constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
@@ -207,6 +208,19 @@ export class TaskManageComponent {
     }
   }
   runChannel(item){
+    let order:number=0;
+    for(let i=0;i<this.taskList.length;i++){
+      if(this.taskList[i].taskStatus=='进行中'&&item.taskStatus!='进行中'){
+          order++;
+          if(order==4){
+            this.deleteIndex = 1;
+            this.tip_title = "提示";
+            this.tip_content = "任务分析仅支持4个并发，请等待其他任务运行完成！";
+            this.tip_btn = 'map';
+            return false;
+          }
+      }
+    }
     if(item.taskStatus!='进行中'){
       this.status='进行中';
       this.alarmStatus = '全部';

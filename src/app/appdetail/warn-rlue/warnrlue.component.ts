@@ -41,6 +41,8 @@ export class WarnRlueComponent{
   authority:boolean = false;
   _realTime:any[]=[];
   _offline:any[]=[];
+  pageNow:number;
+  pageMax:number;
   constructor(private warnService: WarnService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -89,6 +91,8 @@ export class WarnRlueComponent{
   }
   getPageData(paraParam) {
     this.getAllRlues(this.appId,paraParam.curPage-1,paraParam.pageMaxItem);
+    this.page = paraParam.curPage;
+    this.pageMaxItem = paraParam.pageMaxItem;
   }
   getAllRlues(id,page,size){
     this.warnService.getAllRlues(id,page,size)
@@ -234,7 +238,7 @@ export class WarnRlueComponent{
             this.tip_title = "提示";
             this.tip_content = "运行过程发生意外啦，请您重试！";
           }
-          this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
+            this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
           //this.start_reply(reply);
         });
     }else{
