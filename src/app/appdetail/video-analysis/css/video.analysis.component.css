@@ -44,6 +44,8 @@
   top:0;
   left:225px;
   z-index: 66666;
+  border: 1px solid #eeece8;
+  box-shadow: 1px 2px 3px rgba(0, 0, 0, .156863), 1px 2px 3px rgba(0, 0, 0, .227451);
 }
 .noBorder{
   border:none !important;
@@ -99,7 +101,7 @@
   display: inline-block;
 }
 .overHeight{
-  overflow: scroll;
+  overflow-y: scroll;
 }
 .feature-photo{
   width:38px;

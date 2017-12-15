@@ -41,9 +41,9 @@
             <td class="pad">{{item.taskStatus}}</td>
             <td class="pad">{{item.percent}}</td>
             <td class="operation pad">
-              <a class="operationBtn stop" *ngIf="item.taskStatus!='进行中'" (click)="runChannel(item)" title="暂停"></a>
-              <a class="operationBtn start" *ngIf="item.taskStatus=='进行中'" (click)="runChannel(item)" title="开启"></a>
-              <a class="operationBtn return" *ngIf="item.taskStatus=='完成'" (click)="runChannel(item)" title="重新运行"></a>
+              <a class="operationBtn start" *ngIf="item.taskStatus=='进行中'" (click)="runChannel(item)" title="停止"></a>
+              <a class="operationBtn stop" *ngIf="item.taskStatus=='未启动'" (click)="runChannel(item)" title="开启"></a>
+              <a class="operationBtn rerun" *ngIf="item.taskStatus=='完成'||item.taskStatus=='已停止'" (click)="runChannel(item)" title="重新运行"></a>
               <a class="operationBtn look" (click)="look(item)" title="查看结果"></a>
               <a class="operationBtn edit" *ngIf="item.taskStatus!='进行中'" (click)="edit(item)"></a>
               <a class="operationBtn unedit" *ngIf="item.taskStatus=='进行中'"></a>

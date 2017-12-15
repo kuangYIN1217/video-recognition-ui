@@ -18,12 +18,13 @@ export class ElecTaskManageComponent {
   page: number = 0;
   pageMaxItem: number = 10;
   pageParams = new Page();
-  taskStatusArr:any[]=["全部","完成","进行中","未启动","暂停"];
+  taskStatusArr:any[]=["全部","完成","进行中","未启动","已停止"];
   taskInfo:any[]=[];
   all_selected:boolean = false;
   delete_taskIds:string;
   tip_content:string;
   deleteShow:boolean=false;
+  taskStatus:string;
   constructor(private electricService:ElectricService,private route: ActivatedRoute ,private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.status = this.taskStatusArr[0];
@@ -104,6 +105,15 @@ export class ElecTaskManageComponent {
       }
     }
     this.deleteShow = true;
+  }
+  runChannel(item){
+    if(item.taskStatus!='进行中'){
+      this.taskStatus='进行中';
+      //this.status = '全部';
+    }else if(item.taskStatus=='进行中'){
+      this.taskStatus='已停止';
+    }
+    //this.electricService.taskSwitch()
   }
   deleteShowChange(event){
     this.deleteShow = event;

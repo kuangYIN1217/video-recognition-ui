@@ -378,6 +378,22 @@ export class ElectricService {
         }
       })
   }
+/*  taskSwitch(){
+    let path = "/api/syncPatrolInfo";
+    let body = JSON.stringify(
+      {
+        "anotherApplicationId": anotherApplicationId,
+        "applicationId": appId
+      }
+    );
+    let headers = this.getHeaders();
+    return this.http.post(this.SERVER_URL+path,body,{ headers: headers })
+      .map((response: Response) => {
+        if (response) {
+          return response;
+        }
+      })
+  }*/
   dataStaticSearch(lineId,towerId,taskId,lineOrTower,startTime,endTime){
     let path = "/api/patrolDataCount/"+lineId+"/"+towerId+"/"+taskId+"/"+lineOrTower+"/"+startTime+"/"+endTime;
     let headers = this.getHeaders();

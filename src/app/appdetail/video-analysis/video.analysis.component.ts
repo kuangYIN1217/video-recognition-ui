@@ -56,6 +56,7 @@ export class VideoAnalysisComoponent {
   featureName:string='';
   arr:any[]=[{"targetFeature":"","targetImages":"","photoContainer":[]}];
   heightIndex:number = 0;
+  saveFeature:any[]=[];
   radio(i){
     this.radioIndex = i;
   }
@@ -253,6 +254,7 @@ export class VideoAnalysisComoponent {
       return;
     }
     this.s_popup_show = false;
+    this.showFeature = 0;
     this.s_grid_number = number;
     /* 切换视图模式 是否清楚选中项 */
     if (this.s_selected_grid > number) {
@@ -293,6 +295,24 @@ export class VideoAnalysisComoponent {
   }
   $popup_toggle () {
     this.s_popup_show = !this.s_popup_show;
+   // console.log(this.d_analysis_options);
+    //console.log(this.d_video_list);
+    //console.log(this.arr);
+/*    for(let j=0;j<this.d_video_list.length;j++){
+      if(this.d_video_list[j].targets.length>0){
+        for(let i=0;i<this.d_video_list[j].targets.length;i++){
+            this.saveFeature.push(this.d_video_list[j].targets[i]);
+        }
+      }
+    }
+    console.log(this.saveFeature);
+    let temp:any[]=[];
+    for(let i in this.saveFeature){
+      if(temp.indexOf(this.saveFeature[i].targetId)==-1){
+        temp.push(this.saveFeature[i]);
+      }
+    }
+    console.log(temp);*/
     for(let i=0;i<this.d_analysis_options[0].recognitionCategories.length;i++){
       if(this.d_analysis_options[0].recognitionCategories[i].cateId==1&&this.d_analysis_options[0].recognitionCategories[i].selected){
         this.showFeature = 1;
@@ -303,9 +323,9 @@ export class VideoAnalysisComoponent {
     }
   }
   getHeight(){
-    $(".analysis-popup").height();
-    $(".feature-people").height();
-    if($(".feature-people").height()>$(".analysis-popup").height()){
+    console.log($(".analysis-popup").height());
+    console.log($(".feature-people").height()+103);
+    if($(".feature-people").height()+103>$(".analysis-popup").height()){
       $(".feature-people").height($(".analysis-popup").height());
       this.heightIndex = 1;
     }else{
@@ -330,6 +350,7 @@ export class VideoAnalysisComoponent {
       }
       if(this.d_analysis_options[i].recognitionCategories[j].cateId==1&&this.d_analysis_options[i].recognitionCategories[j].selected){
         this.showFeature = 0;
+        this.arr=[{"targetFeature":"","targetImages":"","photoContainer":[]}];
       }else if(this.d_analysis_options[i].recognitionCategories[j].cateId==1&&!this.d_analysis_options[i].recognitionCategories[j].selected){
         this.showFeature = 1;
       }
@@ -344,6 +365,8 @@ export class VideoAnalysisComoponent {
             this.d_analysis_options[i].recognitionCategories[k].color=0;
         }
       }
+    }else{
+      this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
     }
   }
   arrow_toggle(index: number){
@@ -411,12 +434,17 @@ export class VideoAnalysisComoponent {
     return true;
   }
   getFeature(arr){
+    this.arr = arr;
     for(let i=0;i<arr.length;i++){
-      arr[i].targetImages = arr[i].photoContainer.join(",");
-      delete arr[i].photoContainer;
+      //arr[i].targetImages = arr[i].photoContainer.join(",");
+      let obj:any={};
+      obj.targetImages=arr[i].photoContainer.join(",");
+      obj.targetFeature = arr[i].targetFeature;
+      this.targetSet.push(obj);
     }
-    console.log(arr);
-    return arr;
+    console.log(this.arr);
+    console.log(this.targetSet);
+    return this.targetSet;
   }
   $change_analysis_submit() {
     addWaitToast(this.toastyService ,'等待视频源重新加载','保存成功');
