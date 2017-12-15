@@ -10,6 +10,8 @@ import {addWarningToast , addWaitToast } from '../../common/ts/toast';
 import {Page} from "../../common/defs/resources";
 import {AppManageService} from "../../common/services/appmanage.service";
 import {nextTick} from "q";
+import {SERVER_URL} from "../../app.constants";
+import {FileUploader} from "ng2-file-upload";
 declare var $:any;
 @Component({
   selector: 'video-analysis',
@@ -47,7 +49,13 @@ export class VideoAnalysisComoponent {
   fullscreenIndex9:number=0;
   authority:boolean = false;
   _realTime:any[]=[];
-
+  SERVER_URL = SERVER_URL;
+  photoContainer:any[]=[];
+  showFeature:number=0;
+  targetSet:any[]=[];
+  featureName:string='';
+  arr:any[]=[{"targetFeature":"","targetImages":"","photoContainer":[]}];
+  heightIndex:number = 0;
   radio(i){
     this.radioIndex = i;
   }
@@ -285,13 +293,58 @@ export class VideoAnalysisComoponent {
   }
   $popup_toggle () {
     this.s_popup_show = !this.s_popup_show;
+    for(let i=0;i<this.d_analysis_options[0].recognitionCategories.length;i++){
+      if(this.d_analysis_options[0].recognitionCategories[i].cateId==1&&this.d_analysis_options[0].recognitionCategories[i].selected){
+        this.showFeature = 1;
+      }
+    }
+    if(this.s_popup_show==false){
+      this.showFeature = 0;
+    }
+  }
+  getHeight(){
+    $(".analysis-popup").height();
+    $(".feature-people").height();
+    if($(".feature-people").height()>$(".analysis-popup").height()){
+      $(".feature-people").height($(".analysis-popup").height());
+      this.heightIndex = 1;
+    }else{
+      this.heightIndex = 0;
+    }
+  }
+  validColor(i,j){
+    this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
+    for(let k=0;k<this.d_analysis_options[i].recognitionCategories.length;k++){
+      if(this.d_analysis_options[i].recognitionCategories[j].cateId!=this.d_analysis_options[i].recognitionCategories[k].cateId){
+        this.d_analysis_options[i].recognitionCategories[k].color=1;
+      }
+    }
   }
   $popup_select_toggle (i,j) {
     if (this.s_popup_allselect) {
       this.s_popup_allselect = !this.s_popup_allselect;
-
     }
-    this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
+    if(i==0){
+      if(this.d_analysis_options[i].recognitionCategories[j].color==1){
+        return false;
+      }
+      if(this.d_analysis_options[i].recognitionCategories[j].cateId==1&&this.d_analysis_options[i].recognitionCategories[j].selected){
+        this.showFeature = 0;
+      }else if(this.d_analysis_options[i].recognitionCategories[j].cateId==1&&!this.d_analysis_options[i].recognitionCategories[j].selected){
+        this.showFeature = 1;
+      }
+      if(!this.d_analysis_options[i].recognitionCategories[j].selected&&this.d_analysis_options[i].recognitionCategories[j].cateId==1){
+        this.validColor(i,j);
+        this.showFeature = 1;
+      }else if(!this.d_analysis_options[i].recognitionCategories[j].selected&&this.d_analysis_options[i].recognitionCategories[j].cateId==26){
+        this.validColor(i,j);
+      }else if(this.d_analysis_options[i].recognitionCategories[j].selected){
+        this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
+        for(let k=0;k<this.d_analysis_options[i].recognitionCategories.length;k++){
+            this.d_analysis_options[i].recognitionCategories[k].color=0;
+        }
+      }
+    }
   }
   arrow_toggle(index: number){
     if(this.d_analysis_options[index].selected){
@@ -357,12 +410,22 @@ export class VideoAnalysisComoponent {
     }
     return true;
   }
+  getFeature(arr){
+    for(let i=0;i<arr.length;i++){
+      arr[i].targetImages = arr[i].photoContainer.join(",");
+      delete arr[i].photoContainer;
+    }
+    console.log(arr);
+    return arr;
+  }
   $change_analysis_submit() {
     addWaitToast(this.toastyService ,'等待视频源重新加载','保存成功');
     // todo request
+    this.showFeature = 0;
+    this.s_popup_show = false;
     if (this.s_selected_grid === 0) {
       // 当前所有
-      this.recognitionService.setRecognitions( this.getAllChannelID() , this.getSelectedRecognitions()).subscribe(rep => {
+      this.recognitionService.setRecognitions( this.getAllChannelID() , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
         console.log(rep);
         this.d_video_list= rep.sort(function(a,b){
           return parseInt(a.channelOrder) - parseInt(b.channelOrder)
@@ -370,7 +433,7 @@ export class VideoAnalysisComoponent {
       });
     } else {
       //
-      this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getSelectedRecognitions()).subscribe(rep => {
+      this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
         console.log(rep);
         this.d_video_list[this.s_selected_grid -1].recognitionCategory = rep[0].recognitionCategory;
       });
@@ -577,12 +640,6 @@ export class VideoAnalysisComoponent {
           return parseInt(b.cateId) - parseInt(a.cateId)
         })
       }
-      for(let j=0;j<this.d_analysis_options[0].recognitionCategories.length;j++){
-        if(this.d_analysis_options[0].recognitionCategories[j].cateId==26){
-          this.d_analysis_options[0].recognitionCategories.splice(j,1);
-        }
-      }
-      console.log(this.d_analysis_options);
       this.d_analysis_options[0].selected=true;
       //this.d_analysis_options_detail= rep ;
     })
@@ -627,5 +684,42 @@ export class VideoAnalysisComoponent {
     } else {
       this.s_grid_number = 9
     }
+  }
+
+
+  public uploader:FileUploader = new FileUploader({
+    url: SERVER_URL+"/api/upload",
+    method: "POST",
+    itemAlias: "file",
+  });
+  selectedFileOnChanged(event,item){
+    console.log(item);
+    for(let i=0;i<this.uploader.queue.length;i++){
+      this.uploader.queue[i].onSuccess = (response: any, status: any, headers: any) => {
+        item.photoContainer.push(response);
+        console.log(item.photoContainer);
+      };
+    }
+    this.uploader.uploadAll(); // 开始上传
+  }
+  getInput(i){
+    console.log(i);
+    //document.getElementById("file").setAttribute("id",i).click();
+    $(`#${i}`).attr("id",i).click();
+  }
+  outputImg(item){
+    return item.slice(25);
+  }
+  delPhoto(item,index){
+    item.photoContainer.splice(index,1);
+  }
+  addData(){
+    let obj:any={};
+    obj.targetFeature = '';
+    obj.targetImages = '';
+    obj.photoContainer=[];
+    this.arr.push(obj);
+    console.log(this.arr);
+    this.getHeight();
   }
 }

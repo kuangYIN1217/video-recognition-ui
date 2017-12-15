@@ -24,7 +24,7 @@ export class TaskManageComponent {
   pageMaxItem: number = 10;
   pageParams = new Page();
   status:string;
-  alarmStatusArr:any[]=["全部","完成","进行中","未启动","暂停"];
+  alarmStatusArr:any[]=["全部","完成","进行中","未启动","已停止"];
   deleteIndex:number=0;
   tip_title:string;
   tip_content:string;
@@ -221,7 +221,7 @@ export class TaskManageComponent {
       this.status='进行中';
       this.alarmStatus = '全部';
     }else if(item.taskStatus=='进行中'){
-      this.status='暂停';
+      this.status='已停止';
     }
     this.offlineService.offlineSwitch(item.taskId,this.status)
       .subscribe(reply =>{

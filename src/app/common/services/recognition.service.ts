@@ -47,15 +47,19 @@ export class RecognitionService {
         }
       });
   }
-  setRecognitions( channelIds , recognitions) {
-    console.log(channelIds);
-    console.log(recognitions);
-    let body ="channelId=" + channelIds + "&recognitionCategory=" + recognitions;
-    let path = "/api/UpadateApplicationChannelRecognitionCategory";
-    console.log(path);
-    let headers = new Headers();
-    headers.append('Content-Type','application/x-www-form-urlencoded');
-    headers.append('Authorization',this.getAuthorization());
+  setRecognitions( channelIds , recognitions,targetSet) {
+    let path = "/api/UpdateApplicationChannelRecognitionCategory";
+    let body = JSON.stringify({
+      "channelId":channelIds,
+      "recognitionCategory":recognitions,
+      "targetSet": targetSet
+    });
+    //let body ="channelId=" + channelIds + "&recognitionCategory=" + recognitions+"&targetSet=" + targetSet;
+    console.log(body);
+    let headers = this.getHeaders();
+    //let headers = new Headers();
+    //headers.append('Content-Type','application/x-www-form-urlencoded');
+    //headers.append('Authorization',this.getAuthorization());
     return this.http.post(this.SERVER_URL + path, body ,{headers: headers})
       .map((response: Response) => {
         if (response && response.json()) {

@@ -68,10 +68,10 @@ export class WarnWindowComponent{
       });
   }
   public uploader:FileUploader = new FileUploader({
-    url: SERVER_URL+"/api/upload",
-    method: "POST",
-    itemAlias: "file",
-  });
+  url: SERVER_URL+"/api/upload",
+  method: "POST",
+  itemAlias: "file",
+});
   selectedFileOnChanged(event){
     for(let i=0;i<this.uploader.queue.length;i++){
       this.uploader.queue[i].onSuccess = (response: any, status: any, headers: any) => {
