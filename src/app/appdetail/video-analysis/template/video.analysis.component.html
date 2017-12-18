@@ -121,10 +121,10 @@
           <label class="middle levelOne-label">{{re.classificationName}}</label>
           <img [src]="(re.selected)?'assets/appdetail/video-analysis/shang.png':'assets/appdetail/video-analysis/xia.png'" class="middle"/>
           </div>
-            <div class="levelTwo" *ngFor="let item of re.recognitionCategories; let j = index" [style.display]="re.selected?'':'none'">
+          <div class="levelTwo" *ngFor="let item of re.recognitionCategories; let j = index" [style.display]="re.selected?'':'none'">
             <img class="middle" (click)="$popup_select_toggle(i,j)" [src]="(item.selected) ? 'assets/appdetail/video-analysis/icon_select_h.png' : 'assets/appdetail/video-analysis/icon_select_n.png'">
-            <label class="middle" *ngIf="item.color!=1">{{item.name}}</label>
-              <label class="middle" style="color: #999;" *ngIf="item.color==1">{{item.name}}</label>
+            <label class="middle" *ngIf="item.color!=1&&item.color1!=1">{{item.name}}</label>
+            <label class="middle" style="color: #999;" *ngIf="item.color==1||item.color1==1">{{item.name}}</label>
           </div>
         </div>
 <!--        <div class="popup-item" *ngFor="let item of d_analysis_options; let i = index">

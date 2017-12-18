@@ -166,7 +166,6 @@ export class TaskManageComponent {
     item.sort(function(a,b){
       return parseInt(a.ruleId) - parseInt(b.ruleId)
     });
-    //console.log(item);
     let ruleName = '';
     for(let i=0;i<item.length;i++){
       ruleName += item[i].ruleName + ',';

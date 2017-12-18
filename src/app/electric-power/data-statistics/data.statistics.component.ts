@@ -224,8 +224,8 @@ export class DataStatisticsComponent {
           this.deleteIndex = 1;
           if(err.text()=='统计颗粒度为线路，不能选择杆塔'){
             this.tip_content='特定杆塔不支持线路颗粒度统计，请重新选择';
-          }else if(err.text()=='未查询到信息'){
-            this.tip_content='未查询到信息';
+          }else if(err.text()=='未查询到相关信息'){
+            this.tip_content='未查询到相关信息';
           }
         })
   }

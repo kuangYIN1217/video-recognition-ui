@@ -34,11 +34,11 @@
             <td class="checked">
               <img [src]="item.selected?'../assets/appdetail/way.manage/checked.png':'../assets/appdetail/way.manage/unchecked.png'" (click)="check(i)"/>
             </td>
-            <td class="pad">{{item.taskName}}</td>
+            <td class="pad" title="{{item.taskName}}">{{item.taskName}}</td>
             <!--<td class="pad">{{getFlaw(item.flawCategorySet)}}</td>-->
-            <td class="pad">{{item.flawCategorys}}</td>
-            <td class="pad">{{item.fileSize}}</td>
-            <td class="pad">{{item.taskStatus}}</td>
+            <td class="pad" title="{{item.flawCategorys}}">{{item.flawCategorys}}</td>
+            <td class="pad" title="{{item.fileSize}}">{{item.fileSize}}</td>
+            <td class="pad" title="{{item.taskStatus}}">{{item.taskStatus}}</td>
             <td class="pad">{{item.percent}}</td>
             <td class="operation pad">
               <a class="operationBtn start" *ngIf="item.taskStatus=='进行中'" (click)="runChannel(item)" title="停止"></a>

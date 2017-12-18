@@ -95,7 +95,7 @@ export class NavigationComponent {
     }else if (this.location.path().match(/\/datamanage/)||this.location.path().match(/\/createinspection/)){
       this.focusTab = 8;
       // this.needhide = 0;
-    }else if (this.location.isCurrentPathEqualTo('/electaskmanage')||this.location.path().match('/createtask')||this.location.path().match('/taskresult')||this.location.path().match('/editresult') ) {
+    }else if (this.location.path().match(/\/electaskmanage/)||this.location.path().match('/createtask')||this.location.path().match('/taskresult')||this.location.path().match('/editresult') ) {
       this.focusTab = 9;
       // this.needhide = 0;
     }else if (this.location.isCurrentPathEqualTo('/datastatistics') ) {

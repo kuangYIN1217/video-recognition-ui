@@ -152,6 +152,7 @@
   text-overflow:ellipsis;
   overflow: hidden;
   white-space:nowrap;
+  cursor: pointer;
 }
 .middle{
   display: inline-block;

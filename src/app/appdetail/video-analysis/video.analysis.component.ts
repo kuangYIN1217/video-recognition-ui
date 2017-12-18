@@ -312,7 +312,14 @@ export class VideoAnalysisComoponent {
         temp.push(this.saveFeature[i]);
       }
     }
-    console.log(temp);*/
+    console.log(temp);
+    for(let i=0;i<temp.length;i++){
+      let obj:any={};
+      obj.targetFeature = temp[i].targetFeature;
+      obj.photoContainer = temp[i].targetImages.split(",");
+      this.arr.push(obj);
+      this.arr.splice(0,1);
+    }*/
     for(let i=0;i<this.d_analysis_options[0].recognitionCategories.length;i++){
       if(this.d_analysis_options[0].recognitionCategories[i].cateId==1&&this.d_analysis_options[0].recognitionCategories[i].selected){
         this.showFeature = 1;
@@ -344,7 +351,7 @@ export class VideoAnalysisComoponent {
     if (this.s_popup_allselect) {
       this.s_popup_allselect = !this.s_popup_allselect;
     }
-    if(i==0){
+    if(this.d_analysis_options[i].classificationName=='人'){
       if(this.d_analysis_options[i].recognitionCategories[j].color==1){
         return false;
       }
@@ -362,7 +369,31 @@ export class VideoAnalysisComoponent {
       }else if(this.d_analysis_options[i].recognitionCategories[j].selected){
         this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
         for(let k=0;k<this.d_analysis_options[i].recognitionCategories.length;k++){
-            this.d_analysis_options[i].recognitionCategories[k].color=0;
+          this.d_analysis_options[i].recognitionCategories[k].color=0;
+        }
+      }
+    }else if(this.d_analysis_options[i].classificationName=='对战目标'){
+      if(this.d_analysis_options[i].recognitionCategories[j].color1==1){
+        return false;
+      }
+      if(!this.d_analysis_options[i].recognitionCategories[j].selected&&this.d_analysis_options[i].recognitionCategories[j].cateId==30){
+        this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
+        for(let k=0;k<this.d_analysis_options[i].recognitionCategories.length;k++){
+          if(this.d_analysis_options[i].recognitionCategories[k].cateId!=30){
+            this.d_analysis_options[i].recognitionCategories[k].color1=1;
+          }
+        }
+      }else if(!this.d_analysis_options[i].recognitionCategories[j].selected&&this.d_analysis_options[i].recognitionCategories[j].cateId!=30){
+        this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
+        for(let k=0;k<this.d_analysis_options[i].recognitionCategories.length;k++){
+          if(this.d_analysis_options[i].recognitionCategories[k].cateId==30){
+            this.d_analysis_options[i].recognitionCategories[k].color1=1;
+          }
+        }
+      }else if(this.d_analysis_options[i].recognitionCategories[j].selected){
+        this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
+        for(let k=0;k<this.d_analysis_options[i].recognitionCategories.length;k++){
+          this.d_analysis_options[i].recognitionCategories[k].color1=0;
         }
       }
     }else{

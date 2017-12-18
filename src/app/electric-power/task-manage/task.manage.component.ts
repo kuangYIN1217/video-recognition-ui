@@ -25,16 +25,30 @@ export class ElecTaskManageComponent {
   tip_content:string;
   deleteShow:boolean=false;
   taskStatus:string;
+  pageNow:number=0;
+  interval:any;
   constructor(private electricService:ElectricService,private route: ActivatedRoute ,private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.status = this.taskStatusArr[0];
     this.getTask(this.appId,-1,-1,this.page,this.pageMaxItem);
+    this.interval = setInterval(() => {
+      this.getResult();
+    }, 10000);
   }
   getTask(appId,name,status,page,size){
     this.electricService.searchTask(appId,name,status,page,size)
       .subscribe(result=>{
         this.taskInfo = result.content;
+        let page = new Page();
+        page.pageMaxItem = result.size;
+        page.curPage = result.number+1;
+        page.totalPage = result.totalPages;
+        page.totalNum = result.totalElements;
+        this.pageParams = page;
       })
+  }
+  ngOnDestroy(){
+    clearInterval(this.interval);
   }
   getFlaw(arr){
     let temName = '';
@@ -65,7 +79,12 @@ export class ElecTaskManageComponent {
 
   }
   search(){
-    this.valid();
+    if(this.pageNow){
+      this.page = 0;
+    }
+    this.getResult();
+  }
+  getResult(){
     if(this.taskName==''&&this.status=='全部'){
       this.getTask(this.appId,-1,-1,this.page,this.pageMaxItem);
     }else if(this.taskName==''&&this.status!='全部'){
@@ -75,6 +94,20 @@ export class ElecTaskManageComponent {
     }else{
       this.getTask(this.appId,this.taskName,this.status,this.page,this.pageMaxItem);
     }
+  }
+  getPageData(paraParam){
+    if(this.taskName==''&&this.status=='全部'){
+      this.getTask(this.appId,-1,-1,paraParam.curPage-1,paraParam.pageMaxItem);
+    }else if(this.taskName==''&&this.status!='全部'){
+      this.getTask(this.appId,-1,this.status,paraParam.curPage-1,paraParam.pageMaxItem);
+    }else if(this.taskName!=''&&this.status=='全部'){
+      this.getTask(this.appId,this.taskName,-1,paraParam.curPage-1,paraParam.pageMaxItem);
+    }else{
+      this.getTask(this.appId,this.taskName,this.status,paraParam.curPage-1,paraParam.pageMaxItem);
+    }
+    this.page=paraParam.curPage-1;
+    this.pageNow=paraParam.curPage-1;
+    this.pageMaxItem = paraParam.pageMaxItem;
   }
   create(){
     this.router.navigate(['../createtask'],{queryParams: {'taskTitle':"新建任务"}});
@@ -107,13 +140,25 @@ export class ElecTaskManageComponent {
     this.deleteShow = true;
   }
   runChannel(item){
+    console.log(item);
     if(item.taskStatus!='进行中'){
       this.taskStatus='进行中';
       //this.status = '全部';
     }else if(item.taskStatus=='进行中'){
       this.taskStatus='已停止';
     }
-    //this.electricService.taskSwitch()
+    this.electricService.taskSwitch(this.taskStatus,item.taskId,item.taskStatus)
+      .subscribe(result=>{
+        console.log(result);
+        this.getResult();
+        if(this.taskStatus=='进行中'){
+          this.interval = setInterval(() => {
+            this.getResult();
+          },10000);
+        }else{
+          clearInterval(this.interval);
+        }
+      })
   }
   deleteShowChange(event){
     this.deleteShow = event;
