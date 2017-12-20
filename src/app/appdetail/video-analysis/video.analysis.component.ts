@@ -57,6 +57,7 @@ export class VideoAnalysisComoponent {
   arr:any[]=[{"targetFeature":"","targetImages":"","photoContainer":[]}];
   heightIndex:number = 0;
   saveFeature:any[]=[];
+  saveColor:number = 0;
   radio(i){
     this.radioIndex = i;
   }
@@ -478,26 +479,30 @@ export class VideoAnalysisComoponent {
     return this.targetSet;
   }
   $change_analysis_submit() {
-    addWaitToast(this.toastyService ,'等待视频源重新加载','保存成功');
-    // todo request
-    this.showFeature = 0;
-    this.s_popup_show = false;
-    if (this.s_selected_grid === 0) {
-      // 当前所有
-      this.recognitionService.setRecognitions( this.getAllChannelID() , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
-        console.log(rep);
-        this.d_video_list= rep.sort(function(a,b){
-          return parseInt(a.channelOrder) - parseInt(b.channelOrder)
+    if(this.saveColor == 0){
+      return false;
+    }else{
+      addWaitToast(this.toastyService ,'等待视频源重新加载','保存成功');
+      // todo request
+      this.showFeature = 0;
+      this.s_popup_show = false;
+      if (this.s_selected_grid === 0) {
+        // 当前所有
+        this.recognitionService.setRecognitions( this.getAllChannelID() , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
+          console.log(rep);
+          this.d_video_list= rep.sort(function(a,b){
+            return parseInt(a.channelOrder) - parseInt(b.channelOrder)
+          });
         });
-      });
-    } else {
-      //
-      this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
-        console.log(rep);
-        this.d_video_list[this.s_selected_grid -1].recognitionCategory = rep[0].recognitionCategory;
-      });
+      } else {
+        //
+        this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
+          console.log(rep);
+          this.d_video_list[this.s_selected_grid -1].recognitionCategory = rep[0].recognitionCategory;
+        });
+      }
+      //this.s_popup_show = false;
     }
-    //this.s_popup_show = false;
   }
   /* 获得当前为true的 recognition */
   getSelectedRecognitions() {
@@ -515,8 +520,15 @@ export class VideoAnalysisComoponent {
 
   getAllChannelID() {
     let channelIDS = '';
-    for (let i = 0 ; i < this.d_video_list.length ; i++) {
-      channelIDS += this.d_video_list[i].channelId + ',';
+    let arr:any=[];
+    for(let i=0;i<this.d_video_list.length;i++){
+      if(this.d_video_list[i].channelStatus=='1'){
+          arr.push(this.d_video_list[i]);
+      }
+    }
+    console.log(arr);
+    for (let i = 0 ; i < arr.length ; i++) {
+      channelIDS += arr[i].channelId + ',';
     }
     return channelIDS.substring( 0 ,channelIDS.length -1);
   }
@@ -568,7 +580,7 @@ export class VideoAnalysisComoponent {
   }
   get_switch(index){
     if (this.d_video_list && this.d_video_list.length >= index) {
-      if(this.d_video_list[index-1].channelStatus==0){
+      if(this.d_video_list[index-1].channelStatus=='0'){
         return true;
       }else{
         return false;
@@ -709,7 +721,8 @@ export class VideoAnalysisComoponent {
       console.log(rep);
       this.d_video_list.sort(function(a,b){
         return parseInt(a.channelOrder) - parseInt(b.channelOrder)
-      })
+      });
+      this.getChannelId();
       //this.init_grid_number(rep.length ? rep.length : 0);
     });
   }
@@ -729,7 +742,18 @@ export class VideoAnalysisComoponent {
         return parseInt(a.channelOrder) - parseInt(b.channelOrder)
       })
       this.init_grid_number(rep.length ? rep.length : 0);
+      this.getChannelId();
     });
+  }
+  getChannelId(){
+    for(let i=0;i<this.d_video_list.length;i++){
+      if(this.d_video_list[i].channelStatus=='1'){
+        this.saveColor = 1;
+        break;
+      }else{
+        this.saveColor = 0;
+      }
+    }
   }
   init_grid_number(number) {
     if (number <= 1) {

@@ -209,9 +209,9 @@
   border-radius: 2px;
   cursor: pointer;
 }
-.analysis-submit-wrapper .submit-btn:hover{
+/*.analysis-submit-wrapper .submit-btn:hover{
   background: #24a880;
-}
+}*/
 .left-bar {
   height: 100%;
   flex: 0 0 38px;
@@ -579,4 +579,7 @@ select option{
 input{
   outline: none;
   padding-left: 8px;
+}
+.saveColor{
+  background: #38af8b;
 }
