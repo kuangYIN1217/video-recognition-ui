@@ -279,7 +279,7 @@ export class WarnRlueComponent{
   }
   lookRule(item){
     this.createIndex=1;
-    this.warn_title="任务详情";
+    this.warn_title="规则详情";
     this.ruleList = item;
     console.log(this.ruleList);
   }

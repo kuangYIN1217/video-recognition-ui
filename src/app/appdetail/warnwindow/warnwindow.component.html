@@ -6,16 +6,16 @@
     <div class="dialogContent">
       <div class="info">
         <label>规则名称：</label>
-        <input type="text" name="ruleName" [(ngModel)]="ruleName" *ngIf="warn_title!='任务详情'"/>
-        <input type="text" name="ruleName" [(ngModel)]="ruleName" readonly *ngIf="warn_title=='任务详情'"/>
+        <input type="text" name="ruleName" [(ngModel)]="ruleName" *ngIf="warn_title!='规则详情'"/>
+        <input type="text" name="ruleName" [(ngModel)]="ruleName" readonly *ngIf="warn_title=='规则详情'"/>
         <span class="must" [style.display]="chanRequired1==1?'':'none'">必填字段</span>
       </div>
       <div class="createInfo" *ngIf="appCate=='实时流分析'">
         <label>告警通道：</label>
         <input type="text" required readonly name="warnChannel" [(ngModel)]="warnChannel"/>
         <span class="must" [style.display]="chanRequired2==1?'':'none'">必填字段</span>
-        <img src="../assets/createtext/jia.png" class="jia" (click)="checkedRlues($event)" *ngIf="warn_title!='任务详情'"/>
-        <img src="../assets/createtext/jia.png" class="jia" *ngIf="warn_title=='任务详情'"/>
+        <img src="../assets/createtext/jia.png" class="jia" (click)="checkedRlues($event)" *ngIf="warn_title!='规则详情'"/>
+        <img src="../assets/createtext/jia.png" class="jia" *ngIf="warn_title=='规则详情'"/>
         <alarm-rlues [style.display]="checked==1?'':'none'"  width="280px" margin="20px 10px 0 20px" paddingRight="10px" [title]="title" [warn_title]="warn_title" [warnChanArr]="warnChanArr" [warnChanChecked]="warnChanChecked" (chanChange)="chanChange($event)" (chanChangeId)="chanChangeId($event)" (warnChanCheckedChange)="warnChanCheckedChange($event)"></alarm-rlues>
       </div>
 <!--      <div class="info">
@@ -29,49 +29,49 @@
       </div>-->
       <div class="info" [ngClass]="{marginTop: checked==1}">
         <label>告警对象：</label>
-        <select [(ngModel)]="warnObj" (ngModelChange)="warnObj=$event;changeWarn()" *ngIf="warn_title!='任务详情'">
+        <select [(ngModel)]="warnObj" (ngModelChange)="warnObj=$event;changeWarn()" *ngIf="warn_title!='规则详情'">
           <option value="{{item.classificationName}}" *ngFor="let item of warnObjArr">{{item.classificationName}}</option>
         </select>
-        <select class="detail" [(ngModel)]="warnObjDetail" (ngModelChange)="warnObjDetail=$event;changeDetail()" *ngIf="warn_title!='任务详情'">
+        <select class="detail" [(ngModel)]="warnObjDetail" (ngModelChange)="warnObjDetail=$event;changeDetail()" *ngIf="warn_title!='规则详情'">
           <option value="{{item.name}}" *ngFor="let item of warnObjDetailArr">{{item.name}}</option>
         </select>
-        <select [(ngModel)]="warnObj" (ngModelChange)="warnObj=$event;" disabled *ngIf="warn_title=='任务详情'">
+        <select [(ngModel)]="warnObj" (ngModelChange)="warnObj=$event;" disabled *ngIf="warn_title=='规则详情'">
           <option value="{{item.classificationName}}" *ngFor="let item of warnObjArr">{{item.classificationName}}</option>
         </select>
-        <select class="detail" [(ngModel)]="warnObjDetail" (ngModelChange)="warnObjDetail=$event;" disabled *ngIf="warn_title=='任务详情'">
+        <select class="detail" [(ngModel)]="warnObjDetail" (ngModelChange)="warnObjDetail=$event;" disabled *ngIf="warn_title=='规则详情'">
           <option value="{{item.name}}" *ngFor="let item of warnObjDetailArr">{{item.name}}</option>
         </select>
       </div>
       <div class="info" *ngIf="identifyName=='人'">
         <label>对象特征：</label>
         <span class="carNum">人名</span>
-        <input type="text" class="car" name="objNamw" [(ngModel)]="objName" *ngIf="warn_title!='任务详情'"/>
-        <input type="text" class="car" name="objNamw" [(ngModel)]="objName" readonly *ngIf="warn_title=='任务详情'"/>
+        <input type="text" class="car" name="objNamw" [(ngModel)]="objName" *ngIf="warn_title!='规则详情'"/>
+        <input type="text" class="car" name="objNamw" [(ngModel)]="objName" readonly *ngIf="warn_title=='规则详情'"/>
       </div>
       <div class="info" *ngIf="identifyName=='人'">
         <span class="pohotText">特征图片</span>
         <div class="showPhoto">
              <span  *ngFor="let item of photoContainer;let i=index">
                <img src="{{SERVER_URL}}/download/{{outputImg(item)}}" alt="" class="photo">
-               <img src="../assets/appmanage/delete.png" class="del" (click)="delPhoto(i)" *ngIf="warn_title!='任务详情'"/>
-               <img src="../assets/appmanage/delete.png" class="del"  *ngIf="warn_title=='任务详情'"/>
+               <img src="../assets/appmanage/delete.png" class="del" (click)="delPhoto(i)" *ngIf="warn_title!='规则详情'"/>
+               <img src="../assets/appmanage/delete.png" class="del"  *ngIf="warn_title=='规则详情'"/>
              </span>
         </div>
         <b class="space">&nbsp;</b>
-        <a href="javascript:void(0)" class="btn pdl bgcg" onclick="document.getElementById('file').click()" *ngIf="warn_title!='任务详情'">上传</a>
-        <a href="javascript:void(0)" class="btn pdl bgcg"  *ngIf="warn_title=='任务详情'">上传</a>
+        <a href="javascript:void(0)" class="btn pdl bgcg" onclick="document.getElementById('file').click()" *ngIf="warn_title!='规则详情'">上传</a>
+        <a href="javascript:void(0)" class="btn pdl bgcg"  *ngIf="warn_title=='规则详情'">上传</a>
         <input type="file" multiple id="file" name="file" ng2FileSelect [uploader]="uploader" accept=".jpg,.png" (change)="selectedFileOnChanged($event)"/>
         <span class="zhushi">注：支持格式jpg、png</span>
       </div>
       <div class="info">
         <label>开启告警：</label>
-        <span class="radio" *ngIf="warn_title!='任务详情'">
+        <span class="radio" *ngIf="warn_title!='规则详情'">
             <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=1" (click)="radio(1)"/>
             <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==1" (click)="radio(1)"/><span class="middle fontSize">开启</span>
             <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=0" (click)="radio(0)" style="margin-left: 20px"/>
             <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==0" (click)="radio(0)" style="margin-left: 20px"/><span class="middle fontSize">关闭</span>
         </span>
-        <span class="radio" *ngIf="warn_title=='任务详情'">
+        <span class="radio" *ngIf="warn_title=='规则详情'">
             <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=1"/>
             <img src="../assets/appdetail/way.manage/radio.png" class="middle" *ngIf="radioIndex==1" /><span class="middle fontSize">开启</span>
             <img src="../assets/appdetail/way.manage/unradio.png" class="middle" *ngIf="radioIndex!=0"  style="margin-left: 20px"/>
@@ -80,9 +80,9 @@
       </div>
       <div class="infoBtn">
         <a href="javascript:void(0)" class="btn bgco" style="margin-left: 24px" (click)="create()" *ngIf="warn_title=='新建规则'">创建</a>
-        <a href="javascript:void(0)" class="btn bgco" style="margin-left: 24px" (click)="editSave()"  *ngIf="warn_title=='修改规则'||warn_title=='任务详情'">保存</a>
+        <a href="javascript:void(0)" class="btn bgco" style="margin-left: 24px" (click)="editSave()"  *ngIf="warn_title=='修改规则'||warn_title=='规则详情'">保存</a>
         <a href="javascript:void(0)" class="btn bgcg" style="margin-left: 18px" (click)="back()"  *ngIf="warn_title=='新建规则'">返回</a>
-        <a href="javascript:void(0)" class="btn bgcg" style="margin-left: 26px" (click)="back()"  *ngIf="warn_title=='任务详情'||warn_title=='修改规则'">返回</a>
+        <a href="javascript:void(0)" class="btn bgcg" style="margin-left: 26px" (click)="back()"  *ngIf="warn_title=='规则详情'||warn_title=='修改规则'">返回</a>
       </div>
       <app-tips [style.display]="deleteIndex==1?'':'none'" [tip_title]="tip_title" [tip_content]="tip_content" [deleteIndex]="deleteIndex" [tip_btn]="tip_btn" (deleteChange)="deleteChange($event)" (deletedChange)="deletedChange($event)"></app-tips>
     </div>
