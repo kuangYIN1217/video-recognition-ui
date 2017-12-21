@@ -63,7 +63,6 @@
             <td>
               <a class="operationBtn stop" *ngIf="item.alarmRuleStatus=='开启'" (click)="runRule(item)" title="暂停"></a>
               <a class="operationBtn start" *ngIf="item.alarmRuleStatus=='关闭'" (click)="runRule(item)" title="开始"></a>
-              <a class="operationBtn stop" title="暂停"></a>
               <a class="operationBtn look" (click)="lookRule(item)" title="查看"></a>
               <a class="operationBtn edit" *ngIf="item.alarmRuleStatus=='关闭'" (click)="edit(item)" title="修改"></a>
               <a class="operationBtn unedit" *ngIf="item.alarmRuleStatus=='开启'" (click)="edit(item)" title="修改"></a>

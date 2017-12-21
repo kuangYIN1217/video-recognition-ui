@@ -120,12 +120,12 @@ export class VideoAnalysisComoponent {
   }
   constructor (private channelService: ChannelService , private recognitionService: RecognitionService, private toastyService:ToastyService, private appManageService: AppManageService) {
     this.d_applicationId = parseInt(window.sessionStorage.getItem('applicationId'));
-    this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
-    for(let i=0;i<this._realTime.length;i++){
+    /*  this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
+   for(let i=0;i<this._realTime.length;i++){
       if(this._realTime[i].projectAuthorityId==2){
         this.authority = true;
       }
-    }
+    }*/
      /* 初始化recognition */
     this.initRecognitions();
     /* 初始化channel */
@@ -447,17 +447,13 @@ export class VideoAnalysisComoponent {
     $event = $event || window.event;
     $event.preventDefault();
     $event.stopPropagation();
-    if(this.authority){
-      this.addDialog = 1;
-      this.protocol = this.protocols[0];
-      this.channelType = this.channelTypes[0];
-      this.chanName = '';
-      this.chanAddr = '';
-      this.videoAddress = '';
-      this.radioIndex = 1;
-    }else{
-      return false;
-    }
+    this.addDialog = 1;
+    this.protocol = this.protocols[0];
+    this.channelType = this.channelTypes[0];
+    this.chanName = '';
+    this.chanAddr = '';
+    this.videoAddress = '';
+    this.radioIndex = 1;
   }
   ngIfaddVideo(index: number) {
     if (this.d_video_list.length >= index) {

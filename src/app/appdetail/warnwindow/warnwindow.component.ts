@@ -102,6 +102,12 @@ export class WarnWindowComponent{
     }
     this.changeDetail();
   }
+  validInput(){
+    if(/^[\u4E00-\u9FA5]{1,5}$/.test(this.objName)){
+       //this.objName.substring(0,this.objName.length-1);
+      console.log(1);
+    }
+  }
   changeDetail(){
     if(this.warnObjDetail=='人'){
       this.identifyName = '人';
@@ -258,7 +264,10 @@ export class WarnWindowComponent{
     return temp.substring(0,temp.length -1);
   }
   create(){
-    this.validation();
+    //console.log(this.validation());
+    if(this.validation()==false){
+      return false;
+    };
     this.photoUrl=this.getPhoto();
     this.warnService.createWarn(this.appId,this.warnChannelId,this.ruleName,this.cateId,this.code,this.objName,this.status,this.photoUrl)
       .subscribe(result=>{
@@ -279,7 +288,9 @@ export class WarnWindowComponent{
       })
   }
   editSave(){
-    this.validation();
+    if(this.validation()==false){
+      return false;
+    };
     this.photoUrl=this.getPhoto();
     if(this.appCate=='实时流分析'){
       this.warnService.editRuleSave(this.warnChannelId,this.ruleList.ruleId,this.ruleName,this.cateId,this.code,this.objName,this.status,this.photoUrl)
