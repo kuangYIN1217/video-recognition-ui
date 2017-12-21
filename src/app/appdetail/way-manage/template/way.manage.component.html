@@ -18,14 +18,11 @@
     </div>
     <div class="channelContent" id="channelContent">
         <div class="headerBtn">
-          <a href="javascript:void(0)" class="btn pdl bgcg" (click)="addChannel()" *ngIf="authority">添加</a>
-          <a href="javascript:void(0)" class="btn pdl bgcg" *ngIf="!authority">添加</a>
-          <a href="javascript:void(0)" class="btn pdl bgcg" onclick="document.getElementById('file').click()" *ngIf="authority">导入</a>
-          <a href="javascript:void(0)" class="btn pdl bgcg" *ngIf="!authority">导入</a>
+          <a href="javascript:void(0)" class="btn pdl bgcg" (click)="addChannel()">添加</a>
+          <a href="javascript:void(0)" class="btn pdl bgcg" onclick="document.getElementById('file').click()">导入</a>
           <input type="file" id="file" name="file" ng2FileSelect [uploader]="uploader" accept=".xlsx" (change)="selectedFileOnChanged($event)"/>
           <a href="javascript:void(0)" class="btn downExcel bgcg" (click)="download()">下载模板</a>
-          <a href="javascript:void(0)" class="btn pdl bgcg" (click)="dia()" *ngIf="authority">删除</a>
-          <a href="javascript:void(0)" class="btn pdl bgcg" (click)="dia()" *ngIf="!authority">删除</a>
+          <a href="javascript:void(0)" class="btn pdl bgcg" (click)="dia()">删除</a>
         </div>
       <div class="channelList">
         <table class="channelTable" cellspacing="0">
@@ -57,17 +54,12 @@
             <td class="pad">{{item.channelProtocol}}</td>
             <td class="pad">{{output(item.channelStatus)}}</td>
             <td class="operation pad">
-              <a class="operationBtn stop" *ngIf="item.channelStatus==0&&authority" (click)="runChannel(item)"></a>
-              <a class="operationBtn start" *ngIf="item.channelStatus==1&&authority" (click)="runChannel(item)"></a>
-              <a class="operationBtn stop" *ngIf="!authority"></a>
-              <a class="operationBtn start" *ngIf="!authority"></a>
-              <a class="operationBtn edit" *ngIf="item.channelStatus==0&&authority" (click)="edit(item)"></a>
-              <a class="operationBtn unedit" *ngIf="item.channelStatus==1&&authority" (click)="edit(item)"></a>
-              <a class="operationBtn unedit" *ngIf="!authority"></a>
-              <a class="operationBtn up" (click)="dirRecord(item.channelId,1)" *ngIf="(i!=0)&&authority"></a>
-              <a class="operationBtn down" (click)="dirRecord(item.channelId,2)" *ngIf="(i!=channelInfo.length-1)&&authority"></a>
-              <a class="operationBtn up" *ngIf="!authority"></a>
-              <a class="operationBtn down" *ngIf="!authority"></a>
+              <a class="operationBtn stop" *ngIf="item.channelStatus==0" (click)="runChannel(item)"></a>
+              <a class="operationBtn start" *ngIf="item.channelStatus==1" (click)="runChannel(item)"></a>
+              <a class="operationBtn edit" *ngIf="item.channelStatus==0" (click)="edit(item)"></a>
+              <a class="operationBtn unedit" *ngIf="item.channelStatus==1" (click)="edit(item)"></a>
+              <a class="operationBtn up" (click)="dirRecord(item.channelId,1)" *ngIf="i!=0"></a>
+              <a class="operationBtn down" (click)="dirRecord(item.channelId,2)" *ngIf="i!=channelInfo.length-1"></a>
             </td>
           </tr>
         </table>

@@ -61,12 +61,12 @@ export class WarnComponent{
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
     if(this.appCate=="实时流分析"){
-      this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
+/*      this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
       for(let i=0;i<this._realTime.length;i++){
         if(this._realTime[i].projectAuthorityId==6){
           this.authority = true;
         }
-      }
+      }*/
       this.interval = setInterval(() => {
         if(sessionStorage.getItem("name")){
           this.chanName = sessionStorage.getItem("name");

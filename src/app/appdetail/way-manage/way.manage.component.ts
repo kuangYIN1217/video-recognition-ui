@@ -67,12 +67,12 @@ export class WayManageComponent {
   _realTime:any[]=[];
   constructor(private appManageService: AppManageService,private channelService: ChannelService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
-    this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
-    for(let i=0;i<this._realTime.length;i++){
+    //this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
+/*    for(let i=0;i<this._realTime.length;i++){
       if(this._realTime[i].projectAuthorityId==4){
         this.authority = true;
       }
-    }
+    }*/
     this.appManageService.getProtocol()
       .subscribe(protocols=>{
         this.protocols=protocols;
@@ -80,6 +80,7 @@ export class WayManageComponent {
     this.channelService.getChannelType()
       .subscribe(result=>{
         this.channelTypes=result;
+        //this.channelType = result[0];
       });
     this.status = this.statusArr[0];
     console.log(this.status);
@@ -286,7 +287,7 @@ export class WayManageComponent {
     this.addDialog = 1;
     this.btnIndex = 0;
     this.protocol = this.protocols[0];
-    this.channelType = this.channelTypes[1];
+    this.channelType = this.channelTypes[0];
     this.chanName = '';
     this.chanAddr = '';
     this.videoAddress = '';

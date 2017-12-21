@@ -77,7 +77,7 @@ export class AppManageComponent {
   constructor(private appManageService: AppManageService,private router:Router,private accountService:AccountService) {
     this.username = sessionStorage.getItem('username');
     this.userId = sessionStorage.getItem('userId');
-    this.getAll();
+    this.getAllInfo();
     this.appManageService.getCategory()
       .subscribe(result=>{
           this.appCates=result;
@@ -123,7 +123,6 @@ export class AppManageComponent {
             }
           }
         }
-        if(this.unClick == 0){
           let project='';
           for(let i=0;i<this.allApplications.length;i++){
             project += this.allApplications[i].project+',';
@@ -132,11 +131,8 @@ export class AppManageComponent {
           this.appManageService.getApplicationType(this.applicationType,this.userId)
             .subscribe(result=>{
               this.allApplications = result;
-              this.getAllInfo(this.allApplications);
+              this.getAllInfo();
             })
-        }else{
-          this.getAllInfo(this.allApplications);
-        }
       });
   }
   getAuth(){
@@ -195,15 +191,17 @@ export class AppManageComponent {
   }
   newProjectChange(event){
     this.newProject = event;
-    this.getAll();
+    this.getAllInfo();
   }
-  getAllInfo(result){
+  getAllInfo(){
+    this.appManageService.getAppInfo()
+      .subscribe(result=>{
         this.id1="";
         this.id2="";
-        this.id3="";
+        //this.id3="";
         this.type1="";
         this.type2="";
-        this.type3="";
+        //this.type3="";
           for(let i in result){
             if(result[i].applicationType=="实时流分析"){
               if(!this.id1){
@@ -219,14 +217,15 @@ export class AppManageComponent {
               }else{
                 this.id2 += ','+result[i].applicationId;
               }
-            }else if(result[i].applicationType=="电力巡检分析"){
-              if(!this.id3){
-                this.id3 = result[i].applicationId;
-                this.type3 = result[i].applicationType;
-              }else{
-                this.id3 += ','+result[i].applicationId;
-              }
             }
+            // else if(result[i].applicationType=="电力巡检分析"){
+            //   if(!this.id3){
+            //     this.id3 = result[i].applicationId;
+            //     this.type3 = result[i].applicationType;
+            //   }else{
+            //     this.id3 += ','+result[i].applicationId;
+            //   }
+            // }
           };
           if(this.type1){
             this.appManageService.getAllDate(this.type1,this.id1)
@@ -240,12 +239,12 @@ export class AppManageComponent {
              this.offline = date;
            });
         }
-        if(this.type3){
+/*        if(this.type3){
           this.appManageService.getAllDate(this.type3,this.id3)
             .subscribe(date=>{
               this.electric = date;
             });
-        }
+        }*/
 /*        this.appManageService.getAllDate("实时流分析",id1)
          .subscribe(date=>{
          });*/
@@ -254,6 +253,7 @@ export class AppManageComponent {
          .subscribe(date=>{
 
          });*/
+      })
   }
   download(){
       // this.appManageService.downTemplate()
@@ -307,7 +307,7 @@ export class AppManageComponent {
         this.createFlag = true;
         console.log(result);
         this.createApp='manage';
-        this.getAllInfo(this.allApplications);
+        this.getAllInfo();
       });
   }
   deleteChange(event){
@@ -326,7 +326,7 @@ export class AppManageComponent {
           this.tip_content = '无效数据，第'+(result.map.num[0]+1)+'行导入失败！';
           //return
           this.createApp='manage';
-          this.getAllInfo(this.allApplications);
+          this.getAllInfo();
         }else {
           //console.log(result.map.set.length);
           if(result.map.set.length==0){
@@ -340,7 +340,7 @@ export class AppManageComponent {
           this.tip_content = '成功导入'+result.map.set.length+'条通道！';
         }
         this.createApp='manage';
-        this.getAllInfo(this.allApplications);
+        this.getAllInfo();
       });
   }
   createOffline(){
@@ -351,7 +351,7 @@ export class AppManageComponent {
         this.createFlag = true;
         console.log(result);
         this.createApp='manage';
-        this.getAllInfo(this.allApplications);
+        this.getAllInfo();
       });
   }
   editTitle(item){
@@ -367,7 +367,7 @@ export class AppManageComponent {
     this.appManageService.updateApp(this.appId,this.appName)
       .subscribe(result=>{
         console.log(result);
-        this.getAllInfo(this.allApplications);
+        this.getAllInfo();
       });
     setTimeout(() => item.flag=2, 1000);
   }
@@ -431,7 +431,7 @@ export class AppManageComponent {
     this.showDialog=0;
     this.appManageService.delInfo(this.delId)
       .subscribe(result=>{
-        this.getAllInfo(this.allApplications);
+        this.getAllInfo();
       });
   }
   update(item){

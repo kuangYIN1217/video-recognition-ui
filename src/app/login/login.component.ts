@@ -117,32 +117,11 @@ export class LoginComponent implements OnInit{
             sessionStorage['username']= username;
             sessionStorage.setItem("username" , username);
             sessionStorage.setItem("password" , pwd);
-            this.accountService.getUserInfo(username)
-            .subscribe(result=>{
-              sessionStorage.setItem("userId" , result.id);
               this.accountService.getAllAuthories(username)
                 .subscribe(result=>{
-                  if(result.content.length>1){
-                    for(let i=0;i<result.content.length;i++){
-                      if(result.content[i].systemAuthority==true){
-                        //this.systemAuthority = 'false';
-                        sessionStorage.setItem("systemAuthority" , 'false');
-                        break;
-                      }
-                    }
-                  }else{
-                    if(result.content[0].systemAuthority==true){
-                      //this.systemAuthority = 'false';
-                      sessionStorage.setItem("systemAuthority" , 'false');
-                    }else{
-                      //this.systemAuthority = 'true';
-                      sessionStorage.setItem("systemAuthority" , 'true');
-                    }
-                  }
                   console.log("登陆成功");
                   // this.showMessage("登陆成功");
                   this.router.navigate(['/appmanage'])
-                })
             });
 
 /*            console.log(sessionStorage['username']);
