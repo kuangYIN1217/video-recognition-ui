@@ -56,8 +56,9 @@ export class VideoAnalysisComoponent {
   featureName:string='';
   arr:any[]=[{"targetFeature":"","targetImages":"","photoContainer":[]}];
   heightIndex:number = 0;
-  saveFeature:any[]=[];
+  saveSelected:any[]=[];
   saveColor:number = 0;
+  fileRecognition:any[]=[];
   radio(i){
     this.radioIndex = i;
   }
@@ -113,13 +114,18 @@ export class VideoAnalysisComoponent {
         this.pageParams = page;
       });
   }
-
   /* add video end */
   ngOnInit() {
     console.log(window.navigator.plugins)
   }
   constructor (private channelService: ChannelService , private recognitionService: RecognitionService, private toastyService:ToastyService, private appManageService: AppManageService) {
     this.d_applicationId = parseInt(window.sessionStorage.getItem('applicationId'));
+    this.recognitionService.getRecognitionFile(this.d_applicationId)
+      .subscribe(result=>{
+        console.log(result);
+        this.fileRecognition = result;
+        this.getRecognitionValue();
+      });
     /*  this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
    for(let i=0;i<this._realTime.length;i++){
       if(this._realTime[i].projectAuthorityId==2){
@@ -294,6 +300,26 @@ export class VideoAnalysisComoponent {
     this.fullscreenIndex8 = index;
     this.fullscreenIndex9 = index;
   }
+  getRecognitionValue(){
+    for(let i = 0;i<this.d_analysis_options.length;i++){
+      for(let j = 0;j<this.d_analysis_options[i].recognitionCategories.length;j++){
+        for(let k=0;k<this.fileRecognition.length;k++){
+            if(this.fileRecognition[k].cateId==this.d_analysis_options[i].recognitionCategories[j].cateId){
+              this.d_analysis_options[i].recognitionCategories[j].selected = true;
+            }
+            if(this.fileRecognition[k].cateId==1&&this.fileRecognition[k].targetInfos.length>0){
+              for(let n=0;n<this.fileRecognition[k].targetInfos.length;n++){
+                let obj:any={};
+                obj.targetFeature=this.fileRecognition[k].targetInfos[n].targetFeature;
+                obj.photoContainer=this.fileRecognition[k].targetInfos[n].targetImages.split(',');
+                this.arr.push(obj);
+              }
+            }
+        }
+      }
+    }
+    console.log(this.arr);
+  }
   $popup_toggle () {
     this.s_popup_show = !this.s_popup_show;
    // console.log(this.d_analysis_options);
@@ -321,6 +347,7 @@ export class VideoAnalysisComoponent {
       this.arr.push(obj);
       this.arr.splice(0,1);
     }*/
+
     for(let i=0;i<this.d_analysis_options[0].recognitionCategories.length;i++){
       if(this.d_analysis_options[0].recognitionCategories[i].cateId==1&&this.d_analysis_options[0].recognitionCategories[i].selected){
         this.showFeature = 1;
@@ -358,7 +385,8 @@ export class VideoAnalysisComoponent {
       }
       if(this.d_analysis_options[i].recognitionCategories[j].cateId==1&&this.d_analysis_options[i].recognitionCategories[j].selected){
         this.showFeature = 0;
-        this.arr=[{"targetFeature":"","targetImages":"","photoContainer":[]}];
+        this.arr=[{"targetFeature":"","targetImages":"","targetId":0,"targetInfoId":0,"photoContainer":[]}];
+        //this.saveSelected = [{"recognitionCategories":{"cateId":0,"code":"","name":""}},];
       }else if(this.d_analysis_options[i].recognitionCategories[j].cateId==1&&!this.d_analysis_options[i].recognitionCategories[j].selected){
         this.showFeature = 1;
       }
@@ -463,16 +491,42 @@ export class VideoAnalysisComoponent {
   }
   getFeature(arr){
     this.arr = arr;
+    this.saveSelected=[];
+    this.targetSet=[];
+    for (let i = 0 ; i < this.d_analysis_options.length ; i++) {
+      for (let j = 0 ; j < this.d_analysis_options[i].recognitionCategories.length ; j++) {
+        if (this.d_analysis_options[i].recognitionCategories[j].selected || this.s_popup_allselect) {
+          this.saveSelected.push(this.d_analysis_options[i].recognitionCategories[j]);
+        }
+      }
+    }
     for(let i=0;i<arr.length;i++){
-      //arr[i].targetImages = arr[i].photoContainer.join(",");
       let obj:any={};
       obj.targetImages=arr[i].photoContainer.join(",");
       obj.targetFeature = arr[i].targetFeature;
+      obj.targetInfoId = 0;
       this.targetSet.push(obj);
     }
-    console.log(this.arr);
-    console.log(this.targetSet);
-    return this.targetSet;
+    for(let i=0;i<this.saveSelected.length;i++){
+      if(this.saveSelected[i].cateId!=1){
+        this.saveSelected[i].targetInfos=[];
+      }else{
+        this.saveSelected[i].targetInfos=[];
+        for(let j=0;j<this.targetSet.length;j++){
+          this.saveSelected[i].targetInfos.push(this.targetSet[j]);
+        }
+      }
+    }
+    let tempArr:any[]=[];
+    for(let j=0;j<this.saveSelected.length;j++){
+      let obj:any={};
+      obj.cateId = this.saveSelected[j].cateId;
+      obj.targetId = 0;
+      obj.recognitionCategory = this.saveSelected[j].code;
+      obj.targetInfos = this.saveSelected[j].targetInfos;
+      tempArr.push(obj);
+    }
+    return tempArr;
   }
   $change_analysis_submit() {
     if(this.saveColor == 0){
@@ -482,6 +536,7 @@ export class VideoAnalysisComoponent {
       // todo request
       this.showFeature = 0;
       this.s_popup_show = false;
+      //console.log(this.getFeature(this.arr));
       if (this.s_selected_grid === 0) {
         // 当前所有
         this.recognitionService.setRecognitions( this.getAllChannelID() , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {

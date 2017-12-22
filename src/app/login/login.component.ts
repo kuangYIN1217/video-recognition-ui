@@ -117,11 +117,15 @@ export class LoginComponent implements OnInit{
             sessionStorage['username']= username;
             sessionStorage.setItem("username" , username);
             sessionStorage.setItem("password" , pwd);
+          this.accountService.getUserInfo(username)
+            .subscribe(result=>{
+              sessionStorage.setItem("userId" , result.id);
               this.accountService.getAllAuthories(username)
                 .subscribe(result=>{
                   console.log("登陆成功");
                   // this.showMessage("登陆成功");
                   this.router.navigate(['/appmanage'])
+              });
             });
 
 /*            console.log(sessionStorage['username']);

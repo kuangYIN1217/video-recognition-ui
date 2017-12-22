@@ -421,9 +421,9 @@ export class WarnComponent{
     console.log(this.sourcePaths.substring(0,this.sourcePaths.length-1));
     this.warnService.alarmExport(this.appId,this.appCate,this.alarmIds.substring(0,this.alarmIds.length-1),this.sourcePaths.substring(0,this.sourcePaths.length-1))
      .subscribe(result=>{
-       console.log(result.text());
+       //console.log(result.text());
        let url = decodeURIComponent(result.text());
-       console.log(SERVER_URL+url);
+       //console.log(SERVER_URL+"/"+url);
        window.open(SERVER_URL+"/"+url);
      })
   }

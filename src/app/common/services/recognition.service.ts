@@ -69,5 +69,16 @@ export class RecognitionService {
         }
       });
   }
-
+  getRecognitionFile(id){
+    let path = "/download/targetjson"+id+".txt";
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL + path, {headers: headers})
+      .map((response: Response) => {
+        if (response && response.json()) {
+          if(response.status==200){
+            return response.json();
+          }
+        }
+      });
+  }
 }
