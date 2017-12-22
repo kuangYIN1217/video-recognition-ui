@@ -195,7 +195,7 @@ export class WarnRlueComponent{
         }
       }
     }else{
-      this.warnChanId = null;
+      this.warnChanId = -1;
     }
     for(let i in this.warnObjArr){
       if(this.warnRule==this.warnObjArr[i].name){

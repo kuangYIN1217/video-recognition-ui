@@ -142,7 +142,7 @@
         <div class="feature-content" *ngFor="let item of arr let i=index" [class.noBorder]="i+1==arr.length">
           <div class="feature-input">
             <label>人名：</label>
-            <input type="text" [(ngModel)]="item.targetFeature">
+            <input type="text" [(ngModel)]="item.targetFeature" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')">
             <img src="assets/appdetail/video-analysis/huanhang.png" (click)="addData()" *ngIf="(i+1)==arr.length" />
             <!--<span *ngIf="reduired==1">必填字段</span>-->
           </div>
@@ -161,7 +161,7 @@
           </div>
         </div>
       <div class="feature-footer">
-        注：支持格式jpg、png
+        注：人名仅支持英文输入，特征图片支持格式jpg、png
       </div>
     </div>
   </div>
