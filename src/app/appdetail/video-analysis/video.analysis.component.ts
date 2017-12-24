@@ -124,7 +124,6 @@ export class VideoAnalysisComoponent {
       .subscribe(result=>{
         console.log(result);
         this.fileRecognition = result;
-        this.getRecognitionValue();
       });
     /*  this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
    for(let i=0;i<this._realTime.length;i++){
@@ -307,17 +306,20 @@ export class VideoAnalysisComoponent {
             if(this.fileRecognition[k].cateId==this.d_analysis_options[i].recognitionCategories[j].cateId){
               this.d_analysis_options[i].recognitionCategories[j].selected = true;
             }
-            if(this.fileRecognition[k].cateId==1&&this.fileRecognition[k].targetInfos.length>0){
-              for(let n=0;n<this.fileRecognition[k].targetInfos.length;n++){
-                let obj:any={};
-                obj.targetFeature=this.fileRecognition[k].targetInfos[n].targetFeature;
-                obj.photoContainer=this.fileRecognition[k].targetInfos[n].targetImages.split(',');
-                this.arr.push(obj);
-              }
-            }
         }
       }
     }
+    for(let k=0;k<this.fileRecognition.length;k++){
+      if(this.fileRecognition[k].cateId==1&&this.fileRecognition[k].targetInfos.length>0){
+        for(let n=0;n<this.fileRecognition[k].targetInfos.length;n++){
+          let obj:any={};
+          obj.targetFeature=this.fileRecognition[k].targetInfos[n].targetFeature;
+          obj.photoContainer=this.fileRecognition[k].targetInfos[n].targetImages.split(',');
+          this.arr.push(obj);
+        }
+      }
+    }
+    this.arr.splice(0,1);
     console.log(this.arr);
   }
   $popup_toggle () {
@@ -757,6 +759,7 @@ export class VideoAnalysisComoponent {
     this.recognitionService.getRecognition().subscribe(rep => {
       //console.log(rep);
       this.d_analysis_options = rep;
+      this.getRecognitionValue();
       for(let i=0;i<this.d_analysis_options.length;i++){
         this.d_analysis_options[i].recognitionCategories.sort(function(a,b){
           return parseInt(b.cateId) - parseInt(a.cateId)
