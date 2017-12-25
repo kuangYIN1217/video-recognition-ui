@@ -24,12 +24,14 @@
   box-shadow:0 0 10px #999999;
 }
 .addDialogContainer{
-  top:40%;
+  top:50%;
   width:506px;
+  max-height:480px;
   left:50%;
   margin-left: -253px;
-  margin-top: -195px;
+  margin-top: -240px;
   font-size: 14px;
+  overflow-y: auto;
 }
 .dialogHeader{
   background: #eeeeee;

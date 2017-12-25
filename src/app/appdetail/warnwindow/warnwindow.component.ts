@@ -329,8 +329,14 @@ export class WarnWindowComponent{
           }
         })
     }
-
   }
+/*  getScroll(){
+    if(){
+      return {
+        "overflow-y":"auto"
+      }
+    }
+  }*/
   deleteChange(event){
     this.deleteIndex = event;
   }

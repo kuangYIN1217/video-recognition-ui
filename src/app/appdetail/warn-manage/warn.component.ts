@@ -113,7 +113,7 @@ export class WarnComponent{
       .subscribe(result=>{
         this.warnRlueArr = result.content;
         this.warnRlueArr.unshift({"ruleId":-1,"ruleName":'全部'});
-        console.log(this.warnRlueArr);
+        //console.log(this.warnRlueArr);
         if(this.warnRlueArr.length>0){
           this.warnRlue = this.warnRlueArr[0].ruleName;
           this.ruleId = this.warnRlueArr[0].ruleId;
@@ -122,7 +122,7 @@ export class WarnComponent{
     this.warnService.getChanName(this.appId)
       .subscribe(result=>{
         this.chanNameArr=result;
-        console.log(this.chanNameArr);
+        //console.log(this.chanNameArr);
         this.chanNameArr.unshift('全部');
         this.chanName = this.chanNameArr[0];
       })
@@ -130,7 +130,7 @@ export class WarnComponent{
       .subscribe(result=>{
         this.warnTaskArr = result.content;
         this.warnTaskArr.unshift({"taskId":-1,"taskName":'全部'});
-        console.log(this.warnTaskArr);
+        //console.log(this.warnTaskArr);
         if(this.warnTaskArr.length>0){
           this.warnTask = this.warnTaskArr[0].taskName;
         }
@@ -138,9 +138,9 @@ export class WarnComponent{
     this.warnStatus = this.statusArr[0];
     this.route.params.subscribe((param) => {
       if(JSON.stringify(param) != "{}"){
-        console.log(param);
+        //console.log(param);
         this.warnStatus = param['status'];
-        console.log(this.warnStatus);
+        //console.log(this.warnStatus);
         if(this.appCate=='实时流分析'){
           this.searchWarn(this.appId,0,this.chanName,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
         }else{
@@ -150,7 +150,7 @@ export class WarnComponent{
     });
     this.route.queryParams.subscribe(params => {
       if(JSON.stringify(params) != "{}"&& !params.pageNo){
-        console.log(params);
+        //console.log(params);
         this.taskName = params['taskName'];
         this.taskId = params['taskId'];
         this.warnService.searchOffWarns(this.appId,this.taskId,this.taskName,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null)
@@ -242,13 +242,13 @@ export class WarnComponent{
     // this.router.navigate(['../warndetail'],{queryParams: {'detailList':item}});
     this.lookIndex=1;
     this.detaillist = item;
-    console.log(this.detaillist);
+    //console.log(this.detaillist);
   }
   thumbnail(){
     this.seeIndex = 2;
 }
   seePhoto(url){
-    console.log(url);
+    //console.log(url);
     this.seeIndex = 1;
     this.imageUrl = url;
   }
@@ -301,7 +301,7 @@ export class WarnComponent{
     }
     this.pageNow=paraParam.curPage;
     this.pageChange = Number(paraParam.pageMaxItem);
-    console.log(this.pageNow,Number(this.pageChange));
+    //console.log(this.pageNow,Number(this.pageChange));
   }
   getRuleId(){
     if(this.warnRlue=='全部'){
@@ -393,7 +393,7 @@ export class WarnComponent{
   }
   getWarnList(result){
     this.allWarn = result.content;
-    console.log(this.allWarn);
+    //console.log(this.allWarn);
     let page = new Page();
     page.pageMaxItem = result.size;
     page.curPage = result.number+1;
@@ -417,8 +417,8 @@ export class WarnComponent{
       this.tip_content = "请选择任务！";
       return false
     }
-    console.log(this.alarmIds.substring(0,this.alarmIds.length-1));
-    console.log(this.sourcePaths.substring(0,this.sourcePaths.length-1));
+    //console.log(this.alarmIds.substring(0,this.alarmIds.length-1));
+    //console.log(this.sourcePaths.substring(0,this.sourcePaths.length-1));
     this.warnService.alarmExport(this.appId,this.appCate,this.alarmIds.substring(0,this.alarmIds.length-1),this.sourcePaths.substring(0,this.sourcePaths.length-1))
      .subscribe(result=>{
        //console.log(result.text());

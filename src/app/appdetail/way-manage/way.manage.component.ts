@@ -83,12 +83,12 @@ export class WayManageComponent {
         //this.channelType = result[0];
       });
     this.status = this.statusArr[0];
-    console.log(this.status);
+    //console.log(this.status);
     this.route.params.subscribe((param) => {
       if(JSON.stringify(param) != "{}"){
-        console.log(param);
+        //console.log(param);
         this.status = param['status'];
-        console.log(this.status);
+        //console.log(this.status);
         this.searchResult();
         //this.status = param;
       }
@@ -144,7 +144,7 @@ export class WayManageComponent {
       .subscribe(result=>{
         if(result.content){
           this.channelInfo=result.content;
-          console.log(this.channelInfo);
+          //console.log(this.channelInfo);
           let page = new Page();
           page.pageMaxItem = result.size;
           page.curPage = result.number+1;
@@ -152,7 +152,7 @@ export class WayManageComponent {
           page.totalNum = result.totalElements;
           //page.statusCode = this.statusCode;
           this.pageParams = page;
-          console.log(this.pageParams);
+          //console.log(this.pageParams);
         }
       })
   }
@@ -171,7 +171,7 @@ export class WayManageComponent {
   // }
   getPageData(paraParam) {
     this.findCode();
-    console.log(this.statusCode);
+    //console.log(this.statusCode);
     this.getAllChannel(this.appId,this.channelName,this.statusCode,paraParam.curPage-1,paraParam.pageMaxItem);
     this.pageNow=paraParam.curPage;
     this.pageMax = paraParam.pageMaxItem;
@@ -217,7 +217,7 @@ export class WayManageComponent {
     }else{
     this.uploader.queue[0].upload(); // 开始上传
     this.uploader.queue[0].onSuccess = (response: any, status: any, headers: any) => {
-      console.log(response);
+      //console.log(response);
       this.channelService.getImport(response,this.appId)
         .subscribe(result=>{
           if(result.map.num[0]>0){
@@ -252,11 +252,11 @@ export class WayManageComponent {
   dia(){
     for(let i in this.channelInfo){
       if(this.channelInfo[i]['flag'] == '1'&&this.channelInfo[i].channelStatus=='1'){
-        console.log(this.channelInfo[i].channelStatus);
+        //console.log(this.channelInfo[i].channelStatus);
         this.delSysDialog =1;
         return false;
       }else if(this.channelInfo[i]['flag'] == '1'&&this.channelInfo[i].channelStatus=='0'){
-        console.log(this.channelInfo[i].channelStatus);
+        //console.log(this.channelInfo[i].channelStatus);
         this.delDialog =1;
       }
     }
@@ -264,7 +264,7 @@ export class WayManageComponent {
   delete(){
     for(let i in this.channelInfo){
       if(this.channelInfo[i]['flag'] == '1'&&this.channelInfo[i].channelStatus=='1'){
-        console.log(this.channelInfo[i].channelStatus);
+        //console.log(this.channelInfo[i].channelStatus);
         this.delSysDialog =1;
         return false;
       }else if(this.channelInfo[i]['flag'] == '1'&&this.channelInfo[i].channelStatus=='0'){
@@ -342,7 +342,7 @@ export class WayManageComponent {
         })
   }
   edit(item){
-    console.log(item);
+    //console.log(item);
     if(item.channelStatus==1){
         return false;
     }else{
@@ -462,19 +462,19 @@ findStatus(){
       this.findStatus();
       this.channelInfo=[];
       this.channelInfo=this.switchArr2.concat(this.switchArr1);
-      console.log(this.channelInfo);
+      //console.log(this.channelInfo);
     }else if(this.order==1){
       this.order=2;
       this.findStatus();
       this.channelInfo=[];
       this.channelInfo=this.switchArr1.concat(this.switchArr2);
-      console.log(this.channelInfo);
+      //console.log(this.channelInfo);
     }else if(this.order==2){
       this.order=1;
       this.findStatus();
       this.channelInfo=[];
       this.channelInfo=this.switchArr2.concat(this.switchArr1);
-      console.log(this.channelInfo);
+      //console.log(this.channelInfo);
     }
   }
 }
