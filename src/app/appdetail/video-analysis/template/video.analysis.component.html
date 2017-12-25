@@ -107,7 +107,7 @@
     </div>
 
     <!-- 人机识别 popup -->
-    <div class="analysis-popup" *ngIf="s_popup_show">
+    <div class="analysis-popup" [style.display]="s_popup_show?'':'none'">
       <div class="scroll-wrapper">
         <div>
           <label class="classification level-text">分类：</label>
@@ -122,7 +122,7 @@
           <img [src]="(re.selected)?'assets/appdetail/video-analysis/shang.png':'assets/appdetail/video-analysis/xia.png'" class="middle"/>
           </div>
           <div class="levelTwo" *ngFor="let item of re.recognitionCategories; let j = index" [style.display]="re.selected?'':'none'">
-            <img class="middle" (click)="$popup_select_toggle(i,j)" [src]="(item.selected) ? 'assets/appdetail/video-analysis/icon_select_h.png' : 'assets/appdetail/video-analysis/icon_select_n.png'">
+            <img class="middle" (click)="popup_select_toggle(i,j)" [src]="(item.selected) ? 'assets/appdetail/video-analysis/icon_select_h.png' : 'assets/appdetail/video-analysis/icon_select_n.png'">
             <label class="middle" *ngIf="item.color!=1&&item.color1!=1">{{item.name}}</label>
             <label class="middle" style="color: #999;" *ngIf="item.color==1||item.color1==1">{{item.name}}</label>
           </div>
@@ -137,7 +137,7 @@
         <div (click)="$change_analysis_submit()" class="submit-btn">保 存</div>
       </div>
     </div>
-    <div class="feature-people" *ngIf="showFeature==1" [ngClass]="{overHeight: heightIndex==1}">
+    <div class="feature-people" [style.display]="showFeature==1?'':'none'" [ngClass]="{overHeight: heightIndex==1}">
         <div class="feature-content" *ngFor="let item of arr let i=index" [class.noBorder]="i+1==arr.length">
           <div class="feature-input">
             <label>人名：</label>
