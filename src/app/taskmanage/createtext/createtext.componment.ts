@@ -55,7 +55,6 @@ export class CreateTextComponent {
   offlineObj:any={};
   warnChanChecked:any[]=[];
   warnChecked:any[]=[];
-  nosupport:any[]=[];
   constructor(private warnService: WarnService,private offlineService: OfflineService,private router:Router,private route: ActivatedRoute) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -74,25 +73,7 @@ export class CreateTextComponent {
     itemAlias: "file",
   });
   selectedFileOnChanged(){
-    this.nosupport=[];
-/*    for(let k=0;k<this.uploader.queue.length;k++){
-      let name = this.uploader.queue[k].file.name;
-      console.log(name.substring(name.length-3,name.length));
-      if((name.substring(name.length-4,name.length-1)!='mp4')&&(name.substring(name.length-4,name.length-1)!='avi')){
-        this.nosupport.push(this.uploader.queue[k]);
-      };
-    }
-    console.log(this.nosupport);
-    if(this.nosupport.length>0){
-      for(let k=this.uploader.queue.length;k>=this.uploader.queue.length;k--){
-        for(let n=0;n<this.nosupport.length;n++){
-          if(this.uploader.queue[k].file.name==this.nosupport[n].file.name){
-            this.uploader.queue[k].remove();
-          }
-        }
-      }
-    }
-    console.log(this.uploader.queue);*/
+    console.log(this.uploader.queue);
     for(let j=0;j<this.uploader.queue.length;j++){
       this.size = this.uploader.queue[j].file.size;
       if((this.size/1024/1024)>500){
@@ -106,6 +87,12 @@ export class CreateTextComponent {
         j-=1;
         continue
       }else{
+        let name = this.uploader.queue[j].file.name;
+        //console.log(name.substring(name.length-3,name.length));
+        if(name.substring(name.length-3,name.length)!='mp4'&&name.substring(name.length-3,name.length)!='avi'){
+          this.uploader.queue[j].remove();
+          return
+        };
         let bool = this.isInArray(this.showArr,this.uploader.queue[j]);
         if(bool==false){
           this.showArr.push(this.uploader.queue[j]);
