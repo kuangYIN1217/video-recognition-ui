@@ -45,6 +45,8 @@ export class WarnWindowComponent{
   container:any[]=[];
   photoUrl:string='';
   identifyName:string='';
+  createFlag:boolean = true;
+  saveFlag:boolean = true;
   @Output() indexChange: EventEmitter<any> = new EventEmitter();
 
   constructor(private warnService: WarnService) {
@@ -269,21 +271,28 @@ export class WarnWindowComponent{
       return false;
     };
     this.photoUrl=this.getPhoto();
+    if(!this.createFlag) {
+      return;
+    }
+    this.createFlag = false;
     this.warnService.createWarn(this.appId,this.warnChannelId,this.ruleName,this.cateId,this.code,this.objName,this.status,this.photoUrl)
       .subscribe(result=>{
         //console.log(result);
         if(result.text().substring(0,2)=='Ok'){
         this.createIndex = 2;
         this.indexChange.emit(this.createIndex);
+        this.createFlag = true;
         }else if(result.text().substring(0,2)=='No'){
           this.deleteIndex =1;
           this.tip_title = '提示';
           this.tip_content = '通道未开启，请开启通道！';
           this.tip_btn = '开启通道';
+          this.createFlag = true;
         }else if(result.text().substring(0,2)=='Er'){
           this.deleteIndex =1;
           this.tip_title = '提示';
           this.tip_content = result.text().substring(5);
+          this.createFlag = true;
         }
       })
   }
@@ -292,6 +301,10 @@ export class WarnWindowComponent{
       return false;
     };
     this.photoUrl=this.getPhoto();
+    if(!this.saveFlag) {
+      return;
+    }
+    this.saveFlag = false;
     if(this.appCate=='实时流分析'){
       this.warnService.editRuleSave(this.warnChannelId,this.ruleList.ruleId,this.ruleName,this.cateId,this.code,this.objName,this.status,this.photoUrl)
         .subscribe(result=>{
@@ -299,17 +312,21 @@ export class WarnWindowComponent{
           if(result.text().substring(0,2)=='Ok'){
             this.createIndex = 2;
             this.indexChange.emit(this.createIndex);
+            this.saveFlag = true;
           }else if(result.text()=='No'){
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = '通道未开启，请开启通道！';
+            this.saveFlag = true;
           }else if(result.text().substring(0,2)=='Er'){
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = result.text().substring(5);
+            this.saveFlag = true;
           }else if(result.text()=='Close'){
             this.createIndex = 2;
             this.indexChange.emit(this.createIndex);
+            this.saveFlag = true;
           }
         })
     }else{
@@ -318,14 +335,17 @@ export class WarnWindowComponent{
           if(result.text().substring(0,2)=='Ok'){
             this.createIndex = 2;
             this.indexChange.emit(this.createIndex);
+            this.saveFlag = true;
           }else if(result.text()=='No'){
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = '通道未开启，请开启通道！';
+            this.saveFlag = true;
           }else if(result.text().substring(0,2)=='Er'){
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = result.text().substring(5);
+            this.saveFlag = true;
           }
         })
     }

@@ -806,7 +806,7 @@ export class VideoAnalysisComoponent {
 
   initRecognitions() {
     this.recognitionService.getRecognition().subscribe(rep => {
-      console.log(rep);
+      //console.log(rep);
       this.d_analysis_options = rep;
       this.recognitionService.getRecognitionFile(this.d_applicationId)
         .subscribe(result=>{
@@ -845,7 +845,7 @@ export class VideoAnalysisComoponent {
     }
     this.channelService.getOpenChannelById(this.d_applicationId).subscribe(rep => {
       this.d_video_list = rep;
-      console.log(rep);
+      //console.log(rep);
       this.d_video_list.sort(function(a,b){
         return parseInt(a.channelOrder) - parseInt(b.channelOrder)
       })
@@ -884,17 +884,17 @@ export class VideoAnalysisComoponent {
     itemAlias: "file",
   });
   selectedFileOnChanged(event,item){
-    console.log(item);
+    //console.log(item);
     for(let i=0;i<this.uploader.queue.length;i++){
       this.uploader.queue[i].onSuccess = (response: any, status: any, headers: any) => {
         item.photoContainer.push(response);
-        console.log(item.photoContainer);
+        //console.log(item.photoContainer);
       };
     }
     this.uploader.uploadAll(); // 开始上传
   }
   getInput(i){
-    console.log(i);
+    //console.log(i);
     //document.getElementById("file").setAttribute("id",i).click();
     $(`#${i}`).attr("id",i).click();
   }
@@ -910,7 +910,7 @@ export class VideoAnalysisComoponent {
     obj.targetImages = '';
     obj.photoContainer=[];
     this.arr.push(obj);
-    console.log(this.arr);
+    //console.log(this.arr);
     this.getHeight();
   }
 }

@@ -328,11 +328,12 @@ export class WayManageComponent {
     this.createFlag = false;
       this.channelService.createChannel(this.appId,chanAddr,chanName,protocol,channelType,videoAddress,status)
         .subscribe(result=>{
-          console.log(result);
+          //console.log(result);
           if(result.text().substring(0,2)=='NO'){
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = '该通道地址已存在，画面顺序为'+result.text().substring(3)+'！';
+            this.createFlag = true;
           }else{
             this.show=1;
             this.addDialog = 0;
