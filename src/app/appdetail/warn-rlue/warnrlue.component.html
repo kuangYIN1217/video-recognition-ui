@@ -57,8 +57,8 @@
             </td>
             <td>{{item.ruleName}}</td>
             <td *ngIf="appCate=='实时流分析'" class="channel" title="{{filterName(item.applicationChannels)}}">{{filterName(item.applicationChannels)}}</td>
-            <td>{{item.recognitionCategor==null?'无':item.recognitionCategor.name}}</td>
-            <td>{{item.targetFeature==null?'无':item.targetFeature}}</td>
+            <td>{{getRecognitionCategor(item.recognitionCategor)}}</td>
+            <td>{{item.targetFeature==''?'无':item.targetFeature}}</td>
             <td>{{item.alarmRuleStatus}}</td>
             <td>
               <a class="operationBtn stop" *ngIf="item.alarmRuleStatus=='开启'" (click)="runRule(item)" title="暂停"></a>

@@ -15,7 +15,7 @@ export class OfflineService {
   }
 
   getAuthorization() {
-    return 'Bearer ' + sessionStorage['authenticationToken'];
+    return 'Bearer ' + localStorage['authenticationToken'];
   }
 
   getHeaders() {

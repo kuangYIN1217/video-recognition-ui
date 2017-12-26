@@ -17,7 +17,7 @@ export class ElectricService {
   }
 
   getAuthorization() {
-    return 'Bearer ' + sessionStorage['authenticationToken'];
+    return 'Bearer ' + localStorage['authenticationToken'];
   }
 
   getHeaders() {

@@ -217,6 +217,15 @@ export class WarnRlueComponent{
         this.pageParams = page;
       })
   }
+  getRecognitionCategor(item){
+    if(item.code=='person_all'){
+      return '人-全部';
+    }else if(item.code=='strategicTarget_all'){
+      return '对战目标-全部';
+    }else{
+      return item.name;
+    }
+  }
   runRule(item){
     if(item.alarmRuleStatus=='关闭'){
       item.alarmRuleStatus='开启';

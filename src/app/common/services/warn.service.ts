@@ -15,7 +15,7 @@ export class WarnService {
   }
 
   getAuthorization() {
-    return 'Bearer ' + sessionStorage['authenticationToken'];
+    return 'Bearer ' + localStorage['authenticationToken'];
   }
 
   getHeaders() {

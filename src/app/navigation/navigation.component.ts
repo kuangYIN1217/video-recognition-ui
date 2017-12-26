@@ -1,7 +1,6 @@
 import {Component} from "@angular/core";
 import {Location, LocationStrategy, PathLocationStrategy} from "@angular/common";
 import {ResourcesService} from "../common/services/resources.service";
-import {SceneService} from "../common/services/scene.service";
 import {SceneInfo} from "../common/defs/resources";
 import {Router} from "@angular/router";
 
@@ -9,7 +8,7 @@ import {Router} from "@angular/router";
   selector: 'navigation',
   styleUrls: ['./css/navigation.component.css'],
   templateUrl: './templates/navigation.html',
-  providers: [ResourcesService, SceneService],
+  providers: [ResourcesService],
 })
 export class NavigationComponent {
   // needhide = 0;
@@ -31,7 +30,7 @@ export class NavigationComponent {
   }
 
   constructor(private location: Location,private router:Router) {
-    if (!sessionStorage['username']) {
+    if (!localStorage['username']) {
       this.focusTab = 0;
       this.router.navigate(['/login'])
     }
@@ -42,15 +41,15 @@ export class NavigationComponent {
   }
 
   ngAfterContentChecked(){
-    this.systemAuthority = sessionStorage.getItem('systemAuthority');
+    this.systemAuthority = localStorage.getItem('systemAuthority');
     // this.location = location;
     // console.log("navigation initial");
     if (!this.location.isCurrentPathEqualTo('/login')) {
       // sceneService.getAllScenes()
       //     .subscribe(sceneArray => this.sceneArray = sceneArray);
     }
-    if (sessionStorage['username']) {
-      this.username = sessionStorage['username'];
+    if (localStorage['username']) {
+      this.username = localStorage['username'];
     } else {
       this.username = "Loading";
     }

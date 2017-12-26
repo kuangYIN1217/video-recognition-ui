@@ -22,7 +22,7 @@ export class HeaderComponent {
 
   }
   ngAfterContentChecked(){
-    this.systemAuthority = sessionStorage.getItem('systemAuthority');
+    this.systemAuthority = localStorage.getItem('systemAuthority');
   }
   enterMenu(){
     $(".user-menuBox").css("display","block");
@@ -31,10 +31,10 @@ export class HeaderComponent {
     $(".user-menuBox").css("display","none");
   }
   logout() {
-    sessionStorage.removeItem("authenticationToken");
-    sessionStorage.removeItem("username");
-    sessionStorage.removeItem("userId");
-    sessionStorage.removeItem("systemAuthority");
+    localStorage.removeItem("authenticationToken");
+    localStorage.removeItem("username");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("systemAuthority");
     this.router.navigate(['/login'])
   }
 }
