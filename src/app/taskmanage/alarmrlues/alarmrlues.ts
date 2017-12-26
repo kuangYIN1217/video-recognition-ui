@@ -39,8 +39,9 @@ export class AlarmRluesComponent {
         }
       }
     }else if(this.warn_title=='修改规则'||this.taskTitle=='修改任务'){
-/*      this.warnChan=[];
-      this.warnChanId=[];*/
+      this.warnChan=[];
+      this.warnChanId=[];
+      this.warnChanCheckedArr=[];
       console.log(this.warnChanArr);
       console.log(this.warnChanChecked);
       if(this.warnChanChecked.length>0){
@@ -49,12 +50,12 @@ export class AlarmRluesComponent {
             if(this.warnChanArr[0].channelName){
               if(this.warnChanChecked[i].channelId == this.warnChanArr[j].channelId){
                 this.warnChanArr[j].flag = 1;
-                if(this.bool = true){
-                this.bool = false;
+                //if(this.bool == true){
+                //this.bool = false;
                 this.warnChan.push(this.warnChanArr[j].channelName);
                 this.warnChanId.push(this.warnChanArr[j].channelId);
                 this.warnChanCheckedArr.push(this.warnChanArr[j]);
-                }
+                //}
               }
             }else{
               if(this.warnChanChecked[i].recognitionCategor.cateId==1||this.warnChanChecked[i].recognitionCategor.cateId==26){
@@ -82,7 +83,7 @@ export class AlarmRluesComponent {
               console.log(this.warnChanArr);
               if(this.warnChanChecked[i].ruleId == this.warnChanArr[j].ruleId){
                 this.warnChanArr[j].flag = 1;
-                if(this.bool = true) {
+                if(this.bool == true) {
                   this.bool = false;
                   this.warnChan.push(this.warnChanArr[j].ruleName);
                   this.warnChanId.push(this.warnChanArr[j].ruleId);
@@ -92,6 +93,8 @@ export class AlarmRluesComponent {
             }
           }
         }
+        console.log(this.warnChanCheckedArr);
+        console.log(this.warnChanArr)
         this.warnChanCheckedChange.emit(this.warnChanCheckedArr);
       }
     }

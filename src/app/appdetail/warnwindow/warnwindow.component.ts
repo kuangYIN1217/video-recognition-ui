@@ -155,11 +155,15 @@ export class WarnWindowComponent{
           this.warnChannelId+= ','+this.ruleList.applicationChannels[i].channelId;
         }
         this.warnChanChecked.push(this.ruleList.applicationChannels[i]);
-        //console.log(this.warnChanChecked);
+
       }
       //console.log(this.warnChannelId);
+      console.log(this.warnChanChecked);
     }
-    //console.log(this.warnChanArr);
+    for(let k=0;k<this.warnChanArr.length;k++){
+      this.warnChanArr[k].flag=2;
+    }
+    console.log(this.warnChanArr);
     //this.getObj();
     if(JSON.stringify(this.ruleList)!="{}"&&this.ruleList.ruleName!=""){
       this.warnService.getWarnObjOne()

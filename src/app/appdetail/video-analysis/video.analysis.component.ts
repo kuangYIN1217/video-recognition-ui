@@ -116,8 +116,7 @@ export class VideoAnalysisComoponent {
   }
   /* add video end */
   ngOnInit() {
-
-    console.log(window.navigator.plugins)
+    //console.log(window.navigator.plugins)
   }
   constructor (private channelService: ChannelService , private recognitionService: RecognitionService, private toastyService:ToastyService, private appManageService: AppManageService) {
     this.d_applicationId = parseInt(window.sessionStorage.getItem('applicationId'));
@@ -335,14 +334,19 @@ export class VideoAnalysisComoponent {
     for(let k=0;k<this.fileRecognition.length;k++){
       if(this.fileRecognition[k].cateId==1&&this.fileRecognition[k].targetInfos.length>0){
         for(let n=0;n<this.fileRecognition[k].targetInfos.length;n++){
-          let obj:any={};
-          obj.targetFeature=this.fileRecognition[k].targetInfos[n].targetFeature;
-          obj.photoContainer=this.fileRecognition[k].targetInfos[n].targetImages.split(',');
-          this.arr.push(obj);
+            let obj:any={};
+            obj.targetFeature=this.fileRecognition[k].targetInfos[n].targetFeature;
+            obj.photoContainer=this.fileRecognition[k].targetInfos[n].targetImages.split(',');
+            this.arr.push(obj);
         }
       }
     }
     console.log(this.arr);
+    for(let i=0;i<this.arr.length;i++){
+      if(this.arr[i].photoContainer.length==1&&this.arr[i].photoContainer[0]==''){
+        this.arr[i].photoContainer.splice(0,1);
+      }
+    }
   }
   noClickFirst(i,j){
     for(let k=0;k<this.d_analysis_options[i].recognitionCategories.length;k++){
@@ -808,7 +812,7 @@ export class VideoAnalysisComoponent {
       this.d_analysis_options = rep;
       this.recognitionService.getRecognitionFile(this.d_applicationId)
         .subscribe(result=>{
-          //console.log(result);
+          console.log(result);
           this.fileRecognition = result;
           this.getRecognitionValue();
         });

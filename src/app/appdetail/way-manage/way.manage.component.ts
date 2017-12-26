@@ -401,10 +401,10 @@ export class WayManageComponent {
       for(let i=0;i<this.channelInfo.length;i++){
         if(this.channelInfo[i].channelStatus==1){
           j++;
-          if(j>8){
+          if(j>0){
             this.deleteIndex =1;
             this.tip_title = '提示';
-            this.tip_content = '对不起，通道开启数超过9个，请先关闭其他通道！';
+            this.tip_content = '仅支持开启一个通道！';
             return
           }
         }
