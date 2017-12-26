@@ -22,7 +22,7 @@ export class ResourcesService {
 
 
     getAuthorization(){
-        return 'Bearer '+ sessionStorage['authenticationToken'];
+        return 'Bearer '+ localStorage['authenticationToken'];
     }
 
     getHeaders(){

@@ -378,11 +378,9 @@ export class VideoAnalysisComoponent {
       this.arr.push(obj);
       this.arr.splice(0,1);
     }*/
-
     for(let i=0;i<this.d_analysis_options[0].recognitionCategories.length;i++){
       if(this.d_analysis_options[0].recognitionCategories[i].cateId==1&&this.d_analysis_options[0].recognitionCategories[i].selected){
         this.showFeature = 1;
-        //this.getHeight();
       }
     }
     if(this.s_popup_show==false){
