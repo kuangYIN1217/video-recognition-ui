@@ -18,7 +18,7 @@ export class CreateProjectComponent {
   createFlag:boolean = true;
   @Output() newProjectChange: EventEmitter<any> = new EventEmitter();
   constructor(private appManageService: AppManageService){
-    this.userId = sessionStorage.getItem('userId');
+    this.userId = localStorage.getItem('userId');
     this.appManageService.getCategory()
       .subscribe(result=>{
         result.splice(2,1);
