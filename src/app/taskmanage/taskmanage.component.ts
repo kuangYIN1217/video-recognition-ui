@@ -31,8 +31,6 @@ export class TaskManageComponent {
   deleteIdArr:any[]=[];
   percent:any[]=[];
   interval: any;
-  interval1: any;
-  interval2: any;
   pageNow:number;
   pageChange:number;
   _offline:any[]=[];

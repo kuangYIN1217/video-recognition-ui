@@ -64,7 +64,7 @@ export class NavigationComponent {
     } else {
       this.elector = true;
     }
-    if (this.location.isCurrentPathEqualTo('/login') || this.location.isCurrentPathEqualTo('') ) {
+    if (this.location.isCurrentPathEqualTo('/login') || this.location.isCurrentPathEqualTo('')) {
       this.focusTab = 0;
       // this.needhide = 0;
     } else if(this.location.isCurrentPathEqualTo('/appmanage')) {
@@ -76,10 +76,10 @@ export class NavigationComponent {
     } else if (this.location.path().match(/\/waymanage/)) {
       this.focusTab = 2;
       // this.needhide = 0;　
-    } else if (this.location.isCurrentPathEqualTo('/monitorreport') ) {
+    } else if (this.location.isCurrentPathEqualTo('/monitorreport')) {
       this.focusTab = 3;
       // this.needhide = 0;
-    } else if (this.location.isCurrentPathEqualTo('/technologysupport') ) {
+    } else if (this.location.isCurrentPathEqualTo('/technologysupport')) {
       this.focusTab = 4;
       // this.needhide = 0;
     }else if (this.location.path().match(/\/taskmanage/)||this.location.path().match(/\/createtext/)){
