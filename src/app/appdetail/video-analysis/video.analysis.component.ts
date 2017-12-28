@@ -59,13 +59,6 @@ export class VideoAnalysisComoponent {
   saveSelected:any[]=[];
   saveColor:number = 0;
   fileRecognition:any[]=[];
-  interval: any;
-  count:number=0;
-  deleteIndex:number=0;
-  tip_title:string;
-  tip_content:string;
-  tip_btn:string;
-  //firstFresh:string="true";
   radio(i){
     this.radioIndex = i;
   }
@@ -355,7 +348,6 @@ export class VideoAnalysisComoponent {
         this.arr[i].photoContainer.splice(0,1);
       }
     }
-    this.$change_analysis_submit();
   }
   noClickFirst(i,j){
     for(let k=0;k<this.d_analysis_options[i].recognitionCategories.length;k++){
@@ -590,12 +582,7 @@ export class VideoAnalysisComoponent {
     }
     return tempArr;
   }
-  ngOnDestroy(){
-    clearInterval(this.interval);
-  }
   $change_analysis_submit() {
-    if((this.count==0&&sessionStorage.getItem("count")==null)||Number(sessionStorage.getItem("count"))==0){
-      //console.log(sessionStorage.getItem("count"));
       if(this.saveColor == 0){
         return false;
       }else{
@@ -610,73 +597,15 @@ export class VideoAnalysisComoponent {
             this.d_video_list= rep.sort(function(a,b){
               return parseInt(a.channelOrder) - parseInt(b.channelOrder)
             });
-            this.interval = setInterval(() => {
-              this.count++;
-              //console.log(this.count);
-              sessionStorage.setItem("count",String(this.count));
-            }, 1000);
           });
         } else {
           this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
             //console.log(rep);
             this.d_video_list[this.s_selected_grid -1].recognitionCategory = rep[0].recognitionCategory;
-            this.interval = setInterval(() => {
-              this.count++;
-              //console.log(this.count);
-              sessionStorage.setItem("count",String(this.count));
-            }, 1000);
           });
-        }
         //this.s_popup_show = false;
       }
-    }else if(Number(sessionStorage.getItem("count"))<11){
-        this.deleteIndex = 1;
-        this.tip_title = '提示';
-        this.tip_content = '请勿频繁刷新！';
-        this.tip_btn = '确定';
-        this.count = 0;
-        sessionStorage.setItem("count",String(this.count));
-        return false;
-      }else{
-        clearInterval(this.interval);
-        if(this.saveColor == 0){
-          return false;
-        }else{
-          addWaitToast(this.toastyService ,'等待视频源重新加载','保存成功');
-          // todo request
-          this.showFeature = 0;
-          this.s_popup_show = false;
-          //console.log(this.getFeature(this.arr));
-          if (this.s_selected_grid === 0) {
-            // 当前所有
-            this.recognitionService.setRecognitions( this.getAllChannelID() , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
-              //console.log(rep);
-              this.d_video_list= rep.sort(function(a,b){
-                return parseInt(a.channelOrder) - parseInt(b.channelOrder)
-              });
-              this.interval = setInterval(() => {
-                this.count++;
-                //console.log(this.count);
-                sessionStorage.setItem("count",String(this.count));
-              }, 1000);
-            });
-          } else {
-            this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
-              //console.log(rep);
-              this.d_video_list[this.s_selected_grid -1].recognitionCategory = rep[0].recognitionCategory;
-              this.interval = setInterval(() => {
-                this.count++;
-                //console.log(this.count);
-                sessionStorage.setItem("count",String(this.count));
-              }, 1000);
-            });
-          }
-          //this.s_popup_show = false;
-        }
-      }
-  }
-  deleteChange(event){
-    this.deleteIndex = event;
+    }
   }
   /* 获得当前为true的 recognition */
   getSelectedRecognitions() {
