@@ -301,8 +301,11 @@ export class WayManageComponent {
       return '关';
     }
   }
+  getChanAddr(chanAddr){
+    return chanAddr.replace(/(^\s*)|(\s*$)/g, "");
+  }
   create(){
-      let chanAddr = this.chanAddr;
+      let chanAddr = this.getChanAddr(this.chanAddr);
       let chanName = this.chanName;
       let protocol = this.protocol;
       let channelType = this.channelType;
@@ -360,7 +363,7 @@ export class WayManageComponent {
       this.addDialog = 1;
       this.btnIndex = 1;
       this.chanName = item.channelName;
-      this.chanAddr = item.channelAddress;
+      this.chanAddr = this.getChanAddr(item.channelAddress);
       this.protocol = item.channelProtocol;
       this.channelType = item.channelType;
       this.videoAddress = item.videoAddress;
