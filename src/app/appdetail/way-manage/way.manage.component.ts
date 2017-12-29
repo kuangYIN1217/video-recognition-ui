@@ -334,7 +334,16 @@ export class WayManageComponent {
             this.tip_title = '提示';
             this.tip_content = '该通道地址已存在，画面顺序为'+result.text().substring(3)+'！';
             this.createFlag = true;
-          }else{
+          }if(result.text().substring(0,2)=='Ex'){
+            this.deleteIndex =1;
+            this.tip_title = '提示';
+            this.tip_content = '创建成功，仅支持开启一个通道！';
+            this.createFlag = true;
+            this.addDialog = 0;
+            this.show=1;
+            this.getAllChannel(this.appId,null,null,this.page-1,this.pageMaxItem);
+          }
+          else{
             this.show=1;
             this.addDialog = 0;
             this.getAllChannel(this.appId,null,null,this.page-1,this.pageMaxItem);
@@ -428,7 +437,7 @@ export class WayManageComponent {
     this.addDialog = 0;
     this.delSysDialog = 0;
     this.delDialog = 0;
-    this.upadteFlag = false;
+    this.upadteFlag = true;
     this.createFlag = true;
   }
   deleteChange(event){
