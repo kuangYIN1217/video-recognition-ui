@@ -116,8 +116,7 @@ export class VideoAnalysisComoponent {
   }
   /* add video end */
   ngOnInit() {
-    //console.log(window.navigator.plugins)
-
+    //console.log(window.navigator.plugins);
   }
   constructor (private channelService: ChannelService , private recognitionService: RecognitionService, private toastyService:ToastyService, private appManageService: AppManageService) {
     this.d_applicationId = parseInt(window.sessionStorage.getItem('applicationId'));
@@ -342,7 +341,7 @@ export class VideoAnalysisComoponent {
         }
       }
     }
-    console.log(this.arr);
+    //console.log(this.arr);
     for(let i=0;i<this.arr.length;i++){
       if(this.arr[i].photoContainer.length==1&&this.arr[i].photoContainer[0]==''){
         this.arr[i].photoContainer.splice(0,1);
@@ -394,8 +393,8 @@ export class VideoAnalysisComoponent {
     this.getHeight();
   }
   getHeight(){
-    console.log($(".analysis-popup").height());
-    console.log($(".feature-people").height()+103);
+    //console.log($(".analysis-popup").height());
+    //console.log($(".feature-people").height()+103);
     if($(".feature-people").height()+103>$(".analysis-popup").height()){
       $(".feature-people").height($(".analysis-popup").height());
       this.heightIndex = 1;
@@ -617,7 +616,7 @@ export class VideoAnalysisComoponent {
         }
       }
     }
-    console.log(recognitions.substring( 0 ,recognitions.length -1));
+    //console.log(recognitions.substring( 0 ,recognitions.length -1));
     return recognitions.substring( 0 ,recognitions.length -1);
   }
 
@@ -629,7 +628,7 @@ export class VideoAnalysisComoponent {
           arr.push(this.d_video_list[i]);
       }
     }
-    console.log(arr);
+    //console.log(arr);
     for (let i = 0 ; i < arr.length ; i++) {
       channelIDS += arr[i].channelId + ',';
     }
@@ -812,7 +811,7 @@ export class VideoAnalysisComoponent {
       this.d_analysis_options = rep;
       this.recognitionService.getRecognitionFile(this.d_applicationId)
         .subscribe(result=>{
-          console.log(result);
+          //console.log(result);
           this.fileRecognition = result;
           this.getRecognitionValue();
         });
@@ -828,7 +827,7 @@ export class VideoAnalysisComoponent {
   initChannelsNoSort(){
     this.channelService.getOpenChannelById(this.d_applicationId).subscribe(rep => {
       this.d_video_list = rep;
-      console.log(rep);
+      //console.log(rep);
       this.d_video_list.sort(function(a,b){
         return parseInt(a.channelOrder) - parseInt(b.channelOrder)
       });

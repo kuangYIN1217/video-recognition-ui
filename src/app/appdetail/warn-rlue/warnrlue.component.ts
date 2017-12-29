@@ -164,7 +164,10 @@ export class WarnRlueComponent{
               if(result.text().substring(0,2)=='Ok'){
                 this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
               }else if(result.text().substring(0,2)=='No'){
-                alert("该规则下有开启通道！");
+                this.deleteIndex =1;
+                this.tip_title = '提示';
+                this.tip_content = '该规则下有开启通道！';
+                this.tip_btn = "确定";
               }
             })
       }
