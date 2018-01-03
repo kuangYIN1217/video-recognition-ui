@@ -430,9 +430,9 @@ export class WayManageComponent {
   }
   start_reply(reply){
     if(reply.status==200){
-      console.log("Start Successfully!");
+      //console.log("Start Successfully!");
     }else{
-      console.log("Start Failed!");
+      //console.log("Start Failed!");
     }
     //this.getPages(this.appId,this.page-1,this.pageMaxItem);
   }

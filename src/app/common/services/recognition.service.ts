@@ -55,7 +55,7 @@ export class RecognitionService {
       "targetSet": targetSet
     });
     //let body ="channelId=" + channelIds + "&recognitionCategory=" + recognitions+"&targetSet=" + targetSet;
-    console.log(body);
+    //console.log(body);
     let headers = this.getHeaders();
     //let headers = new Headers();
     //headers.append('Content-Type','application/x-www-form-urlencoded');

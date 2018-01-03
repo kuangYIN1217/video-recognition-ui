@@ -42,7 +42,7 @@ export class AppManageService {
     headers.append('inputPath',this.inputPath);
     return this.http.post(this.SERVER_URL+path,body,{ headers: headers})
       .map((response: Response) => {
-      console.log(response);
+      //console.log(response);
         if (response && response.json()) {
           if(response.status==200){
             return response.json();
@@ -77,7 +77,7 @@ export class AppManageService {
       });
   }
   delInfo(id){
-    console.log(id);
+    //console.log(id);
     let path = "/api/application/"+id;
     let headers = this.getHeaders();
     return this.http.delete(this.SERVER_URL+path,{ headers: headers })
@@ -109,11 +109,11 @@ export class AppManageService {
       "applicationId": id,
       "name": appName
     });
-    console.log(body);
+    //console.log(body);
     let headers = this.getHeaders();
     return this.http.put(this.SERVER_URL+path,body,{ headers: headers })
       .map((response: Response) => {
-      console.log(response);
+      //console.log(response);
         if (response && response.json()) {
           if(response.status==200){
             return response.json();

@@ -58,8 +58,8 @@ export class CreateTextComponent {
   constructor(private warnService: WarnService,private offlineService: OfflineService,private router:Router,private route: ActivatedRoute) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
-    console.log(this.appId);
-    console.log(this.appCate);
+    //console.log(this.appId);
+    //console.log(this.appCate);
     this.warnService.getWarnRules(this.appId)
       .subscribe(result=>{
         this.warnChanArr = result.content;
@@ -73,7 +73,7 @@ export class CreateTextComponent {
     itemAlias: "file",
   });
   selectedFileOnChanged(){
-    console.log(this.uploader.queue);
+    //console.log(this.uploader.queue);
     for(let j=0;j<this.uploader.queue.length;j++){
       this.size = this.uploader.queue[j].file.size;
       if((this.size/1024/1024)>500){
@@ -119,7 +119,7 @@ export class CreateTextComponent {
         }
       };
       this.uploader.queue[j].onSuccess = (response: any, status: any, headers: any) => {
-        console.log(response);
+        //console.log(response);
         this.offlineObj = { "fileName":this.uploader.queue[j].file.name,"inputPath":response };
         this.offlineFiles.push(this.offlineObj);
 /*        this.inputPathArr.push(response);
@@ -180,7 +180,7 @@ export class CreateTextComponent {
         //this.fileNames = params['fileNames'];
         if(params['alarmRules']){
           this.warnRuleArr = JSON.parse(params['alarmRules']);
-          console.log(this.warnRuleArr);
+          //console.log(this.warnRuleArr);
           this.warnChanChecked = this.warnRuleArr;
         }
 /*        if(params['offlineFiles']){
@@ -209,7 +209,7 @@ export class CreateTextComponent {
     if(this.taskId){
         this.offlineService.getSize(this.taskId)
           .subscribe(result=>{
-            console.log(result);
+            //console.log(result);
             let name:string='';
             let path:string='';
             for(let i=0;i<result.fileSize.length;i++){
@@ -221,7 +221,7 @@ export class CreateTextComponent {
               this.fileObj.size = result.fileSize[i];
               this.showFile.push(this.fileObj);
             }
-            console.log(this.showFile);
+            //console.log(this.showFile);
 /*            this.fileNames = name.substring(0,name.length-1);
             this.inputPath = path.substring(0,path.length-1);
             console.log(this.fileNames);
@@ -258,7 +258,7 @@ export class CreateTextComponent {
       this.required3 = 0;
     }
     for(let i=0;i<this.uploader.queue.length;i++){
-      console.log(this.uploader.queue[i]);
+      //console.log(this.uploader.queue[i]);
       if(this.uploader.queue[i].progress!=100){
         this.required3 = 1;
         return false;
@@ -275,30 +275,30 @@ export class CreateTextComponent {
     }*/
     //console.log(this.ruleId);
     this.fileNumber = this.uploader.queue.length;
-    console.log(this.warnRuleId);
-    console.log(this.offlineFiles);
+    //console.log(this.warnRuleId);
+    //console.log(this.offlineFiles);
     this.offlineService.create(this.appId,this.warnRuleId,this.taskName,this.offlineFiles,this.fileNumber)
       .subscribe(result=>{
-        console.log(result);
+        //console.log(result);
         this.router.navigate(['../taskmanage']);
       })
   }
   warnChanCheckedChange(event){
-    console.log(event);
+    //console.log(event);
     this.warnChecked = event;
   }
   chanChange(event){
-    console.log(event);
+    //console.log(event);
     this.warnRule = event.join(',');
-    console.log(this.warnRule);
+    //console.log(this.warnRule);
   }
   chanChangeId(event){
-    console.log(event);
+    //console.log(event);
     this.warnRuleId = event.join(',');
-    console.log(this.warnRuleId);
+    //console.log(this.warnRuleId);
   }
   update(){
-    console.log(this.warnRuleId);
+    //console.log(this.warnRuleId);
     /*  let tem:any[]=[];
     let temp:any[]=[];
     tem = this.inputPath.split(',');
@@ -340,10 +340,10 @@ export class CreateTextComponent {
       obj = { "fileName":this.offlineFiles[j].fileName,"inputPath":this.offlineFiles[j].inputPath };
       this.upOfflineFiles.push(obj);
     }
-    console.log(this.upOfflineFiles);
+    //console.log(this.upOfflineFiles);
     this.offlineService.update(this.warnRuleId,this.taskId,this.upOfflineFiles,this.taskName,this.fileNumber)
       .subscribe(result=>{
-        console.log(result);
+        //console.log(result);
         this.router.navigate(['../taskmanage']);
       })
   }

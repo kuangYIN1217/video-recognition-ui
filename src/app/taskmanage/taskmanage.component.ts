@@ -62,9 +62,9 @@ export class TaskManageComponent {
     this.alarmStatus = this.alarmStatusArr[0];
     this.route.params.subscribe((param) => {
       if(JSON.stringify(param) != "{}"){
-        console.log(param);
+        //console.log(param);
         this.alarmStatus = param['status'];
-        console.log(this.alarmStatus);
+        //console.log(this.alarmStatus);
         this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
       }
     });
@@ -145,13 +145,13 @@ export class TaskManageComponent {
     if(item.taskStatus=='进行中'){
       item.show = 1;
       this.websocket.connect().then(() => {
-        console.log(item.taskId);
+        //console.log(item.taskId);
         this.websocket.subscribe('/taskPercent/' + item.taskId,(data) =>{
           this.percent = data.offlineFiles;
           this.percent.sort(function(a,b){
             return parseInt(a.fileId) - parseInt(b.fileId)
           });
-          console.log(this.percent);
+          //console.log(this.percent);
         });
       })
     }
@@ -256,9 +256,9 @@ export class TaskManageComponent {
   }
   start_reply(reply){
     if(reply.status==200){
-      console.log("Start Successfully!");
+      //console.log("Start Successfully!");
     }else{
-      console.log("Start Failed!");
+      //console.log("Start Failed!");
     }
     this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
   }
@@ -312,11 +312,11 @@ export class TaskManageComponent {
     this.router.navigate(['../createtext'],{queryParams: {'taskTitle':"新建任务"}});
   }
   edit(item){
-    console.log(item);
+    //console.log(item);
     this.router.navigate(['../createtext'],{queryParams: {'taskId':item.taskId,'taskName':item.taskName,'alarmRules':JSON.stringify(item.alarmRules),'taskTitle':"修改任务"}});
   }
   look(item){
-    console.log(item);
+    //console.log(item);
     this.router.navigate(['../warnmanage'],{queryParams: {'taskName':item.taskName,'taskId':item.taskId}});
   }
 
@@ -339,10 +339,10 @@ export class TaskManageComponent {
     this.deleteIndex = event;
   }
   deletedChange(event){
-    console.log(event);
+    //console.log(event);
     if(event==1){
       for(let i in this.deleteIdArr){
-        console.log(this.deleteIdArr[i]);
+        //console.log(this.deleteIdArr[i]);
         this.offlineService.delete(this.deleteIdArr[i].taskId)
           .subscribe(result=>{
             this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);

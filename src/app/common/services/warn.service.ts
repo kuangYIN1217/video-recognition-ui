@@ -135,7 +135,7 @@ export class WarnService {
       "targetFeature": car,
       "targetImage":photoArr
     });
-    console.log(body);
+    //console.log(body);
     let headers = this.getHeaders();
     headers.append('channelIds',chanId);
     return this.http.put(this.SERVER_URL+path,body,{ headers: headers })
@@ -160,7 +160,7 @@ export class WarnService {
       "targetFeature": car,
       "targetImage":photoArr
     });
-    console.log(body);
+    //console.log(body);
     let headers = this.getHeaders();
     return this.http.put(this.SERVER_URL+path,body,{ headers: headers })
       .map((response: Response) => {
@@ -196,7 +196,7 @@ export class WarnService {
       });
   }
   searchRules(id,name,chanId,obj,status,page=0,size=10){
-    console.log(id,name,chanId,obj,status);
+    //console.log(id,name,chanId,obj,status);
     let path = "/api/findRuleDynamic/"+id+"/"+name+"/"+chanId+"/"+obj+"/"+status+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path,{ headers: headers })

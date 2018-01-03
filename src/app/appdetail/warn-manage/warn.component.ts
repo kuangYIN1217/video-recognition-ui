@@ -406,7 +406,7 @@ export class WarnComponent{
     this.sourcePaths='';
     for(let i in this.allWarn){
       if(this.allWarn[i]['flag'] == '1'){
-          console.log(this.allWarn[i]);
+          //console.log(this.allWarn[i]);
           this.alarmIds += this.allWarn[i].alarmId+',';
         this.sourcePaths+=this.allWarn[i].imagePath+',';
       }

@@ -142,21 +142,21 @@ export class AppManageComponent {
       this._realTime.push(obj);
     };
     sessionStorage.setItem("_realTime" , JSON.stringify(this._realTime));
-    console.log(this._realTime);
+    //console.log(this._realTime);
     for(let i=11;i<16;i=i+2){
       let obj:any={};
       obj.projectAuthorityId = i;
       this._offline.push(obj);
     };
     sessionStorage.setItem("_offline" , JSON.stringify(this._offline));
-    console.log(this._offline);
+    //console.log(this._offline);
     for(let i=18;i<5;i=i+2){
       let obj:any={};
       obj.projectAuthorityId = i;
       this._electric.push(obj);
     };
     sessionStorage.setItem("_electric" , JSON.stringify(this._electric));
-    console.log(this._electric);
+    //console.log(this._electric);
   }
   Headers: Headers = this.appManageService.getHeaders();
   public uploader:FileUploader = new FileUploader({
@@ -166,7 +166,7 @@ export class AppManageComponent {
   });
 
   selectedFileOnChanged(event:any) {
-    console.log(event.target.value);
+    //console.log(event.target.value);
     this.upload();
 /*    if(this.btnIndex==0){
       $('#image').attr('src','');
@@ -305,7 +305,7 @@ export class AppManageComponent {
     this.appManageService.createApp(appName,appCate,this.arr,null,this.userId)
       .subscribe(result=>{
         this.createFlag = true;
-        console.log(result);
+        //console.log(result);
         this.createApp='manage';
         this.getAllInfo();
       });
@@ -349,7 +349,7 @@ export class AppManageComponent {
     this.appManageService.createApp(appName,appCate,null,null,this.userId)
       .subscribe(result=>{
         this.createFlag = true;
-        console.log(result);
+        //console.log(result);
         this.createApp='manage';
         this.getAllInfo();
       });
@@ -363,10 +363,10 @@ export class AppManageComponent {
   updateName(item){
     this.appId = item.applicationId;
     this.appCate = item.applicationType;
-    console.log(this.appName);
+    //console.log(this.appName);
     this.appManageService.updateApp(this.appId,this.appName)
       .subscribe(result=>{
-        console.log(result);
+        //console.log(result);
         this.getAllInfo();
       });
     setTimeout(() => item.flag=2, 1000);
@@ -516,7 +516,7 @@ export class AppManageComponent {
   }
   jump(item){
     if(item){
-      console.log(item);
+      //console.log(item);
       sessionStorage.setItem("applicationId" , item.applicationId);
       sessionStorage.setItem("applicationName" , item.applicationName);
       sessionStorage.setItem("applicationType" , item.applicationType);

@@ -29,7 +29,7 @@ export class AlarmRluesComponent {
     //this.appCate = window.sessionStorage.getItem("applicationType");
   }
   ngOnChanges(...args: any[]) {
-    console.log(this.warnChanArr);
+    //console.log(this.warnChanArr);
     if(this.warn_title=='新建规则'||this.taskTitle=='新建任务'){
       this.warnChan=[];
       this.warnChanId=[];
@@ -42,8 +42,8 @@ export class AlarmRluesComponent {
       this.warnChan=[];
       this.warnChanId=[];
       this.warnChanCheckedArr=[];
-      console.log(this.warnChanArr);
-      console.log(this.warnChanChecked);
+      //console.log(this.warnChanArr);
+      //console.log(this.warnChanChecked);
       if(this.warnChanChecked.length>0){
         for(let i=0;i<this.warnChanChecked.length;i++){
           for(let j=0;j<this.warnChanArr.length;j++){
@@ -80,7 +80,7 @@ export class AlarmRluesComponent {
                   }
                 }
               }
-              console.log(this.warnChanArr);
+              //console.log(this.warnChanArr);
               if(this.warnChanChecked[i].ruleId == this.warnChanArr[j].ruleId){
                 this.warnChanArr[j].flag = 1;
                 if(this.bool == true) {
@@ -93,8 +93,8 @@ export class AlarmRluesComponent {
             }
           }
         }
-        console.log(this.warnChanCheckedArr);
-        console.log(this.warnChanArr)
+        //console.log(this.warnChanCheckedArr);
+        //console.log(this.warnChanArr)
         this.warnChanCheckedChange.emit(this.warnChanCheckedArr);
       }
     }
@@ -105,7 +105,7 @@ export class AlarmRluesComponent {
     }*/
   }
   check(item){
-    console.log(item);
+    //console.log(item);
     if(item.ruleName){
       if(item.selected==1){
         return false;
@@ -129,7 +129,7 @@ export class AlarmRluesComponent {
             }
           }
         }
-        console.log(this.warnChanArr);
+        //console.log(this.warnChanArr);
       }else{
         if((item.recognitionCategor.cateId==1||item.recognitionCategor.cateId==26)&&(item.targetFeature==''||item.targetFeature==null)){
           for(let i=0;i<this.warnChanArr.length;i++){
@@ -161,7 +161,7 @@ export class AlarmRluesComponent {
             }
           }
         }
-        console.log(this.warnChanArr);
+        //console.log(this.warnChanArr);
       }else{
         if(item.recognitionCategor.cateId==8||item.recognitionCategor.cateId==10||item.recognitionCategor.cateId==23||item.recognitionCategor.cateId==25){
           for(let i=0;i<this.warnChanArr.length;i++){

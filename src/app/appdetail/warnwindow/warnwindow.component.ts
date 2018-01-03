@@ -52,7 +52,7 @@ export class WarnWindowComponent{
   constructor(private warnService: WarnService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
-    console.log(this.appId);
+    //console.log(this.appId);
     this.radioIndex = 0;
     this.warnService.getWarnChannel(this.appId)
       .subscribe(channel=>{
@@ -78,7 +78,7 @@ export class WarnWindowComponent{
     for(let i=0;i<this.uploader.queue.length;i++){
       this.uploader.queue[i].onSuccess = (response: any, status: any, headers: any) => {
         this.photoContainer.push(response);
-        console.log(this.photoContainer);
+        //console.log(this.photoContainer);
       };
     }
     this.uploader.uploadAll(); // 开始上传
@@ -107,7 +107,7 @@ export class WarnWindowComponent{
   validInput(){
     if(/^[\u4E00-\u9FA5]{1,5}$/.test(this.objName)){
        //this.objName.substring(0,this.objName.length-1);
-      console.log(1);
+      //console.log(1);
     }
   }
   changeDetail(){
@@ -118,17 +118,17 @@ export class WarnWindowComponent{
     }
   }
   warnChanCheckedChange(event){
-    console.log(event);
+    //console.log(event);
     this.warnChecked = event;
   }
   chanChange(event){
     this.warnChannel = event.join(',');
-    console.log(this.warnChannel);
+    //console.log(this.warnChannel);
   }
   chanChangeId(event){
-    console.log(event);
+    //console.log(event);
     this.warnChannelId = event.join(',');
-    console.log(this.warnChannelId);
+    //console.log(this.warnChannelId);
   }
 /*  ngOnInit(){
     this.warnChannel = this.warnChanArr[0].channelName;
@@ -138,7 +138,7 @@ export class WarnWindowComponent{
     this.checked = 0;
     this.chanRequired1=0;
     this.chanRequired2=0;
-    console.log(this.ruleList);
+    //console.log(this.ruleList);
     this.warnChanChecked = [];
     this.warnChannel='';
     this.warnChannelId='';
@@ -158,12 +158,12 @@ export class WarnWindowComponent{
 
       }
       //console.log(this.warnChannelId);
-      console.log(this.warnChanChecked);
+      //console.log(this.warnChanChecked);
     }
     for(let k=0;k<this.warnChanArr.length;k++){
       this.warnChanArr[k].flag=2;
     }
-    console.log(this.warnChanArr);
+    //console.log(this.warnChanArr);
     //this.getObj();
     if(JSON.stringify(this.ruleList)!="{}"&&this.ruleList.ruleName!=""){
       this.warnService.getWarnObjOne()

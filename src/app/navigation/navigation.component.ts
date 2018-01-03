@@ -37,7 +37,7 @@ export class NavigationComponent {
   }
   //response
   response(data){
-    console.log(data)
+    //console.log(data)
   }
 
   ngAfterContentChecked(){
