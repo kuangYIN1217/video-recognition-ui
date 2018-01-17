@@ -366,6 +366,7 @@ export class WarnWindowComponent{
   }
   back(){
     this.createIndex = 2;
+    this.createFlag = true;
     this.indexChange.emit(this.createIndex);
   }
 }
