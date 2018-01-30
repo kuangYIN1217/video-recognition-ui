@@ -13,4 +13,4 @@ FROM jermine/nginx
 ENV APP_HOME /app
 MAINTAINER Jermine.hu@qq.com
 COPY ./nginx.conf /etc/nginx/nginx.conf
-COPY dist/ $APP_HOME/
+COPY --from=0 $APP_HOME/dist .
