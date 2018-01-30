@@ -11,4 +11,5 @@ RUN  npm install -g yarn ;\
 FROM jermine/nginx
 ENV APP_HOME /app
 MAINTAINER Jermine.hu@qq.com
-ADD ./nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY src/dist/* $APP_HOME/
