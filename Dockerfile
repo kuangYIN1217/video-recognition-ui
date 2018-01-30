@@ -7,8 +7,7 @@ RUN  npm install -g cnpm --registry=https://registry.npm.taobao.org ;\
      cnpm install -g yarn ;\
      yarn install -g @angular/cli ;\
      yarn install ;\
-     cnpm run build ;\
-     pwd && ls -alh dist
+     cnpm run build
 FROM jermine/nginx
 ENV APP_HOME /app
 MAINTAINER Jermine.hu@qq.com
