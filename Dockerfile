@@ -12,5 +12,6 @@ RUN  npm install -g cnpm --registry=https://registry.npm.taobao.org ;\
 FROM jermine/nginx
 ENV APP_HOME /app
 MAINTAINER Jermine.hu@qq.com
+WORKDIR $APP_HOME
 COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY --from=0 $APP_HOME/dist .
