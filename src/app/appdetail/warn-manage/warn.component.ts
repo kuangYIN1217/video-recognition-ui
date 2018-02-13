@@ -250,7 +250,7 @@ export class WarnComponent{
   seePhoto(url){
     //console.log(url);
     this.seeIndex = 1;
-    this.imageUrl = url;
+    this.imageUrl = url.slice(23);
   }
   downPhoto(url){
     this.downUrl = url;
