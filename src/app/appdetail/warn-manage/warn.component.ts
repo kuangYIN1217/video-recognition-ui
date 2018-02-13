@@ -256,6 +256,9 @@ export class WarnComponent{
     this.downUrl = url;
     document.getElementById('down').click();
   }
+  getDownPath(url){
+    return url.slice(23);
+  }
   close(){
     this.seeIndex = 0;
   }

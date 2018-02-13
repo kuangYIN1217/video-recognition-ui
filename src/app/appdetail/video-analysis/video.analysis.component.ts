@@ -59,6 +59,7 @@ export class VideoAnalysisComoponent {
   saveSelected:any[]=[];
   saveColor:number = 0;
   fileRecognition:any[]=[];
+  haveTargetJson:boolean = false;
   radio(i){
     this.radioIndex = i;
   }
