@@ -313,7 +313,7 @@ export class WarnRlueComponent{
           "channelId":null
         }
         ],
-      "recognitionCategor":{
+      "recognitionCategory":{
         "name":"人"
       },
       "createTime":null,
