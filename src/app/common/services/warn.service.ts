@@ -95,11 +95,11 @@ export class WarnService {
         }
       });
   }
-  createWarn(appId,chanId,name,obj,code,car,status,photoArr){
+  createWarn(appId,name,obj,code,car,status,photoArr){
     let path = "/api/alarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
-      "recognitionCategor": {
+      "recognitionCategory": {
         "cateId": obj,
         "code":code
       },
@@ -111,7 +111,6 @@ export class WarnService {
       "targetImages": photoArr
     });
     let headers = this.getHeaders();
-    headers.append('channelIds',chanId);
     headers.append('applicationId',appId);
     return this.http.post(this.SERVER_URL+path,body,{ headers: headers })
       .map((response: Response) => {
@@ -122,7 +121,7 @@ export class WarnService {
         }
       });
   }
-  editRuleSave(chanId,ruleId,name,obj,code,car,status,photoArr){
+  editRuleSave(ruleId,name,obj,code,car,status,photoArr){
     let path = "/api/UpdateAlarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
@@ -135,9 +134,7 @@ export class WarnService {
       "targetFeature": car,
       "targetImage":photoArr
     });
-    //console.log(body);
     let headers = this.getHeaders();
-    headers.append('channelIds',chanId);
     return this.http.put(this.SERVER_URL+path,body,{ headers: headers })
       .map((response: Response) => {
         if (response) {

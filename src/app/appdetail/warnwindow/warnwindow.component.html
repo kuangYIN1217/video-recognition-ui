@@ -10,14 +10,14 @@
         <input type="text" name="ruleName" [(ngModel)]="ruleName" readonly *ngIf="warn_title=='规则详情'"/>
         <span class="must" [style.display]="chanRequired1==1?'':'none'">必填字段</span>
       </div>
-      <div class="createInfo" *ngIf="appCate=='实时流分析'">
+<!--      <div class="createInfo" *ngIf="appCate=='实时流分析'">
         <label>告警通道：</label>
         <input type="text" required readonly name="warnChannel" [(ngModel)]="warnChannel"/>
         <span class="must" [style.display]="chanRequired2==1?'':'none'">必填字段</span>
         <img src="../assets/createtext/jia.png" class="jia" (click)="checkedRlues($event)" *ngIf="warn_title!='规则详情'"/>
         <img src="../assets/createtext/jia.png" class="jia" *ngIf="warn_title=='规则详情'"/>
         <alarm-rlues [style.display]="checked==1?'':'none'"  width="280px" margin="20px 10px 0 20px" paddingRight="10px" [title]="title" [warn_title]="warn_title" [warnChanArr]="warnChanArr" [warnChanChecked]="warnChanChecked" (chanChange)="chanChange($event)" (chanChangeId)="chanChangeId($event)" (warnChanCheckedChange)="warnChanCheckedChange($event)"></alarm-rlues>
-      </div>
+      </div>-->
 <!--      <div class="info">
         <label>告警通道：</label>
         <select [(ngModel)]="warnChannel" (ngModelChange)="warnChannel=$event;warnChanges($event)" *ngIf="warn_title!='任务详情'">
