@@ -414,7 +414,7 @@ export class AppManageComponent {
     }
   }
   ngOnInit() {
-    calc_height(document.getElementById('appManage'));
+    calc_height(document.getElementById('appBody'));
   }
   dia(item){
     if(item.stop==0){

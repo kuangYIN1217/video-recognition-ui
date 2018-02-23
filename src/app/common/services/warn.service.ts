@@ -195,9 +195,9 @@ export class WarnService {
         }
       });
   }
-  searchRules(id,name,chanId,obj,status,page=0,size=10){
+  searchRules(id,name,obj,status,page=0,size=10){
     //console.log(id,name,chanId,obj,status);
-    let path = "/api/findRuleDynamic/"+id+"/"+name+"/"+chanId+"/"+obj+"/"+status+"?page="+page+"&size="+size;
+    let path = "/api/findRuleDynamic/"+id+"/"+name+"/"+obj+"/"+status+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {

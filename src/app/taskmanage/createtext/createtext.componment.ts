@@ -55,6 +55,8 @@ export class CreateTextComponent {
   offlineObj:any={};
   warnChanChecked:any[]=[];
   warnChecked:any[]=[];
+  choose:string='video';
+  choosed:string='video';
   constructor(private warnService: WarnService,private offlineService: OfflineService,private router:Router,private route: ActivatedRoute) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -72,42 +74,70 @@ export class CreateTextComponent {
     method: "POST",
     itemAlias: "file",
   });
-  selectedFileOnChanged(){
-    //console.log(this.uploader.queue);
-    for(let j=0;j<this.uploader.queue.length;j++){
-      this.size = this.uploader.queue[j].file.size;
-      if((this.size/1024/1024)>500){
-        this.deleteIndex =1;
-        this.tip_title = '提示';
-        this.tip_content = this.uploader.queue[j].file.name +'文件大于500M！';
-        return false;
-      }
-      if(Number(j)>0){
-        this.uploader.queue[1].remove();
-        j-=1;
-        continue
-      }else{
-        let name = this.uploader.queue[j].file.name;
-        //console.log(name.substring(name.length-3,name.length));
-        if(name.substring(name.length-3,name.length)!='mp4'&&name.substring(name.length-3,name.length)!='avi'){
-          this.uploader.queue[j].remove();
-          return
-        };
-        let bool = this.isInArray(this.showArr,this.uploader.queue[j]);
-        if(bool==false){
-          this.showArr.push(this.uploader.queue[j]);
-          this.getProgress(j);
-          //this.getSuccess(j);
+  onlyUploadOne(type){
+    this.size = this.uploader.queue[0].file.size;
+    if((this.size/1024/1024)>500){
+      this.deleteIndex =1;
+      this.tip_title = '提示';
+      this.tip_content = this.uploader.queue[0].file.name +'文件大于1GB！';
+      return false;
+    }
+    let name = this.uploader.queue[0].file.name;
+    if(type=='video'){
+      if(name.substring(name.length-3,name.length)!='mp4'&&name.substring(name.length-3,name.length)!='avi'){
+        this.uploader.queue[0].remove();
+        return
+      };
+    }else if(type=='zip'){
+      if(name.substring(name.length-3,name.length)!='zip'&&name.substring(name.length-3,name.length)!='ZIP'){
+        this.uploader.queue[0].remove();
+        return
+      };
+    }
+    let bool = this.isInArray(this.showArr,this.uploader.queue[0]);
+    if(bool==false){
+      this.showArr.push(this.uploader.queue[0]);
+      this.getProgress(0);
+    }
+  }
+  selectedFileOnChanged(event,getType){
+    if(getType=='video'){
+      this.onlyUploadOne(getType);
+    }else if(getType=='image'){
+      for(let j=0;j<this.uploader.queue.length;j++){
+        this.size = this.uploader.queue[j].file.size;
+        if((this.size/1024/1024)>500){
+          this.deleteIndex =1;
+          this.tip_title = '提示';
+          this.tip_content = this.uploader.queue[j].file.name +'文件大于1GB！';
+          return false;
+        }
+        if(Number(j)>9){
+          this.uploader.queue[9].remove();
+          j-=1;
+          continue
         }else{
-          continue;
+          let name = this.uploader.queue[j].file.name;
+          if(name.substring(name.length-3,name.length)!='png'&&name.substring(name.length-3,name.length)!='jpg'){
+            this.uploader.queue[j].remove();
+            return
+          };
+          let bool = this.isInArray(this.showArr,this.uploader.queue[j]);
+          if(bool==false){
+            this.showArr.push(this.uploader.queue[j]);
+            this.getProgress(j);
+          }else{
+            continue;
+          }
         }
       }
+    }else if(getType=='zip'){
+      this.onlyUploadOne(getType);
     }
-    //this.uploader.queue[0].upload();
   }
   getProgress(j){
-    if(j>0){
-      this.showArr.splice(1,1);
+    if(j>9){
+      this.showArr.splice(9,1);
       return
     }else{
       this.uploader.onProgressItem=(fileItem: FileItem, progress: any)=>{
@@ -148,10 +178,6 @@ export class CreateTextComponent {
   analysis(i){
     let index = this.uploader.getIndexOfItem(this.uploader.queue[i]);
     this.offlineFiles.splice(index,1);
-/*    this.inputPathArr.splice(index,1);
-    this.fileNameArr.splice(index,1);
-    this.inputPath = this.inputPathArr.join(',');
-    this.fileName = this.fileNameArr.join(',');*/
   }
   isInArray(arr,value){
     for(var i = 0; i < arr.length; i++){
@@ -230,14 +256,12 @@ export class CreateTextComponent {
 }
         this.lookIndex = 1;
       }
-
     });
 
   }
   deleteChange(event){
   this.deleteIndex = event;
 }
-
   create(){
     if(!this.taskName){
       this.required1 = 1;
@@ -276,7 +300,7 @@ export class CreateTextComponent {
     //console.log(this.ruleId);
     this.fileNumber = this.uploader.queue.length;
     //console.log(this.warnRuleId);
-    //console.log(this.offlineFiles);
+    console.log(this.offlineFiles);
     this.offlineService.create(this.appId,this.warnRuleId,this.taskName,this.offlineFiles,this.fileNumber)
       .subscribe(result=>{
         //console.log(result);
@@ -357,5 +381,31 @@ export class CreateTextComponent {
 
   hide(){
     this.checked = 0;
+  }
+  deleteUploader(){
+    if(this.choose!=this.choosed){
+      this.showArr=[];
+      if(this.uploader.queue.length>0){
+        for(let i=0;i<this.uploader.queue.length;i++){
+          this.uploader.queue[0].remove();
+        }
+      }
+    }
+  }
+
+  checkRadio(type){
+    if(type=='video'){
+      this.choose = 'video';
+      this.deleteUploader();
+      this.choosed = 'video';
+    }else if(type=='image'){
+      this.choose = 'image';
+      this.deleteUploader();
+      this.choosed = 'image';
+    }else if(type=='zip'){
+      this.choose = 'zip';
+      this.deleteUploader();
+      this.choosed = 'zip';
+    }
   }
 }

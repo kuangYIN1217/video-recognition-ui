@@ -1,7 +1,7 @@
 <div class="container">
   <div class="warn-wrapper" [style.display]="lookIndex==0?'':'none'">
     <div class="tabs">
-      <div class="tab_item focus" routerLinkActive="active" routerLink="/warnmanage">{{appCate=='实时流分析'?'告警实况':'告警列表'}}</div>
+      <div class="tab_item focus" routerLinkActive="active" routerLink="/warnmanage">{{appCate=='实时流分析'?'告警明细':'告警明细'}}</div>
       <div class="tab_item" routerLinkActive="active" routerLink="/warnrlue">告警规则</div>
     </div>
     <div class="search-content">
@@ -54,9 +54,9 @@
             <th class="rule">告警规则</th>
             <th class="file" *ngIf="appCate=='离线文件分析'">告警文件</th>
             <th class="time">告警时间</th>
-            <th class="durtion">时长(s)</th>
+            <!--<th class="durtion">时长(s)</th>-->
             <th class="photo">快照</th>
-            <th class="status">状态</th>
+            <!--<th class="status">状态</th>-->
             <th class="operation">操作</th>
           </tr>
           <tr *ngFor="let item of allWarn let i=index;">
@@ -70,16 +70,16 @@
             <td *ngIf="appCate=='离线文件分析'" title="{{item.alarmFileName}}">{{item.alarmFileName}}</td>
             <td title="{{date(item.alarmTime)}}" *ngIf="appCate=='实时流分析'">{{date(item.alarmTime)}}</td>
             <td title="{{date1(item.alarmTime)}}" *ngIf="appCate=='离线文件分析'">{{date1(item.alarmTime)}}</td>
-            <td title="{{duraTime(item.duration)}}">{{duraTime(item.duration)}}</td>
+            <!--<td title="{{duraTime(item.duration)}}">{{duraTime(item.duration)}}</td>-->
             <td>
               <img src="../assets/warn/chakan.png" class="mrgr" (click)="seePhoto(item.imagePath)" title="查看快照"/>
               <!--<img src="../assets/warn/xiazai.png" class="mrgr"  title="下载快照" onclick="document.getElementById('down').click();"/>-->
               <a href="{{SERVER_URL}}/download/{{getDownPath(item.imagePath)}}" download title="下载快照" class="downImage"></a>
             </td>
-            <td title="{{item.alarmStatus}}">{{item.alarmStatus}}</td>
+            <!--<td title="{{item.alarmStatus}}">{{item.alarmStatus}}</td>-->
             <td>
-              <img src="../assets/warn/chuli.png" class="mrgr" (click)="handling(item)" *ngIf="item.alarmStatus=='未处理'" title="处理"/>
-              <img src="../assets/warn/chuli--hui.png" class="mrgr" *ngIf="item.alarmStatus=='已处理'" title="处理"/>
+              <!--<img src="../assets/warn/chuli.png" class="mrgr" (click)="handling(item)" *ngIf="item.alarmStatus=='未处理'" title="处理"/>
+              <img src="../assets/warn/chuli&#45;&#45;hui.png" class="mrgr" *ngIf="item.alarmStatus=='已处理'" title="处理"/>-->
               <img src="../assets/warn/chakanxiangqing.png" class="mrgr" (click)="lookPhoto(item)" title="查看详情"/>
             </td>
             <div class="fangda" [style.display]="seeIndex==1?'':'none'">
@@ -95,9 +95,9 @@
       <app-tips [style.display]="deleteIndex==1?'':'none'" [tip_title]="tip_title" [tip_content]="tip_content" [deleteIndex]="deleteIndex" [tip_btn]="tip_btn" (deleteChange)="deleteChange($event)" (deletedChange)="deletedChange($event)"></app-tips>
     </div>
   </div>
-  <div class="lookDetail" [style.display]="lookIndex==1?'':'none'">
+  <div class="lookDetail" [style.display]="lookIndex==1?'':'none'" [ngStyle]="getHeight()">
     <div class="detail_title">告警详情</div>
-    <div class="detail_content">
+    <div class="detail_content" id="detail_content">
       <div class="detail_info">
         <span class="info_name">项目名称：</span>
         <span class="info_content">{{detaillist.applicationName}}</span>
@@ -123,7 +123,7 @@
         <span class="info_content" *ngIf="appCate=='实时流分析'">{{date(detaillist.alarmTime)}}</span>
         <span class="info_content" *ngIf="appCate=='离线文件分析'">{{date1(detaillist.alarmTime)}}</span>
       </div>
-      <div class="detail_info">
+<!--      <div class="detail_info">
         <span class="info_name">告警时长：</span>
         <span class="info_content">{{duraTime(detaillist.duration)}}(s)</span>
       </div>
@@ -135,14 +135,14 @@
       <div class="detail_info">
         <span class="info_name">处理时间：</span>
         <span class="info_content">{{detaillist.processTime}}</span>
-      </div>
+      </div>-->
       <div class="detail_info">
         <span class="info_name">创建时间：</span>
         <span class="info_content">{{getTime(detaillist.createTime)}}</span>
       </div>
       <div class="detail_info">
         <span class="info_name">告警快照：</span>
-        <span class="info_content"><img src="{{SERVER_URL}}/download/{{detaillist.imagePath}}" *ngIf="detaillist.imagePath" (click)="thumbnail()"/></span>
+        <span class="info_content"><img src="{{SERVER_URL}}/download/{{slicePath(detaillist.imagePath)}}" *ngIf="detaillist.imagePath" (click)="thumbnail()"/></span>
       </div>
       <div class="fangda" [style.display]="seeIndex==2?'':'none'">
         <span>
@@ -152,7 +152,7 @@
       </div>
       <div class="detail_info">
         <span class="info_name"></span>
-        <span class="info_content"><a href="{{SERVER_URL}}/download/{{detaillist?.imagePath}}" *ngIf="detaillist.imagePath" class="downPhoto" download>下载快照</a></span>
+        <span class="info_content"><a href="{{SERVER_URL}}/download/{{slicePath(detaillist.imagePath)}}" *ngIf="detaillist.imagePath" class="downPhoto" download>下载快照</a></span>
       </div>
       <div class="detail_info">
         <span class="info_name"></span>

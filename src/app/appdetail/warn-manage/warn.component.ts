@@ -185,6 +185,12 @@ export class WarnComponent{
   ngOnDestroy(){
     clearInterval(this.interval);
   }
+  getHeight(){
+    let height = window.innerHeight-140;
+    return{
+      "height":height+'px'
+    }
+  }
   ngOnInit() {
     calc_height(document.getElementById('warn-content'));
     $("#start").jeDate({
@@ -251,6 +257,9 @@ export class WarnComponent{
     //console.log(url);
     this.seeIndex = 1;
     this.imageUrl = url.slice(23);
+  }
+  slicePath(url){
+    return url.slice(23)
   }
   downPhoto(url){
     this.downUrl = url;
