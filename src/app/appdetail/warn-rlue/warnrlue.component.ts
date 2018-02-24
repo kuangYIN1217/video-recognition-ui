@@ -208,7 +208,7 @@ export class WarnRlueComponent{
     if(this.ruleName==''||this.ruleName==undefined){
       this.ruleName = null;
     }
-    this.warnService.searchRules(this.appId,this.ruleName,this.warnChanId,this.cateId,this.warnStatus,this.page-1,this.pageMaxItem)
+    this.warnService.searchRules(this.appId,this.ruleName,this.cateId,this.warnStatus,this.page-1,this.pageMaxItem)
       .subscribe(result=>{
         this.rulesInfo = result.content;
         //console.log(result);

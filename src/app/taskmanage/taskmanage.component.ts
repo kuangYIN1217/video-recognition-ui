@@ -312,8 +312,7 @@ export class TaskManageComponent {
     this.router.navigate(['../createtext'],{queryParams: {'taskTitle':"新建任务"}});
   }
   edit(item){
-    //console.log(item);
-    this.router.navigate(['../createtext'],{queryParams: {'taskId':item.taskId,'taskName':item.taskName,'alarmRules':JSON.stringify(item.alarmRules),'taskTitle':"修改任务"}});
+    this.router.navigate(['../createtext'],{queryParams: {'taskId':item.taskId,'taskName':item.taskName,'fileType':item.fileType,'alarmRules':JSON.stringify(item.alarmRules),'taskTitle':"修改任务"}});
   }
   look(item){
     //console.log(item);

@@ -13,7 +13,7 @@
     <create-project [style.display]="newProject?'':'none'" [(newProject)]="newProject" (newProjectChange)="newProjectChange($event)"></create-project>
   </div>
   <div class="appManage" [style.display]="createApp=='manage'?'':'none'">
-    <div class="appBody">
+    <div class="appBody" id="appBody">
       <div class="app">
         <div class="topSpace"></div>
           <div class="appModel" *ngFor="let item of realTime">
