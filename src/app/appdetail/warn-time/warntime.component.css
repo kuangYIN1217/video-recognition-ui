@@ -1,0 +1,311 @@
+*{
+  color: #333333;
+}
+.warn-wrapper{
+  margin:20px 30px 0 30px;
+}
+.tabs{
+  background: #ffffff;
+  height:50px;
+  overflow: hidden;
+}
+.tab_item{
+  float: left;
+}
+.tab_item{
+  border: 0px;
+  float: left;
+  margin-right: 20px;
+  margin-left: 8px;
+  text-align: center;
+  width:104px;
+  font-family: "MicrosoftYaHei";
+  color: #333333;
+  height:48px;
+  line-height: 49px;
+  cursor: pointer;
+  outline: none;
+}
+.focus{
+  color: #ff7c35;
+  border-bottom: 2px solid #ff7c35;
+}
+.search-content{
+  background: #ffffff;
+  margin:20px 0;
+  font-size: 14px;
+}
+.search-select{
+  overflow: hidden;
+}
+.search-info{
+  overflow: hidden;
+  float: left;
+  margin:20px 0 30px;
+}
+.search-info label{
+  float: left;
+  line-height: 36px;
+  margin-left: 24px;
+}
+
+.search-info select,.search-info input{
+  width:14.5vw;
+  height:36px;
+  box-sizing: border-box;
+  border:1px solid #d3d3d3;
+  float: left;
+  border-radius: 5px;
+  margin-left: 1.67vw;
+  margin-right: 6px;
+  color: #666666;
+}
+.search-info select{
+  background: url("../../../assets/appdetail/way.manage/selectDown.png") no-repeat right 6px center;
+}
+.search-info input{
+  background: url("../../../assets/warn/rili.png") no-repeat right 6px center;
+}
+.search-time{
+  overflow: hidden;
+}
+.search-time .no-margin{
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+.search-time .search-info span{
+  float: left;
+  line-height: 36px;
+  margin-left: 4px;
+  margin-right: 10px;
+}
+.search-time .search-info .time-select{
+  margin-left: 0;
+}
+.time-select{
+  background: url("../../../assets/warn/rili.png") no-repeat right 6px center;
+}
+.btn{
+  font-size: 14px;
+  text-align: center;
+  line-height: 30px;
+  width: 80px;
+  box-sizing: border-box;
+  height:30px;
+  border-radius: 5px;
+  border:1px solid #d3d3d3;
+  text-decoration: none;
+  cursor: pointer;
+}
+.bgco{
+  background: #ff7c35;
+  color: #ffffff;
+  margin-top: 6px;
+  float: right;
+  margin-right: 20px;
+  display: inline-block;
+}
+.inline{
+  display: inline-block !important;
+  float: none !important;
+  margin-top:0 !important;
+  margin-bottom:0 !important;
+  margin-left:40px !important;
+}
+.bgcg{
+  display: block;
+  background: #eeeeee;
+  color: #333333;
+  float: right;
+  margin:20px;
+}
+.warn-content{
+  background: #ffffff;
+  overflow: hidden;
+}
+.table-margin{
+  margin:0 20px ;
+}
+.channelTable{
+  width:100%;
+  border:1px solid #d3d3d3;
+  table-layout:fixed;
+}
+.channelTable th{
+  color: #333333;
+  font-weight: normal;
+}
+.channelTable,.channelTable tr{
+  border-collapse: collapse;
+  border-top:1px solid #d3d3d3;
+}
+.channelTable tr{
+  height:36px;
+  text-align: left;
+  font-size: 14px;
+  color: #666666;
+}
+.channelTable tr:nth-child(even){
+  background: #eeeeee;
+}
+.channelTable td{
+  text-overflow:ellipsis;
+  overflow: hidden;
+  white-space:nowrap;
+  cursor: pointer;
+}
+.middle{
+  display: inline-block;
+  vertical-align: middle;
+}
+.mrgr{
+  cursor: pointer;
+  margin-right: 12px;
+}
+.downImage{
+  background:url("../../../assets/warn/xiazai.png") no-repeat center;
+  display: inline-block;
+  width:13px;
+  height:16px;
+}
+/* detail */
+.lookDetail{
+  margin: 20px 30px 0 30px;
+  background: #ffffff;
+  color: #333333;
+}
+.detail_title{
+  margin-left: 30px;
+  font-size: 20px;
+  padding:38px 0;
+}
+.detail_info{
+  margin-left: 113px;
+  overflow: hidden;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+.detail_info span{
+  display: inline-block;
+  vertical-align: middle;
+}
+.info_content{
+  padding-left: 30px;
+}
+.info_content img{
+  width: 156px;
+  height:116px;
+}
+.vergin{
+  line-height: 116px;
+}
+.downPhoto{
+  color: #ff7c35;
+  text-align: right;
+  text-decoration: none;
+  display: block;
+  margin-left: 170px;
+  margin-bottom: 46px;
+}
+.save{
+  float: none !important;
+  margin-left: 70px;
+}
+.cancel{
+  display: inline-block !important;
+  float: none !important;
+  margin:0 !important;
+}
+select{
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-left: 8px;
+}
+select option{
+  padding-left: 8px;
+}
+input{
+  outline: none;
+  padding-left: 8px;
+}
+.marginLeft{
+  padding-left: 96px !important;
+}
+#down{
+  display: none;
+}
+.fangda{
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(111, 111, 111, 0.3);
+  opacity: 1;
+  z-index: 999999;
+  /*  display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    -ms-justify-content: center;
+    -o-justify-content: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-align-items: center;
+    -o-align-items: center;
+    align-items: center;*/
+}
+.fangda span{
+  position: absolute;
+  width:70%;
+  margin-left: -35%;
+  left:50%;
+  top:20%;
+}
+.fangda .jietu{
+  width:100%;
+}
+.fangda .close{
+  position: absolute;
+  top:0;
+  right:0;
+  cursor: pointer;
+}
+.checked{
+  width:8%;
+  padding-left: 20px;
+}
+.task{
+  width:14%;
+}
+.rule{
+  width:16%;
+}
+.file{
+  width:18%;
+}
+.time{
+  width:16%;
+}
+.durtion{
+  width:14%;
+}
+.photo{
+  width:10%;
+}
+.status{
+  width:12%;
+}
+.operation{
+  width:12%;
+}
+.periodTime{
+  margin-top: 0px !important;
+}
+.periodTime select{
+  width:18vw !important;
+}

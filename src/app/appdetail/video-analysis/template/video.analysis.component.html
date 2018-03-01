@@ -1,15 +1,19 @@
 <div class="container">
   <div class="video-wrapper">
-    <div class="left-bar" *ngIf="s_fullscreen_grid === 0">
-      <img title="人机识别" (click)="$popup_toggle()" [src]="s_popup_show ? 'assets/appdetail/video-analysis/icon_analysis_h.png' :'assets/appdetail/video-analysis/icon_analysis_n.png'">
-      <div class="divider"></div>
+    <!--<div class="left-bar" *ngIf="s_fullscreen_grid === 0">-->
+     <!-- <img title="人机识别" (click)="$popup_toggle()" [src]="s_popup_show ? 'assets/appdetail/video-analysis/icon_analysis_h.png' :'assets/appdetail/video-analysis/icon_analysis_n.png'">
+      <div class="divider"></div>-->
       <!--<img title="屏幕截图" [src]="'assets/appdetail/video-analysis/icon_screenshot.png'">
       <div class="divider"></div>-->
-      <img title="单格视图" (click) = "$grid_icon_click(1)" [src]="s_grid_number === 1 ? 'assets/appdetail/video-analysis/icon_1_h.png' : 'assets/appdetail/video-analysis/icon_1_n.png'">
+      <!--<img title="单格视图" (click) = "$grid_icon_click(1)" [src]="s_grid_number === 1 ? 'assets/appdetail/video-analysis/icon_1_h.png' : 'assets/appdetail/video-analysis/icon_1_n.png'">-->
      <!-- <img title="四格视图" (click) = "$grid_icon_click(4)" [src]="s_grid_number === 4 ? 'assets/appdetail/video-analysis/icon_4_h.png' : 'assets/appdetail/video-analysis/icon_4_n.png'">
       <img title="六格视图" (click) = "$grid_icon_click(6)" [src]="s_grid_number === 6 ? 'assets/appdetail/video-analysis/icon_6_h.png' : 'assets/appdetail/video-analysis/icon_6_n.png'">
       <img title="八格视图" (click) = "$grid_icon_click(8)" [src]="s_grid_number === 8 ? 'assets/appdetail/video-analysis/icon_8_h.png' : 'assets/appdetail/video-analysis/icon_8_n.png'">
       <img title="九格视图" (click) = "$grid_icon_click(9)" [src]="s_grid_number === 9 ? 'assets/appdetail/video-analysis/icon_9_h.png' : 'assets/appdetail/video-analysis/icon_9_n.png'">-->
+    <!--</div>-->
+    <div class="left-bar">
+      <img src="assets/appdetail/video-analysis/toggleRight.png" (click)="show_rule()" [ngClass]="{anmationRight:leftbar}" class="toggleRight" id="toggleRight"/>
+      <img src="assets/appdetail/video-analysis/toggleLeft.png" (click)="show_rule()" [ngClass]="{anmationLeft:!leftbar}" class="toggleLeft" id="toggleLeft"/>
     </div>
     <!-- 视频区域 -->
     <div class="right-content">
@@ -109,7 +113,7 @@
     </div>
 
     <!-- 人机识别 popup -->
-    <div class="analysis-popup" [style.display]="s_popup_show?'':'none'">
+<!--    <div class="analysis-popup" [style.display]="s_popup_show?'':'none'">
       <div class="scroll-wrapper">
         <div>
           <label class="classification level-text">分类：</label>
@@ -129,23 +133,23 @@
             <label class="middle" style="color: #999;" *ngIf="item.color==1||item.color1==1">{{item.name}}</label>
           </div>
         </div>
-<!--        <div class="popup-item" *ngFor="let item of d_analysis_options; let i = index">
+&lt;!&ndash;        <div class="popup-item" *ngFor="let item of d_analysis_options; let i = index">
           <img (click)="$popup_select_toggle(i)" [src]="(item.selected) ? 'assets/appdetail/video-analysis/icon_select_h.png' : 'assets/appdetail/video-analysis/icon_select_n.png'">
           <label class="popup-title">{{item.name}}</label>
           &lt;!&ndash;[ngStyle]="ngStyle_popup_select(item.selected)"&ndash;&gt;
-        </div>-->
+        </div>&ndash;&gt;
       </div>
       <div class="analysis-submit-wrapper">
         <div (click)="$change_analysis_submit()" class="submit-btn">保 存</div>
       </div>
-    </div>
-    <div class="feature-people" [style.display]="showFeature==1?'':'none'" [ngClass]="{overHeight: heightIndex==1}">
+    </div>-->
+<!--    <div class="feature-people" [style.display]="showFeature==1?'':'none'" [ngClass]="{overHeight: heightIndex==1}">
         <div class="feature-content" *ngFor="let item of arr let i=index" [class.noBorder]="i+1==arr.length">
           <div class="feature-input">
             <label>人名：</label>
             <input type="text" [(ngModel)]="item.targetFeature" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')">
             <img src="assets/appdetail/video-analysis/huanhang.png" (click)="addData()" *ngIf="(i+1)==arr.length" />
-            <!--<span *ngIf="reduired==1">必填字段</span>-->
+            &lt;!&ndash;<span *ngIf="reduired==1">必填字段</span>&ndash;&gt;
           </div>
           <div class="feature-upload">
             <label>特征名称：</label>
@@ -164,9 +168,76 @@
       <div class="feature-footer">
         注：人名仅支持英文输入，特征图片支持格式jpg、png
       </div>
+    </div>-->
+  </div>
+<!-- leftbar -->
+  <div class="analysis-rule" [ngStyle]="getSideBarHeight()">
+    <div class="analysis-rule-header">
+      <span>告警规则</span>
+      <span (click)="createRule()" [ngClass]="{createBtn: !create_show}">新建</span>
+    </div>
+    <div class="analysis-rule-content">
+      <div class="analysis-rule-remind">
+        <label>告警提醒</label>
+        <div>
+          <span class="switch">
+            <img [src]="switch=='start'?'assets/appdetail/way.manage/radio.png':'assets/appdetail/way.manage/unradio.png'" class="middle" (click)="switchToggle('start')"/>
+            <span class="middle">开启</span>
+          </span>
+          <span class="switch end">
+            <img [src]="switch=='end'?'assets/appdetail/way.manage/radio.png':'assets/appdetail/way.manage/unradio.png'" class="middle" (click)="switchToggle('end')"/>
+            <span class="middle">关闭</span>
+          </span>
+        </div>
+      </div>
+      <div class="create-rule" *ngIf="create_show">
+        <div class="info">
+          <label>规则名称：</label>
+          <input type="text" name="ruleName" [(ngModel)]="ruleName"/>
+          <span class="must" [style.display]="chanRequired1==1?'':'none'">必填字段</span>
+        </div>
+        <div class="info" style="height: auto;margin-bottom: 0">
+          <label>告警对象：</label>
+          <select [(ngModel)]="warnObj" (ngModelChange)="warnObj=$event;changeWarn()">
+            <option value="{{item.classificationName}}" *ngFor="let item of warnObjArr">{{item.classificationName}}</option>
+          </select>
+          <select class="detail" [(ngModel)]="warnObjDetail" (ngModelChange)="warnObjDetail=$event;changeDetail()">
+            <option value="{{item.name}}" *ngFor="let item of warnObjDetailArr">{{item.name}}</option>
+          </select>
+        </div>
+        <div class="info" *ngIf="identifyName=='人'">
+          <label>对象特征：</label>
+          <span class="personNum">人名</span>
+          <input type="text" class="person" name="personName" [(ngModel)]="personName" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"/>
+        </div>
+        <div class="info" style="padding-left: 120px;height: auto;" *ngIf="identifyName=='人'">
+          <span class="pohotText">特征图片</span>
+          <div class="showPhoto">
+             <span  *ngFor="let item of photoContainer;let i=index">
+               <img src="{{SERVER_URL}}/download/{{outputImg(item)}}" alt="" class="photo">
+               <img src="../assets/appmanage/delete.png" class="del" (click)="delPhoto(i)"/>
+             </span>
+          </div>
+          <a href="javascript:void(0)" class="btn" id="upload" style="color: #333;" onclick="document.getElementById('file').click()">上传</a>
+          <input type="file" multiple id="file" name="file" ng2FileSelect [uploader]="uploader" accept=".jpg,.png" (change)="selectedFileOnChanged($event)"/>
+          <span class="zhushi">注：人名仅支持英文输入，特征图片支持格式jpg、png</span>
+        </div>
+        <div class="ruleBtn">
+          <a href="javascript:void(0)" class="btn bgco" (click)="saveRule()">保存</a>
+          <a href="javascript:void(0)" class="btn bgcg" style="margin-left: 16px" (click)="cancelRule()">取消</a>
+        </div>
+      </div>
+      <div class="all-rule">
+        <div class="single-rule" *ngFor="let item of rulesInfo">
+          <img [src]="item.selected?'assets/appdetail/way.manage/radio.png':'assets/appdetail/way.manage/unradio.png'" class="middle" (click)="choose_rule(item)"/>
+          <span class="middle rule-name">{{item.ruleName}}</span>
+        </div>
+      </div>
+      <div class="submit" [style.display]="btn_show?'':'none'">
+        <div (click)="$change_analysis_submit()" class="btn bgco" style="margin-left: 27px;margin-top: 40px">确定</div>
+      </div>
     </div>
   </div>
-
   <ng2-toasty class="toasty" [position]="'top-center'"></ng2-toasty>
 
   <div class="dialog" [style.display]="addDialog==1?'':'none'">

@@ -12,12 +12,13 @@ import {AppManageService} from "../../common/services/appmanage.service";
 import {nextTick} from "q";
 import {SERVER_URL} from "../../app.constants";
 import {FileUploader} from "ng2-file-upload";
+import {WarnService} from "../../common/services/warn.service";
 declare var $:any;
 @Component({
   selector: 'video-analysis',
   styleUrls: ['./css/video.analysis.component.css'],
   templateUrl: './template/video.analysis.component.html',
-  providers: [ChannelService , RecognitionService, AppManageService]
+  providers: [ChannelService , RecognitionService, AppManageService,WarnService]
 })
 export class VideoAnalysisComoponent {
   addDialog: number=0;
@@ -60,10 +61,139 @@ export class VideoAnalysisComoponent {
   saveColor:number = 0;
   fileRecognition:any[]=[];
   haveTargetJson:boolean = false;
+  switch:string='end';
+  create_show:boolean = false;
+  warnObjArr:any[]=[];
+  warnObj:string;
+  identifyName:string='';
+  warnObjDetailArr:any[]=[];
+  warnObjDetail:string='';
+  leftbar:boolean=false;
+  rulesInfo:any[]=[];
+  ruleName:string='';
+  personName:string;
+  cateId:number;
+  code:string;
+  photoUrl:string='';
+  btn_show:boolean = false;
   radio(i){
     this.radioIndex = i;
   }
-
+  switchToggle(status){
+    if(this.create_show){
+      return false
+    }else{
+      if(status=='start'){
+        this.switch = status;
+        this.getAllRule();
+        this.btn_show = true;
+      }else if(status=='end'){
+        this.switch = status;
+        this.rulesInfo = [];
+        this.btn_show = false;
+      }
+    }
+  }
+  choose_rule(item){
+    if(this.create_show){
+      return false
+    }else{
+      for(let i=0;i<this.rulesInfo.length;i++){
+        this.rulesInfo[i].selected = false;
+      }
+      item.selected = true;
+    }
+  }
+  createRule(){
+    this.create_show = true;
+    this.btn_show = false;
+    this.warnService.getWarnObjOne()
+      .subscribe(result=>{
+        this.warnObjArr=result;
+        this.warnObj = this.warnObjArr[0].classificationName;
+        this.changeWarn();
+      });
+  }
+  saveRule(){
+    if(this.validation()==false){
+      return false;
+    };
+    this.photoUrl=this.getPhoto();
+    if(!this.createFlag) {
+      return;
+    }
+    this.createFlag = false;
+    this.warnService.createWarn(this.appId,this.ruleName,this.cateId,this.code,this.personName,'关闭',this.photoUrl)
+      .subscribe(result=>{
+          this.create_show = false;
+          this.ruleName = '';
+          this.personName = '';
+          this.photoContainer=[];
+          this.getAllRule();
+          this.createFlag = true;
+      })
+  }
+  getPhoto(){
+    let temp='';
+    for(let i=0;i<this.photoContainer.length;i++){
+      temp=temp+this.photoContainer[i]+",";
+    }
+    return temp.substring(0,temp.length -1);
+  }
+  validation(){
+    if(this.ruleName==''){
+      this.chanRequired1=1;
+      return false;
+    }else{
+      this.chanRequired1=0;
+    }
+    if(this.personName==undefined){
+      this.personName=null;
+    }
+    for(let i in this.warnObjArr){
+      if(this.warnObj==this.warnObjArr[i].classificationName){
+        for(let j=0;j<this.warnObjArr[i].recognitionCategories.length;j++){
+          if(this.warnObjDetail==this.warnObjArr[i].recognitionCategories[j].name){
+            this.cateId = this.warnObjArr[i].recognitionCategories[j].cateId;
+            this.code = this.warnObjArr[i].recognitionCategories[j].code;
+            return
+          }
+        }
+      }
+    }
+  }
+  getSideBarHeight(){
+    let height = window.innerHeight;
+    return{
+      height:(height-180)+'px'
+    }
+  }
+  getAllRule(){
+    this.warnService.getAllRlues(this.d_applicationId,0,100000)
+      .subscribe(result=>{
+        this.rulesInfo = result.content;
+      });
+  }
+  show_rule(){
+    this.leftbar = !this.leftbar;
+    if(this.leftbar){
+      $(".analysis-rule").removeClass("analysis-shrikage");
+      $(".analysis-rule").addClass("analysis-an");
+      setTimeout(()=>{
+        document.getElementById("toggleLeft").style.display="block";
+        document.getElementById("toggleRight").style.display="none";
+      },1000)
+    }else{
+      $(".analysis-rule").removeClass("analysis-an");
+      $(".analysis-rule").addClass("analysis-shrikage");
+      setTimeout(()=>{
+        document.getElementById("toggleLeft").style.display="none";
+        document.getElementById("toggleRight").style.display="block";
+        this.rulesInfo=[];
+        this.switch = 'end';
+      },1000)
+    }
+  }
   cancel(){
     this.addDialog = 0;
     this.createFlag = true;
@@ -119,7 +249,7 @@ export class VideoAnalysisComoponent {
   ngOnInit() {
     //console.log(window.navigator.plugins);
   }
-  constructor (private channelService: ChannelService , private recognitionService: RecognitionService, private toastyService:ToastyService, private appManageService: AppManageService) {
+  constructor (private warnService:WarnService,private channelService: ChannelService , private recognitionService: RecognitionService, private toastyService:ToastyService, private appManageService: AppManageService) {
     this.d_applicationId = parseInt(window.sessionStorage.getItem('applicationId'));
     /*  this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
    for(let i=0;i<this._realTime.length;i++){
@@ -141,6 +271,31 @@ export class VideoAnalysisComoponent {
         this.channelTypes=result;
       });
     this.appId = window.sessionStorage.getItem("applicationId");
+  }
+  changeWarn(){
+    this.identifyName = '';
+    for(let i=0;i<this.warnObjArr.length;i++){
+      if(this.warnObjArr[i].classificationName==this.warnObj){
+        this.warnObjDetailArr=this.warnObjArr[i].recognitionCategories;
+        this.warnObjDetailArr.sort(function(a,b){
+          return parseInt(b.cateId) - parseInt(a.cateId)
+        })
+        //this.warnObjDetailArr.reverse();
+        this.warnObjDetail = this.warnObjDetailArr[0].name;
+      }
+    }
+    this.changeDetail();
+  }
+  changeDetail(){
+    if(this.warnObjDetail=='人'){
+      this.identifyName = '人';
+    }else{
+      this.identifyName = '';
+    }
+  }
+  cancelRule(){
+    this.create_show = false;
+    this.createFlag = true;
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
@@ -582,25 +737,39 @@ export class VideoAnalysisComoponent {
     }
     return tempArr;
   }
+  getRuleId(){
+    let rulesId:string='';
+    for(let i=0;i<this.rulesInfo.length;i++){
+      if(this.rulesInfo[i].selected){
+        rulesId += this.rulesInfo[i].ruleId+',';
+      }
+    }
+    console.log(rulesId);
+    return rulesId.substring(0,rulesId.length-1);
+  }
   $change_analysis_submit() {
-      if(this.saveColor == 0){
+      if(this.saveColor==0||(this.getRuleId().length==0)){
         return false;
       }else{
         addWaitToast(this.toastyService ,'等待视频源重新加载','保存成功');
         // todo request
-        this.showFeature = 0;
-        this.s_popup_show = false;
+        //this.showFeature = 0;
+        //this.s_popup_show = false;
+        this.create_show = false;
+        this.show_rule();
         if (this.s_selected_grid === 0) {
           // 当前所有
-          this.recognitionService.setRecognitions( this.getAllChannelID() , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
+          //this.recognitionService.setRecognitions( this.getAllChannelID() , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
+          this.recognitionService.setRecognitions( this.getAllChannelID(),this.getRuleId()).subscribe(rep => {
             //console.log(rep);
             this.d_video_list= rep.sort(function(a,b){
               return parseInt(a.channelOrder) - parseInt(b.channelOrder)
             });
           });
         } else {
-          this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
-            //console.log(rep);
+          //this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
+          this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getRuleId()).subscribe(rep => {
+          //console.log(rep);
             this.d_video_list[this.s_selected_grid -1].recognitionCategory = rep[0].recognitionCategory;
           });
         //this.s_popup_show = false;
@@ -878,15 +1047,31 @@ export class VideoAnalysisComoponent {
       this.s_grid_number = 9
     }
   }
-
-
   public uploader:FileUploader = new FileUploader({
     url: SERVER_URL+"/api/upload",
     method: "POST",
     itemAlias: "file",
-  });
-  selectedFileOnChanged(event,item){
-    //console.log(item);
+     });
+  selectedFileOnChanged(event){
+    if(this.uploader.queue.length>0){
+      $("#upload").css("display","block");
+    }
+    for(let i=0;i<this.uploader.queue.length;i++){
+      this.uploader.queue[i].onSuccess = (response: any, status: any, headers: any) => {
+        this.photoContainer.push(response);
+        //console.log(this.photoContainer);
+      };
+    }
+    this.uploader.uploadAll(); // 开始上传
+  }
+  delPhoto(index){
+    //this.container.splice(index,1);
+    this.photoContainer.splice(index,1);
+  }
+  outputImg(item){
+    return item.slice(25);
+  }
+    /* selectedFileOnChanged(event,item){
     for(let i=0;i<this.uploader.queue.length;i++){
       this.uploader.queue[i].onSuccess = (response: any, status: any, headers: any) => {
         item.photoContainer.push(response);
@@ -894,18 +1079,15 @@ export class VideoAnalysisComoponent {
       };
     }
     this.uploader.uploadAll(); // 开始上传
-  }
+  }*/
   getInput(i){
     //console.log(i);
     //document.getElementById("file").setAttribute("id",i).click();
     $(`#${i}`).attr("id",i).click();
   }
-  outputImg(item){
-    return item.slice(25);
-  }
-  delPhoto(item,index){
+/*  delPhoto(item,index){
     item.photoContainer.splice(index,1);
-  }
+  }*/
   addData(){
     let obj:any={};
     obj.targetFeature = '';

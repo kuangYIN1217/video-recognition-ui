@@ -53,6 +53,7 @@ import {TaskResultComponent} from "./electric-power/task-manage/taskResult/task.
 import {NgModule} from "@angular/core";
 import {EditResultComponent} from "./electric-power/task-manage/editResult/editResult.component";
 import { NgxAmapModule } from 'ngx-amap';
+import {WarnTimeComponent} from "./appdetail/warn-time/warntime.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -98,7 +99,8 @@ import { NgxAmapModule } from 'ngx-amap';
     FlawComponent,
     DeleteTipComponent,
     TaskResultComponent,
-    EditResultComponent
+    EditResultComponent,
+    WarnTimeComponent
     //InputReadonlyDirective
   ],
   imports: [

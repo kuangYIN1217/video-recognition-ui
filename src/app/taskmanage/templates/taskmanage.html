@@ -75,7 +75,15 @@
   <div class="videoPlayer" *ngIf="playShow" (mouseenter)="show()" (mouseleave)="hide()">
     <img src="assets/offline/task_close.png" class="videoClose" (click)="closeVideo()"/>
     <div style="height:100%">
-      <video src="{{SERVER_URL}}/download/{{output1(outputPath)}}" #offlineVideo ></video>
+      <video src="{{SERVER_URL}}/download/{{output1(outputPath)}}" #offlineVideo></video>
+    </div>
+    <div class="progressTime">
+      <span class="current"></span>
+      <span>/</span>
+      <span class="duration"></span>
+    </div>
+    <div class="progressBar">
+      <div class="timeBar"></div>
     </div>
     <div *ngIf="videoBtn==1" class="videoStart">
       <img [src]="showBtn?'assets/offline/zanting.png':'assets/offline/kaishi.png'" (click)="play()"/>

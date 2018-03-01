@@ -34,6 +34,7 @@ import {CreateInspectionComponent} from "./electric-power/data-manage/createInsp
 import {CreateTaskComponent} from "./electric-power/task-manage/createTask/createTask.component";
 import {TaskResultComponent} from "./electric-power/task-manage/taskResult/task.result.component";
 import {EditResultComponent} from "./electric-power/task-manage/editResult/editResult.component";
+import {WarnTimeComponent} from "./appdetail/warn-time/warntime.component";
 
 const routes: Routes = [
   //{ path: '', component: NavigationComponent },
@@ -79,6 +80,7 @@ const routes: Routes = [
   {path: 'createtask', component: CreateTaskComponent},
   {path: 'taskresult', component: TaskResultComponent},
   {path: 'editresult', component: EditResultComponent},
+  {path: 'warntime', component: WarnTimeComponent},
   {path: '', redirectTo: '/appmanage', pathMatch: 'full'},
   // { path: 'detail/:id', component: HeroDetailComponent },
 ];

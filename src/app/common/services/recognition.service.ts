@@ -47,12 +47,11 @@ export class RecognitionService {
         }
       });
   }
-  setRecognitions( channelIds , recognitions,targetSet) {
+  setRecognitions( channelIds,ruleId) {
     let path = "/api/UpdateApplicationChannelRecognitionCategory";
-    let body = JSON.stringify({
-      "channelId":channelIds,
-      "recognitionCategory":recognitions,
-      "targetSet": targetSet
+    let channelDTO = JSON.stringify({
+      "channelId": channelIds,
+      "ruleIds": ruleId
     });
     //let body ="channelId=" + channelIds + "&recognitionCategory=" + recognitions+"&targetSet=" + targetSet;
     //console.log(body);
@@ -60,7 +59,7 @@ export class RecognitionService {
     //let headers = new Headers();
     //headers.append('Content-Type','application/x-www-form-urlencoded');
     //headers.append('Authorization',this.getAuthorization());
-    return this.http.post(this.SERVER_URL + path, body ,{headers: headers})
+    return this.http.post(this.SERVER_URL + path, channelDTO ,{headers: headers})
       .map((response: Response) => {
         if (response && response.json()) {
           if(response.status==200){

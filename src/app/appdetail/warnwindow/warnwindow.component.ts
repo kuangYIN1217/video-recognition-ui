@@ -235,14 +235,14 @@ export class WarnWindowComponent{
     }else{
       this.chanRequired1=0;
     }
-    if(this.appCate=='实时流分析'){
+/*    if(this.appCate=='实时流分析'){
       if(this.warnChannel==''){
         this.chanRequired2=1;
         return false;
       }else{
         this.chanRequired2=0;
       }
-    }
+    }*/
     if(this.objName==undefined){
       this.objName=null;
     }

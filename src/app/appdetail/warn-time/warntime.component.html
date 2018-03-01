@@ -1,8 +1,8 @@
 <div class="container">
   <div class="warn-wrapper" [style.display]="lookIndex==0?'':'none'">
     <div class="tabs">
-      <div class="tab_item" routerLinkActive="active" routerLink="/warntime">时间段告警</div>
-      <div class="tab_item focus" routerLinkActive="active" routerLink="/warnmanage">告警明细</div>
+      <div class="tab_item focus" routerLinkActive="active" routerLink="/warntime">时间段告警</div>
+      <div class="tab_item" routerLinkActive="active" routerLink="/warnmanage">告警明细</div>
       <div class="tab_item" routerLinkActive="active" routerLink="/warnrlue">告警规则</div>
     </div>
     <div class="search-content">
@@ -38,6 +38,12 @@
           <input type="text" id="start" class="time" readonly placeholder="请选择时间"/>
           <span>至</span>
           <input type="text" id="end" class="time" readonly placeholder="请选择时间" style="margin-left: 0"/>
+        </div>
+        <div class="search-info periodTime">
+          <label>目标时段：</label>
+          <select [(ngModel)]="periodTime" (ngModelChange)="periodTime=$event;">
+            <option *ngFor="let item of periodTimeArr" value="{{item}}">{{item}}</option>
+          </select>
         </div>
         <a href="#" onclick="return false" class="btn bgco" (click)="search()">查询</a>
       </div>
@@ -124,19 +130,19 @@
         <span class="info_content" *ngIf="appCate=='实时流分析'">{{date(detaillist.alarmTime)}}</span>
         <span class="info_content" *ngIf="appCate=='离线文件分析'">{{date1(detaillist.alarmTime)}}</span>
       </div>
-<!--      <div class="detail_info">
-        <span class="info_name">告警时长：</span>
-        <span class="info_content">{{duraTime(detaillist.duration)}}(s)</span>
-      </div>
-      <div class="detail_info" style="line-height: 32px;">
-        <span class="info_name">告警状态：</span>
-        <span class="info_content">{{detaillist.alarmStatus}}</span>
-        <a class="btn bgcg inline" (click)="lookHandling(detaillist)" *ngIf="detaillist.alarmStatus=='未处理'">处理</a>
-      </div>
-      <div class="detail_info">
-        <span class="info_name">处理时间：</span>
-        <span class="info_content">{{detaillist.processTime}}</span>
-      </div>-->
+      <!--      <div class="detail_info">
+              <span class="info_name">告警时长：</span>
+              <span class="info_content">{{duraTime(detaillist.duration)}}(s)</span>
+            </div>
+            <div class="detail_info" style="line-height: 32px;">
+              <span class="info_name">告警状态：</span>
+              <span class="info_content">{{detaillist.alarmStatus}}</span>
+              <a class="btn bgcg inline" (click)="lookHandling(detaillist)" *ngIf="detaillist.alarmStatus=='未处理'">处理</a>
+            </div>
+            <div class="detail_info">
+              <span class="info_name">处理时间：</span>
+              <span class="info_content">{{detaillist.processTime}}</span>
+            </div>-->
       <div class="detail_info">
         <span class="info_name">创建时间：</span>
         <span class="info_content">{{getTime(detaillist.createTime)}}</span>

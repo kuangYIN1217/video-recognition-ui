@@ -1,7 +1,7 @@
 <div class="container">
   <div class="warn-wrapper">
     <div class="tabs">
-      <div class="tab_item" routerLinkActive="active" routerLink="/warnmanage">时间段告警</div>
+      <div class="tab_item" routerLinkActive="active" routerLink="/warntime">时间段告警</div>
       <div class="tab_item" routerLinkActive="active" routerLink="/warnmanage">告警实况</div>
       <div class="tab_item focus" routerLinkActive="active" routerLink="/warnrlue">告警规则</div>
     </div>
@@ -59,7 +59,7 @@
             <td>{{item.ruleName}}</td>
             <!--<td *ngIf="appCate=='实时流分析'" class="channel" title="{{filterName(item.applicationChannels)}}">{{filterName(item.applicationChannels)}}</td>-->
             <td>{{getRecognitionCategor(item.recognitionCategory)}}</td>
-            <td>{{item.targetFeature==''?'无':item.targetFeature}}</td>
+            <td>{{item.targetFeature==''||item.targetFeature==null?'无':item.targetFeature}}</td>
             <td>{{item.alarmRuleStatus}}</td>
             <td>
               <a class="operationBtn stop" *ngIf="item.alarmRuleStatus=='开启'" (click)="runRule(item)" title="暂停"></a>
