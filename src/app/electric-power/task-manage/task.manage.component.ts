@@ -3,12 +3,13 @@ import {ElectricService} from "../../common/services/electric.service";
 import {Page} from "app/common/defs/resources";
 import {Router, ActivatedRoute} from "@angular/router";
 import {calc_height} from "../../common/ts/calc_height";
+import {WebSocketService} from "../../common/services/web-socket.service";
 declare var $:any;
 @Component({
   selector: 'electric-task-manage',
   styleUrls: ['./task.manage.component.css'],
   templateUrl: './task.manage.html',
-  providers: [ElectricService]
+  providers: [ElectricService,WebSocketService]
 })
 
 export class ElecTaskManageComponent {
@@ -27,7 +28,7 @@ export class ElecTaskManageComponent {
   taskStatus:string;
   pageNow:number=0;
   interval:any;
-  constructor(private electricService:ElectricService,private route: ActivatedRoute ,private router: Router) {
+  constructor(private electricService:ElectricService,private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.status = this.taskStatusArr[0];
     this.getTask(this.appId,-1,-1,this.page,this.pageMaxItem);
@@ -39,6 +40,14 @@ export class ElecTaskManageComponent {
     this.electricService.searchTask(appId,name,status,page,size)
       .subscribe(result=>{
         this.taskInfo = result.content;
+        //if(this.taskInfo.length>0&&){
+          this.websocket.connect().then(() => {
+            //console.log(item.taskId);
+            this.websocket.subscribe('/socketTest/'+Number(this.appId),(data) =>{
+              console.log(data);
+            });
+          })
+        //}
         let page = new Page();
         page.pageMaxItem = result.size;
         page.curPage = result.number+1;
@@ -49,6 +58,7 @@ export class ElecTaskManageComponent {
   }
   ngOnDestroy(){
     clearInterval(this.interval);
+    this.websocket.stopWebsocket();
   }
   getFlaw(arr){
     let temName = '';
