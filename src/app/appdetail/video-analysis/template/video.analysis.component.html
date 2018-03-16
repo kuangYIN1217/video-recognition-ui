@@ -109,66 +109,7 @@
         <jwplayer *ngIf="get_ckplayer_exist(9)"  [url]="get_ckplayer_url(9)"></jwplayer>
       </div>
 -->
-
     </div>
-
-    <!-- 人机识别 popup -->
-<!--    <div class="analysis-popup" [style.display]="s_popup_show?'':'none'">
-      <div class="scroll-wrapper">
-        <div>
-          <label class="classification level-text">分类：</label>
-        </div>
-        <div class="popup-item all">
-          <img (click)="$popup_select_all_toggle()" [src]="s_popup_allselect ? 'assets/appdetail/video-analysis/icon_select_h.png' : 'assets/appdetail/video-analysis/icon_select_n.png'">
-          <label [ngStyle]="ngStyle_popup_allselect()" class="popup-title">全选</label>
-        </div>
-        <div *ngFor="let re of d_analysis_options;let i = index" class="levelOne level-text">
-          <div class="level"  (click)="arrow_toggle(i)" [class.focusColor]="re.selected">
-          <label class="middle levelOne-label">{{re.classificationName}}</label>
-          <img [src]="(re.selected)?'assets/appdetail/video-analysis/shang.png':'assets/appdetail/video-analysis/xia.png'" class="middle"/>
-          </div>
-          <div class="levelTwo" *ngFor="let item of re.recognitionCategories; let j = index" [style.display]="re.selected?'':'none'">
-            <img class="middle" (click)="popup_select_toggle(i,j)" [src]="(item.selected) ? 'assets/appdetail/video-analysis/icon_select_h.png' : 'assets/appdetail/video-analysis/icon_select_n.png'">
-            <label class="middle" *ngIf="item.color!=1&&item.color1!=1">{{item.name}}</label>
-            <label class="middle" style="color: #999;" *ngIf="item.color==1||item.color1==1">{{item.name}}</label>
-          </div>
-        </div>
-&lt;!&ndash;        <div class="popup-item" *ngFor="let item of d_analysis_options; let i = index">
-          <img (click)="$popup_select_toggle(i)" [src]="(item.selected) ? 'assets/appdetail/video-analysis/icon_select_h.png' : 'assets/appdetail/video-analysis/icon_select_n.png'">
-          <label class="popup-title">{{item.name}}</label>
-          &lt;!&ndash;[ngStyle]="ngStyle_popup_select(item.selected)"&ndash;&gt;
-        </div>&ndash;&gt;
-      </div>
-      <div class="analysis-submit-wrapper">
-        <div (click)="$change_analysis_submit()" class="submit-btn">保 存</div>
-      </div>
-    </div>-->
-<!--    <div class="feature-people" [style.display]="showFeature==1?'':'none'" [ngClass]="{overHeight: heightIndex==1}">
-        <div class="feature-content" *ngFor="let item of arr let i=index" [class.noBorder]="i+1==arr.length">
-          <div class="feature-input">
-            <label>人名：</label>
-            <input type="text" [(ngModel)]="item.targetFeature" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')">
-            <img src="assets/appdetail/video-analysis/huanhang.png" (click)="addData()" *ngIf="(i+1)==arr.length" />
-            &lt;!&ndash;<span *ngIf="reduired==1">必填字段</span>&ndash;&gt;
-          </div>
-          <div class="feature-upload">
-            <label>特征名称：</label>
-            <div class="feature-show">
-              <div class="feature-showPhoto">
-               <span  *ngFor="let re of item.photoContainer;let j=index">
-                 <img src="{{SERVER_URL}}/download/{{outputImg(re)}}" alt="" class="feature-photo">
-                 <img src="assets/appdetail/video-analysis/delete-feature.png" class="feature-del" (click)="delPhoto(item,j)"/>
-               </span>
-                <img src="assets/appdetail/video-analysis/addPhoto.png" (click)="getInput(i)" [class.addPhoto]="item.photoContainer.length>0"/>
-              </div>
-              <input type="file" style="display: none" multiple id={{i}} name="file" ng2FileSelect [uploader]="uploader" accept=".jpg,.png" (change)="selectedFileOnChanged($event,item)"/>
-            </div>
-          </div>
-        </div>
-      <div class="feature-footer">
-        注：人名仅支持英文输入，特征图片支持格式jpg、png
-      </div>
-    </div>-->
   </div>
 <!-- leftbar -->
   <div class="analysis-rule" [ngStyle]="getSideBarHeight()">

@@ -450,60 +450,6 @@ export class VideoAnalysisComoponent {
     this.fullscreenIndex8 = index;
     this.fullscreenIndex9 = index;
   }
-  getRecognitionValue(){
-    for(let i = 0;i<this.d_analysis_options.length;i++){
-      for(let j = 0;j<this.d_analysis_options[i].recognitionCategories.length;j++){
-        for(let k=0;k<this.fileRecognition.length;k++){
-            if(this.fileRecognition[k].cateId==this.d_analysis_options[i].recognitionCategories[j].cateId){
-              this.d_analysis_options[i].recognitionCategories[j].selected = true;
-            }
-        }
-      }
-    }
-    for(let i = 0;i<this.d_analysis_options.length;i++){
-      for(let j = 0;j<this.d_analysis_options[i].recognitionCategories.length;j++){
-        if(this.d_analysis_options[i].classificationName=='人'){
-          if(this.d_analysis_options[i].recognitionCategories[j].selected&&this.d_analysis_options[i].recognitionCategories[j].cateId==1){
-            this.noClickFirst(i,j);
-            continue;
-          }else if(this.d_analysis_options[i].recognitionCategories[j].selected&&this.d_analysis_options[i].recognitionCategories[j].cateId==26){
-            this.noClickFirst(i,j);
-            continue;
-          }
-        }else if(this.d_analysis_options[i].classificationName=='对战目标'){
-          if(this.d_analysis_options[i].recognitionCategories[j].selected&&this.d_analysis_options[i].recognitionCategories[j].cateId==30){
-            for(let k=0;k<this.d_analysis_options[i].recognitionCategories.length;k++){
-              if(this.d_analysis_options[i].recognitionCategories[k].cateId!=30){
-                this.d_analysis_options[i].recognitionCategories[k].color1=1;
-              }
-            }
-          }else if(this.d_analysis_options[i].recognitionCategories[j].selected&&this.d_analysis_options[i].recognitionCategories[j].cateId!=30){
-            for(let k=0;k<this.d_analysis_options[i].recognitionCategories.length;k++){
-              if(this.d_analysis_options[i].recognitionCategories[k].cateId==30){
-                this.d_analysis_options[i].recognitionCategories[k].color1=1;
-              }
-            }
-          }
-        }
-      }
-    }
-    for(let k=0;k<this.fileRecognition.length;k++){
-      if(this.fileRecognition[k].cateId==1&&this.fileRecognition[k].targetInfos.length>0){
-        for(let n=0;n<this.fileRecognition[k].targetInfos.length;n++){
-            let obj:any={};
-            obj.targetFeature=this.fileRecognition[k].targetInfos[n].targetFeature;
-            obj.photoContainer=this.fileRecognition[k].targetInfos[n].targetImages.split(',');
-            this.arr.push(obj);
-        }
-      }
-    }
-    //console.log(this.arr);
-    for(let i=0;i<this.arr.length;i++){
-      if(this.arr[i].photoContainer.length==1&&this.arr[i].photoContainer[0]==''){
-        this.arr[i].photoContainer.splice(0,1);
-      }
-    }
-  }
   noClickFirst(i,j){
     for(let k=0;k<this.d_analysis_options[i].recognitionCategories.length;k++){
       if(this.d_analysis_options[i].recognitionCategories[j].cateId!=this.d_analysis_options[i].recognitionCategories[k].cateId){
@@ -513,31 +459,6 @@ export class VideoAnalysisComoponent {
   }
   $popup_toggle () {
     this.s_popup_show = !this.s_popup_show;
-   // console.log(this.d_analysis_options);
-    //console.log(this.d_video_list);
-    //console.log(this.arr);
-/*    for(let j=0;j<this.d_video_list.length;j++){
-      if(this.d_video_list[j].targets.length>0){
-        for(let i=0;i<this.d_video_list[j].targets.length;i++){
-            this.saveFeature.push(this.d_video_list[j].targets[i]);
-        }
-      }
-    }
-    console.log(this.saveFeature);
-    let temp:any[]=[];
-    for(let i in this.saveFeature){
-      if(temp.indexOf(this.saveFeature[i].targetId)==-1){
-        temp.push(this.saveFeature[i]);
-      }
-    }
-    console.log(temp);
-    for(let i=0;i<temp.length;i++){
-      let obj:any={};
-      obj.targetFeature = temp[i].targetFeature;
-      obj.photoContainer = temp[i].targetImages.split(",");
-      this.arr.push(obj);
-      this.arr.splice(0,1);
-    }*/
     for(let i=0;i<this.d_analysis_options[0].recognitionCategories.length;i++){
       if(this.d_analysis_options[0].recognitionCategories[i].cateId==1&&this.d_analysis_options[0].recognitionCategories[i].selected){
         this.showFeature = 1;
@@ -566,105 +487,6 @@ export class VideoAnalysisComoponent {
       }
     }
   }
-  popup_select_toggle (i,j) {
-    if (this.s_popup_allselect) {
-      this.s_popup_allselect = !this.s_popup_allselect;
-    }
-    if(this.d_analysis_options[i].classificationName=='人'){
-      if(this.d_analysis_options[i].recognitionCategories[j].color==1){
-        return false;
-      }
-      if(this.d_analysis_options[i].recognitionCategories[j].cateId==1&&this.d_analysis_options[i].recognitionCategories[j].selected){
-        this.showFeature = 0;
-        //this.arr=[{"targetFeature":"","targetImages":"","targetId":0,"targetInfoId":0,"photoContainer":[]}];
-        //this.saveSelected = [{"recognitionCategories":{"cateId":0,"code":"","name":""}},];
-      }else if(this.d_analysis_options[i].recognitionCategories[j].cateId==1&&!this.d_analysis_options[i].recognitionCategories[j].selected){
-        this.arr=[{"targetFeature":"","targetImages":"","targetId":0,"targetInfoId":0,"photoContainer":[]}];
-        this.showFeature = 1;
-        this.getHeight();
-      }
-      if(!this.d_analysis_options[i].recognitionCategories[j].selected&&this.d_analysis_options[i].recognitionCategories[j].cateId==1){
-        this.validColor(i,j);
-        this.showFeature = 1;
-        this.getHeight();
-      }else if(!this.d_analysis_options[i].recognitionCategories[j].selected&&this.d_analysis_options[i].recognitionCategories[j].cateId==26){
-        this.validColor(i,j);
-      }else if(this.d_analysis_options[i].recognitionCategories[j].selected){
-        this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
-        for(let k=0;k<this.d_analysis_options[i].recognitionCategories.length;k++){
-          this.d_analysis_options[i].recognitionCategories[k].color=0;
-        }
-      }
-    }else if(this.d_analysis_options[i].classificationName=='对战目标'){
-      if(this.d_analysis_options[i].recognitionCategories[j].color1==1){
-        return false;
-      }
-      if(!this.d_analysis_options[i].recognitionCategories[j].selected&&this.d_analysis_options[i].recognitionCategories[j].cateId==30){
-        this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
-        for(let k=0;k<this.d_analysis_options[i].recognitionCategories.length;k++){
-          if(this.d_analysis_options[i].recognitionCategories[k].cateId!=30){
-            this.d_analysis_options[i].recognitionCategories[k].color1=1;
-          }
-        }
-      }else if(!this.d_analysis_options[i].recognitionCategories[j].selected&&this.d_analysis_options[i].recognitionCategories[j].cateId!=30){
-        this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
-        for(let k=0;k<this.d_analysis_options[i].recognitionCategories.length;k++){
-          if(this.d_analysis_options[i].recognitionCategories[k].cateId==30){
-            this.d_analysis_options[i].recognitionCategories[k].color1=1;
-          }
-        }
-      }else if(this.d_analysis_options[i].recognitionCategories[j].selected&&this.d_analysis_options[i].recognitionCategories[j].cateId!=30){
-        this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
-        for(let k=0;k<this.d_analysis_options[i].recognitionCategories.length;k++){
-          if(this.d_analysis_options[i].recognitionCategories[k].selected&&this.d_analysis_options[i].recognitionCategories[k].cateId!=30){
-            for(let n=0;n<this.d_analysis_options[i].recognitionCategories.length;n++){
-              if(this.d_analysis_options[i].recognitionCategories[n].cateId!=30){
-                this.d_analysis_options[i].recognitionCategories[n].color1=0;
-              }else{
-                this.d_analysis_options[i].recognitionCategories[n].color1=1;
-              }
-            }
-          }else{
-            this.d_analysis_options[i].recognitionCategories[k].color1=0;
-          }
-        }
-      }else if(this.d_analysis_options[i].recognitionCategories[j].selected&&this.d_analysis_options[i].recognitionCategories[j].cateId==30){
-        this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
-        for(let k=0;k<this.d_analysis_options[i].recognitionCategories.length;k++){
-            this.d_analysis_options[i].recognitionCategories[k].color1=0;
-        }
-      }
-    }else{
-      this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
-    }
-  }
-  arrow_toggle(index: number){
-    if(this.d_analysis_options[index].selected){
-      this.d_analysis_options[index].selected = !this.d_analysis_options[index].selected;
-    }else{
-      for(let i=0;i<this.d_analysis_options.length;i++){
-        this.d_analysis_options[i].selected=false;
-      }
-      this.d_analysis_options[index].selected = !this.d_analysis_options[index].selected;
-    }
-  }
-  $popup_select_all_toggle () {
-    this.s_popup_allselect = !this.s_popup_allselect;
-    if(this.s_popup_allselect){
-      for(let i=0;i<this.d_analysis_options.length;i++){
-        for(let j=0;j<this.d_analysis_options[i].recognitionCategories.length;j++)
-        this.d_analysis_options[i].recognitionCategories[j].selected = true;
-      }
-      //console.log(this.d_analysis_options);
-    }else{
-      for(let i=0;i<this.d_analysis_options.length;i++){
-        for(let j=0;j<this.d_analysis_options[i].recognitionCategories.length;j++)
-          this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
-      }
-      //console.log(this.d_analysis_options);
-    }
-  }
-
   $fullscreen_click (index: number , $event) {
     $event = $event || window.event;
     $event.preventDefault();
@@ -983,7 +805,6 @@ export class VideoAnalysisComoponent {
         .subscribe(result=>{
           //console.log(result);
           this.fileRecognition = result;
-          this.getRecognitionValue();
         });
       for(let i=0;i<this.d_analysis_options.length;i++){
         this.d_analysis_options[i].recognitionCategories.sort(function(a,b){
