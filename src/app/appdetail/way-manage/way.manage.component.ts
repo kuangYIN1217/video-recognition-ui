@@ -429,6 +429,8 @@ export class WayManageComponent {
       .subscribe(reply => this.start_reply(reply));
   }
   start_reply(reply){
+    console.log(reply);
+    //sessionStorage.setItem("stream" , reply.channelProtocol);
     if(reply.status==200){
       //console.log("Start Successfully!");
     }else{

@@ -76,6 +76,7 @@ export class VideoAnalysisComoponent {
   code:string;
   photoUrl:string='';
   btn_show:boolean = false;
+  streamType:string='';
   radio(i){
     this.radioIndex = i;
   }
@@ -268,7 +269,8 @@ export class VideoAnalysisComoponent {
     this.initRecognitions();
     /* 初始化channel */
     this.initChannels();
-
+    /*判断RTSP/RTMP*/
+    //this.initStream();
     this.appManageService.getProtocol()
       .subscribe(protocols=>{
         this.protocols=protocols;
@@ -279,6 +281,7 @@ export class VideoAnalysisComoponent {
       });
     this.appId = window.sessionStorage.getItem("applicationId");
   }
+
   changeWarn(){
     this.identifyName = '';
     for(let i=0;i<this.warnObjArr.length;i++){
@@ -635,8 +638,15 @@ export class VideoAnalysisComoponent {
   }
   //------
   get_ckplayer_url (index: number) {
-    if (this.d_video_list && this.d_video_list.length >= index) {
-      return this.d_video_list[index-1].channelOut
+    console.log(this.streamType);
+    if(this.streamType=="RTSP"){
+      if (this.d_video_list && this.d_video_list.length >= index) {
+        return this.d_video_list[index-1].channelOut
+      }
+    }else if(this.streamType=="RTMP"){
+      if (this.d_video_list && this.d_video_list.length >= index) {
+        return this.d_video_list[index-1].channelAddress
+      }
     }
     return null;
   }
@@ -848,7 +858,8 @@ export class VideoAnalysisComoponent {
       //console.log(rep);
       this.d_video_list.sort(function(a,b){
         return parseInt(a.channelOrder) - parseInt(b.channelOrder)
-      })
+      });
+      this.streamType = this.d_video_list[0].channelProtocol;
       this.init_grid_number(rep.length ? rep.length : 0);
       this.getChannelId();
     });
