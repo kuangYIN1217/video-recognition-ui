@@ -637,6 +637,9 @@
   box-sizing: border-box;
   cursor: pointer;
 }
+#upload{
+  display: inline-block !important;
+}
 a{
   text-decoration: none;
 }

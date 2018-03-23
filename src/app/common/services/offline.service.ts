@@ -12,6 +12,7 @@ export class OfflineService {
   inputPath: string;
 
   constructor(private http: Http) {
+
   }
 
   getAuthorization() {
@@ -20,7 +21,7 @@ export class OfflineService {
 
   getHeaders() {
     let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
+    headers.append('Content-Type', 'application/json;charset=UTF-8');
     headers.append('Accept', 'application/json');
     headers.append('Authorization', this.getAuthorization());
     return headers;

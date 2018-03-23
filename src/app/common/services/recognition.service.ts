@@ -69,7 +69,7 @@ export class RecognitionService {
       });
   }
   getRecognitionFile(id){
-    let path = "/download/targetJson"+id+".txt";
+    let path = "/download/ruleJson"+id+".txt";
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL + path, {headers: headers})
       .map((response: Response) => {

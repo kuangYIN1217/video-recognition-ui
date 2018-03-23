@@ -235,9 +235,13 @@ export class WarnRlueComponent{
     }else if(item.alarmRuleStatus=='开启'){
       item.alarmRuleStatus='关闭';
     }
-    //console.log(item);
+    console.log(item);
     if(this.appCate=='实时流分析'){
-      this.warnService.warnRuleSwitch(item.ruleId,item.alarmRuleStatus,this.appCate)
+      this.warnService.editRuleSave(item.ruleId,item.ruleName,item.recognitionCategory.cateId,item.recognitionCategory.code,item.targetFeature,item.alarmRuleStatus,item.targetImages)
+        .subscribe(result=>{
+          this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
+        });
+/*      this.warnService.warnRuleSwitch(item.ruleId,item.alarmRuleStatus,this.appCate)
         .subscribe(reply =>{
           //console.log(reply.text());
           if(reply.text().substring(0,2)=='No'){
@@ -252,9 +256,13 @@ export class WarnRlueComponent{
           }
             this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
           //this.start_reply(reply);
-        });
+        });*/
     }else{
-      this.warnService.warnRuleSwitch(item.ruleId,item.alarmRuleStatus,this.appCate)
+      this.warnService.editRuleSave1(item.ruleId,item.ruleName,item.recognitionCategory.cateId,item.recognitionCategory.code,item.targetFeature,item.alarmRuleStatus,item.targetImages)
+        .subscribe(result=>{
+          this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
+        });
+/*      this.warnService.warnRuleSwitch(item.ruleId,item.alarmRuleStatus,this.appCate)
         .subscribe(reply =>{
           //console.log(reply.text());
           if(reply.text().substring(0,2)=='No'){
@@ -268,7 +276,7 @@ export class WarnRlueComponent{
           }
           this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
           //this.start_reply(reply);
-        });
+        });*/
     }
 
   }

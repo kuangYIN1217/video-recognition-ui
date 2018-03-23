@@ -58,6 +58,8 @@ export class WarnTimeComponent{
   taskId:number=0;
   periodTime:string;
   periodTimeArr:any[]=[];
+  startValue:string='';
+  endValue:string='';
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -195,7 +197,7 @@ export class WarnTimeComponent{
       $("#start").jeDate({
         isinitVal:true,
         festival: false,
-        format: 'YYYY-MM-DD hh:mm:ss',
+        format: 'YYYY-MM-DD hh:mm:ss'
       });
       $("#end").jeDate({
         isinitVal:true,
@@ -206,7 +208,7 @@ export class WarnTimeComponent{
       $("#start").jeDate({
         isinitVal:true,
         festival: false,
-        format: 'hh:mm:ss',
+        format: 'hh:mm:ss'
       });
       $("#end").jeDate({
         isinitVal:true,
@@ -372,7 +374,7 @@ export class WarnTimeComponent{
       return Number(time).toFixed(2);
     }
   }
-  handling(item){
+/*  handling(item){
     this.warnService.handlingWarn(item.alarmId,this.appId)
       .subscribe(result=>{
         this.session();
@@ -407,7 +409,7 @@ export class WarnTimeComponent{
           }
         }
       })
-  }
+  }*/
   deleteChange(event){
     this.deleteIndex = event;
   }
@@ -467,6 +469,110 @@ export class WarnTimeComponent{
       }
     }
   }
+  dateCompare(startStr,endStr){
+      var d1, d2, s, arr, arr1, arr2;
+      if (startStr.length > 10) {
+        arr = startStr.split(" ");
+        arr1 = arr[0].split("-");
+        arr2 = arr[1].split(":");
+        d1 = new Date(arr1[0], arr1[1] - 1, arr1[2], arr2[0], arr2[1], arr2[2]);
+      } else {
+        arr = startStr.split("-");
+        d1 = new Date(arr[0], arr[1], arr[2]);
+      }
+      if (endStr.length > 10) {
+        arr = endStr.split(" ");
+        arr1 = arr[0].split("-");
+        arr2 = arr[1].split(":");
+        d2 = new Date(arr1[0], arr1[1] - 1, arr1[2], arr2[0], arr2[1], arr2[2]);
+      } else {
+        arr = endStr.split("-");
+        d2 = new Date(arr[0], arr[1], arr[2]);
+      }
+      s = d2 - d1 ;
+      if(s < 0) {
+        return false;
+      }else{
+        if(Math.abs(d1-d2)/3600000<=6){
+            return true;
+        }else{
+          return false;
+        }
+      }
+}
+  select_start(){
+   // setTimeout(()=>{
+    $("#start").addEventListener("input",function(){
+      console.log(123);
+    });
+    //},1000)
+/*    setTimeout(()=>{
+     let start = $('#start').val();
+     let end = $('#end').val();
+     if(end!=''){
+     this.judgePeriod(start,end);
+     }
+     },1000)*/
+
+  }
+  select(){
+    console.log(123);
+  }
+  searchPeriod(id,taskId,nameTask,ruleId,status,page,size,start,end){
+    if(this.appCate=='实时流分析'){
+      this.warnService.searchTime(id,nameTask,ruleId,status,page,size,start,end)
+        .subscribe(
+          (result)=>{
+          console.log(result);
+          //this.getWarnList(result);
+        },
+          (error)=>{
+            console.log(error.status);
+          }
+        )
+    }else{
+      this.warnService.searchOffTime(id,taskId,nameTask,ruleId,status,page,size,start,end)
+        .subscribe(result=>{
+          //this.getWarnList(result);
+        })
+    }
+  }
+  select_end(){
+    setTimeout(()=>{
+      let start = $('#start').val();
+      let end = $('#end').val();
+      if(start!=''){
+        this.judgePeriod(start,end);
+      }
+    },1000)
+  }
+  judgePeriod(start,end){
+    if(this.dateCompare(start,end)){
+      this.validation();
+      if(this.appCate=='实时流分析'){
+        sessionStorage.setItem("name" , this.chanName);
+        this.sessionSet();
+        start = start+" 000";
+        end = end+" 000";
+        if(this.taskId>0){
+          this.searchPeriod(this.appId,this.taskId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
+        }else{
+          this.searchPeriod(this.appId,0,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
+        }
+      }else{
+        sessionStorage.setItem("task" , this.warnTask);
+        this.sessionSet();
+        if(this.taskId>0){
+          this.searchPeriod(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
+        }else{
+          this.searchPeriod(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
+        }
+      }
+    }else{
+      alert("起始时间大于结束时间/起始时间和结束时间相差大于6小时！");
+      return false
+    }
+  }
   search(){
     this.validation();
     let startTime;
@@ -481,6 +587,9 @@ export class WarnTimeComponent{
     }else{
       endTime=this.endTime;
     }
+    this.distinguish(startTime,endTime);
+  }
+  distinguish(startTime,endTime){
     if(this.appCate=='实时流分析'){
       sessionStorage.setItem("name" , this.chanName);
       this.sessionSet();
@@ -501,8 +610,6 @@ export class WarnTimeComponent{
   }
   searchWarn(id,taskId,nameTask,ruleId,status,page,size,start,end){
     if(this.appCate=='实时流分析'){
-      //console.log(this.appId);
-      //console.log(this.ruleId);
       this.warnService.searchWarns(id,nameTask,ruleId,status,page,size,start,end)
         .subscribe(result=>{
           this.getWarnList(result);

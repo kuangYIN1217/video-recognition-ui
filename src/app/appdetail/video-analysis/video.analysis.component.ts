@@ -85,7 +85,7 @@ export class VideoAnalysisComoponent {
     }else{
       if(status=='start'){
         this.switch = status;
-        this.getAllRule();
+        this.getOpenRule();
         this.btn_show = true;
       }else if(status=='end'){
         this.switch = status;
@@ -93,6 +93,19 @@ export class VideoAnalysisComoponent {
         this.btn_show = false;
       }
     }
+  }
+  getOpenRule(){
+    this.warnService.searchRules(this.appId,null,-1,'开启')
+      .subscribe(result=>{
+        this.rulesInfo = result.content;
+        if(this.fileRecognition.length>0){
+          for(let i=0;i<this.rulesInfo.length;i++){
+            if(this.rulesInfo[i].ruleId==this.fileRecognition[0].ruleId){
+              this.rulesInfo[i].selected = true;
+            }
+          }
+        }
+      });
   }
   choose_rule(item){
     if(this.create_show){
@@ -129,7 +142,7 @@ export class VideoAnalysisComoponent {
           this.ruleName = '';
           this.personName = '';
           this.photoContainer=[];
-          this.getAllRule();
+          this.getOpenRule();
           this.createFlag = true;
       })
   }
@@ -168,12 +181,6 @@ export class VideoAnalysisComoponent {
       height:(height-180)+'px'
     }
   }
-  getAllRule(){
-    this.warnService.getAllRlues(this.d_applicationId,0,100000)
-      .subscribe(result=>{
-        this.rulesInfo = result.content;
-      });
-  }
   show_rule(){
     this.leftbar = !this.leftbar;
     if(this.leftbar){
@@ -189,8 +196,8 @@ export class VideoAnalysisComoponent {
       setTimeout(()=>{
         document.getElementById("toggleLeft").style.display="none";
         document.getElementById("toggleRight").style.display="block";
-        this.rulesInfo=[];
-        this.switch = 'end';
+      /*  this.rulesInfo=[];
+        this.switch = 'end';*/
       },1000)
     }
   }
@@ -798,22 +805,23 @@ export class VideoAnalysisComoponent {
   }
 
   initRecognitions() {
-    this.recognitionService.getRecognition().subscribe(rep => {
+    //this.recognitionService.getRecognition().subscribe(rep => {
       //console.log(rep);
-      this.d_analysis_options = rep;
+      //this.d_analysis_options = rep;
       this.recognitionService.getRecognitionFile(this.d_applicationId)
         .subscribe(result=>{
           //console.log(result);
           this.fileRecognition = result;
+          this.switchToggle('start');
         });
-      for(let i=0;i<this.d_analysis_options.length;i++){
+/*      for(let i=0;i<this.d_analysis_options.length;i++){
         this.d_analysis_options[i].recognitionCategories.sort(function(a,b){
           return parseInt(b.cateId) - parseInt(a.cateId)
         })
-      }
-      this.d_analysis_options[0].selected=true;
+      }*/
+      //this.d_analysis_options[0].selected=true;
       //this.d_analysis_options_detail= rep ;
-    })
+    //})
   }
   initChannelsNoSort(){
     this.channelService.getOpenChannelById(this.d_applicationId).subscribe(rep => {

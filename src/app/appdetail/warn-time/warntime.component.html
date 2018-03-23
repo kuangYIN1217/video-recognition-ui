@@ -35,9 +35,9 @@
       <div class="search-time">
         <div class="search-info no-margin">
           <label>告警时间：</label>
-          <input type="text" id="start" class="time" readonly placeholder="请选择时间"/>
+          <input type="text" id="start" class="time" readonly placeholder="请选择时间" (blur)="select_start()"/>
           <span>至</span>
-          <input type="text" id="end" class="time" readonly placeholder="请选择时间" style="margin-left: 0"/>
+          <input type="text" id="end" class="time" readonly placeholder="请选择时间" style="margin-left: 0" (blur)="select_end()"/>
         </div>
         <div class="search-info periodTime">
           <label>目标时段：</label>
