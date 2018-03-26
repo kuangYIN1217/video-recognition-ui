@@ -75,7 +75,7 @@ export class VideoAnalysisComoponent {
   cateId:number;
   code:string;
   photoUrl:string='';
-  btn_show:boolean = false;
+  btn_show:boolean = true;
   streamType:string='';
   radio(i){
     this.radioIndex = i;
@@ -86,7 +86,6 @@ export class VideoAnalysisComoponent {
     }else{
       if(status=='start'){
         this.switch = status;
-        this.getOpenRule();
         this.btn_show = true;
       }else if(status=='end'){
         this.switch = status;
@@ -95,7 +94,7 @@ export class VideoAnalysisComoponent {
     }
   }
   getOpenRule(){
-    this.warnService.searchRules(this.appId,null,-1,'开启')
+    this.warnService.searchRules(this.d_applicationId,null,-1,'开启')
       .subscribe(result=>{
         this.rulesInfo = result.content;
         if(this.fileRecognition.length>0){
@@ -144,6 +143,7 @@ export class VideoAnalysisComoponent {
           this.photoContainer=[];
           this.getOpenRule();
           this.createFlag = true;
+          this.btn_show = true;
       })
   }
   getPhoto(){
@@ -268,8 +268,8 @@ export class VideoAnalysisComoponent {
     this.initRecognitions();
     /* 初始化channel */
     this.initChannels();
-    /*判断RTSP/RTMP*/
-    //this.initStream();
+    /*查询开启的规则*/
+    this.getOpenRule();
     this.appManageService.getProtocol()
       .subscribe(protocols=>{
         this.protocols=protocols;
@@ -305,6 +305,7 @@ export class VideoAnalysisComoponent {
   cancelRule(){
     this.create_show = false;
     this.createFlag = true;
+    this.btn_show = true;
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
@@ -637,7 +638,6 @@ export class VideoAnalysisComoponent {
   }
   //------
   get_ckplayer_url (index: number) {
-    console.log(this.streamType);
     if(this.streamType=="RTSP"){
       if (this.d_video_list && this.d_video_list.length >= index) {
         return this.d_video_list[index-1].channelOut

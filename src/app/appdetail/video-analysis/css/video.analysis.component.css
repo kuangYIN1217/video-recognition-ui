@@ -815,6 +815,8 @@ input{
 .all-rule{
   padding-top: 28px;
   border-top: 1px solid #e5e5e5;
+  max-height: 500px;
+  overflow: auto;
 }
 .single-rule{
   margin-bottom: 16px;
