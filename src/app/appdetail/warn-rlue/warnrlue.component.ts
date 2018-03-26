@@ -178,7 +178,7 @@ export class WarnRlueComponent{
       if(this.rulesInfo[i]['flag'] == '1'&&this.rulesInfo[i].alarmRuleStatus=='开启'){
         this.deleteIndex =1;
         this.tip_title = '提示';
-        this.tip_content = '该告警不可删除！';
+        this.tip_content = '开启状态的告警规则不可以删除！';
         this.tip_btn = "";
         return false;
       }else if(this.rulesInfo[i]['flag'] == '1'&&this.rulesInfo[i].alarmRuleStatus=='关闭'){
