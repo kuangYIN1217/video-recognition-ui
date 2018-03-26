@@ -6,9 +6,10 @@
     <div class="dialogContent">
       <div class="info">
         <label>规则名称：</label>
-        <input type="text" name="ruleName" [(ngModel)]="ruleName" *ngIf="warn_title!='规则详情'"/>
+        <input type="text" name="ruleName" [(ngModel)]="ruleName" *ngIf="warn_title!='规则详情'" (blur)="checkName()"/>
         <input type="text" name="ruleName" [(ngModel)]="ruleName" readonly *ngIf="warn_title=='规则详情'"/>
         <span class="must" [style.display]="chanRequired1==1?'':'none'">必填字段</span>
+        <span class="must" [style.display]="ruleNameMust==1?'':'none'">名称已存在</span>
       </div>
 <!--      <div class="createInfo" *ngIf="appCate=='实时流分析'">
         <label>告警通道：</label>

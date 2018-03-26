@@ -873,6 +873,9 @@ select{
 .must{
   font-size: 14px;
   color: #fe1c1c;
+  padding-left: 114px;
+  margin-top: -20px;
+  margin-bottom: 20px;
 }
 .showPhoto{
   float: left;

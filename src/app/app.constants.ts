@@ -2,5 +2,5 @@
 
 let _SERVER_URL = 'http://&REPLACEHOST&:8091';
 // http://&REPLACEHOST&:8091
-//192.168.16.116:8091
+//192.168.16.167:8081
 export const SERVER_URL = _SERVER_URL;

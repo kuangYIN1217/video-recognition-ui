@@ -34,7 +34,7 @@ export class VideoAnalysisComoponent {
   radioIndex:number = 1;
   show: number = 1;
   createFlag: boolean = true;
-  appId:string;
+  //appId:string;
   pageParams = new Page();
   channelInfo: any[] = [];
   page: number = 1;
@@ -77,6 +77,7 @@ export class VideoAnalysisComoponent {
   photoUrl:string='';
   btn_show:boolean = true;
   streamType:string='';
+  ruleNameMust:number = 0;
   radio(i){
     this.radioIndex = i;
   }
@@ -91,6 +92,26 @@ export class VideoAnalysisComoponent {
         this.switch = status;
         this.btn_show = true;
       }
+    }
+  }
+  checkName(){
+    if(this.ruleName==''){
+      this.ruleNameMust = 0;
+      this.chanRequired1 = 1;
+    }else{
+      this.warnService.checkRuleName(this.d_applicationId,this.ruleName)
+        .subscribe(
+          (result=>{
+            this.chanRequired1 = 0;
+            this.ruleNameMust = 0;
+          }),
+          (error=>{
+            if(error.status==400){
+              this.chanRequired1 = 0;
+              this.ruleNameMust = 1;
+            }
+          })
+        )
     }
   }
   getOpenRule(){
@@ -135,7 +156,7 @@ export class VideoAnalysisComoponent {
       return;
     }
     this.createFlag = false;
-    this.warnService.createWarn(this.appId,this.ruleName,this.cateId,this.code,this.personName,'关闭',this.photoUrl)
+    this.warnService.createWarn(this.d_applicationId,this.ruleName,this.cateId,this.code,this.personName,'关闭',this.photoUrl)
       .subscribe(result=>{
           this.create_show = false;
           this.ruleName = '';
@@ -159,6 +180,9 @@ export class VideoAnalysisComoponent {
       return false;
     }else{
       this.chanRequired1=0;
+    }
+    if(this.ruleNameMust==1){
+      return false;
     }
     if(this.personName==undefined){
       this.personName=null;
@@ -230,11 +254,11 @@ export class VideoAnalysisComoponent {
       return;
     }
     this.createFlag = false;
-    this.channelService.createChannel(this.appId,chanAddr,chanName,protocol,channelType,videoAddress,status)
+    this.channelService.createChannel(this.d_applicationId,chanAddr,chanName,protocol,channelType,videoAddress,status)
       .subscribe(result=>{
         this.show = 1;
         this.addDialog = 0;
-        this.getPages(this.appId,this.page-1,this.pageMaxItem);
+        this.getPages(this.d_applicationId,this.page-1,this.pageMaxItem);
         this.createFlag = true;
         // todo refresh
         this.initChannels()
@@ -278,7 +302,7 @@ export class VideoAnalysisComoponent {
       .subscribe(result=>{
         this.channelTypes=result;
       });
-    this.appId = window.sessionStorage.getItem("applicationId");
+    //this.appId = window.sessionStorage.getItem("applicationId");
   }
 
   changeWarn(){
@@ -303,6 +327,14 @@ export class VideoAnalysisComoponent {
     }
   }
   cancelRule(){
+    this.ruleName = '';
+    this.ruleNameMust = 0;
+    this.chanRequired1 = 0;
+    this.warnObj = this.warnObjArr[0].classificationName;
+    this.warnObjDetail = this.warnObjDetailArr[0].name;
+    this.identifyName = '';
+    this.personName = '';
+    this.photoContainer = [];
     this.create_show = false;
     this.createFlag = true;
     this.btn_show = true;
@@ -583,6 +615,9 @@ export class VideoAnalysisComoponent {
     for(let i=0;i<this.rulesInfo.length;i++){
       this.rulesInfo[i].selected = false;
     }
+    /*this.recognitionService.setRecognitions( this.getAllChannelID(),this.getRuleId()).subscribe(rep => {
+
+    })*/
   }
   $change_analysis_submit() {
       if(this.saveColor==0||(this.getRuleId().length==0)){

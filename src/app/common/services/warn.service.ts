@@ -282,4 +282,16 @@ export class WarnService {
         }
       });
   }
+  checkRuleName(applicationId,ruleName){
+    let path = "/api/ruleName/"+applicationId+"/"+ruleName;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path,{ headers: headers })
+      .map((response: Response) => {
+        if (response && response.text()) {
+          if(response.status==200){
+            return response.text();
+          }
+        }
+      });
+  }
 }

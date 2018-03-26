@@ -134,9 +134,10 @@
       <div class="create-rule" *ngIf="create_show">
         <div class="info">
           <label>规则名称：</label>
-          <input type="text" name="ruleName" [(ngModel)]="ruleName"/>
-          <span class="must" [style.display]="chanRequired1==1?'':'none'">必填字段</span>
+          <input type="text" name="ruleName" [(ngModel)]="ruleName" (blur)="checkName()"/>
         </div>
+        <div class="must" [style.display]="chanRequired1==1?'':'none'">必填字段</div>
+        <div class="must" [style.display]="ruleNameMust==1?'':'none'">该名称已存在</div>
         <div class="info" style="height: auto;margin-bottom: 0">
           <label>告警对象：</label>
           <select [(ngModel)]="warnObj" (ngModelChange)="warnObj=$event;changeWarn()">

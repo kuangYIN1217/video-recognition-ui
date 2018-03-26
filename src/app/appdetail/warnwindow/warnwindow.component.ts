@@ -14,7 +14,7 @@ export class WarnWindowComponent{
   allFlag:boolean=false;
   channelInfo:any[]=[];
   radioIndex:number;
-  ruleName:string;
+  ruleName:string='';
   objName:string;
   appId:string;
   warnChanArr:any[]=[];
@@ -47,6 +47,7 @@ export class WarnWindowComponent{
   identifyName:string='';
   createFlag:boolean = true;
   saveFlag:boolean = true;
+  ruleNameMust:number = 0;
   @Output() indexChange: EventEmitter<any> = new EventEmitter();
 
   constructor(private warnService: WarnService) {
@@ -277,6 +278,9 @@ export class WarnWindowComponent{
     this.photoUrl=this.getPhoto();
     if(!this.createFlag) {
       return;
+    };
+    if(this.ruleNameMust==1){
+      return false
     }
     this.createFlag = false;
     this.warnService.createWarn(this.appId,this.ruleName,this.cateId,this.code,this.objName,this.status,this.photoUrl)
@@ -306,6 +310,9 @@ export class WarnWindowComponent{
     this.photoUrl=this.getPhoto();
     if(!this.saveFlag) {
       return;
+    }
+    if(this.ruleNameMust==1){
+      return false
     }
     this.saveFlag = false;
     if(this.appCate=='实时流分析'){
@@ -367,5 +374,25 @@ export class WarnWindowComponent{
     this.createIndex = 2;
     this.createFlag = true;
     this.indexChange.emit(this.createIndex);
+  }
+  checkName(){
+    if(this.ruleName==''){
+      this.chanRequired1 = 1;
+      this.ruleNameMust = 0;
+    }else{
+      this.warnService.checkRuleName(this.appId,this.ruleName)
+        .subscribe(
+          (result=>{
+            this.chanRequired1 = 0;
+            this.ruleNameMust = 0;
+          }),
+          (error=>{
+            if(error.status==400){
+              this.chanRequired1 = 0;
+              this.ruleNameMust = 1;
+            }
+          })
+        )
+    }
   }
 }
