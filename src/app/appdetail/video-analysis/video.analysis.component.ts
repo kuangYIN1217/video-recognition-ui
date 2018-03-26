@@ -90,8 +90,7 @@ export class VideoAnalysisComoponent {
         this.btn_show = true;
       }else if(status=='end'){
         this.switch = status;
-        this.rulesInfo = [];
-        this.btn_show = false;
+        this.btn_show = true;
       }
     }
   }
@@ -859,7 +858,9 @@ export class VideoAnalysisComoponent {
       this.d_video_list.sort(function(a,b){
         return parseInt(a.channelOrder) - parseInt(b.channelOrder)
       });
-      this.streamType = this.d_video_list[0].channelProtocol;
+      if(this.d_video_list.length>0){
+        this.streamType = this.d_video_list[0].channelProtocol;
+      }
       this.init_grid_number(rep.length ? rep.length : 0);
       this.getChannelId();
     });
