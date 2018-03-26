@@ -579,6 +579,11 @@ export class VideoAnalysisComoponent {
     console.log(rulesId);
     return rulesId.substring(0,rulesId.length-1);
   }
+  $cancel_analysis_submit(){
+    for(let i=0;i<this.rulesInfo.length;i++){
+      this.rulesInfo[i].selected = false;
+    }
+  }
   $change_analysis_submit() {
       if(this.saveColor==0||(this.getRuleId().length==0)){
         return false;

@@ -385,19 +385,26 @@ export class CreateTextComponent {
       }
     }
   }
+  getTipContent(){
+    this.deleteIndex =1;
+    this.tip_title = '提示';
+    this.tip_content = '对不起，您已上传文件，请先删除！';
+  }
   checkRadio(type){
     if(type=='video'){
       this.choose = 'video';
       if(this.deleteUploader()){
         this.choosed = 'video';
       }else{
-       return false
+        this.getTipContent();
+        return false
       }
     }else if(type=='image'){
       this.choose = 'image';
       if(this.deleteUploader()){
         this.choosed = 'image';
       }else{
+        this.getTipContent();
         return false
       }
     }else if(type=='zip'){
@@ -405,6 +412,7 @@ export class CreateTextComponent {
       if(this.deleteUploader()){
         this.choosed = 'zip';
       }else{
+        this.getTipContent();
         return false
       }
     }
