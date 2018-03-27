@@ -247,23 +247,36 @@ export class DataStatisticsComponent {
     let day:number = data.getDate();
     let day1:any= data.getDate()-7;
     console.log(day1);
+    console.log(month);
     if(day1==0){
       let day2 = new Date(year,month,day1);
-      if(day2.getDate()<10){
+      if(day2.getDate()<10&&day2.getMonth()<10){
+        this.startTime = year+"-0"+(month-1)+"-0"+(day2.getDate());
+      }else if(day2.getDate()<10&&day2.getMonth()>10){
         this.startTime = year+"-"+(month-1)+"-0"+(day2.getDate());
-      }else{
+      }else if(day2.getDate()>10&&day2.getMonth()>10){
         this.startTime = year+"-"+(month-1)+"-"+(day2.getDate());
+      }else if(day2.getDate()>10&&day2.getMonth()<10){
+        this.startTime = year+"-0"+(month-1)+"-"+(day2.getDate());
       }
     }else{
-      if(day1<10){
+      if(day1<10&&month<10){
+        this.startTime = year+"-0"+month+"-0"+day1;
+      }else if(day1>10&&month<10){
+        this.startTime = year+"-0"+month+"-"+day1;
+      }else if(day1<10&&month>10){
         this.startTime = year+"-"+month+"-0"+day1;
-      }else{
+      }else if(day1>10&&month>10){
         this.startTime = year+"-"+month+"-"+day1;
       }
     }
-    if(day<10){
+    if(day<10&&month<10){
+      this.endTime = year+"-0"+month+"-0"+day;
+    }else if(day<10&&month>10){
       this.endTime = year+"-"+month+"-0"+day;
-    }else{
+    }else if(day>10&&month<10){
+      this.endTime = year+"-0"+month+"-"+day;
+    }else if(day>10&&month>10){
       this.endTime = year+"-"+month+"-"+day;
     }
     this.searchChart(0,0,0,0,this.startTime,this.endTime);
