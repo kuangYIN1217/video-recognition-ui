@@ -40,7 +40,7 @@ export class CreateInspectionComponent {
       this.voltageGrade = params['voltageGrade'];
       this.towerNo = params['towerNum'];
       this.longitude = params['towerLongitude'];
-      this.latitude = params['towerLongitude'];
+      this.latitude = params['towerLatitude'];
       this.notes = params['notes'];
       this.towerId = params['towerId'];
       this.createTime = params['createTime'];
