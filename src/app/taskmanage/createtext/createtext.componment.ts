@@ -85,22 +85,26 @@ export class CreateTextComponent {
     if(this.showFile.length>0){
       return false
     }
-    let name = this.uploader.queue[0].file.name;
-    if(type=='video'){
-      if(name.substring(name.length-3,name.length)!='mp4'&&name.substring(name.length-3,name.length)!='avi'){
-        this.uploader.queue[0].remove();
-        return
-      };
-    }else if(type=='zip'){
-      if(name.substring(name.length-3,name.length)!='zip'&&name.substring(name.length-3,name.length)!='ZIP'){
-        this.uploader.queue[0].remove();
-        return
-      };
-    }
-    let bool = this.isInArray(this.showArr,this.uploader.queue[0]);
-    if(bool==false){
-      this.showArr.push(this.uploader.queue[0]);
-      this.getProgress(0);
+    if(this.uploader.queue.length>1){
+      this.uploader.queue[1].remove();
+    }else{
+      let name = this.uploader.queue[0].file.name;
+      if(type=='video'){
+        if(name.substring(name.length-3,name.length)!='mp4'&&name.substring(name.length-3,name.length)!='avi'){
+          this.uploader.queue[0].remove();
+          return
+        };
+      }else if(type=='zip'){
+        if(name.substring(name.length-3,name.length)!='zip'&&name.substring(name.length-3,name.length)!='ZIP'){
+          this.uploader.queue[0].remove();
+          return
+        };
+      }
+      let bool = this.isInArray(this.showArr,this.uploader.queue[0]);
+      if(bool==false){
+        this.showArr.push(this.uploader.queue[0]);
+        this.getProgress(0);
+      }
     }
   }
   selectedFileOnChanged(event,getType){

@@ -58,8 +58,6 @@ export class WarnTimeComponent{
   taskId:number=0;
   periodTime:string;
   periodTimeArr:any[]=[];
-  startValue:string='';
-  endValue:string='';
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -197,23 +195,53 @@ export class WarnTimeComponent{
       $("#start").jeDate({
         isinitVal:true,
         festival: false,
-        format: 'YYYY-MM-DD hh:mm:ss'
+        format: 'YYYY-MM-DD hh:mm:ss',
+        choosefun: function(val){
+          let end = $('#end').val();
+          if(end!=''){
+            this.judgePeriod(val[0].value,end);
+          }
+        }.bind(this),
+        okfun:function(val){
+          let end = $('#end').val();
+          if(end!=''){
+            this.judgePeriod(val[0].value,end);
+          }
+        }.bind(this)
       });
       $("#end").jeDate({
         isinitVal:true,
         festival: false,
-        format: 'YYYY-MM-DD hh:mm:ss'
+        format: 'YYYY-MM-DD hh:mm:ss',
+        choosefun: function(val){
+          let start = $('#start').val();
+          if(start!=''){
+            this.judgePeriod(start,val[0].value);
+          }
+        }.bind(this),
+        okfun:function(val){
+          let start = $('#start').val();
+          if(start!=''){
+            this.judgePeriod(start,val[0].value);
+          }
+        }.bind(this)
       });
     }else{
       $("#start").jeDate({
         isinitVal:true,
         festival: false,
-        format: 'hh:mm:ss'
+        format: 'hh:mm:ss',
+        choosefun: function(obj){
+          console.log(obj[0].value);
+        }
       });
       $("#end").jeDate({
         isinitVal:true,
         festival: false,
-        format: 'hh:mm:ss'
+        format: 'hh:mm:ss',
+        choosefun: function(obj){
+          console.log(obj[0].value);
+        }
       });
     }
     calc_height(document.getElementById('warn-content'));
@@ -500,24 +528,7 @@ export class WarnTimeComponent{
         }
       }
 }
-  select_start(){
-   // setTimeout(()=>{
-    $("#start").addEventListener("input",function(){
-      console.log(123);
-    });
-    //},1000)
-/*    setTimeout(()=>{
-     let start = $('#start').val();
-     let end = $('#end').val();
-     if(end!=''){
-     this.judgePeriod(start,end);
-     }
-     },1000)*/
 
-  }
-  select(){
-    console.log(123);
-  }
   searchPeriod(id,taskId,nameTask,ruleId,status,page,size,start,end){
     if(this.appCate=='实时流分析'){
       this.warnService.searchTime(id,nameTask,ruleId,status,page,size,start,end)
@@ -537,15 +548,7 @@ export class WarnTimeComponent{
         })
     }
   }
-  select_end(){
-    setTimeout(()=>{
-      let start = $('#start').val();
-      let end = $('#end').val();
-      if(start!=''){
-        this.judgePeriod(start,end);
-      }
-    },1000)
-  }
+
   judgePeriod(start,end){
     if(this.dateCompare(start,end)){
       this.validation();
