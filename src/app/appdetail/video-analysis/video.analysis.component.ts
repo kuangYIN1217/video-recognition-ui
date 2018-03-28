@@ -156,7 +156,7 @@ export class VideoAnalysisComoponent {
       return;
     }
     this.createFlag = false;
-    this.warnService.createWarn(this.d_applicationId,this.ruleName,this.cateId,this.code,this.personName,'关闭',this.photoUrl)
+    this.warnService.createWarn(this.d_applicationId,this.ruleName,this.cateId,this.code,this.personName,'开启',this.photoUrl)
       .subscribe(result=>{
           this.create_show = false;
           this.ruleName = '';
@@ -860,11 +860,17 @@ export class VideoAnalysisComoponent {
       //console.log(rep);
       //this.d_analysis_options = rep;
       this.recognitionService.getRecognitionFile(this.d_applicationId)
-        .subscribe(result=>{
+        .subscribe((result)=>{
           //console.log(result);
           this.fileRecognition = result;
-          this.switchToggle('start');
-        });
+          //this.switchToggle('start');
+          },
+          (error)=>{
+            if(error.status==404){
+              this.fileRecognition = [];
+            }
+          }
+        );
 /*      for(let i=0;i<this.d_analysis_options.length;i++){
         this.d_analysis_options[i].recognitionCategories.sort(function(a,b){
           return parseInt(b.cateId) - parseInt(a.cateId)
@@ -902,6 +908,15 @@ export class VideoAnalysisComoponent {
       });
       if(this.d_video_list.length>0){
         this.streamType = this.d_video_list[0].channelProtocol;
+      }
+      if(this.fileRecognition.length>0){
+        this.recognitionService.setRecognitions( this.getAllChannelID(),this.fileRecognition[0].ruleId).subscribe(rep => {
+            //console.log(rep);
+            this.streamType = "RTSP";
+            this.d_video_list= rep;
+          });
+      }else{
+        this.streamType = "RTMP";
       }
       this.init_grid_number(rep.length ? rep.length : 0);
       this.getChannelId();
