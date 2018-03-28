@@ -294,6 +294,7 @@ export class VideoAnalysisComoponent {
     this.initChannels();
     /*查询开启的规则*/
     this.getOpenRule();
+
     this.appManageService.getProtocol()
       .subscribe(protocols=>{
         this.protocols=protocols;
@@ -608,16 +609,15 @@ export class VideoAnalysisComoponent {
         rulesId += this.rulesInfo[i].ruleId+',';
       }
     }
-    console.log(rulesId);
     return rulesId.substring(0,rulesId.length-1);
   }
   $cancel_analysis_submit(){
     for(let i=0;i<this.rulesInfo.length;i++){
       this.rulesInfo[i].selected = false;
     }
-    /*this.recognitionService.setRecognitions( this.getAllChannelID(),this.getRuleId()).subscribe(rep => {
-
-    })*/
+    this.recognitionService.setRecognitions( this.getAllChannelID(),null).subscribe(rep => {
+      this.streamType = "RTMP";
+    })
   }
   $change_analysis_submit() {
       if(this.saveColor==0||(this.getRuleId().length==0)){
@@ -681,12 +681,10 @@ export class VideoAnalysisComoponent {
   get_ckplayer_url (index: number) {
     if(this.streamType=="RTSP"){
       if (this.d_video_list && this.d_video_list.length >= index) {
-        //console.log(this.d_video_list[index-1].channelOut);
         return this.d_video_list[index-1].channelOut
       }
     }else if(this.streamType=="RTMP"){
       if (this.d_video_list && this.d_video_list.length >= index) {
-        //console.log(this.d_video_list[index-1].channelAddress);
         return this.d_video_list[index-1].channelAddress
       }
     }
