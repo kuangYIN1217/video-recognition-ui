@@ -313,5 +313,18 @@ input{
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+}
+.leftArrow,.rightArrow{
+  position: absolute;
+  top:50%;
+  margin-top: -45px;
+  cursor: pointer;
+}
+.leftArrow{
+  left:40px;
+}
+.rightArrow{
+  right:40px;
 }
 

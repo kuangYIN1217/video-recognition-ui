@@ -42,6 +42,9 @@ export class TaskManageComponent {
   nameTem:string;
   tip_btn:string;
   photoShow:boolean = false;
+  picturesNumber:any[]=[];
+  leftIndex:number = 0;
+  rightIndex:number = 0;
   @ViewChild('offlineVideo') offlineVideo: any;
   constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
@@ -114,8 +117,23 @@ export class TaskManageComponent {
   }*/
   lookResult(item){
     //this.playShow=true;
+    this.picturesNumber = ["assets/offline/1.jpg","assets/offline/2.png","assets/offline/3.png","assets/offline/4.png","assets/offline/5.png","assets/offline/6.png","assets/offline/7.png","assets/offline/8.png","assets/offline/9.png","assets/offline/10.png"];
     this.photoShow = true;
     this.outputPath = item.outputPath;
+  }
+  clickLeft(){
+    if(this.picturesNumber.length<=1){
+      return false
+    }else{
+      this.leftIndex++;
+    }
+  }
+  clickRight(){
+    if(this.picturesNumber.length<=1){
+      return false
+    }else{
+
+    }
   }
   closeVideo(){
     this.playShow=false;

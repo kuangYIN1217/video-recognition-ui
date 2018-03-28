@@ -91,17 +91,9 @@
     </div>-->
   </div>
 <div class="videoPlayer" *ngIf="photoShow">
+  <img [src]="picturesNumber.length==0?'assets/offline/bukedianji_zuo.png':'assets/offline/zuo.png'" class="leftArrow" (click)="clickLeft()"/>
     <div class="showArea">
-      <img src="assets/offline/1.jpg"/>
-     <!-- <img src="assets/offline/2.png"/>
-      <img src="assets/offline/3.png"/>
-      <img src="assets/offline/4.png"/>
-      <img src="assets/offline/5.png"/>
-      <img src="assets/offline/6.png"/>
-      <img src="assets/offline/7.png"/>
-      <img src="assets/offline/8.png"/>
-      <img src="assets/offline/9.png"/>
-      <img src="assets/offline/10.png"/>-->
+      <img src="{{picturesNumber[0]}}"/>
     </div>
-  <img [src]=""/>
+  <img [src]="picturesNumber.length==0?'assets/offline/bukedianji_you.png':'assets/offline/you.png'" class="rightArrow" (click)="clickRight()"/>
 </div>
