@@ -302,3 +302,16 @@ input{
   height: 100%;
   background-color: #23a880;
 }
+.showArea{
+  width:970px;
+  height:545px;
+  position: relative;
+  left:50%;
+  top:50%;
+  margin-left: -485px;
+  margin-top: -272.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+

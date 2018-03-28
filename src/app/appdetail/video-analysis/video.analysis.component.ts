@@ -910,11 +910,7 @@ export class VideoAnalysisComoponent {
         this.streamType = this.d_video_list[0].channelProtocol;
       }
       if(this.fileRecognition.length>0){
-        this.recognitionService.setRecognitions( this.getAllChannelID(),this.fileRecognition[0].ruleId).subscribe(rep => {
-            //console.log(rep);
             this.streamType = "RTSP";
-            this.d_video_list= rep;
-          });
       }else{
         this.streamType = "RTMP";
       }

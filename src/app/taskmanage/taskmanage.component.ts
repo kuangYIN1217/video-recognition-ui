@@ -41,6 +41,7 @@ export class TaskManageComponent {
   outputPath:string;
   nameTem:string;
   tip_btn:string;
+  photoShow:boolean = false;
   @ViewChild('offlineVideo') offlineVideo: any;
   constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
@@ -112,7 +113,8 @@ export class TaskManageComponent {
       })
   }*/
   lookResult(item){
-    this.playShow=true;
+    //this.playShow=true;
+    this.photoShow = true;
     this.outputPath = item.outputPath;
   }
   closeVideo(){
@@ -120,7 +122,8 @@ export class TaskManageComponent {
     this.showBtn = false;
   }
   show(){
-    this.videoBtn = 1;
+    this.offlineVideo.nativeElement.controls = true;
+    //this.videoBtn = 1;
 /*    this.offlineVideo.nativeElement.onloadedmetadata=function() {
       $('.duration').text(this.offlineVideo.nativeElement.duration);
     };
@@ -165,6 +168,7 @@ export class TaskManageComponent {
     this.offlineVideo.nativeElement.currentTime = maxduration * percentage / 100;*/
 }
   hide(){
+    this.offlineVideo.nativeElement.controls = false;
     this.videoBtn = 2;
     this.showBtn = false;
   }
