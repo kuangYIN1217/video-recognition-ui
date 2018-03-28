@@ -408,6 +408,7 @@ export class WayManageComponent {
       })
   }
   runChannel(item){
+    console.log(item);
     let j=0;
     if(item.channelStatus==0){
       for(let i=0;i<this.channelInfo.length;i++){
@@ -425,8 +426,8 @@ export class WayManageComponent {
     }else if(item.channelStatus==1){
       item.channelStatus=0;
     }
-    this.channelService.run(item.channelId,item.channelStatus)
-      .subscribe(reply => this.start_reply(reply));
+      this.channelService.run(item.channelId,item.channelStatus)
+        .subscribe(reply => this.start_reply(reply));
   }
   start_reply(reply){
     console.log(reply);

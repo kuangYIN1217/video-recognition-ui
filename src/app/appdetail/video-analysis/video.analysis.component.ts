@@ -639,14 +639,14 @@ export class VideoAnalysisComoponent {
               return parseInt(a.channelOrder) - parseInt(b.channelOrder)
             });
           });
-        } /*else {
+        } else {
           //this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
           this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getRuleId()).subscribe(rep => {
           //console.log(rep);
             this.d_video_list[this.s_selected_grid -1].recognitionCategory = rep[0].recognitionCategory;
           });
         //this.s_popup_show = false;
-      }*/
+      }
     }
   }
   /* 获得当前为true的 recognition */
@@ -681,17 +681,18 @@ export class VideoAnalysisComoponent {
   get_ckplayer_url (index: number) {
     if(this.streamType=="RTSP"){
       if (this.d_video_list && this.d_video_list.length >= index) {
-        console.log(this.d_video_list[index-1].channelOut);
+        //console.log(this.d_video_list[index-1].channelOut);
         return this.d_video_list[index-1].channelOut
       }
     }else if(this.streamType=="RTMP"){
       if (this.d_video_list && this.d_video_list.length >= index) {
-        console.log(this.d_video_list[index-1].channelAddress);
+        //console.log(this.d_video_list[index-1].channelAddress);
         return this.d_video_list[index-1].channelAddress
       }
     }
     return null;
   }
+
 
   get_ckplayer_type (index: number) {
     if (this.d_video_list && this.d_video_list.length >= index) {
