@@ -121,14 +121,14 @@ export class TaskManageComponent {
     this.outputPath = item.outputPath;
   }
   clickLeft(){
-    if(this.picturesNumber.length<=1){
+    if(this.photoIndex==0){
       return false
     }else{
       this.photoIndex--;
     }
   }
   clickRight(){
-    if(this.picturesNumber.length>=10){
+    if(this.photoIndex==this.picturesNumber.length-1){
       return false
     }else{
       this.photoIndex++;
