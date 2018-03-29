@@ -43,7 +43,8 @@
             <td>{{output(item.alarmRules)}}</td>
             <td>{{item.fileNumber}}</td>
             <td>{{item.taskStatus}}</td>
-<!--            <td style="position: relative;"><span class="mouse" (mouseenter)="running(item)" (mouseleave)="stopped(item)">{{getPercent(item.percent)}}
+            <td style="position: relative;">{{getPercent(item.percent)}}
+           <!--<span class="mouse" (mouseenter)="running(item)" (mouseleave)="stopped(item)">{{getPercent(item.percent)}}
               <div class="percentBox" *ngIf="item.show==1" [ngClass]="{border: item.show==1}">
                 <div class="percent"  *ngFor="let item of percent">
                   <p title="{{item.fileName}}（{{item.fileSize}}）">{{item.fileName}}<span>（{{item.fileSize}}）</span></p>
@@ -53,8 +54,8 @@
                   </div>
                 </div>
               </div>
-              </span>
-            </td>-->
+              </span>-->
+            </td>
             <td>
               <a class="operationBtn rerun" *ngIf="item.taskStatus=='完成'||item.taskStatus=='已停止'" (click)="runChannel(item)" title="重新运行"></a>
               <a class="operationBtn stop" *ngIf="item.taskStatus=='未启动'" (click)="runChannel(item)" title="开始"></a>

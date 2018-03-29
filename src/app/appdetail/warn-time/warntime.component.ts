@@ -296,12 +296,11 @@ export class WarnTimeComponent{
     this.seeIndex = 2;
   }
   seePhoto(url){
-    //console.log(url);
     this.seeIndex = 1;
     this.imageUrl = url.slice(17);
   }
   slicePath(url){
-    return url.slice(17)
+    return url.slice(17);
   }
   downPhoto(url){
     this.downUrl = url;
