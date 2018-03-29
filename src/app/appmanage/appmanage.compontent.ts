@@ -195,7 +195,7 @@ export class AppManageComponent {
   }
   getAllInfo(){
     this.appManageService.getAppInfo()
-      .subscribe(result=>{
+      .subscribe((result)=>{
         this.id1="";
         this.id2="";
         //this.id3="";
@@ -253,7 +253,13 @@ export class AppManageComponent {
          .subscribe(date=>{
 
          });*/
-      })
+      },
+        (error)=>{
+      if(error.status==401){
+        localStorage['authenticationToken'] = '';
+        this.router.navigate(['/login']);
+      }
+        })
   }
   download(){
       // this.appManageService.downTemplate()
