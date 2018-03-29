@@ -75,8 +75,8 @@
             <td *ngIf="appCate=='离线文件分析'" title="{{item.taskName}}">{{item.taskName}}</td>
             <td title="{{item.ruleName}}">{{item.ruleName}}</td>
             <td *ngIf="appCate=='离线文件分析'" title="{{item.alarmFileName}}">{{item.alarmFileName}}</td>
-            <td title="{{date(item.alarmTime)}}" *ngIf="appCate=='实时流分析'">{{date(item.alarmTime)}}</td>
-            <td title="{{date1(item.alarmTime)}}" *ngIf="appCate=='离线文件分析'">{{date1(item.alarmTime)}}</td>
+            <td title="{{item.alarmTime}}" *ngIf="appCate=='实时流分析'">{{item.alarmTime}}</td>
+            <td title="{{item.alarmTime}}" *ngIf="appCate=='离线文件分析'">{{item.alarmTime}}</td>
             <!--<td title="{{duraTime(item.duration)}}">{{duraTime(item.duration)}}</td>-->
             <td>
               <img src="../assets/warn/chakan.png" class="mrgr" (click)="seePhoto(item.imagePath)" title="查看快照"/>

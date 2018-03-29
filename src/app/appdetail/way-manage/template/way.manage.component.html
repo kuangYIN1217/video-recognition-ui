@@ -50,16 +50,16 @@
             </td>
             <td class="pad">{{item.channelOrder}}</td>
             <td class="pad">{{item.channelName}}</td>
-            <td class="pad">{{item.channelAddress}}</td>
+            <td class="pad" title="{{item.channelAddress}}">{{item.channelAddress}}</td>
             <td class="pad">{{item.channelProtocol}}</td>
             <td class="pad">{{output(item.channelStatus)}}</td>
             <td class="operation pad">
-              <a class="operationBtn stop" *ngIf="item.channelStatus==0" (click)="runChannel(item)"></a>
-              <a class="operationBtn start" *ngIf="item.channelStatus==1" (click)="runChannel(item)"></a>
-              <a class="operationBtn edit" *ngIf="item.channelStatus==0" (click)="edit(item)"></a>
+              <a class="operationBtn stop" title="停止通道" *ngIf="item.channelStatus==0" (click)="runChannel(item)"></a>
+              <a class="operationBtn start" title="开启通道" *ngIf="item.channelStatus==1" (click)="runChannel(item)"></a>
+              <a class="operationBtn edit" title="修改通道" *ngIf="item.channelStatus==0" (click)="edit(item)"></a>
               <a class="operationBtn unedit" *ngIf="item.channelStatus==1" (click)="edit(item)"></a>
-              <a class="operationBtn up" (click)="dirRecord(item.channelId,1)" *ngIf="i!=0"></a>
-              <a class="operationBtn down" (click)="dirRecord(item.channelId,2)" *ngIf="i!=channelInfo.length-1"></a>
+              <a class="operationBtn up" title="上移" (click)="dirRecord(item.channelId,1)" *ngIf="i!=0"></a>
+              <a class="operationBtn down" title="下移" (click)="dirRecord(item.channelId,2)" *ngIf="i!=channelInfo.length-1"></a>
             </td>
           </tr>
         </table>

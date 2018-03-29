@@ -110,6 +110,7 @@ input{
 .channelTable{
   width:100%;
   border:1px solid #d3d3d3;
+  table-layout:fixed;
 }
 .channelTable th{
   color: #333333;
@@ -127,6 +128,12 @@ input{
 }
 .channelTable tr:nth-child(even){
   background: #eeeeee;
+}
+.channelTable td{
+  text-overflow:ellipsis;
+  overflow: hidden;
+  white-space:nowrap;
+  cursor: pointer;
 }
 .operationBtn {
   width: 20px;

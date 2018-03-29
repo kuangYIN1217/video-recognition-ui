@@ -68,7 +68,7 @@ export class WarnTimeComponent{
        this.authority = true;
        }
        }*/
-      this.interval = setInterval(() => {
+/*      this.interval = setInterval(() => {
         if(sessionStorage.getItem("name")){
           this.chanName = sessionStorage.getItem("name");
         }
@@ -87,7 +87,7 @@ export class WarnTimeComponent{
             this.searchWarn(this.appId,0,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
           }
         }
-      }, 15000);
+      }, 15000);*/
     }else{
       this.interval = setInterval(() => {
         if(sessionStorage.getItem("task")){

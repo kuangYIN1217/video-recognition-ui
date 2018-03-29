@@ -323,6 +323,12 @@ export class WayManageComponent {
     }else{
       this.chanRequired2 = 0;
     }
+    let rtsp = new RegExp(/^rtsp/);
+    console.log(chanAddr);
+    let lower = chanAddr.toLowerCase();
+    if(rtsp.test(lower)){
+      return false
+    }
       //console.log(chanName,chanAddr);
       this.show = 0;
     if(!this.createFlag) {
