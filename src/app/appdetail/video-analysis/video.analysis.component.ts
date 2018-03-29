@@ -118,7 +118,7 @@ export class VideoAnalysisComoponent {
     }
   }
   getOpenRule(){
-    this.warnService.searchRules(this.d_applicationId,null,-1,'开启')
+    this.warnService.searchRules(this.d_applicationId,null,-1,'开启',0,1000000)
       .subscribe(result=>{
         this.rulesInfo = result.content;
         if(this.fileRecognition.length>0){
