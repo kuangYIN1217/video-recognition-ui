@@ -115,10 +115,14 @@ export class TaskManageComponent {
       })
   }*/
   lookResult(item){
-    //this.playShow=true;
-    this.picturesNumber = ["assets/offline/1.jpg","assets/offline/2.png","assets/offline/3.png","assets/offline/4.png","assets/offline/5.png","assets/offline/6.png","assets/offline/7.png","assets/offline/8.png","assets/offline/9.png","assets/offline/10.png"];
-    this.photoShow = true;
-    this.outputPath = item.outputPath;
+    if(item.fileType=="video"){
+      this.outputPath = item.outputPath;
+      this.playShow=true;
+    }else if(item.fileType=="image"){
+      let allImage = item.outputPath.split(',');
+      this.picturesNumber = allImage;
+      this.photoShow = true;
+      }
   }
   clickLeft(){
     if(this.photoIndex==0){
@@ -204,6 +208,11 @@ export class TaskManageComponent {
   output1(item){
     if(item.length>0){
       return item.substring(23,item.length);
+    }
+  }
+  output2(item){
+    if(item.length>0){
+      return item.substring(17,item.length);
     }
   }
   running(item){

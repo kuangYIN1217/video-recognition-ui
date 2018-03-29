@@ -78,6 +78,9 @@ export class VideoAnalysisComoponent {
   btn_show:boolean = true;
   streamType:string='';
   ruleNameMust:number = 0;
+  deleteIndex:number=0;
+  tip_title:string;
+  tip_content:string;
   radio(i){
     this.radioIndex = i;
   }
@@ -156,7 +159,18 @@ export class VideoAnalysisComoponent {
       return;
     }
     this.createFlag = false;
-    this.warnService.createWarn(this.d_applicationId,this.ruleName,this.cateId,this.code,this.personName,'开启',this.photoUrl)
+    var myDate = new Date();
+    //获取当前年
+    var year=myDate.getFullYear();
+    //获取当前月
+    var month=myDate.getMonth()+1;
+    //获取当前日
+    var date=myDate.getDate();
+    var h=myDate.getHours();       //获取当前小时数(0-23)
+    var m=myDate.getMinutes();     //获取当前分钟数(0-59)
+    var s=myDate.getSeconds();
+    var now=year+'-'+this.p(month)+"-"+this.p(date)+" "+this.p(h)+':'+this.p(m)+":"+this.p(s)+" 000";
+    this.warnService.createWarn(this.d_applicationId,this.ruleName,this.cateId,this.code,this.personName,'开启',this.photoUrl,now)
       .subscribe(result=>{
           this.create_show = false;
           this.ruleName = '';
@@ -167,6 +181,9 @@ export class VideoAnalysisComoponent {
           this.btn_show = true;
       })
   }
+  p(s) {
+  return s < 10 ? '0' + s: s;
+}
   getPhoto(){
     let temp='';
     for(let i=0;i<this.photoContainer.length;i++){
@@ -256,12 +273,19 @@ export class VideoAnalysisComoponent {
     this.createFlag = false;
     this.channelService.createChannel(this.d_applicationId,chanAddr,chanName,protocol,channelType,videoAddress,status)
       .subscribe(result=>{
-        this.show = 1;
-        this.addDialog = 0;
-        this.getPages(this.d_applicationId,this.page-1,this.pageMaxItem);
-        this.createFlag = true;
-        // todo refresh
-        this.initChannels()
+        if(result.text().substring(0,2)=='NO'){
+          this.deleteIndex =1;
+          this.tip_title = '提示';
+          this.tip_content = '该通道地址已存在，画面顺序为'+result.text().substring(3)+'！';
+          this.createFlag = true;
+        }else{
+          this.show = 1;
+          this.addDialog = 0;
+          this.getPages(this.d_applicationId,this.page-1,this.pageMaxItem);
+          this.createFlag = true;
+          // todo refresh
+          this.initChannels()
+        }
       })
   }
   getPages(id,page,size){
@@ -879,6 +903,9 @@ export class VideoAnalysisComoponent {
       //this.d_analysis_options[0].selected=true;
       //this.d_analysis_options_detail= rep ;
     //})
+  }
+  deleteChange(event){
+    this.deleteIndex = event;
   }
   initChannelsNoSort(){
     this.channelService.getOpenChannelById(this.d_applicationId).subscribe(rep => {

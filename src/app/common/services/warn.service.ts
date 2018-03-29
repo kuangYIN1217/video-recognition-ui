@@ -95,7 +95,7 @@ export class WarnService {
         }
       });
   }
-  createWarn(appId,name,obj,code,car,status,photoArr){
+  createWarn(appId,name,obj,code,car,status,photoArr,createTime){
     let path = "/api/alarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
@@ -103,7 +103,7 @@ export class WarnService {
         "cateId": obj,
         "code":code
       },
-      "createTime": null,
+      "createTime": createTime,
       "ruleId": 0,
       "ruleName":name ,
       "applicationChannels":null,
@@ -194,7 +194,7 @@ export class WarnService {
   }
   searchRules(id,name,obj,status,page=0,size=10){
     //console.log(id,name,chanId,obj,status);
-    let path = "/api/findRuleDynamic/"+id+"/"+name+"/"+obj+"/"+status+"?page="+page+"&size="+size;
+    let path = "/api/findRuleDynamic/"+id+"/"+name+"/"+obj+"/"+status+"?page="+page+"&size="+size+"&sort=createTime,desc";
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {
@@ -218,7 +218,7 @@ export class WarnService {
       });
   }
   searchOffTime(id,taskId,task,ruleId,status,page=0,size=10,start,end){
-    let path = "/api/alarm_time/"+id+"/"+name+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size+"&sort=alarmTime,desc";
+    let path = "/api/alarm_time_offline/"+id+"/"+taskId+"/"+task+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size+"&sort=alarmTime,desc";
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {

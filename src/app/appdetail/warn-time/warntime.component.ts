@@ -191,7 +191,7 @@ export class WarnTimeComponent{
     }
   }
   ngOnInit() {
-    if(this.appCate=="实时流分析"){
+    //if(this.appCate=="实时流分析"){
       $("#start").jeDate({
         isinitVal:true,
         festival: false,
@@ -226,7 +226,7 @@ export class WarnTimeComponent{
           }
         }.bind(this)
       });
-    }else{
+/*    }else{
       $("#start").jeDate({
         isinitVal:true,
         festival: false,
@@ -243,7 +243,7 @@ export class WarnTimeComponent{
           console.log(obj[0].value);
         }
       });
-    }
+    }*/
     calc_height(document.getElementById('warn-content'));
     this.startTime = $('#start').val("");
     this.endTime = $('#end').val("");
@@ -286,6 +286,7 @@ export class WarnTimeComponent{
     }
   }
   lookPhoto(item){
+    console.log(item);
     // this.router.navigate(['../warndetail'],{queryParams: {'detailList':item}});
     this.lookIndex=1;
     this.detaillist = item;
@@ -297,17 +298,17 @@ export class WarnTimeComponent{
   seePhoto(url){
     //console.log(url);
     this.seeIndex = 1;
-    this.imageUrl = url.slice(23);
+    this.imageUrl = url.slice(17);
   }
   slicePath(url){
-    return url.slice(23)
+    return url.slice(17)
   }
   downPhoto(url){
     this.downUrl = url;
     document.getElementById('down').click();
   }
   getDownPath(url){
-    return url.slice(23);
+    return url.slice(17);
   }
   close(){
     this.seeIndex = 0;
@@ -534,7 +535,7 @@ export class WarnTimeComponent{
       this.warnService.searchTime(id,nameTask,ruleId,status,page,size,start,end)
         .subscribe(
           (result)=>{
-          console.log(result);
+            this.handleTime(result);
           //this.getWarnList(result);
         },
           (error)=>{
@@ -543,12 +544,22 @@ export class WarnTimeComponent{
         )
     }else{
       this.warnService.searchOffTime(id,taskId,nameTask,ruleId,status,page,size,start,end)
-        .subscribe(result=>{
-          //this.getWarnList(result);
-        })
+        .subscribe((result)=>{
+            this.handleTime(result)},
+          (error)=>{
+            console.log(error.status);
+          })
     }
   }
-
+  handleTime(result){
+      for(var key in result){
+          let key1 = key.replace(/-/g, "/");
+          let value = result[key].replace(/-/g, "/");
+         let key_value = key1 + "-" + value;
+          this.periodTimeArr.push(key_value);
+        }
+     this.periodTime = this.periodTimeArr[0];
+  }
   judgePeriod(start,end){
     if(this.dateCompare(start,end)){
       this.validation();
@@ -565,6 +576,8 @@ export class WarnTimeComponent{
       }else{
         sessionStorage.setItem("task" , this.warnTask);
         this.sessionSet();
+        start = start+" 000";
+        end = end+" 000";
         if(this.taskId>0){
           this.searchPeriod(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
         }else{
@@ -572,7 +585,11 @@ export class WarnTimeComponent{
         }
       }
     }else{
-      alert("起始时间大于结束时间/起始时间和结束时间相差大于6小时！");
+      this.deleteIndex = 1;
+      this.tip_title = "提示";
+      this.tip_content = "起始时间大于结束时间/起始时间和结束时间相差大于6小时！";
+      $("#start").val('');
+      $("#end").val('');
       return false
     }
   }
@@ -580,15 +597,15 @@ export class WarnTimeComponent{
     this.validation();
     let startTime;
     let endTime;
-    if(this.startTime==''){
-      startTime=null;
-    }else{
-      startTime=this.startTime;
-    }
-    if(this.endTime==''){
+    if(this.periodTime.length>0){
+     let periodTime = this.periodTime.split("-");
+     startTime = periodTime[0];
+     endTime = periodTime[1];
+     startTime = startTime.replace(/\//g,"-");
+     endTime = endTime.replace(/\//g,"-");
+     }else{
+      startTime = null;
       endTime=null;
-    }else{
-      endTime=this.endTime;
     }
     this.distinguish(startTime,endTime);
   }

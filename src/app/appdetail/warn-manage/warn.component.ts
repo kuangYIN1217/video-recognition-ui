@@ -256,17 +256,17 @@ export class WarnComponent{
   seePhoto(url){
     //console.log(url);
     this.seeIndex = 1;
-    this.imageUrl = url.slice(23);
+    this.imageUrl = url.slice(17);
   }
   slicePath(url){
-    return url.slice(23)
+    return url.slice(17)
   }
   downPhoto(url){
     this.downUrl = url;
     document.getElementById('down').click();
   }
   getDownPath(url){
-    return url.slice(23);
+    return url.slice(17);
   }
   close(){
     this.seeIndex = 0;

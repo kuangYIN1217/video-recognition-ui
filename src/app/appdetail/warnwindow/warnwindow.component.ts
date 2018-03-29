@@ -283,7 +283,18 @@ export class WarnWindowComponent{
       return false
     }
     this.createFlag = false;
-    this.warnService.createWarn(this.appId,this.ruleName,this.cateId,this.code,this.objName,this.status,this.photoUrl)
+    var myDate = new Date();
+    //获取当前年
+    var year=myDate.getFullYear();
+    //获取当前月
+    var month=myDate.getMonth()+1;
+    //获取当前日
+    var date=myDate.getDate();
+    var h=myDate.getHours();       //获取当前小时数(0-23)
+    var m=myDate.getMinutes();     //获取当前分钟数(0-59)
+    var s=myDate.getSeconds();
+    var now=year+'-'+this.p(month)+"-"+this.p(date)+" "+this.p(h)+':'+this.p(m)+":"+this.p(s)+" 000";
+    this.warnService.createWarn(this.appId,this.ruleName,this.cateId,this.code,this.objName,this.status,this.photoUrl,now)
       .subscribe(result=>{
         if(result.text().substring(0,2)=='Ok'){
         this.createIndex = 2;
@@ -302,6 +313,9 @@ export class WarnWindowComponent{
           this.createFlag = true;
         }
       })
+  }
+  p(s) {
+    return s < 10 ? '0' + s: s;
   }
   editSave(){
     if(this.validation()==false){
