@@ -73,17 +73,29 @@ export class WarnComponent{
         }
         this.session();
         this.getRuleId();
+        let start = $("#start").val();
+        let end = $("#end").val();
+        if(start==""){
+          start = null;
+        }else{
+          start = start+" 000";
+        };
+        if(end==""){
+          end = null;
+        }else{
+          end = end+" 000";
+        };
         if(this.pageNow){
           if(this.taskId>0){
-            this.searchWarn(this.appId,this.taskId,this.chanName,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
+            this.searchWarn(this.appId,this.taskId,this.chanName,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,start,end);
           }else{
-            this.searchWarn(this.appId,0,this.chanName,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
+            this.searchWarn(this.appId,0,this.chanName,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,start,end);
           }
         }else{
           if(this.taskId>0){
-            this.searchWarn(this.appId,this.taskId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+            this.searchWarn(this.appId,this.taskId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
           }else{
-            this.searchWarn(this.appId,0,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+            this.searchWarn(this.appId,0,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
           }
         }
       }, 15000);
@@ -94,17 +106,29 @@ export class WarnComponent{
         }
         this.session();
         this.getRuleId();
+        let start = $("#start").val();
+        let end = $("#end").val();
+        if(start==""){
+          start = null;
+        }else{
+          start = start+" 000";
+        };
+        if(end==""){
+          end = null;
+        }else{
+          end = end+" 000";
+        };
         if(this.pageNow){
           if(this.taskId>0){
-            this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
+            this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,start,end);
           }else{
-            this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
+            this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,start,end);
           }
         }else{
           if(this.taskId>0){
-            this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+            this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
           }else{
-            this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+            this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
           }
         }
       }, 360000);
@@ -334,12 +358,12 @@ export class WarnComponent{
     if($('#start').val()==''){
       this.start = null;
     }else{
-      this.start = this.startTime;
+      this.start = this.startTime+" 000";
     }
     if($('#end').val()==''){
       this.end = null;
     }else{
-      this.end = this.endTime;
+      this.end = this.endTime+" 000";
     }
   }
   date(item){

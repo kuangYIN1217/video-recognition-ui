@@ -58,6 +58,7 @@ export class WarnTimeComponent{
   taskId:number=0;
   periodTime:string;
   periodTimeArr:any[]=[];
+  saveTime:any[]=[];
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -68,17 +69,18 @@ export class WarnTimeComponent{
         }
         this.session();
         this.getRuleId();
+        this.getPeriodTime();
         if(this.pageNow){
           if(this.taskId>0){
-            this.searchWarn(this.appId,this.taskId,this.chanName1,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
+            this.searchWarn(this.appId,this.taskId,this.chanName1,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,this.getPeriodTime()[0],this.getPeriodTime()[1]);
           }else{
-            this.searchWarn(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
+            this.searchWarn(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,this.getPeriodTime()[0],this.getPeriodTime()[1]);
           }
         }else{
           if(this.taskId>0){
-            this.searchWarn(this.appId,this.taskId,this.chanName1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+            this.searchWarn(this.appId,this.taskId,this.chanName1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.getPeriodTime()[0],this.getPeriodTime()[1]);
           }else{
-            this.searchWarn(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+            this.searchWarn(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.getPeriodTime()[0],this.getPeriodTime()[1]);
           }
         }
       }, 15000);
@@ -89,17 +91,18 @@ export class WarnTimeComponent{
         }
         this.session();
         this.getRuleId();
+        this.getPeriodTime();
         if(this.pageNow){
           if(this.taskId>0){
-            this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
+            this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,this.getPeriodTime()[0],this.getPeriodTime()[1]);
           }else{
-            this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
+            this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,this.getPeriodTime()[0],this.getPeriodTime()[1]);
           }
         }else{
           if(this.taskId>0){
-            this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+            this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.getPeriodTime()[0],this.getPeriodTime()[1]);
           }else{
-            this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+            this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.getPeriodTime()[0],this.getPeriodTime()[1]);
           }
         }
       }, 360000);
@@ -107,6 +110,7 @@ export class WarnTimeComponent{
     this.warnService.getWarnRules(this.appId)
       .subscribe(result=>{
         this.warnRlueArr = result.content;
+        this.warnRlueArr.unshift({"ruleId":-1,"ruleName":'全部'});
         if(this.warnRlueArr.length>0){
           this.warnRlue1 = this.warnRlueArr[0].ruleName;
           this.ruleId = this.warnRlueArr[0].ruleId;
@@ -157,6 +161,26 @@ export class WarnTimeComponent{
       this.searchWarn(this.appId,0,'全部',-1,'全部',this.page-1,this.pageMaxItem,null,null);
     }
   }
+  getPeriodTime(){
+    let start:string='';
+    let end:string='';
+    if(this.periodTime.length>0){
+      let periodTime = this.periodTime.split("-");
+      start = periodTime[0];
+      end = periodTime[1];
+      start = start.replace(/\//g,"-");
+      end = end.replace(/\//g,"-");
+      this.saveTime.push(start);
+      this.saveTime.push(end);
+      return this.saveTime
+    }else{
+      start = null;
+      end=null;
+      this.saveTime.push(start);
+      this.saveTime.push(end);
+      return this.saveTime
+    }
+  }
   ngAfterViewInit(){
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
 
@@ -174,9 +198,16 @@ export class WarnTimeComponent{
     if(sessionStorage.getItem("end1")){
       $('#end1').val(sessionStorage.getItem("end1"));
     }
+    if(sessionStorage.getItem("periodTime")){
+      this.periodTime = sessionStorage.getItem("periodTime");
+    }
+    if(sessionStorage.getItem("periodTimeArr")){
+      this.periodTimeArr = sessionStorage.getItem("periodTimeArr").split(",");
+    }
   }
   ngOnDestroy(){
     clearInterval(this.interval);
+
   }
   getHeight(){
     let height = window.innerHeight-140;
@@ -186,8 +217,6 @@ export class WarnTimeComponent{
   }
   ngOnInit() {
       calc_height(document.getElementById('warn-content'));
-      this.startTime = $('#start1').val("");
-      this.endTime = $('#end1').val("");
     //if(this.appCate=="实时流分析"){
       $("#start1").jeDate({
         isinitVal:true,
@@ -223,6 +252,8 @@ export class WarnTimeComponent{
           }
         }.bind(this)
       });
+    this.startTime = $('#start1').val("");
+    this.endTime = $('#end1').val("");
 /*    }else{
       $("#start").jeDate({
         isinitVal:true,
@@ -527,6 +558,12 @@ export class WarnTimeComponent{
           this.periodTimeArr.push(key_value);
         }
      this.periodTime = this.periodTimeArr[0];
+     sessionStorage.setItem("periodTime" , this.periodTime);
+     sessionStorage.setItem("periodTimeArr" , this.periodTimeArr.join(','));
+  }
+  changePeriodTime(){
+     sessionStorage.setItem("periodTime" , this.periodTime);
+     sessionStorage.setItem("periodTimeArr" , this.periodTimeArr.join(','));
   }
   judgePeriod(start,end){
     if(this.dateCompare(start,end)){
