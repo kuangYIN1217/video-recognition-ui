@@ -147,7 +147,7 @@
       </div>
       <div class="fangda" [style.display]="seeIndex==2?'':'none'">
         <span>
-          <img src="{{SERVER_URL}}/download/{{detaillist?.imagePath}}" *ngIf="detaillist.imagePath" class="jietu"/>
+          <img src="{{SERVER_URL}}/download/{{output(detaillist?.imagePath)}}" *ngIf="detaillist.imagePath" class="jietu"/>
           <img src="../assets/appmanage/delete.png" class="close" (click)="close()"/>
         </span>
       </div>

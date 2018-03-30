@@ -9,19 +9,19 @@
       <div class="search-select">
         <div class="search-info" *ngIf="appCate=='实时流分析'">
           <label>通道名称：</label>
-          <select [(ngModel)]="chanName" (ngModelChange)="chanName=$event;">
+          <select [(ngModel)]="chanName1" (ngModelChange)="chanName1=$event;">
             <option *ngFor="let item of chanNameArr" value="{{item}}">{{item}}</option>
           </select>
         </div>
         <div class="search-info" *ngIf="appCate=='离线文件分析'">
           <label>告警任务：</label>
-          <select [(ngModel)]="warnTask" (ngModelChange)="warnTask=$event;">
+          <select [(ngModel)]="warnTask1" (ngModelChange)="warnTask1=$event;">
             <option *ngFor="let item of warnTaskArr" value="{{item.taskName}}">{{item.taskName}}</option>
           </select>
         </div>
         <div class="search-info">
           <label>告警规则：</label>
-          <select [(ngModel)]="warnRlue" (ngModelChange)="warnRlue=$event;">
+          <select [(ngModel)]="warnRlue1" (ngModelChange)="warnRlue1=$event;">
             <option *ngFor="let item of warnRlueArr" value="{{item.ruleName}}">{{item.ruleName}}</option>
           </select>
         </div>
@@ -35,9 +35,9 @@
       <div class="search-time">
         <div class="search-info no-margin">
           <label>告警时间：</label>
-          <input type="text" id="start" class="time" readonly placeholder="请选择时间"/>
+          <input type="text" id="start1" class="time" readonly placeholder="请选择时间"/>
           <span>至</span>
-          <input type="text" id="end" class="time" readonly placeholder="请选择时间" style="margin-left: 0"/>
+          <input type="text" id="end1" class="time" readonly placeholder="请选择时间" style="margin-left: 0"/>
         </div>
         <div class="search-info periodTime">
           <label>目标时段：</label>
@@ -154,7 +154,7 @@
       </div>
       <div class="fangda" [style.display]="seeIndex==2?'':'none'">
         <span>
-          <img src="{{SERVER_URL}}/download/{{detaillist?.imagePath}}" *ngIf="detaillist.imagePath" class="jietu"/>
+          <img src="{{SERVER_URL}}/download/{{output(detaillist?.imagePath)}}" *ngIf="detaillist.imagePath" class="jietu"/>
           <img src="../assets/appmanage/delete.png" class="close" (click)="close()"/>
         </span>
       </div>

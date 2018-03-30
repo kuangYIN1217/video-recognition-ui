@@ -168,6 +168,9 @@ export class WarnComponent{
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
 
   }
+  output(item){
+    return item.substring(17);
+  }
   session(){
     if(sessionStorage.getItem("rule")){
       this.warnRlue = sessionStorage.getItem("rule");

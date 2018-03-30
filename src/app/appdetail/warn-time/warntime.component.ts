@@ -19,8 +19,8 @@ export class WarnTimeComponent{
   chanNameArr:any[]=[];
   warnRlueArr:any[]=[];
   appId:string;
-  warnRlue:string;
-  chanName:string;
+  warnRlue1:string;
+  chanName1:string;
   warnStatus:string;
   warnInfo:any[]=[];
   pageParams = new Page();
@@ -33,7 +33,7 @@ export class WarnTimeComponent{
   statusArr:any[]=["全部","已处理","未处理"];
   ruleId:number;
   appCate:string;
-  warnTask:string;
+  warnTask1:string;
   warnTaskArr:any[]=[];
   allWarn:any[]=[];
   lookIndex:number=0;
@@ -50,8 +50,8 @@ export class WarnTimeComponent{
   status:string;
   imageUrl:string;
   downUrl:string;
-  start:string;
-  end:string;
+  start1:string;
+  end1:string;
   authority:boolean = false;
   _realTime:any[]=[];
   _offline:any[]=[];
@@ -62,50 +62,44 @@ export class WarnTimeComponent{
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
     if(this.appCate=="实时流分析"){
-      /*      this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
-       for(let i=0;i<this._realTime.length;i++){
-       if(this._realTime[i].projectAuthorityId==6){
-       this.authority = true;
-       }
-       }*/
-/*      this.interval = setInterval(() => {
+      this.interval = setInterval(() => {
         if(sessionStorage.getItem("name")){
-          this.chanName = sessionStorage.getItem("name");
+          this.chanName1 = sessionStorage.getItem("name");
         }
         this.session();
         this.getRuleId();
         if(this.pageNow){
           if(this.taskId>0){
-            this.searchWarn(this.appId,this.taskId,this.chanName,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
+            this.searchWarn(this.appId,this.taskId,this.chanName1,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
           }else{
-            this.searchWarn(this.appId,0,this.chanName,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
+            this.searchWarn(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
           }
         }else{
           if(this.taskId>0){
-            this.searchWarn(this.appId,this.taskId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+            this.searchWarn(this.appId,this.taskId,this.chanName1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
           }else{
-            this.searchWarn(this.appId,0,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+            this.searchWarn(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
           }
         }
-      }, 15000);*/
+      }, 15000);
     }else{
       this.interval = setInterval(() => {
         if(sessionStorage.getItem("task")){
-          this.warnTask = sessionStorage.getItem("task");
+          this.warnTask1 = sessionStorage.getItem("task");
         }
         this.session();
         this.getRuleId();
         if(this.pageNow){
           if(this.taskId>0){
-            this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
+            this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
           }else{
-            this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
+            this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
           }
         }else{
           if(this.taskId>0){
-            this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+            this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
           }else{
-            this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+            this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
           }
         }
       }, 360000);
@@ -114,7 +108,7 @@ export class WarnTimeComponent{
       .subscribe(result=>{
         this.warnRlueArr = result.content;
         if(this.warnRlueArr.length>0){
-          this.warnRlue = this.warnRlueArr[0].ruleName;
+          this.warnRlue1 = this.warnRlueArr[0].ruleName;
           this.ruleId = this.warnRlueArr[0].ruleId;
         }
       })
@@ -123,7 +117,7 @@ export class WarnTimeComponent{
         this.chanNameArr=result;
         //console.log(this.chanNameArr);
         this.chanNameArr.unshift('全部');
-        this.chanName = this.chanNameArr[0];
+        this.chanName1 = this.chanNameArr[0];
       })
     this.offlineService.getWarnTask(this.appId)
       .subscribe(result=>{
@@ -131,7 +125,7 @@ export class WarnTimeComponent{
         this.warnTaskArr.unshift({"taskId":-1,"taskName":'全部'});
         //console.log(this.warnTaskArr);
         if(this.warnTaskArr.length>0){
-          this.warnTask = this.warnTaskArr[0].taskName;
+          this.warnTask1 = this.warnTaskArr[0].taskName;
         }
       })
     this.warnStatus = this.statusArr[0];
@@ -141,9 +135,9 @@ export class WarnTimeComponent{
         this.warnStatus = param['status'];
         //console.log(this.warnStatus);
         if(this.appCate=='实时流分析'){
-          this.searchWarn(this.appId,0,this.chanName,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+          this.searchWarn(this.appId,0,this.chanName1,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
         }else{
-          this.searchWarn(this.appId,0,this.warnTask,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+          this.searchWarn(this.appId,0,this.warnTask1,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
         }
       }
     });
@@ -154,7 +148,7 @@ export class WarnTimeComponent{
         this.taskId = params['taskId'];
         this.warnService.searchOffWarns(this.appId,this.taskId,this.taskName,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null)
           .subscribe(result=>{
-            this.warnTask = this.taskName;
+            this.warnTask1 = this.taskName;
             this.getWarnList(result);
           })
       }
@@ -169,16 +163,16 @@ export class WarnTimeComponent{
   }
   session(){
     if(sessionStorage.getItem("rule")){
-      this.warnRlue = sessionStorage.getItem("rule");
+      this.warnRlue1 = sessionStorage.getItem("rule");
     }
     if(sessionStorage.getItem("status")){
       this.warnStatus = sessionStorage.getItem("status");
     }
-    if(sessionStorage.getItem("start")){
-      $('#start').val(sessionStorage.getItem("start"));
+    if(sessionStorage.getItem("start1")){
+      $('#start1').val(sessionStorage.getItem("start1"));
     }
-    if(sessionStorage.getItem("end")){
-      $('#end').val(sessionStorage.getItem("end"));
+    if(sessionStorage.getItem("end1")){
+      $('#end1').val(sessionStorage.getItem("end1"));
     }
   }
   ngOnDestroy(){
@@ -191,38 +185,41 @@ export class WarnTimeComponent{
     }
   }
   ngOnInit() {
+      calc_height(document.getElementById('warn-content'));
+      this.startTime = $('#start1').val("");
+      this.endTime = $('#end1').val("");
     //if(this.appCate=="实时流分析"){
-      $("#start").jeDate({
+      $("#start1").jeDate({
         isinitVal:true,
         festival: false,
         format: 'YYYY-MM-DD hh:mm:ss',
         choosefun: function(val){
-          let end = $('#end').val();
+          let end = $('#end1').val();
           if(end!=''){
             this.judgePeriod(val[0].value,end);
           }
         }.bind(this),
         okfun:function(val){
-          let end = $('#end').val();
+          let end = $('#end1').val();
           if(end!=''){
             this.judgePeriod(val[0].value,end);
           }
         }.bind(this)
       });
-      $("#end").jeDate({
+      $("#end1").jeDate({
         isinitVal:true,
         festival: false,
         format: 'YYYY-MM-DD hh:mm:ss',
         choosefun: function(val){
-          let start = $('#start').val();
-          if(start!=''){
-            this.judgePeriod(start,val[0].value);
+          let start1 = $('#start1').val();
+          if(start1!=''){
+            this.judgePeriod(start1,val[0].value);
           }
         }.bind(this),
         okfun:function(val){
-          let start = $('#start').val();
-          if(start!=''){
-            this.judgePeriod(start,val[0].value);
+          let start1 = $('#start1').val();
+          if(start1!=''){
+            this.judgePeriod(start1,val[0].value);
           }
         }.bind(this)
       });
@@ -244,9 +241,6 @@ export class WarnTimeComponent{
         }
       });
     }*/
-    calc_height(document.getElementById('warn-content'));
-    this.startTime = $('#start').val("");
-    this.endTime = $('#end').val("");
   }
   /*  getAllWarn(id,page,size){
    this.warnService.getAllWarn(id,page,size)
@@ -317,38 +311,38 @@ export class WarnTimeComponent{
       this.validation();
       this.sessionSet();
       this.session();
-      if(this.warnRlue=='全部'){
+      if(this.warnRlue1=='全部'){
         this.judgeTime();
         if(this.taskId>0){
-          this.searchWarn(this.appId,this.taskId,this.chanName,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+          this.searchWarn(this.appId,this.taskId,this.chanName1,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
         }else{
-          this.searchWarn(this.appId,0,this.chanName,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+          this.searchWarn(this.appId,0,this.chanName1,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
         }
       }else{
         this.judgeTime();
         if(this.taskId>0){
-          this.searchWarn(this.appId,this.taskId,this.chanName,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+          this.searchWarn(this.appId,this.taskId,this.chanName1,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
         }else{
-          this.searchWarn(this.appId,0,this.chanName,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+          this.searchWarn(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
         }
       }
     }else{
       this.validation();
       this.sessionSet();
       this.session();
-      if(this.warnRlue=='全部'){
+      if(this.warnRlue1=='全部'){
         this.judgeTime();
         if(this.taskId>0){
-          this.searchWarn(this.appId,this.taskId,this.warnTask,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+          this.searchWarn(this.appId,this.taskId,this.warnTask1,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
         }else{
-          this.searchWarn(this.appId,0,this.warnTask,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+          this.searchWarn(this.appId,0,this.warnTask1,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
         }
       }else{
         this.judgeTime();
         if(this.taskId>0){
-          this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+          this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
         }else{
-          this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+          this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
         }
       }
     }
@@ -357,27 +351,27 @@ export class WarnTimeComponent{
     //console.log(this.pageNow,Number(this.pageChange));
   }
   getRuleId(){
-    if(this.warnRlue=='全部'){
+    if(this.warnRlue1=='全部'){
       this.ruleId = -1;
     }else{
       for(let i=0;i<this.warnRlueArr.length;i++){
         //console.log(this.warnRlueArr[i].ruleName);
-        if(this.warnRlueArr[i].ruleName == this.warnRlue){
+        if(this.warnRlueArr[i].ruleName == this.warnRlue1){
           this.ruleId = this.warnRlueArr[i].ruleId;
         }
       }
     }
   }
   judgeTime(){
-    if($('#start').val()==''){
-      this.start = null;
+    if($('#start1').val()==''){
+      this.start1 = null;
     }else{
-      this.start = this.startTime;
+      this.start1 = this.startTime;
     }
-    if($('#end').val()==''){
-      this.end = null;
+    if($('#end1').val()==''){
+      this.end1 = null;
     }else{
-      this.end = this.endTime;
+      this.end1 = this.endTime;
     }
   }
   date(item){
@@ -402,42 +396,9 @@ export class WarnTimeComponent{
       return Number(time).toFixed(2);
     }
   }
-/*  handling(item){
-    this.warnService.handlingWarn(item.alarmId,this.appId)
-      .subscribe(result=>{
-        this.session();
-        if(this.warnRlue=='全部'){
-          if(this.pageNow){
-            if(this.taskId>0){
-              this.searchWarn(this.appId,this.taskId,this.warnTask,-1,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
-            }else{
-              this.searchWarn(this.appId,0,this.warnTask,-1,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
-            }
-          }else{
-            if(this.taskId>0){
-              this.searchWarn(this.appId,this.taskId,this.warnTask,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
-            }else{
-              this.searchWarn(this.appId,0,this.warnTask,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
-            }
-          }
-        }else{
-          this.validation();
-          if(this.pageNow){
-            if(this.taskId>0){
-              this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
-            }else{
-              this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
-            }
-          }else{
-            if(this.taskId>0){
-              this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
-            }else{
-              this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
-            }
-          }
-        }
-      })
-  }*/
+  output(item){
+    return item.substring(17);
+  }
   deleteChange(event){
     this.deleteIndex = event;
   }
@@ -483,15 +444,15 @@ export class WarnTimeComponent{
   sessionSet(){
     sessionStorage.setItem("rule" , this.sessionRules);
     sessionStorage.setItem("status" , this.warnStatus);
-    sessionStorage.setItem("start" , this.startTime);
-    sessionStorage.setItem("end" , this.endTime);
+    sessionStorage.setItem("start1" , this.startTime);
+    sessionStorage.setItem("end1" , this.endTime);
   }
   validation(){
-    this.startTime = $('#start').val();
-    this.endTime = $('#end').val();
+    this.startTime = $('#start1').val();
+    this.endTime = $('#end1').val();
     for(let i=0;i<this.warnRlueArr.length;i++){
       //console.log(this.warnRlueArr[i].ruleName);
-      if(this.warnRlueArr[i].ruleName == this.warnRlue){
+      if(this.warnRlueArr[i].ruleName == this.warnRlue1){
         this.ruleId = this.warnRlueArr[i].ruleId;
         this.sessionRules = this.warnRlueArr[i].ruleName;
       }
@@ -538,7 +499,11 @@ export class WarnTimeComponent{
           //this.getWarnList(result);
         },
           (error)=>{
-            console.log(error.status);
+            if(error.status==404){
+              this.deleteIndex = 1;
+              this.tip_title = "提示";
+              this.tip_content = "该时间段没有告警！";
+            }
           }
         )
     }else{
@@ -546,7 +511,11 @@ export class WarnTimeComponent{
         .subscribe((result)=>{
             this.handleTime(result)},
           (error)=>{
-            console.log(error.status);
+            if(error.status==404){
+              this.deleteIndex = 1;
+              this.tip_title = "提示";
+              this.tip_content = "该时间段没有告警！";
+            }
           })
     }
   }
@@ -563,32 +532,32 @@ export class WarnTimeComponent{
     if(this.dateCompare(start,end)){
       this.validation();
       if(this.appCate=='实时流分析'){
-        sessionStorage.setItem("name" , this.chanName);
+        sessionStorage.setItem("name" , this.chanName1);
         this.sessionSet();
         start = start+" 000";
         end = end+" 000";
         if(this.taskId>0){
-          this.searchPeriod(this.appId,this.taskId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
+          this.searchPeriod(this.appId,this.taskId,this.chanName1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
         }else{
-          this.searchPeriod(this.appId,0,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
+          this.searchPeriod(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
         }
       }else{
-        sessionStorage.setItem("task" , this.warnTask);
+        sessionStorage.setItem("task" , this.warnTask1);
         this.sessionSet();
         start = start+" 000";
         end = end+" 000";
         if(this.taskId>0){
-          this.searchPeriod(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
+          this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
         }else{
-          this.searchPeriod(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
+          this.searchPeriod(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
         }
       }
     }else{
       this.deleteIndex = 1;
       this.tip_title = "提示";
       this.tip_content = "起始时间大于结束时间/起始时间和结束时间相差大于6小时！";
-      $("#start").val('');
-      $("#end").val('');
+      $("#start1").val('');
+      $("#end1").val('');
       return false
     }
   }
@@ -610,20 +579,20 @@ export class WarnTimeComponent{
   }
   distinguish(startTime,endTime){
     if(this.appCate=='实时流分析'){
-      sessionStorage.setItem("name" , this.chanName);
+      sessionStorage.setItem("name" , this.chanName1);
       this.sessionSet();
       if(this.taskId>0){
-        this.searchWarn(this.appId,this.taskId,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
+        this.searchWarn(this.appId,this.taskId,this.chanName1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
       }else{
-        this.searchWarn(this.appId,0,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
+        this.searchWarn(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
       }
     }else{
-      sessionStorage.setItem("task" , this.warnTask);
+      sessionStorage.setItem("task" , this.warnTask1);
       this.sessionSet();
       if(this.taskId>0){
-        this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
+        this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
       }else{
-        this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
+        this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
       }
     }
   }
