@@ -66,16 +66,6 @@ export class OfflineService {
         }
       });
   }
-  getWarnTask(id,page=0,size=10){
-    let path = "/api/getAllOfflineTask/"+id+"?page="+page+"&size="+size;
-    let headers = this.getHeaders();
-    return this.http.get(this.SERVER_URL+path, { headers : headers})
-      .map((response: Response) => {
-        if (response && response.json()) {
-          return response.json();
-        }
-      });
-  }
   offlineSwitch(id,status){
     let path = "/api/offlineTaskSwitch";
     let body = JSON.stringify({

@@ -48,13 +48,10 @@ export class VideoAnalysisComoponent {
   fullscreenIndex7:number=0;
   fullscreenIndex8:number=0;
   fullscreenIndex9:number=0;
-  authority:boolean = false;
-  _realTime:any[]=[];
   SERVER_URL = SERVER_URL;
   photoContainer:any[]=[];
   showFeature:number=0;
   targetSet:any[]=[];
-  featureName:string='';
   arr:any[]=[];
   heightIndex:number = 0;
   saveSelected:any[]=[];

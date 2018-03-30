@@ -222,6 +222,8 @@ select{
   -webkit-appearance: none;
   -moz-appearance: none;
   padding-left: 8px;
+  height:215px;
+  overflow-y: auto;
 }
 select option{
   padding-left: 8px;

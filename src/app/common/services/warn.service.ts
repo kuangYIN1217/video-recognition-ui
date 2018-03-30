@@ -229,6 +229,18 @@ export class WarnService {
         }
       });
   }
+  getWarnTask(id,type){
+    let path = "/api/video_offline_task/"+id+"/"+type;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path,{ headers: headers })
+      .map((response: Response) => {
+        if (response && response.json()) {
+          if(response.status==200){
+            return response.json();
+          }
+        }
+      });
+  }
   searchWarns(id,name,ruleId,status,page=0,size=10,start,end){
     let path = "/api/findAlarmLiveDynamic/"+id+"/"+name+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size+"&sort=alarmTime,desc";
     let headers = this.getHeaders();

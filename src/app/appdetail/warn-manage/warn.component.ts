@@ -52,21 +52,12 @@ export class WarnComponent{
   downUrl:string;
   start:string;
   end:string;
-  authority:boolean = false;
-  _realTime:any[]=[];
-  _offline:any[]=[];
   taskId:number=0;
-
+  showTime:boolean = true;
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
     if(this.appCate=="实时流分析"){
-/*      this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
-      for(let i=0;i<this._realTime.length;i++){
-        if(this._realTime[i].projectAuthorityId==6){
-          this.authority = true;
-        }
-      }*/
       this.interval = setInterval(() => {
         if(sessionStorage.getItem("name")){
           this.chanName = sessionStorage.getItem("name");
@@ -133,32 +124,44 @@ export class WarnComponent{
         }
       }, 360000);
     }
-    this.warnService.getWarnRules(this.appId)
-      .subscribe(result=>{
-        this.warnRlueArr = result.content;
-        this.warnRlueArr.unshift({"ruleId":-1,"ruleName":'全部'});
-        //console.log(this.warnRlueArr);
-        if(this.warnRlueArr.length>0){
-          this.warnRlue = this.warnRlueArr[0].ruleName;
-          this.ruleId = this.warnRlueArr[0].ruleId;
-        }
-      })
-    this.warnService.getChanName(this.appId)
-      .subscribe(result=>{
-        this.chanNameArr=result;
-        //console.log(this.chanNameArr);
-        this.chanNameArr.unshift('全部');
-        this.chanName = this.chanNameArr[0];
-      })
-    this.offlineService.getWarnTask(this.appId)
-      .subscribe(result=>{
-        this.warnTaskArr = result.content;
-        this.warnTaskArr.unshift({"taskId":-1,"taskName":'全部'});
-        //console.log(this.warnTaskArr);
-        if(this.warnTaskArr.length>0){
-          this.warnTask = this.warnTaskArr[0].taskName;
-        }
-      })
+    if(this.appCate=="实时流分析"){
+      this.warnService.getWarnRules(this.appId)
+        .subscribe(result=>{
+          this.warnRlueArr = result.content;
+          this.warnRlueArr.unshift({"ruleId":-1,"ruleName":'全部'});
+          //console.log(this.warnRlueArr);
+          if(this.warnRlueArr.length>0){
+            this.warnRlue = this.warnRlueArr[0].ruleName;
+            this.ruleId = this.warnRlueArr[0].ruleId;
+          }
+        });
+      this.warnService.getChanName(this.appId)
+        .subscribe(result=>{
+          this.chanNameArr=result;
+          //console.log(this.chanNameArr);
+          this.chanNameArr.unshift('全部');
+          this.chanName = this.chanNameArr[0];
+        });
+    }else{
+      this.warnService.getWarnTask(this.appId,"all")
+        .subscribe(result=>{
+          this.warnTaskArr = result;
+          //console.log(this.warnTaskArr);
+          if(this.warnTaskArr.length>0){
+            this.warnTask = this.warnTaskArr[0].taskName;
+            if(this.warnTaskArr[0].alarmRules.length>0){
+              this.warnRlueArr = this.warnTaskArr[0].alarmRules;
+              this.warnRlue = this.warnTaskArr[0].alarmRules[0].ruleName;
+              this.ruleId = this.warnTaskArr[0].alarmRules[0].ruleId;
+            }
+          };
+          if(this.warnTaskArr[0].fileType=='image'){
+              this.showTime = false;
+          }else{
+            this.showTime = true;
+          }
+        });
+    }
     this.warnStatus = this.statusArr[0];
     this.route.params.subscribe((param) => {
       if(JSON.stringify(param) != "{}"){
@@ -186,6 +189,21 @@ export class WarnComponent{
     });
     if(this.taskId<=0){
       this.searchWarn(this.appId,0,'全部',-1,'全部',this.page-1,this.pageMaxItem,null,null);
+    }
+  }
+  changeWarnTask(){
+    for(let i=0;i<this.warnTaskArr.length;i++){
+      if(this.warnTaskArr[i].taskName==this.warnTask){
+        if(this.warnTaskArr[i].fileType=='image'){
+          this.showTime = false;
+        }else{
+          this.showTime = true;
+        }
+        this.warnRlueArr = this.warnTaskArr[i].alarmRules;
+        this.warnRlue = this.warnTaskArr[i].alarmRules[0].ruleName;
+        this.ruleId = this.warnTaskArr[i].alarmRules[0].ruleId;
+        break;
+      }
     }
   }
   ngAfterViewInit(){

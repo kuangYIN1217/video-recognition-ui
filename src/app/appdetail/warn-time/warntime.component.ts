@@ -52,13 +52,11 @@ export class WarnTimeComponent{
   downUrl:string;
   start1:string;
   end1:string;
-  authority:boolean = false;
-  _realTime:any[]=[];
-  _offline:any[]=[];
   taskId:number=0;
   periodTime:string;
   periodTimeArr:any[]=[];
   saveTime:any[]=[];
+  showTime:boolean = true;
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -107,31 +105,46 @@ export class WarnTimeComponent{
         }
       }, 360000);
     }
-    this.warnService.getWarnRules(this.appId)
-      .subscribe(result=>{
-        this.warnRlueArr = result.content;
-        this.warnRlueArr.unshift({"ruleId":-1,"ruleName":'全部'});
-        if(this.warnRlueArr.length>0){
-          this.warnRlue1 = this.warnRlueArr[0].ruleName;
-          this.ruleId = this.warnRlueArr[0].ruleId;
-        }
-      })
-    this.warnService.getChanName(this.appId)
-      .subscribe(result=>{
-        this.chanNameArr=result;
-        //console.log(this.chanNameArr);
-        this.chanNameArr.unshift('全部');
-        this.chanName1 = this.chanNameArr[0];
-      })
-    this.offlineService.getWarnTask(this.appId)
-      .subscribe(result=>{
-        this.warnTaskArr = result.content;
-        this.warnTaskArr.unshift({"taskId":-1,"taskName":'全部'});
-        //console.log(this.warnTaskArr);
-        if(this.warnTaskArr.length>0){
-          this.warnTask1 = this.warnTaskArr[0].taskName;
-        }
-      })
+    if(this.appCate=="实时流分析"){
+      this.warnService.getWarnRules(this.appId)
+        .subscribe(result=>{
+          this.warnRlueArr = result.content;
+          this.warnRlueArr.unshift({"ruleId":-1,"ruleName":'全部'});
+          //console.log(this.warnRlueArr);
+          if(this.warnRlueArr.length>0){
+            this.warnRlue1 = this.warnRlueArr[0].ruleName;
+            this.ruleId = this.warnRlueArr[0].ruleId;
+          }
+        });
+      this.warnService.getChanName(this.appId)
+        .subscribe(result=>{
+          this.chanNameArr=result;
+          //console.log(this.chanNameArr);
+          this.chanNameArr.unshift('全部');
+          this.chanName1 = this.chanNameArr[0];
+        });
+    }else{
+      this.warnService.getWarnTask(this.appId,"video")
+        .subscribe(result=>{
+          this.warnTaskArr = result;
+          if(this.warnTaskArr.length>0){
+            this.warnTask1 = this.warnTaskArr[0].taskName;
+            if(this.warnTaskArr[0].alarmRules.length>0){
+              for(let i=0;i<this.warnTaskArr[0].alarmRules.length;i++){
+                if(this.warnTaskArr[0].alarmRules[i].recognitionCategory.name=="全部"){
+                  this.warnTaskArr[0].alarmRules.splice(i,1);
+                  i--;
+                }
+              }
+              if(this.warnTaskArr[0].alarmRules.length>0){
+                this.warnRlueArr = this.warnTaskArr[0].alarmRules;
+                this.warnRlue1 = this.warnTaskArr[0].alarmRules[0].ruleName;
+                this.ruleId = this.warnTaskArr[0].alarmRules[0].ruleId;
+              }
+            }
+          };
+        });
+    }
     this.warnStatus = this.statusArr[0];
     this.route.params.subscribe((param) => {
       if(JSON.stringify(param) != "{}"){
@@ -159,6 +172,27 @@ export class WarnTimeComponent{
     });
     if(this.taskId<=0){
       this.searchWarn(this.appId,0,'全部',-1,'全部',this.page-1,this.pageMaxItem,null,null);
+    }
+  }
+  changeWarnTask(){
+    for(let i=0;i<this.warnTaskArr.length;i++){
+      if(this.warnTaskArr[i].taskName==this.warnTask1){
+        if(this.warnTaskArr[i].fileType=='image'){
+          this.showTime = false;
+        }else{
+          this.showTime = true;
+        }
+        this.warnRlueArr = this.warnTaskArr[i].alarmRules;
+        for(let j=0;j<this.warnRlueArr.length;j++){
+          if(this.warnRlueArr[j].recognitionCategory.name=="全部"){
+            this.warnRlueArr[j].splice(j,1);
+            j--;
+          }
+        }
+        this.warnRlue1 = this.warnTaskArr[i].alarmRules[0].ruleName;
+        this.ruleId = this.warnTaskArr[i].alarmRules[0].ruleId;
+        break;
+      }
     }
   }
   getPeriodTime(){
@@ -382,8 +416,8 @@ export class WarnTimeComponent{
     //console.log(this.pageNow,Number(this.pageChange));
   }
   getRuleId(){
-    if(this.warnRlue1=='全部'){
-      this.ruleId = -1;
+    if(this.warnRlue1==''){
+      this.ruleId = 0;
     }else{
       for(let i=0;i<this.warnRlueArr.length;i++){
         //console.log(this.warnRlueArr[i].ruleName);
@@ -481,12 +515,17 @@ export class WarnTimeComponent{
   validation(){
     this.startTime = $('#start1').val();
     this.endTime = $('#end1').val();
-    for(let i=0;i<this.warnRlueArr.length;i++){
-      //console.log(this.warnRlueArr[i].ruleName);
-      if(this.warnRlueArr[i].ruleName == this.warnRlue1){
-        this.ruleId = this.warnRlueArr[i].ruleId;
-        this.sessionRules = this.warnRlueArr[i].ruleName;
+    if(this.warnRlue1!=''&&this.warnRlue1!=undefined){
+      for(let i=0;i<this.warnRlueArr.length;i++){
+        //console.log(this.warnRlueArr[i].ruleName);
+        if(this.warnRlueArr[i].ruleName == this.warnRlue1){
+          this.ruleId = this.warnRlueArr[i].ruleId;
+          this.sessionRules = this.warnRlueArr[i].ruleName;
+        }
       }
+    }else{
+      this.ruleId = 0;
+      this.sessionRules = '';
     }
   }
   dateCompare(startStr,endStr){
@@ -520,7 +559,6 @@ export class WarnTimeComponent{
         }
       }
 }
-
   searchPeriod(id,taskId,nameTask,ruleId,status,page,size,start,end){
     if(this.appCate=='实时流分析'){
       this.warnService.searchTime(id,nameTask,ruleId,status,page,size,start,end)

@@ -15,7 +15,7 @@
         </div>
         <div class="search-info" *ngIf="appCate=='离线文件分析'">
           <label>告警任务：</label>
-          <select [(ngModel)]="warnTask1" (ngModelChange)="warnTask1=$event;">
+          <select [(ngModel)]="warnTask1" (ngModelChange)="warnTask1=$event;changeWarnTask()">
             <option *ngFor="let item of warnTaskArr" value="{{item.taskName}}">{{item.taskName}}</option>
           </select>
         </div>
@@ -45,7 +45,8 @@
             <option *ngFor="let item of periodTimeArr" value="{{item}}">{{item}}</option>
           </select>
         </div>
-        <a href="#" onclick="return false" class="btn bgco" (click)="search()">查询</a>
+        <a href="#" onclick="return false" class="btn bgco" (click)="search()" *ngIf="periodTime!=undefined&&periodTime!=''">查询</a>
+        <a href="#" onclick="return false" class="btn bgcg" *ngIf="periodTime==undefined||periodTime==''">查询</a>
       </div>
     </div>
     <div class="warn-content" id="warn-content">
