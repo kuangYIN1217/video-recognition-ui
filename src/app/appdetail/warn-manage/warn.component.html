@@ -25,12 +25,12 @@
             <option *ngFor="let item of warnRlueArr" value="{{item.ruleName}}">{{item.ruleName}}</option>
           </select>
         </div>
-        <div class="search-info">
+        <!--<div class="search-info">
           <label>告警状态：</label>
           <select [(ngModel)]="warnStatus" (ngModelChange)="warnStatus=$event;">
             <option *ngFor="let item of statusArr" value="{{item}}">{{item}}</option>
           </select>
-        </div>
+        </div>-->
       </div>
       <div class="search-time">
         <div class="search-info no-margin">

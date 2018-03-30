@@ -463,12 +463,12 @@ export class WarnComponent{
     if(this.startTime==''){
       startTime=null;
     }else{
-      startTime=this.startTime;
+      startTime=this.startTime+" 000";
     }
     if(this.endTime==''){
       endTime=null;
     }else{
-      endTime=this.endTime;
+      endTime=this.endTime+" 000";
     }
     if(this.appCate=='实时流分析'){
       sessionStorage.setItem("name" , this.chanName);
