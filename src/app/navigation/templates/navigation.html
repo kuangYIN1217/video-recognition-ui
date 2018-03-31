@@ -21,7 +21,7 @@
       </div>
       <div class="nav_element" *ngIf="elector" [class.focusTab] = "focusTab==6" routerLinkActive="active" routerLink="/warntime" (click)="changeTab(6);focusCollapse='0'">
         <img [src]="focusTab!=6?'assets/appdetail/icon_warn_n.png':'assets/appdetail/icon_warn_h.png'">
-        <a href="#" onclick="return false">告警明细</a>
+        <a href="#" onclick="return false">告警管理</a>
       </div>
 <!--      <div class="nav_element" *ngIf="elector" [class.focusTab] = "focusTab==3" routerLinkActive="active" routerLink="/monitorreport" (click)="changeTab(3);focusCollapse='0'">
         <img [src]="focusTab!=3?'assets/appdetail/icon_monitor_n.png':'assets/appdetail/icon_monitor_h.png'">

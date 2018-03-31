@@ -75,6 +75,7 @@ label{
 }
 .taskTable{
   width:100%;
+  table-layout:fixed;
 }
 .taskTable th{
   color: #333333;
@@ -95,7 +96,7 @@ label{
 }
 .taskTable td{
   text-overflow:ellipsis;
-  /*overflow: hidden;*/
+  overflow: hidden;
   white-space:nowrap;
 }
 .middle{

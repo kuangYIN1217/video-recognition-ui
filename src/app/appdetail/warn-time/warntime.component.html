@@ -45,8 +45,7 @@
             <option *ngFor="let item of periodTimeArr" value="{{item}}">{{item}}</option>
           </select>
         </div>
-        <a href="#" onclick="return false" class="btn bgco" (click)="search()" *ngIf="periodTime!=undefined&&periodTime!=''">查询</a>
-        <a href="#" onclick="return false" class="btn bgcg" *ngIf="periodTime==undefined||periodTime==''">查询</a>
+        <a href="#" onclick="return false" class="btn bgco" (click)="search()">查询</a>
       </div>
     </div>
     <div class="warn-content" id="warn-content">
@@ -78,7 +77,7 @@
             <td title="{{item.ruleName}}">{{item.ruleName}}</td>
             <td *ngIf="appCate=='离线文件分析'" title="{{item.alarmFileName}}">{{item.alarmFileName}}</td>
             <td title="{{item.alarmTime}}" *ngIf="appCate=='实时流分析'">{{item.alarmTime}}</td>
-            <td title="{{item.alarmTime}}" *ngIf="appCate=='离线文件分析'">{{item.alarmTime}}</td>
+            <td title="{{getTime(item.alarmTime)}}" *ngIf="appCate=='离线文件分析'">{{getTime(item.alarmTime)}}</td>
             <!--<td title="{{duraTime(item.duration)}}">{{duraTime(item.duration)}}</td>-->
             <td>
               <img src="../assets/warn/chakan.png" class="mrgr" (click)="seePhoto(item.imagePath)" title="查看快照"/>
@@ -130,7 +129,7 @@
       <div class="detail_info">
         <span class="info_name">告警时间：</span>
         <span class="info_content" *ngIf="appCate=='实时流分析'">{{detaillist.alarmTime}}</span>
-        <span class="info_content" *ngIf="appCate=='离线文件分析'">{{detaillist.alarmTime}}</span>
+        <span class="info_content" *ngIf="appCate=='离线文件分析'">{{getTime(detaillist.alarmTime)}}</span>
       </div>
       <!--      <div class="detail_info">
               <span class="info_name">告警时长：</span>

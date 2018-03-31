@@ -39,9 +39,9 @@
               <img src="../assets/appdetail/way.manage/unchecked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag!=1"/>
               <img src="../assets/appdetail/way.manage/checked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag==1"/>
             </td>
-            <td>{{item.taskName}}</td>
-            <td>{{output(item.alarmRules)}}</td>
-            <td>{{item.fileNumber}}</td>
+            <td title="{{item.taskName}}">{{item.taskName}}</td>
+            <td title="{{output(item.alarmRules)}}">{{output(item.alarmRules)}}</td>
+            <td title="{{item.fileNumber}}">{{item.fileNumber}}</td>
             <td>{{item.taskStatus}}</td>
             <td style="position: relative;">{{getPercent(item.percent)}}
            <!--<span class="mouse" (mouseenter)="running(item)" (mouseleave)="stopped(item)">{{getPercent(item.percent)}}
