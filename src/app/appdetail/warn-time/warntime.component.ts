@@ -729,8 +729,8 @@ export class WarnTimeComponent{
       })
     this.lookIndex = 0;
   }
-  getTime(item){
-    if(item.length>0){
+  getTime(item?){
+    if(item){
       let re = item.split('-');
       return re[2].substring(2);
     }

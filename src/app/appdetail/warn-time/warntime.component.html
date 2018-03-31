@@ -41,7 +41,7 @@
         </div>
         <div class="search-info periodTime">
           <label>目标时段：</label>
-          <select [(ngModel)]="periodTime" (ngModelChange)="periodTime=$event;changePeriodTime()">
+          <select [(ngModel)]="periodTime" (ngModelChange)="periodTime=$event;changePeriodTime()" style="width:18vw">
             <option *ngFor="let item of periodTimeArr" value="{{item}}">{{item}}</option>
           </select>
         </div>
@@ -129,7 +129,7 @@
       <div class="detail_info">
         <span class="info_name">告警时间：</span>
         <span class="info_content" *ngIf="appCate=='实时流分析'">{{detaillist.alarmTime}}</span>
-        <span class="info_content" *ngIf="appCate=='离线文件分析'">{{getTime(detaillist.alarmTime)}}</span>
+        <span class="info_content" *ngIf="appCate=='离线文件分析'">{{getTime(detaillist?.alarmTime)}}</span>
       </div>
       <!--      <div class="detail_info">
               <span class="info_name">告警时长：</span>
