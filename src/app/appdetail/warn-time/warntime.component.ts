@@ -623,14 +623,21 @@ export class WarnTimeComponent{
   }
   handleTime(result){
       for(var key in result){
-          let key1 = key.replace(/-/g, "/");
-          let value = result[key].replace(/-/g, "/");
-         let key_value = key1 + "-" + value;
-          this.periodTimeArr.push(key_value);
+        let key1:string;
+        let value:string;
+        if(this.appCate=="实时流分析"){
+          key1 = key.replace(/-/g, "/");
+          value = result[key].replace(/-/g, "/");
+        }else{
+          key1 = this.getTime(key);
+          value = this.getTime(result[key]);
         }
+        let key_value = key1 + "-" + value;
+        this.periodTimeArr.push(key_value);
+      }
      this.periodTime = this.periodTimeArr[0];
-     sessionStorage.setItem("periodTime" , this.periodTime);
-     sessionStorage.setItem("periodTimeArr" , this.periodTimeArr.join(','));
+     //sessionStorage.setItem("periodTime" , this.periodTime);
+     //sessionStorage.setItem("periodTimeArr" , this.periodTimeArr.join(','));
   }
   changePeriodTime(){
      sessionStorage.setItem("periodTime" , this.periodTime);
@@ -675,11 +682,16 @@ export class WarnTimeComponent{
     let startTime;
     let endTime;
     if(this.periodTime!=undefined&&this.periodTime.length>0){
-     let periodTime = this.periodTime.split("-");
-     startTime = periodTime[0];
-     endTime = periodTime[1];
-     startTime = startTime.replace(/\//g,"-");
-     endTime = endTime.replace(/\//g,"-");
+      let periodTime = this.periodTime.split("-");
+      if(this.appCate=="实时流分析"){
+        startTime = periodTime[0];
+        endTime = periodTime[1];
+        startTime = startTime.replace(/\//g,"-");
+        endTime = endTime.replace(/\//g,"-");
+      }else{
+        startTime = periodTime[0];
+        endTime = periodTime[1];
+      }
      }else{
       startTime = null;
       endTime=null;
