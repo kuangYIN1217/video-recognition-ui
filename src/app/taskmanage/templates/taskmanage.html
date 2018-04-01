@@ -97,5 +97,5 @@
     <div class="showArea">
       <img src="{{SERVER_URL}}/download/{{output2(picturesNumber[photoIndex])}}"/>
     </div>
-  <img [src]="photoIndex==9?'assets/offline/bukedianji_you.png':'assets/offline/you.png'" class="rightArrow" (click)="clickRight()"/>
+  <img [src]="photoIndex==picturesNumber.length-1?'assets/offline/bukedianji_you.png':'assets/offline/you.png'" class="rightArrow" (click)="clickRight()"/>
 </div>

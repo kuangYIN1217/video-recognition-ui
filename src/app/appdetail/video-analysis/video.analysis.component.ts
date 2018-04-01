@@ -514,13 +514,6 @@ export class VideoAnalysisComoponent {
     this.fullscreenIndex8 = index;
     this.fullscreenIndex9 = index;
   }
-  noClickFirst(i,j){
-    for(let k=0;k<this.d_analysis_options[i].recognitionCategories.length;k++){
-      if(this.d_analysis_options[i].recognitionCategories[j].cateId!=this.d_analysis_options[i].recognitionCategories[k].cateId){
-        this.d_analysis_options[i].recognitionCategories[k].color=1;
-      }
-    }
-  }
   $popup_toggle () {
     this.s_popup_show = !this.s_popup_show;
     for(let i=0;i<this.d_analysis_options[0].recognitionCategories.length;i++){
@@ -534,8 +527,6 @@ export class VideoAnalysisComoponent {
     this.getHeight();
   }
   getHeight(){
-    //console.log($(".analysis-popup").height());
-    //console.log($(".feature-people").height()+103);
     if($(".feature-people").height()+103>$(".analysis-popup").height()){
       $(".feature-people").height($(".analysis-popup").height());
       this.heightIndex = 1;
@@ -926,7 +917,6 @@ export class VideoAnalysisComoponent {
     }
     this.channelService.getOpenChannelById(this.d_applicationId).subscribe(rep => {
       this.d_video_list = rep;
-      //console.log(rep);
       this.d_video_list.sort(function(a,b){
         return parseInt(a.channelOrder) - parseInt(b.channelOrder)
       });

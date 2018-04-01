@@ -247,34 +247,24 @@ input{
   background-color: rgba(111, 111, 111, 0.3);
   opacity: 1;
   z-index: 999999;
-/*  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-justify-content: center;
-  -moz-justify-content: center;
-  -ms-justify-content: center;
-  -o-justify-content: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -moz-align-items: center;
-  -ms-align-items: center;
-  -o-align-items: center;
-  align-items: center;*/
 }
 .fangda span{
   position: absolute;
-  width:70%;
-  margin-left: -35%;
+  width:970px;
+  height:545px;
+  margin-top: -272.5px;
+  margin-left: -485px;
   left:50%;
-  top:20%;
+  top:50%;
 }
-.fangda .jietu{
+/*.fangda .jietu{
   width:100%;
-}
+  height:100%;
+}*/
 .fangda .close{
   position: absolute;
-  top:0;
-  right:0;
+/*  top:0;
+  right:0;*/
   cursor: pointer;
 }
 .checked{
@@ -305,3 +295,4 @@ input{
 .operation{
   width:12%;
 }
+

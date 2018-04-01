@@ -261,10 +261,12 @@ input{
 }
 .fangda span{
   position: absolute;
-  width:70%;
-  margin-left: -35%;
+  width:970px;
+  height:545px;
+  margin-top: -272.5px;
+  margin-left: -485px;
   left:50%;
-  top:20%;
+  top:50%;
 }
 .fangda .jietu{
   width:100%;

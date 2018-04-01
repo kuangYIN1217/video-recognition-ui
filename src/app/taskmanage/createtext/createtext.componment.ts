@@ -161,8 +161,17 @@ export class CreateTextComponent {
       };
       this.uploader.queue[j].onSuccess = (response: any, status: any, headers: any) => {
         //console.log(response);
-        this.offlineObj = { "fileName":this.uploader.queue[j].file.name,"inputPath":response };
-        this.offlineFiles.push(this.offlineObj);
+        if(this.choose=="zip"){
+          let arr = response.split(',');
+          for(let i=0;i<arr.length;i++){
+            let obj:any={};
+            obj = { "fileName":this.uploader.queue[j].file.name,"inputPath":arr[i] };
+            this.offlineFiles.push(obj);
+          }
+        }else{
+          this.offlineObj = { "fileName":this.uploader.queue[j].file.name,"inputPath":response };
+          this.offlineFiles.push(this.offlineObj);
+        }
 /*        this.inputPathArr.push(response);
         this.fileNameArr.push(this.uploader.queue[j].file.name);
         if(j==this.uploader.queue.length-1){
@@ -311,6 +320,7 @@ export class CreateTextComponent {
     }
     this.fileNumber = this.uploader.queue.length;
     console.log(this.offlineFiles);
+
     this.offlineService.create(this.appId,this.warnRuleId,this.taskName,this.choosed,this.offlineFiles,this.fileNumber)
       .subscribe(result=>{
         this.router.navigate(['../taskmanage']);
