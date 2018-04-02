@@ -48,16 +48,6 @@ export class TaskManageComponent {
   constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
-      //console.log(window.sessionStorage.getItem("_offline"));
-      //this._offline = JSON.parse(window.sessionStorage.getItem("_offline"));
-      //console.log(this._offline);
-/*      for(let i=0;i<this._offline.length;i++){
-        if(this._offline[i].projectAuthorityId==11){
-          this.authority = true;
-        }
-      }*/
-    //console.log(this.appId);
-    //console.log(this.appCate);
     this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
     this.interval = setInterval(() => {
         this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
@@ -399,7 +389,7 @@ export class TaskManageComponent {
   }
   look(item){
     //console.log(item);
-    this.router.navigate(['../warnmanage'],{queryParams: {'taskName':item.taskName,'taskId':item.taskId}});
+    this.router.navigate(['../warnmanage'],{queryParams: {'taskName':item.taskName,'taskId':item.taskId,"once":"true"}});
   }
   dia(){
     for(let i in this.taskList){

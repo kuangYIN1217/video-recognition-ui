@@ -110,7 +110,7 @@ export class OfflineService {
       });
   }
   offlineTaskCheck(taskId,selected){
-    let path = "/api/offlineTaskCheck?taskId="+taskId+"&selected="+selected;
+    let path = "/api/offlineTaskCheck/"+taskId+"/"+selected;
     let headers = this.getHeaders();
     return this.http.put(this.SERVER_URL+path, { headers : headers})
       .map((response: Response) => {
