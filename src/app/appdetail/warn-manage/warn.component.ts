@@ -55,6 +55,7 @@ export class WarnComponent{
   taskId:number=0;
   showTime:boolean = true;
   once:string='';
+  alarmRules:any[]=[];
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -148,13 +149,22 @@ export class WarnComponent{
         .subscribe(result=>{
           this.warnTaskArr = result;
           //console.log(this.warnTaskArr);
-          if(this.warnTaskArr.length>0){
+          if(this.warnTaskArr.length>0&&this.once!="true"){
             this.warnTask = this.warnTaskArr[0].taskName;
             if(this.warnTaskArr[0].alarmRules.length>0){
               this.warnRlueArr = this.warnTaskArr[0].alarmRules;
               this.warnRlue = this.warnTaskArr[0].alarmRules[0].ruleName;
               this.ruleId = this.warnTaskArr[0].alarmRules[0].ruleId;
             }
+          }else{
+            for(let i=0;i<this.warnTaskArr.length;i++){
+                if(this.warnTaskArr[i].taskId==this.taskId){
+                  this.warnRlueArr = this.warnTaskArr[i].alarmRules;
+                  break;
+                }
+            }
+            this.warnRlue = this.alarmRules[0].ruleName;
+            this.ruleId = this.alarmRules[0].ruleId;
           };
           if(this.warnTaskArr[0].fileType=='image'){
               this.showTime = false;
@@ -254,7 +264,11 @@ export class WarnComponent{
         this.taskName = params['taskName'];
         this.taskId = params['taskId'];
         this.once = params['once'];
-        this.warnService.searchOffWarns(this.appId,this.taskId,this.taskName,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null)
+        this.alarmRules = JSON.parse(params['alarmRules']);
+        this.warnRlue = this.alarmRules[0].ruleName;
+        this.ruleId = this.alarmRules[0].ruleId;
+        this.warnService.searchOffWarns(this.appId,this.taskId,this.taskName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null)
+        //this.warnService.searchOffWarns(this.appId,this.taskId,this.taskName,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null)
           .subscribe(result=>{
             this.warnTask = this.taskName;
             this.getWarnList(result);
