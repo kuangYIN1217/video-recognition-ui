@@ -57,6 +57,7 @@ export class WarnTimeComponent{
   periodTimeArr:any[]=[];
   saveTime:any[]=[];
   showTime:boolean = true;
+  videoUrl:string='';
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -110,7 +111,7 @@ export class WarnTimeComponent{
           if(this.warnRlueArr.length>0){
             let tempArr:any[]=[];
             for(let i=0;i<this.warnRlueArr.length;i++){
-              if(this.warnRlueArr[i].targetImages!=''){
+              if(this.warnRlueArr[i].targetImages!=''&&this.warnRlueArr[i].recognitionCategory.name!="全部"){
                   tempArr.push(this.warnRlueArr[i]);
               }
             }
@@ -131,20 +132,14 @@ export class WarnTimeComponent{
         .subscribe(result=>{
           this.warnTaskArr = result;
           if(this.warnTaskArr.length>0){
+            this.warnTaskArr = this.filterPerson(this.warnTaskArr);
             this.warnTask1 = this.warnTaskArr[0].taskName;
+            this.videoUrl = this.warnTaskArr[0].outputPath;
             if(this.warnTaskArr[0].alarmRules.length>0){
-              let tempArr:any[]=[];
-              for(let i=0;i<this.warnTaskArr[0].alarmRules.length;i++){
-                if(this.warnTaskArr[0].alarmRules[i].recognitionCategory.name!="全部"){
-                    tempArr.push(this.warnTaskArr[0].alarmRules[i]);
-                }
-              }
-              this.warnTaskArr[0].alarmRules = tempArr;
-              if(this.warnTaskArr[0].alarmRules.length>0){
-                this.warnRlueArr = this.warnTaskArr[0].alarmRules;
-                this.warnRlue1 = this.warnTaskArr[0].alarmRules[0].ruleName;
-                this.ruleId = this.warnTaskArr[0].alarmRules[0].ruleId;
-              };
+              this.warnTaskArr[0].alarmRules = this.filterPerson(this.warnTaskArr)[0].alarmRules;
+              this.warnRlueArr = this.warnTaskArr[0].alarmRules;
+              this.warnRlue1 = this.warnTaskArr[0].alarmRules[0].ruleName;
+              this.ruleId = this.warnTaskArr[0].alarmRules[0].ruleId;
               if(this.warnRlue1==""||this.warnRlue1==undefined){
                 this.searchWarn(this.appId,0,this.warnTask1,0,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
               }else{
@@ -184,6 +179,22 @@ export class WarnTimeComponent{
       }
     });
   }
+  filterPerson(arr){
+    let taskArr:any[]=[];
+    for(let k=0;k<arr.length;k++){
+      if(arr[k].alarmRules.length>0){
+        for(let i=0;i<arr[k].alarmRules.length;i++){
+          if(arr[k].alarmRules[i].recognitionCategory.name!="全部"&&arr[k].alarmRules[i].targetImages!=''){
+            taskArr.push(arr[k]);
+          }
+        }
+      }
+    }
+    return taskArr
+  }
+  filterUrl(url){
+    return url.substring(17);
+  }
   changeWarnTask(){
     for(let i=0;i<this.warnTaskArr.length;i++){
       if(this.warnTaskArr[i].taskName==this.warnTask1){
@@ -191,11 +202,17 @@ export class WarnTimeComponent{
           this.showTime = false;
         }else{
           this.showTime = true;
+        };
+        if(this.warnTaskArr[i].outputPath!=null){
+          this.videoUrl = this.warnTaskArr[i].outputPath;
+          console.log(this.videoUrl);
+        }else{
+          this.videoUrl = '';
         }
         this.warnRlueArr = this.warnTaskArr[i].alarmRules;
         let tempArr:any[]=[];
         for(let j=0;j<this.warnRlueArr.length;j++){
-          if(this.warnRlueArr[j].recognitionCategory.name!="全部"){
+          if(this.warnRlueArr[j].recognitionCategory.name!="全部"&&this.warnRlueArr[j].recognitionCategory.targetImages!=""){
             tempArr.push(this.warnRlueArr[j]);
           }
         }
@@ -719,6 +736,10 @@ export class WarnTimeComponent{
       }
     }
   }
+  get_ckplayer_url1(){
+    return this.SERVER_URL+"/download/livestream/prediction/1522491265972_hks_person/pred_video/output1.ts"
+  }
+
   searchWarn(id,taskId,nameTask,ruleId,status,page,size,start,end){
     if(this.appCate=='实时流分析'){
       this.warnService.searchWarns(id,nameTask,ruleId,status,page,size,start,end)

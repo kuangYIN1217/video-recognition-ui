@@ -259,15 +259,23 @@ export class TaskManageComponent {
       this.allFlag=false;
     }
   }
+  setOfflineTaskCheck(taskId,selected){
+    this.offlineService.offlineTaskCheck(taskId,selected)
+      .subscribe(result=>{
+        console.log(result);
+      })
+  }
   check(item){
-    if(item.flag!=1){
-      item.flag=1;
+    if(item.selected!=true){
+      item.selected = true;
+      this.setOfflineTaskCheck(item.taskId,item.selected);
     }else{
-      item.flag=2;
+      item.selected = false;
+      this.setOfflineTaskCheck(item.taskId,item.selected);
       this.allFlag=false;
     }
     for(var i in this.taskList){
-      if(this.taskList['flag']!=1){
+      if(this.taskList['selected']!=true){
         this.allFlag=false;
         return;
       }else{
@@ -393,7 +401,6 @@ export class TaskManageComponent {
     //console.log(item);
     this.router.navigate(['../warnmanage'],{queryParams: {'taskName':item.taskName,'taskId':item.taskId}});
   }
-
   dia(){
     for(let i in this.taskList){
       if(this.taskList[i]['flag'] == '1'&&this.taskList[i].taskStatus=='进行中'){

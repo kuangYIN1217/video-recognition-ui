@@ -36,8 +36,9 @@
           </tr>
           <tr *ngFor="let item of taskList">
             <td class="checked">
-              <img src="../assets/appdetail/way.manage/unchecked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag!=1"/>
-              <img src="../assets/appdetail/way.manage/checked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag==1"/>
+              <!--<img src="../assets/appdetail/way.manage/unchecked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag!=1"/>
+              <img src="../assets/appdetail/way.manage/checked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag==1"/>-->
+              <img [src]="item.selected?'assets/appdetail/way.manage/checked.png':'assets/appdetail/way.manage/unchecked.png'" class="middle pad" (click)="check(item)"/>
             </td>
             <td title="{{item.taskName}}">{{item.taskName}}</td>
             <td title="{{output(item.alarmRules)}}">{{output(item.alarmRules)}}</td>
@@ -63,7 +64,7 @@
               <a class="operationBtn look" (click)="look(item)" title="查看告警"></a>
               <a class="operationBtn edit" *ngIf="item.taskStatus!='进行中'" (click)="edit(item)" title="修改"></a>
               <a class="operationBtn unedit" *ngIf="item.taskStatus=='进行中'" title="修改"></a>
-              <a class="operationBtn lookResult"  title="查看结果" (click)="lookResult(item)"  *ngIf="item.outputPath!=null"></a>
+              <a class="operationBtn lookResult"  title="查看结果" (click)="lookResult(item)"  *ngIf="item.outputPath!=null&&item.percent==1"></a>
               <a class="operationBtn noLookResult"  title="查看结果" *ngIf="item.outputPath==null"></a>
             </td>
           </tr>

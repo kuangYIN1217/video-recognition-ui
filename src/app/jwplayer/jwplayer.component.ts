@@ -31,6 +31,7 @@ export class JWplayerComponent {
     });
   }
   ngOnChanges(...args: any[]){
+    console.log(this.url);
     jwplayer("ckID").load([{'file': this.url}]);
   }
   ngOnInit(){

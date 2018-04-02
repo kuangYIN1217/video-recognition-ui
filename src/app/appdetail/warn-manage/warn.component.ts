@@ -182,8 +182,10 @@ export class WarnComponent{
         //console.log(params);
         this.taskName = params['taskName'];
         this.taskId = params['taskId'];
+        console.log(this.appId,this.taskId,this.taskName,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
         this.warnService.searchOffWarns(this.appId,this.taskId,this.taskName,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null)
           .subscribe(result=>{
+            console.log(result);
             this.warnTask = this.taskName;
             this.getWarnList(result);
           })
@@ -434,7 +436,7 @@ export class WarnComponent{
   }
   getWarnList(result){
     this.allWarn = result.content;
-    //console.log(this.allWarn);
+    console.log(this.allWarn);
     let page = new Page();
     page.pageMaxItem = result.size;
     page.curPage = result.number+1;

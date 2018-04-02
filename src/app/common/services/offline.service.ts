@@ -10,15 +10,12 @@ import {SERVER_URL} from "../../app.constants";
 export class OfflineService {
   SERVER_URL: string = SERVER_URL;
   inputPath: string;
-
   constructor(private http: Http) {
 
   }
-
   getAuthorization() {
     return 'Bearer ' + localStorage['authenticationToken'];
   }
-
   getHeaders() {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json;charset=UTF-8');
@@ -88,7 +85,6 @@ export class OfflineService {
     return this.http.get(this.SERVER_URL+path, { headers : headers})
       .map((response: Response) => {
         if (response && response.json()) {
-
           return response.json();
         }
       });
@@ -107,6 +103,16 @@ export class OfflineService {
     let path = "/api/findOfflineTask/"+taskId;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path, { headers : headers})
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
+  offlineTaskCheck(taskId,selected){
+    let path = "/api/offlineTaskCheck?taskId="+taskId+"&selected="+selected;
+    let headers = this.getHeaders();
+    return this.http.put(this.SERVER_URL+path, { headers : headers})
       .map((response: Response) => {
         if (response && response.json()) {
           return response.json();
