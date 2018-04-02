@@ -264,6 +264,7 @@ export class CreateTextComponent {
     if(this.taskId){
         this.offlineService.getSize(this.taskId)
           .subscribe(result=>{
+            console.log(result);
             //console.log(result);
             let name:string='';
             let path:string='';

@@ -102,8 +102,11 @@
   right:0;
 }
 .uploadShow{
+  display: block;
   width:490px;
   margin-left:107px;
+  max-height: 330px;
+  overflow: auto;
 }
 .importDown{
   float: left;
