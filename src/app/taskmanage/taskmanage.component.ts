@@ -44,13 +44,20 @@ export class TaskManageComponent {
   photoShow:boolean = false;
   picturesNumber:any[]=[];
   photoIndex:number = 0;
+  init:boolean = false;
+  taskIds:any[]=[];
   @ViewChild('offlineVideo') offlineVideo: any;
   constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
     this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
     this.interval = setInterval(() => {
+      this.init = true;
+      if(this.taskName!=''&&this.taskName!=undefined){
+        this.getTask(this.appId,this.taskName,'全部',this.page-1,this.pageMaxItem);
+      }else{
         this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
+      }
     }, 10000);
     this.alarmStatus = this.alarmStatusArr[0];
     this.route.params.subscribe((param) => {
@@ -58,6 +65,7 @@ export class TaskManageComponent {
         //console.log(param);
         this.alarmStatus = param['status'];
         //console.log(this.alarmStatus);
+        this.init = true;
         this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
       }
     });
@@ -252,18 +260,20 @@ export class TaskManageComponent {
   setOfflineTaskCheck(taskId,selected){
     this.offlineService.offlineTaskCheck(taskId,selected)
       .subscribe(result=>{
-        console.log(result);
+        //console.log(result);
       })
   }
   check(item){
     if(item.selected!=true){
       item.selected = true;
-      this.setOfflineTaskCheck(item.taskId,item.selected);
     }else{
       item.selected = false;
-      this.setOfflineTaskCheck(item.taskId,item.selected);
-      this.allFlag=false;
     }
+      this.taskIds=[];
+      this.taskIds.push(item.taskId);
+      this.setOfflineTaskCheck(this.taskIds,item.selected);
+      this.allFlag=false;
+
     for(var i in this.taskList){
       if(this.taskList['selected']!=true){
         this.allFlag=false;
@@ -356,6 +366,14 @@ export class TaskManageComponent {
             clearInterval(this.interval);
           }
         }*/
+      if(!this.init){
+        for(let i=0;i<this.taskList.length;i++){
+          this.taskList[i].selected = false;
+          this.taskIds.push(this.taskList[i].taskId);
+        }
+        this.setOfflineTaskCheck(this.taskIds,false);
+      }
+        this.init = false;
         if(this.alarmStatus=='进行中'){
             if(this.taskName==undefined){
               this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);

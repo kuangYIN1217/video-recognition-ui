@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {WarnService} from "../../common/services/warn.service";
 import {Page} from "app/common/defs/resources";
 import {OfflineService} from "../../common/services/offline.service";
@@ -58,6 +58,11 @@ export class WarnTimeComponent{
   saveTime:any[]=[];
   showTime:boolean = true;
   videoUrl:string='';
+  playStart:string='';
+  playEnd:string='';
+  @ViewChild('offlinePeriodVideo') offlinePeriodVideo: any;
+  myVideo:any;
+  _endTime:string='';
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -152,9 +157,7 @@ export class WarnTimeComponent{
     this.warnStatus = this.statusArr[0];
     this.route.params.subscribe((param) => {
       if(JSON.stringify(param) != "{}"){
-        //console.log(param);
         this.warnStatus = param['status'];
-        //console.log(this.warnStatus);
         this.getRuleId();
         $("#start1").val('');
         $("#end1").val('');
@@ -192,7 +195,7 @@ export class WarnTimeComponent{
     }
     return taskArr
   }
-  filterUrl(url){
+  filterUrl(url?){
     return url.substring(17);
   }
   changeWarnTask(){
@@ -620,9 +623,7 @@ export class WarnTimeComponent{
         },
           (error)=>{
             if(error.status==404){
-              this.deleteIndex = 1;
-              this.tip_title = "提示";
-              this.tip_content = "该时间段没有告警！";
+              this.tipNoWarn();
             }
           }
         )
@@ -632,12 +633,15 @@ export class WarnTimeComponent{
             this.handleTime(result)},
           (error)=>{
             if(error.status==404){
-              this.deleteIndex = 1;
-              this.tip_title = "提示";
-              this.tip_content = "该时间段没有告警！";
+              this.tipNoWarn();
             }
           })
     }
+  }
+  tipNoWarn(){
+    this.deleteIndex = 1;
+    this.tip_title = "提示";
+    this.tip_content = "该时间段没有告警！";
   }
   handleTime(result){
     this.periodTimeArr=[];
@@ -655,10 +659,60 @@ export class WarnTimeComponent{
         this.periodTimeArr.push(key_value);
       }
      this.periodTime = this.periodTimeArr[0];
-     //sessionStorage.setItem("periodTime" , this.periodTime);
+      if(this.periodTime!=''){
+        this.playVideo(this.periodTime);
+      }
+      //sessionStorage.setItem("periodTime" , this.periodTime);
      //sessionStorage.setItem("periodTimeArr" , this.periodTimeArr.join(','));
   }
+  playVideo(periodtime){
+    periodtime.split('-');
+    this.playStart = periodtime.split('-')[0];
+    this.playEnd = periodtime.split('-')[1];
+    this.myVideo = this.offlinePeriodVideo.nativeElement;
+    this.myVideo.addEventListener("timeupdate",function(){
+      var time = this.myVideo.currentTime+"";
+      /*   document.getElementById("showTime").value=time;*/
+      var ts = time.substring(0,time.indexOf("."));
+      this._endTime = this._endTime.substring(0,time.indexOf("."));
+      if(ts==this._endTime){
+        this.myVideo.pause();
+      }
+    }.bind(this));
+    this.playMedia(this.playStart,this.playEnd);
+  }
+  //视频播放
+  playMedia(startTime,endTime){
+  //设置结束时间
+    this._endTime = this.cutTime(endTime);
+    this.myVideo.currentTime = this.cutTime(startTime);
+  //this.myVideo.play();
+}
+  cutTime(time){
+    let noMillisecond = time.split(" ")[1];
+    let millisecond = time.split(" ")[2];
+    let hour = noMillisecond.split(":")[0];
+    let minute = noMillisecond.split(":")[1];
+    let second = noMillisecond.split(":")[2];
+    console.log(Number(hour));
+    if(Number(hour)>0){
+      console.log(Number(hour)*3600);
+      hour = Number(hour)*3600;
+    }else{
+      hour = 0;
+    }
+    if(Number(minute)>0){
+      minute = Number(minute)*60;
+      console.log(Number(minute)*60);
+    }else{
+      minute = 0;
+    }
+    return String(hour+minute+Number(second))+"."+millisecond;
+  }
   changePeriodTime(){
+      if(this.periodTime!=''){
+        this.playVideo(this.periodTime);
+      }
      sessionStorage.setItem("periodTime" , this.periodTime);
      sessionStorage.setItem("periodTimeArr" , this.periodTimeArr.join(','));
   }

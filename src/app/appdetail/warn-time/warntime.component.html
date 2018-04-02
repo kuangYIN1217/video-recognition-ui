@@ -49,7 +49,9 @@
       </div>
     </div>
     <div class="warn-content" id="warn-content">
-      <video src="{{SERVER_URL}}/download/{{filterUrl(videoUrl)}}" controls></video>
+      <div class="playVideo" *ngIf="videoUrl!=''">
+        <video src="{{SERVER_URL}}/download/{{filterUrl(videoUrl)}}" #offlinePeriodVideo controls controlsList="nodownload nofullscreen noremoteplayback"></video>
+      </div>
       <!--<jwplayer [url]="get_ckplayer_url1()"></jwplayer>-->
       <a href="#" onclick="return false" class="btn bgcg" (click)="export()">导出</a>
       <div class="table-margin" >

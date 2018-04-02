@@ -311,3 +311,9 @@ input{
 .periodTime select{
   width:18vw !important;
 }
+.playVideo{
+  padding:20px 20px 0;
+}
+video{
+  width: 100%;
+}
