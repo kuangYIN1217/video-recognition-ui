@@ -48,6 +48,7 @@
         <span class="carNum">人名</span>
         <input type="text" class="car" name="objNamw" [(ngModel)]="objName" *ngIf="warn_title!='规则详情'" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"/>
         <input type="text" class="car" name="objNamw" [(ngModel)]="objName" readonly *ngIf="warn_title=='规则详情'" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"/>
+        <span class="must" [style.display]="perName==1?'':'none'">必填字段</span>
       </div>
       <div class="info" *ngIf="identifyName=='人'">
         <span class="pohotText">特征图片</span>

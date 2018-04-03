@@ -116,7 +116,7 @@ export class TaskManageComponent {
     if(item.fileType=="video"){
       this.outputPath = item.outputPath;
       this.playShow=true;
-    }else if(item.fileType=="image"){
+    }else if(item.fileType=="image"||item.fileType=="zip"){
       let allImage = item.outputPath.split(',');
       this.picturesNumber = allImage;
       this.photoShow = true;

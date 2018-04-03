@@ -669,6 +669,8 @@ export class WarnTimeComponent{
     periodtime.split('-');
     this.playStart = periodtime.split('-')[0];
     this.playEnd = periodtime.split('-')[1];
+    let playStart = this.playStart;
+    let playEnd = this.playEnd;
     this.myVideo = this.offlinePeriodVideo.nativeElement;
     this.myVideo.addEventListener("timeupdate",function(){
       var time = this.myVideo.currentTime+"";
@@ -677,6 +679,11 @@ export class WarnTimeComponent{
       this._endTime = this._endTime.substring(0,time.indexOf("."));
       if(ts==this._endTime){
         this.myVideo.pause();
+        if(this.taskId>0){
+          this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,playStart,playEnd);
+        }else{
+          this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,playStart,playEnd);
+        }
       }
     }.bind(this));
     this.playMedia(this.playStart,this.playEnd);

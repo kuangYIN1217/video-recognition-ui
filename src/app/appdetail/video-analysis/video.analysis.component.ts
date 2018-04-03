@@ -167,6 +167,17 @@ export class VideoAnalysisComoponent {
     var m=myDate.getMinutes();     //获取当前分钟数(0-59)
     var s=myDate.getSeconds();
     var now=year+'-'+this.p(month)+"-"+this.p(date)+" "+this.p(h)+':'+this.p(m)+":"+this.p(s)+" 000";
+    if(this.identifyName=='人'){
+      if(this.photoUrl.length>0&&(this.personName!=''&&this.personName!=null&&this.personName!=undefined)){
+
+      }else{
+        this.deleteIndex =1;
+        this.tip_title = '提示';
+        this.tip_content = '告警对象为人，特征名称和特征图片不能为空！';
+        this.createFlag = true;
+        return false
+      }
+    }
     this.warnService.createWarn(this.d_applicationId,this.ruleName,this.cateId,this.code,this.personName,'开启',this.photoUrl,now)
       .subscribe(result=>{
           this.create_show = false;
