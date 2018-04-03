@@ -701,7 +701,7 @@ export class WarnTimeComponent{
     let hour = noMillisecond.split(":")[0];
     let minute = noMillisecond.split(":")[1];
     let second = noMillisecond.split(":")[2];
-    console.log(Number(hour));
+    //console.log(Number(hour));
     if(Number(hour)>0){
       console.log(Number(hour)*3600);
       hour = Number(hour)*3600;
@@ -710,7 +710,7 @@ export class WarnTimeComponent{
     }
     if(Number(minute)>0){
       minute = Number(minute)*60;
-      console.log(Number(minute)*60);
+      //console.log(Number(minute)*60);
     }else{
       minute = 0;
     }

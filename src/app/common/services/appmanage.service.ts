@@ -51,9 +51,14 @@ export class AppManageService {
       });
   }
   createApplication(appName,appCate,userId){
-    let path = "/api/createApplication/"+appName+"/"+appCate+"/"+userId;
+    let path = "/api/createApplication";
+    let applicationDTO = JSON.stringify(    {
+      "applicationName": appName,
+      "applicationType": appCate,
+      "userId": userId
+    });
     let headers = this.getHeaders();
-    return this.http.get(this.SERVER_URL+path, { headers : headers} )
+    return this.http.post(this.SERVER_URL+path,applicationDTO, { headers : headers} )
       .map((response: Response) => {
         return response;
       });
