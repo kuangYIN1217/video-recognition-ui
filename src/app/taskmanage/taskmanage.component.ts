@@ -275,6 +275,7 @@ export class TaskManageComponent {
       item.selected = true;
     }else{
       item.selected = false;
+      this.allFlag=false;
     }
       this.taskIds=[];
       this.taskIds.push(item.taskId);
@@ -282,7 +283,7 @@ export class TaskManageComponent {
       this.allFlag=false;
 
     for(var i in this.taskList){
-      if(this.taskList['selected']!=true){
+      if(!this.taskList['selected']){
         this.allFlag=false;
         return;
       }else{

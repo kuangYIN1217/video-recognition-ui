@@ -65,8 +65,7 @@
           </tr>
           <tr *ngFor="let item of allWarn let i=index;">
             <td class="checked">
-              <img src="../assets/appdetail/way.manage/unchecked.png" class="middle" (click)="check(item)" *ngIf="item.flag!=1"/>
-              <img src="../assets/appdetail/way.manage/checked.png" class="middle" (click)="check(item)" *ngIf="item.flag==1"/>
+              <img [src]="item.selected?'assets/appdetail/way.manage/checked.png':'assets/appdetail/way.manage/unchecked.png'" class="middle" (click)="check(item)"/>
             </td>
             <td *ngIf="appCate=='实时流分析'" title="{{item.channelName}}">{{item.channelName}}</td>
             <td *ngIf="appCate=='离线文件分析'" title="{{item.taskName}}">{{item.taskName}}</td>

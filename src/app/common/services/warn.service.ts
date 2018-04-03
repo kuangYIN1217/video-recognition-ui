@@ -241,6 +241,18 @@ export class WarnService {
         }
       });
   }
+  setAlarmCheck(alarmsId,selected){
+    let path = "/api/alarmCheck";
+    let alarmDTO = JSON.stringify({
+      "selected": selected,
+      "alarmIds": alarmsId
+    });
+    let headers = this.getHeaders();
+    return this.http.put(this.SERVER_URL+path, alarmDTO,{ headers : headers})
+      .map((response: Response) => {
+        return response;
+      });
+  }
   searchWarns(id,name,ruleId,status,page=0,size=10,start,end){
     let path = "/api/findAlarmLiveDynamic/"+id+"/"+name+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size+"&sort=alarmTime,desc";
     let headers = this.getHeaders();

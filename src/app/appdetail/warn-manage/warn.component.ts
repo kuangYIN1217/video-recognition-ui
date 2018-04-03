@@ -56,6 +56,8 @@ export class WarnComponent{
   showTime:boolean = true;
   once:string='';
   alarmRules:any[]=[];
+  alarmsId:any[]=[];
+  init:boolean = false;
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -312,28 +314,42 @@ export class WarnComponent{
       })
   }*/
   allSel(){
+    let arr:any[]=[];
     for(var i in this.allWarn){
-      if(this.allFlag==false){
-        this.allWarn[i]['flag']=1;
+      if(!this.allFlag){
+        this.allWarn[i]['selected']=true;
+        arr.push(this.allWarn[i].alarmsId);
       }else{
-        this.allWarn[i]['flag']=2;
+        this.allWarn[i]['selected']=false;
+        arr.push(this.allWarn[i].alarmsId);
       }
     }
-    if(this.allFlag==false){
+    if(!this.allFlag){
       this.allFlag=true;
+      //this.setAlarmCheck(arr,true);
     }else{
       this.allFlag=false;
+      //this.setAlarmCheck(arr,false);
     }
   }
+  setAlarmCheck(alarmsId,selected){
+    this.warnService.setAlarmCheck(alarmsId,selected)
+      .subscribe(result=>{
+
+      })
+  }
   check(item){
-    if(item.flag!=1){
-      item.flag=1;
+    if(item.selected!=true){
+      item.selected = true;
     }else{
-      item.flag=2;
+      item.selected = false;
       this.allFlag=false;
     }
+    //this.alarmsId=[];
+    //this.alarmsId.push(item.alarmId);
+    //this.setAlarmCheck(this.alarmsId,item.selected);
     for(var i in this.allWarn){
-      if(this.allWarn['flag']!=1){
+      if(!this.allWarn[i].selected){
         this.allFlag=false;
         return;
       }else{
@@ -453,7 +469,15 @@ export class WarnComponent{
   }
   getWarnList(result){
     this.allWarn = result.content;
-    console.log(this.allWarn);
+/*    if(!this.init){
+      for(let i=0;i<this.allWarn.length;i++){
+        this.allWarn[i].selected = false;
+        this.alarmsId.push(this.allWarn[i].alarmsId);
+      }
+      this.setAlarmCheck(this.alarmsId,false);
+    }
+    this.init = false;
+    console.log(this.allWarn);*/
     let page = new Page();
     page.pageMaxItem = result.size;
     page.curPage = result.number+1;
@@ -465,7 +489,7 @@ export class WarnComponent{
     this.alarmIds='';
     this.sourcePaths='';
     for(let i in this.allWarn){
-      if(this.allWarn[i]['flag'] == '1'){
+      if(this.allWarn[i]['selected'] == true){
           //console.log(this.allWarn[i]);
           this.alarmIds += this.allWarn[i].alarmId+',';
         this.sourcePaths+=this.allWarn[i].imagePath+',';
