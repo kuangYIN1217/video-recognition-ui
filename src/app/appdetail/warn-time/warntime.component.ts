@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer, ViewChild} from '@angular/core';
 import {WarnService} from "../../common/services/warn.service";
 import {Page} from "app/common/defs/resources";
 import {OfflineService} from "../../common/services/offline.service";
@@ -63,7 +63,8 @@ export class WarnTimeComponent{
   @ViewChild('offlinePeriodVideo') offlinePeriodVideo: any;
   myVideo:any;
   _endTime:string='';
-  constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
+  currentTime:string='';
+  constructor(elementRef: ElementRef, renderer: Renderer,private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
     if(this.appCate=="实时流分析"){
@@ -252,9 +253,69 @@ export class WarnTimeComponent{
       return this.saveTime
     }
   }
+  ngAfterViewChecked(){
+    if(this.offlinePeriodVideo!=undefined){
+      this.myVideo = this.offlinePeriodVideo.nativeElement;
+      this.myVideo.addEventListener('pause',function(){
+        this.currentTime = this.myVideo.currentTime+"";
+        console.log(this.currentTime);
+        let start:string="";
+        let end:string="";
+        let time =(Number(this.currentTime.substring(0,this.currentTime.indexOf("."))));
+        let mille = (Number(this.currentTime.substring(this.currentTime.indexOf("."))));
+        let minute:any;
+        let hour:any;
+        let second:any;
+        if(time>3600){
+          hour = (time/3600).toFixed(0);
+          minute = ((time%3600)/60).toFixed(0);
+          second = ((time%3600)%60).toFixed(0);
+          hour = this.changTime(hour);
+          minute = this.changTime(minute);
+          second = this.changTime(second);
+          if(Number(mille.toFixed(3))-50<0){
+            start = hour+":"+minute+":"+(Number(second)-1)+" "+String(Number(mille.toFixed(3))-50+1000);
+          }else{
+            start = hour+":"+minute+":"+second+" "+String(Number(mille.toFixed(3))-50);
+          }
+          end = hour+":"+minute+":"+second+" "+String(Number(mille.toFixed(3))+50);
+        }else if(time>60){
+          minute = (time/60).toFixed(0);
+          second = (time%60).toFixed(0);
+          minute = this.changTime(minute);
+          second = this.changTime(second);
+          start = "00:"+minute+":"+second+" "+String(Number(mille.toFixed(3))-50);
+          end = "00:"+minute+":"+second+" "+String(Number(mille.toFixed(3))+50);
+        }else if(time>0){
+          second = time;
+          second = this.changTime(second);
+          start = "00:00:"+second+" "+String(Number(mille.toFixed(3))-50);
+          end = "00:00:"+second+" "+String(Number(mille.toFixed(3))+50);
+        }else{
+          start = "00:00:00"+" "+String(Number(mille.toFixed(3))-50);
+          end = "00:00:00"+" "+String(Number(mille.toFixed(3))+50);
+        }
+        console.log(start);
+        console.log(end);
+        //this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,playStart,playEnd);
+      }.bind(this));
+    }
+  }
+  changTime(time){
+    if(time<10){
+      time = "0"+time;
+    }else{
+      time = String(time);
+    }
+    return time;
+  }
+  handHighTime(time){
+    let arr:any[]=[];
+    arr = time.split(" ");
+    return (arr[1]+" "+String(Number(arr[2])+50));
+  }
   ngAfterViewInit(){
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
-
   }
   session(){
     if(sessionStorage.getItem("rule")){
@@ -311,6 +372,7 @@ export class WarnTimeComponent{
   }
   ngOnInit() {
     calc_height(document.getElementById('warn-content'));
+
     if(this.appCate=="实时流分析"){
       $("#start1").jeDate({
         isinitVal:true,
@@ -669,8 +731,6 @@ export class WarnTimeComponent{
     periodtime.split('-');
     this.playStart = periodtime.split('-')[0];
     this.playEnd = periodtime.split('-')[1];
-    let playStart = this.playStart;
-    let playEnd = this.playEnd;
     this.myVideo = this.offlinePeriodVideo.nativeElement;
     this.myVideo.addEventListener("timeupdate",function(){
       var time = this.myVideo.currentTime+"";
@@ -679,11 +739,6 @@ export class WarnTimeComponent{
       this._endTime = this._endTime.substring(0,time.indexOf("."));
       if(ts==this._endTime){
         this.myVideo.pause();
-        if(this.taskId>0){
-          this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,playStart,playEnd);
-        }else{
-          this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,playStart,playEnd);
-        }
       }
     }.bind(this));
     this.playMedia(this.playStart,this.playEnd);

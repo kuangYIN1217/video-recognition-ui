@@ -268,13 +268,13 @@ export class CreateTextComponent {
             //console.log(result);
             let name:string='';
             let path:string='';
-            for(let i=0;i<result.offlineTasks.offlineFiles.length;i++){
+            for(let i=0;i<result.offlineFiles.length;i++){
               this.fileObj = {};
-              this.fileObj.fileName = result.offlineTasks.offlineFiles[i].fileName;
-              name +=result.offlineTasks.offlineFiles[i].fileName+',';
-              this.fileObj.inputPath = result.offlineTasks.offlineFiles[i].inputPath;
-              path +=result.offlineTasks.offlineFiles[i].inputPath+',';
-              this.fileObj.size = result.offlineTasks.offlineFiles[i].fileSize;
+              this.fileObj.fileName = result.offlineFiles[i].fileName;
+              name +=result.offlineFiles[i].fileName+',';
+              this.fileObj.inputPath = result.offlineFiles[i].inputPath;
+              path +=result.offlineFiles[i].inputPath+',';
+              this.fileObj.size = result.offlineFiles[i].fileSize;
               this.showFile.push(this.fileObj);
             }
             //console.log(this.showFile);

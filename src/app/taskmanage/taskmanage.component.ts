@@ -113,6 +113,8 @@ export class TaskManageComponent {
       })
   }*/
   lookResult(item){
+    console.log(item);
+    this.picturesNumber=[];
     if(item.fileType=="video"){
       this.outputPath = item.outputPath;
       this.playShow=true;
@@ -244,17 +246,22 @@ export class TaskManageComponent {
     return ruleName.substring(0,ruleName.length-1);
   }
   allSel(){
+    let arr:any[]=[];
     for(var i in this.taskList){
       if(this.allFlag==false){
-        this.taskList[i]['flag']=1;
+        this.taskList[i].selected=true;
+        arr.push(this.taskList[i].taskId);
       }else{
-        this.taskList[i]['flag']=2;
+        this.taskList[i].selected=false;
+        arr.push(this.taskList[i].taskId);
       }
     }
     if(this.allFlag==false){
       this.allFlag=true;
+      this.setOfflineTaskCheck(arr,true);
     }else{
       this.allFlag=false;
+      this.setOfflineTaskCheck(arr,false);
     }
   }
   setOfflineTaskCheck(taskId,selected){
@@ -411,12 +418,12 @@ export class TaskManageComponent {
   }
   dia(){
     for(let i in this.taskList){
-      if(this.taskList[i]['flag'] == '1'&&this.taskList[i].taskStatus=='进行中'){
+      if(this.taskList[i].selected&&this.taskList[i].taskStatus=='进行中'){
         this.deleteIndex =1;
         this.tip_title = '提示';
         this.tip_content = '该任务不可删除！';
         return false;
-      }else if(this.taskList[i]['flag'] == '1'&&this.taskList[i].taskStatus!='进行中'){
+      }else if(this.taskList[i].selected&&this.taskList[i].taskStatus!='进行中'){
         this.deleteIdArr.push(this.taskList[i]);
       }
     }
