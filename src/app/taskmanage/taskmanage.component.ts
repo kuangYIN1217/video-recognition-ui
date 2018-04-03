@@ -113,8 +113,8 @@ export class TaskManageComponent {
       })
   }*/
   lookResult(item){
-    console.log(item);
     this.picturesNumber=[];
+    this.photoIndex = 0;
     if(item.fileType=="video"){
       this.outputPath = item.outputPath;
       this.playShow=true;
