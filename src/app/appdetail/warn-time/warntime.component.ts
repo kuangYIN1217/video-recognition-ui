@@ -1,10 +1,11 @@
-import {Component, ElementRef, OnInit, Renderer, ViewChild} from '@angular/core';
+import {Component , OnInit, ViewChild} from '@angular/core';
 import {WarnService} from "../../common/services/warn.service";
 import {Page} from "app/common/defs/resources";
 import {OfflineService} from "../../common/services/offline.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SERVER_URL} from "../../app.constants";
 import {calc_height} from "app/common/ts/calc_height";
+import { HostListener } from '@angular/core';
 declare var $:any;
 @Component({
   selector: 'warn-time',
@@ -64,7 +65,7 @@ export class WarnTimeComponent{
   myVideo:any;
   _endTime:string='';
   currentTime:string='';
-  constructor(elementRef: ElementRef, renderer: Renderer,private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
+  constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router){
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
     if(this.appCate=="实时流分析"){
@@ -253,6 +254,11 @@ export class WarnTimeComponent{
       return this.saveTime
     }
   }
+/*  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    console.log(event);
+  };*/
+
   ngAfterViewChecked(){
     if(this.offlinePeriodVideo!=undefined){
       this.myVideo = this.offlinePeriodVideo.nativeElement;
@@ -264,10 +270,6 @@ export class WarnTimeComponent{
         parseFloat(this.currentTime);
         start = parseFloat(this.currentTime)-0.05;
         end = parseFloat(this.currentTime)+0.05;
-/*        console.log(start);
-        console.log(end);
-        console.log(this.changeTime(start));
-        console.log(this.changeTime(end));*/
         this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.changeTime(start),this.changeTime(end));
       }.bind(this));
     }
