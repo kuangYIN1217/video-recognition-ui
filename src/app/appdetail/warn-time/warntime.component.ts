@@ -259,47 +259,52 @@ export class WarnTimeComponent{
       this.myVideo.addEventListener('pause',function(){
         this.currentTime = this.myVideo.currentTime+"";
         console.log(this.currentTime);
-        let start:string="";
-        let end:string="";
-        let time =(Number(this.currentTime.substring(0,this.currentTime.indexOf("."))));
-        let mille = (Number(this.currentTime.substring(this.currentTime.indexOf("."))));
-        let minute:any;
-        let hour:any;
-        let second:any;
-        if(time>3600){
-          hour = (time/3600).toFixed(0);
-          minute = ((time%3600)/60).toFixed(0);
-          second = ((time%3600)%60).toFixed(0);
-          hour = this.changTime(hour);
-          minute = this.changTime(minute);
-          second = this.changTime(second);
-          if(Number(mille.toFixed(3))-50<0){
-            start = hour+":"+minute+":"+(Number(second)-1)+" "+String(Number(mille.toFixed(3))-50+1000);
-          }else{
-            start = hour+":"+minute+":"+second+" "+String(Number(mille.toFixed(3))-50);
-          }
-          end = hour+":"+minute+":"+second+" "+String(Number(mille.toFixed(3))+50);
-        }else if(time>60){
-          minute = (time/60).toFixed(0);
-          second = (time%60).toFixed(0);
-          minute = this.changTime(minute);
-          second = this.changTime(second);
-          start = "00:"+minute+":"+second+" "+String(Number(mille.toFixed(3))-50);
-          end = "00:"+minute+":"+second+" "+String(Number(mille.toFixed(3))+50);
-        }else if(time>0){
-          second = time;
-          second = this.changTime(second);
-          start = "00:00:"+second+" "+String(Number(mille.toFixed(3))-50);
-          end = "00:00:"+second+" "+String(Number(mille.toFixed(3))+50);
-        }else{
-          start = "00:00:00"+" "+String(Number(mille.toFixed(3))-50);
-          end = "00:00:00"+" "+String(Number(mille.toFixed(3))+50);
-        }
-        console.log(start);
+        let start:number;
+        let end:number;
+        parseFloat(this.currentTime);
+        start = parseFloat(this.currentTime)-0.05;
+        end = parseFloat(this.currentTime)+0.05;
+/*        console.log(start);
         console.log(end);
-        //this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,playStart,playEnd);
+        console.log(this.changeTime(start));
+        console.log(this.changeTime(end));*/
+        this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.changeTime(start),this.changeTime(end));
       }.bind(this));
     }
+  }
+  changeTime(start){
+    let hour:number;
+    let minute:number;
+    let second:number;
+    if(Math.floor(start)>3600){
+      hour = Math.floor(start/3600);
+      minute = Math.floor((start%3600)/60);
+      second = (start%3600)%60;
+      return this.mergeTime(start,hour,minute,second)
+    }else if(Math.floor(start)>60){
+      hour = 0;
+      minute = Math.floor(start/60);
+      second = Math.floor(start%60);
+      return this.mergeTime(start,hour,minute,second)
+    }else if(Math.floor(start)>0){
+      hour = 0;
+      minute = 0;
+      second = Math.floor(start);
+      return this.mergeTime(start,hour,minute,second)
+    }else{
+      hour = 0;
+      minute = 0;
+      second = 0;
+      return this.mergeTime(start,hour,minute,second)
+    }
+  }
+  mergeTime(start,hour,minute,second){
+    let time:string='';
+    hour>10?String(hour):("0"+hour);
+    minute>10?String(minute):("0"+minute);
+    second>10?String(second):("0"+second);
+    time = hour+":"+minute+":"+second+" "+String(start).split(".")[1].substring(0,3);
+    return time
   }
   changTime(time){
     if(time<10){

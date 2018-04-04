@@ -168,7 +168,7 @@ export class WarnComponent{
             this.warnRlue = this.alarmRules[0].ruleName;
             this.ruleId = this.alarmRules[0].ruleId;
           };
-          if(this.warnTaskArr[0].fileType=='image'){
+          if(this.warnTaskArr[0].fileType=='image'||this.warnTaskArr[0].fileType=='zip'){
               this.showTime = false;
           }else{
             this.showTime = true;
@@ -189,7 +189,7 @@ export class WarnComponent{
   changeWarnTask(){
     for(let i=0;i<this.warnTaskArr.length;i++){
       if(this.warnTaskArr[i].taskName==this.warnTask){
-        if(this.warnTaskArr[i].fileType=='image'){
+        if(this.warnTaskArr[i].fileType=='image'||this.warnTaskArr[i].fileType=='zip'){
           this.showTime = false;
         }else{
           this.showTime = true;

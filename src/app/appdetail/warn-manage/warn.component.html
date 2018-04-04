@@ -57,7 +57,7 @@
             <th class="task">{{appCate=='实时流分析'?'通道名称':'告警任务'}}</th>
             <th class="rule">告警规则</th>
             <th class="file" *ngIf="appCate=='离线文件分析'">告警文件</th>
-            <th class="time">告警时间</th>
+            <th class="time" *ngIf="showTime">告警时间</th>
             <!--<th class="durtion">时长(s)</th>-->
             <th class="photo">快照</th>
             <!--<th class="status">状态</th>-->
@@ -71,8 +71,8 @@
             <td *ngIf="appCate=='离线文件分析'" title="{{item.taskName}}">{{item.taskName}}</td>
             <td title="{{item.ruleName}}">{{item.ruleName}}</td>
             <td *ngIf="appCate=='离线文件分析'" title="{{item.alarmFileName}}">{{item.alarmFileName}}</td>
-            <td title="{{item.alarmTime}}" *ngIf="appCate=='实时流分析'">{{item.alarmTime}}</td>
-            <td title="{{getTime(item.alarmTime)}}" *ngIf="appCate=='离线文件分析'">{{getTime(item.alarmTime)}}</td>
+            <td title="{{item.alarmTime}}" *ngIf="appCate=='实时流分析'&&showTime">{{item.alarmTime}}</td>
+            <td title="{{getTime(item.alarmTime)}}" *ngIf="appCate=='离线文件分析'&&showTime">{{getTime(item.alarmTime)}}</td>
             <!--<td title="{{duraTime(item.duration)}}">{{duraTime(item.duration)}}</td>-->
             <td>
               <img src="../assets/warn/chakan.png" class="mrgr" (click)="seePhoto(item.imagePath)" title="查看快照"/>
