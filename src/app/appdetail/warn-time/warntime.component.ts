@@ -258,21 +258,16 @@ export class WarnTimeComponent{
   handleKeyboardEvent(event: KeyboardEvent) {
     console.log(event);
   };*/
-
-  ngAfterViewChecked(){
-    if(this.offlinePeriodVideo!=undefined){
-      this.myVideo = this.offlinePeriodVideo.nativeElement;
-      this.myVideo.addEventListener('pause',function(){
-        this.currentTime = this.myVideo.currentTime+"";
-        console.log(this.currentTime);
-        let start:number;
-        let end:number;
-        parseFloat(this.currentTime);
-        start = parseFloat(this.currentTime)-0.05;
-        end = parseFloat(this.currentTime)+0.05;
-        this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.changeTime(start),this.changeTime(end));
-      }.bind(this));
-    }
+  videoPause() {
+    this.myVideo = this.offlinePeriodVideo.nativeElement;
+    this.currentTime = this.myVideo.currentTime+"";
+    console.log(this.currentTime);
+    let start:number;
+    let end:number;
+    parseFloat(this.currentTime);
+    start = parseFloat(this.currentTime)-0.05;
+    end = parseFloat(this.currentTime)+0.05;
+    this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.changeTime(start),this.changeTime(end));
   }
   changeTime(start){
     let hour:number;
