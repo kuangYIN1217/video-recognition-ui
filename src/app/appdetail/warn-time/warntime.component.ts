@@ -261,7 +261,7 @@ export class WarnTimeComponent{
   videoPause() {
     this.myVideo = this.offlinePeriodVideo.nativeElement;
     this.currentTime = this.myVideo.currentTime+"";
-    console.log(this.currentTime);
+    //console.log(this.currentTime);
     let start:number;
     let end:number;
     parseFloat(this.currentTime);
@@ -487,7 +487,7 @@ export class WarnTimeComponent{
     }
   }
   lookPhoto(item){
-    console.log(item);
+    //console.log(item);
     // this.router.navigate(['../warndetail'],{queryParams: {'detailList':item}});
     this.lookIndex=1;
     this.detaillist = item;
