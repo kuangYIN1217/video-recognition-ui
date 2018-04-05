@@ -625,10 +625,11 @@ export class WarnTimeComponent{
       })
   }
   sessionSet(){
+    console.log($('#start1').val(),$('#end1').val());
     sessionStorage.setItem("rule" , this.sessionRules);
     sessionStorage.setItem("status" , this.warnStatus);
-    sessionStorage.setItem("start1" , this.startTime);
-    sessionStorage.setItem("end1" , this.endTime);
+    sessionStorage.setItem("start1" , $('#start1').val());
+    sessionStorage.setItem("end1" , $('#end1').val());
   }
   validation(){
     this.startTime = $('#start1').val();
