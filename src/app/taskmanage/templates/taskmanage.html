@@ -64,8 +64,8 @@
               <a class="operationBtn look" (click)="look(item)" title="查看告警"></a>
               <a class="operationBtn edit" *ngIf="item.taskStatus!='进行中'" (click)="edit(item)" title="修改"></a>
               <a class="operationBtn unedit" *ngIf="item.taskStatus=='进行中'" title="修改"></a>
-              <a class="operationBtn lookResult"  title="查看结果" (click)="lookResult(item)"  *ngIf="item.outputPath!=null&&item.percent==1"></a>
-              <a class="operationBtn noLookResult"  title="查看结果"></a>
+              <a class="operationBtn lookResult"  title="查看结果" (click)="lookResult(item)"  *ngIf="item.percent==1"></a>
+              <a class="operationBtn noLookResult"  title="查看结果" *ngIf="item.percent!=1"></a>
             </td>
           </tr>
         </table>
