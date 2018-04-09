@@ -363,6 +363,7 @@ export class WarnComponent{
     //console.log(url);
     this.seeIndex = 1;
     this.imageUrl = url.slice(17);
+    console.log(this.imageUrl);
   }
   slicePath(url){
     return url.slice(17)
@@ -612,12 +613,13 @@ export class WarnComponent{
   getImageStyle(obj,width,height,img,x,y){
 
   }
-  getMaxHeight(){
+  getMaxHeight(id){
     if($("#img").length>0){
       return
     }else{
       let imgObj = new Image();
       imgObj.src = $("#image").attr("src");
+      console.log(imgObj.src);
       imgObj.id = "img";
       $(".showImage").append(imgObj);
       console.log($("#img").width());

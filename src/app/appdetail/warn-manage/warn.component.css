@@ -263,8 +263,6 @@ input{
 }*/
 .fangda .close{
   position: absolute;
-/*  top:0;
-  right:0;*/
   cursor: pointer;
 }
 .checked{

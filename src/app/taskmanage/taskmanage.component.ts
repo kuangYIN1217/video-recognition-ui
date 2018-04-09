@@ -414,7 +414,7 @@ export class TaskManageComponent {
     this.router.navigate(['../createtext'],{queryParams: {'taskId':item.taskId,'taskName':item.taskName,'fileType':item.fileType,'alarmRules':JSON.stringify(item.alarmRules),'taskTitle':"修改任务"}});
   }
   look(item){
-    console.log(JSON.stringify(item.alarmRules));
+   // console.log(JSON.stringify(item.alarmRules));
     this.router.navigate(['../warnmanage'],{queryParams: {'taskName':item.taskName,'taskId':item.taskId,"once":"true","alarmRules":JSON.stringify(item.alarmRules)}});
   }
   dia(){

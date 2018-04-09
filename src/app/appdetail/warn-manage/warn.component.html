@@ -26,7 +26,7 @@
           </select>
         </div>
         <div class="search-info"  [style.display]="showTime?'none':''" style="float: right;">
-        <a href="#" onclick="return false" class="btn bgco" (click)="search()" style="margin-top: 0;">查询</a>
+          <a href="#" onclick="return false" class="btn bgco" (click)="search()" style="margin-top: 0;">查询</a>
         </div>
         <!--<div class="search-info">
           <label>告警状态：</label>
@@ -126,19 +126,19 @@
         <span class="info_content" *ngIf="appCate=='实时流分析'">{{detaillist.alarmTime}}</span>
         <span class="info_content" *ngIf="appCate=='离线文件分析'">{{getTime(detaillist?.alarmTime)}}</span>
       </div>
-<!--      <div class="detail_info">
-        <span class="info_name">告警时长：</span>
-        <span class="info_content">{{duraTime(detaillist.duration)}}(s)</span>
-      </div>
-      <div class="detail_info" style="line-height: 32px;">
-        <span class="info_name">告警状态：</span>
-        <span class="info_content">{{detaillist.alarmStatus}}</span>
-        <a class="btn bgcg inline" (click)="lookHandling(detaillist)" *ngIf="detaillist.alarmStatus=='未处理'">处理</a>
-      </div>
-      <div class="detail_info">
-        <span class="info_name">处理时间：</span>
-        <span class="info_content">{{detaillist.processTime}}</span>
-      </div>-->
+      <!--      <div class="detail_info">
+              <span class="info_name">告警时长：</span>
+              <span class="info_content">{{duraTime(detaillist.duration)}}(s)</span>
+            </div>
+            <div class="detail_info" style="line-height: 32px;">
+              <span class="info_name">告警状态：</span>
+              <span class="info_content">{{detaillist.alarmStatus}}</span>
+              <a class="btn bgcg inline" (click)="lookHandling(detaillist)" *ngIf="detaillist.alarmStatus=='未处理'">处理</a>
+            </div>
+            <div class="detail_info">
+              <span class="info_name">处理时间：</span>
+              <span class="info_content">{{detaillist.processTime}}</span>
+            </div>-->
       <div class="detail_info">
         <span class="info_name">创建时间：</span>
         <span class="info_content">{{detaillist.createTime}}</span>

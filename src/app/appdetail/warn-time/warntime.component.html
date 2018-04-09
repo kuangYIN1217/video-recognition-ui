@@ -97,7 +97,7 @@
         </table>
         <div class="fangda showImage" *ngIf="seeIndex==1">
             <span>
-              <img src="{{SERVER_URL}}/download/{{imageUrl}}" *ngIf="imageUrl" class="image" (load)="getMaxHeight()"/>
+              <img src="{{SERVER_URL}}/download/{{imageUrl}}" *ngIf="imageUrl" id="image" (load)="getMaxHeight()"/>
               <img src="../assets/appmanage/delete1.png" class="close closeImage" (click)="close()"/>
             </span>
         </div>
@@ -169,7 +169,7 @@
       </div>
       <div class="fangda showImage" *ngIf="seeIndex==2">
         <span>
-          <img src="{{SERVER_URL}}/download/{{output(detaillist?.imagePath)}}" *ngIf="detaillist.imagePath" class="image" (load)="getMaxHeight()"/>
+          <img src="{{SERVER_URL}}/download/{{output(detaillist?.imagePath)}}" *ngIf="detaillist.imagePath" id="image" (load)="getMaxHeight()"/>
           <img src="../assets/appmanage/delete.png" class="close closeImage" (click)="close()"/>
         </span>
       </div>

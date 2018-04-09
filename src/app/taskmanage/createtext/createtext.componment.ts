@@ -235,12 +235,8 @@ export class CreateTextComponent {
         //this.fileNames = params['fileNames'];
         if(params['alarmRules']){
           this.warnRuleArr = JSON.parse(params['alarmRules']);
-          //console.log(this.warnRuleArr);
           this.warnChanChecked = this.warnRuleArr;
         }
-/*        if(params['offlineFiles']){
-          this.offlineFiles = JSON.parse(params['offlineFiles']);
-        }*/
         this.taskId = params['taskId'];
         for(let i=0;i<this.warnRuleArr.length;i++){
           if(this.warnRule==''){
@@ -264,7 +260,7 @@ export class CreateTextComponent {
     if(this.taskId){
         this.offlineService.getSize(this.taskId)
           .subscribe(result=>{
-            console.log(result);
+            //console.log(result);
             //console.log(result);
             let name:string='';
             let path:string='';
@@ -277,11 +273,6 @@ export class CreateTextComponent {
               this.fileObj.size = result.offlineFiles[i].fileSize;
               this.showFile.push(this.fileObj);
             }
-            //console.log(this.showFile);
-/*            this.fileNames = name.substring(0,name.length-1);
-            this.inputPath = path.substring(0,path.length-1);
-            console.log(this.fileNames);
-            console.log(this.inputPath);*/
           })
 }
         this.lookIndex = 1;
@@ -320,7 +311,7 @@ export class CreateTextComponent {
       }
     }
     this.fileNumber = this.uploader.queue.length;
-    console.log(this.offlineFiles);
+    //console.log(this.offlineFiles);
 
     this.offlineService.create(this.appId,this.warnRuleId,this.taskName,this.choosed,this.offlineFiles,this.fileNumber)
       .subscribe(result=>{
