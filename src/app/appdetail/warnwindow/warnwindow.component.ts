@@ -45,12 +45,16 @@ export class WarnWindowComponent{
   container:any[]=[];
   photoUrl:string='';
   identifyName:string='';
+  createFlag:boolean = true;
+  saveFlag:boolean = true;
+  ruleNameMust:number = 0;
+  perName:number=0;
   @Output() indexChange: EventEmitter<any> = new EventEmitter();
 
   constructor(private warnService: WarnService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
-    console.log(this.appId);
+    //console.log(this.appId);
     this.radioIndex = 0;
     this.warnService.getWarnChannel(this.appId)
       .subscribe(channel=>{
@@ -76,7 +80,7 @@ export class WarnWindowComponent{
     for(let i=0;i<this.uploader.queue.length;i++){
       this.uploader.queue[i].onSuccess = (response: any, status: any, headers: any) => {
         this.photoContainer.push(response);
-        console.log(this.photoContainer);
+        //console.log(this.photoContainer);
       };
     }
     this.uploader.uploadAll(); // 开始上传
@@ -110,17 +114,17 @@ export class WarnWindowComponent{
     }
   }
   warnChanCheckedChange(event){
-    console.log(event);
+    //console.log(event);
     this.warnChecked = event;
   }
   chanChange(event){
     this.warnChannel = event.join(',');
-    console.log(this.warnChannel);
+    //console.log(this.warnChannel);
   }
   chanChangeId(event){
-    console.log(event);
+    //console.log(event);
     this.warnChannelId = event.join(',');
-    console.log(this.warnChannelId);
+    //console.log(this.warnChannelId);
   }
 /*  ngOnInit(){
     this.warnChannel = this.warnChanArr[0].channelName;
@@ -130,7 +134,7 @@ export class WarnWindowComponent{
     this.checked = 0;
     this.chanRequired1=0;
     this.chanRequired2=0;
-    console.log(this.ruleList);
+    //console.log(this.ruleList);
     this.warnChanChecked = [];
     this.warnChannel='';
     this.warnChannelId='';
@@ -150,6 +154,9 @@ export class WarnWindowComponent{
         //console.log(this.warnChanChecked);
       }
       //console.log(this.warnChannelId);
+    }
+    for(let k=0;k<this.warnChanArr.length;k++){
+      this.warnChanArr[k].flag=2;
     }
     //console.log(this.warnChanArr);
     //this.getObj();
@@ -223,14 +230,6 @@ export class WarnWindowComponent{
     }else{
       this.chanRequired1=0;
     }
-    if(this.appCate=='实时流分析'){
-      if(this.warnChannel==''){
-        this.chanRequired2=1;
-        return false;
-      }else{
-        this.chanRequired2=0;
-      }
-    }
     if(this.objName==undefined){
       this.objName=null;
     }
@@ -262,47 +261,104 @@ export class WarnWindowComponent{
       return false;
     };
     this.photoUrl=this.getPhoto();
-    this.warnService.createWarn(this.appId,this.warnChannelId,this.ruleName,this.cateId,this.code,this.objName,this.status,this.photoUrl)
+    if(!this.createFlag) {
+      return;
+    };
+    if(this.ruleNameMust==1){
+      return false
+    }
+    this.createFlag = false;
+    var myDate = new Date();
+    //获取当前年
+    var year=myDate.getFullYear();
+    //获取当前月
+    var month=myDate.getMonth()+1;
+    //获取当前日
+    var date=myDate.getDate();
+    var h=myDate.getHours();       //获取当前小时数(0-23)
+    var m=myDate.getMinutes();     //获取当前分钟数(0-59)
+    var s=myDate.getSeconds();
+    var now=year+'-'+this.p(month)+"-"+this.p(date)+" "+this.p(h)+':'+this.p(m)+":"+this.p(s)+" 000";
+    if(this.identifyName=='人'){
+      if(this.photoUrl.length>0&&(this.objName!=''&&this.objName!=null&&this.objName!=undefined)){
+
+      }else{
+        this.deleteIndex =1;
+        this.tip_title = '提示';
+        this.tip_content = '告警对象为人，特征名称和特征图片不能为空！';
+        this.createFlag = true;
+        return false
+      }
+    }
+    this.warnService.createWarn(this.appId,this.ruleName,this.cateId,this.code,this.objName,this.status,this.photoUrl,now)
       .subscribe(result=>{
         //console.log(result);
         if(result.text().substring(0,2)=='Ok'){
         this.createIndex = 2;
         this.indexChange.emit(this.createIndex);
+        this.createFlag = true;
         }else if(result.text().substring(0,2)=='No'){
           this.deleteIndex =1;
           this.tip_title = '提示';
           this.tip_content = '通道未开启，请开启通道！';
           this.tip_btn = '开启通道';
+          this.createFlag = true;
         }else if(result.text().substring(0,2)=='Er'){
           this.deleteIndex =1;
           this.tip_title = '提示';
           this.tip_content = result.text().substring(5);
+          this.createFlag = true;
         }
       })
+  }
+  p(s) {
+    return s < 10 ? '0' + s: s;
   }
   editSave(){
     if(this.validation()==false){
       return false;
     };
     this.photoUrl=this.getPhoto();
+    if(!this.saveFlag) {
+      return;
+    }
+    if(this.ruleNameMust==1){
+      return false
+    }
+    this.saveFlag = false;
+    if(this.identifyName=='人'){
+      if(this.photoUrl.length>0&&(this.objName!=''&&this.objName!=null&&this.objName!=undefined)){
+
+      }else{
+        this.deleteIndex =1;
+        this.tip_title = '提示';
+        this.tip_content = '告警对象为人，特征名称和特征图片不能为空！';
+        this.saveFlag = true;
+        return false
+      }
+    }
     if(this.appCate=='实时流分析'){
-      this.warnService.editRuleSave(this.warnChannelId,this.ruleList.ruleId,this.ruleName,this.cateId,this.code,this.objName,this.status,this.photoUrl)
+      this.warnService.editRuleSave(this.ruleList.ruleId,this.ruleName,this.cateId,this.code,this.objName,this.status,this.photoUrl)
         .subscribe(result=>{
           //console.log(result);
           if(result.text().substring(0,2)=='Ok'){
             this.createIndex = 2;
             this.indexChange.emit(this.createIndex);
+            this.saveFlag = true;
           }else if(result.text()=='No'){
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = '通道未开启，请开启通道！';
+            this.saveFlag = true;
           }else if(result.text().substring(0,2)=='Er'){
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = result.text().substring(5);
+            this.saveFlag = true;
           }else if(result.text()=='Close'){
             this.createIndex = 2;
             this.indexChange.emit(this.createIndex);
+            this.saveFlag = true;
           }
         })
     }else{
@@ -311,14 +367,17 @@ export class WarnWindowComponent{
           if(result.text().substring(0,2)=='Ok'){
             this.createIndex = 2;
             this.indexChange.emit(this.createIndex);
+            this.saveFlag = true;
           }else if(result.text()=='No'){
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = '通道未开启，请开启通道！';
+            this.saveFlag = true;
           }else if(result.text().substring(0,2)=='Er'){
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = result.text().substring(5);
+            this.saveFlag = true;
           }
         })
     }
@@ -330,5 +389,25 @@ export class WarnWindowComponent{
   back(){
     this.createIndex = 2;
     this.indexChange.emit(this.createIndex);
+  }
+  checkName(){
+    if(this.ruleName==''){
+      this.chanRequired1 = 1;
+      this.ruleNameMust = 0;
+    }else{
+      this.warnService.checkRuleName(this.appId,this.ruleName)
+        .subscribe(
+          (result=>{
+            this.chanRequired1 = 0;
+            this.ruleNameMust = 0;
+          }),
+          (error=>{
+            if(error.status==400){
+              this.chanRequired1 = 0;
+              this.ruleNameMust = 1;
+            }
+          })
+        )
+    }
   }
 }

@@ -45,6 +45,18 @@ export class WarnService {
         }
       });
   }
+  checkRuleName(applicationId,ruleName){
+    let path = "/api/ruleName/"+applicationId+"/"+ruleName;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path,{ headers: headers })
+      .map((response: Response) => {
+        if (response && response.text()) {
+          if(response.status==200){
+            return response.text();
+          }
+        }
+      });
+  }
   getChanName(id){
     let path = "/api/getApplicationChannelNameByApplication/"+id;
     let headers = this.getHeaders();
@@ -95,15 +107,15 @@ export class WarnService {
         }
       });
   }
-  createWarn(appId,chanId,name,obj,code,car,status,photoArr){
+  createWarn(appId,name,obj,code,car,status,photoArr,createTime){
     let path = "/api/alarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
-      "recognitionCategor": {
+      "recognitionCategory": {
         "cateId": obj,
         "code":code
       },
-      "createTime": null,
+      "createTime": createTime,
       "ruleId": 0,
       "ruleName":name ,
       "applicationChannels":null,
@@ -111,7 +123,7 @@ export class WarnService {
       "targetImages": photoArr
     });
     let headers = this.getHeaders();
-    headers.append('channelIds',chanId);
+    //headers.append('channelIds',chanId);
     headers.append('applicationId',appId);
     return this.http.post(this.SERVER_URL+path,body,{ headers: headers })
       .map((response: Response) => {
@@ -122,7 +134,7 @@ export class WarnService {
         }
       });
   }
-  editRuleSave(chanId,ruleId,name,obj,code,car,status,photoArr){
+  editRuleSave(ruleId,name,obj,code,car,status,photoArr){
     let path = "/api/UpdateAlarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
@@ -135,9 +147,7 @@ export class WarnService {
       "targetFeature": car,
       "targetImage":photoArr
     });
-    console.log(body);
     let headers = this.getHeaders();
-    headers.append('channelIds',chanId);
     return this.http.put(this.SERVER_URL+path,body,{ headers: headers })
       .map((response: Response) => {
         if (response) {
@@ -160,7 +170,7 @@ export class WarnService {
       "targetFeature": car,
       "targetImage":photoArr
     });
-    console.log(body);
+    //console.log(body);
     let headers = this.getHeaders();
     return this.http.put(this.SERVER_URL+path,body,{ headers: headers })
       .map((response: Response) => {
@@ -195,9 +205,9 @@ export class WarnService {
         }
       });
   }
-  searchRules(id,name,chanId,obj,status,page=0,size=10){
-    console.log(id,name,chanId,obj,status);
-    let path = "/api/findRuleDynamic/"+id+"/"+name+"/"+chanId+"/"+obj+"/"+status+"?page="+page+"&size="+size;
+  searchRules(id,name,obj,status,page=0,size=10){
+    //console.log(id,name,chanId,obj,status);
+    let path = "/api/findRuleDynamic/"+id+"/"+name+"/"+obj+"/"+status+"?page="+page+"&size="+size+"&sort=createTime,desc";
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {
@@ -206,6 +216,54 @@ export class WarnService {
             return response.json();
           }
         }
+      });
+  }
+  searchTime(id,name,ruleId,status,page=0,size=10,start,end){
+    let path = "/api/alarm_time/"+id+"/"+name+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size+"&sort=alarmTime,desc";
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path,{ headers: headers })
+      .map((response: Response) => {
+        if (response && response.json()) {
+          if(response.status==200){
+            return response.json();
+          }
+        }
+      });
+  }
+  searchOffTime(id,taskId,task,ruleId,status,page=0,size=10,start,end){
+    let path = "/api/alarm_time_offline/"+id+"/"+taskId+"/"+task+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size+"&sort=alarmTime,desc";
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path,{ headers: headers })
+      .map((response: Response) => {
+        if (response && response.json()) {
+          if(response.status==200){
+            return response.json();
+          }
+        }
+      });
+  }
+  getWarnTask(id,type){
+    let path = "/api/video_offline_task/"+id+"/"+type;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path,{ headers: headers })
+      .map((response: Response) => {
+        if (response && response.json()) {
+          if(response.status==200){
+            return response.json();
+          }
+        }
+      });
+  }
+  setAlarmCheck(alarmsId,selected){
+    let path = "/api/alarmCheck";
+    let alarmDTO = JSON.stringify({
+      "selected": selected,
+      "alarmIds": alarmsId
+    });
+    let headers = this.getHeaders();
+    return this.http.put(this.SERVER_URL+path, alarmDTO,{ headers : headers})
+      .map((response: Response) => {
+        return response;
       });
   }
   searchWarns(id,name,ruleId,status,page=0,size=10,start,end){

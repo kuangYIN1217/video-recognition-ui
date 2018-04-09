@@ -86,7 +86,7 @@ export class NavigationComponent {
     }else if (this.location.path().match(/\/taskmanage/)||this.location.path().match(/\/createtext/)){
       this.focusTab = 5;
       // this.needhide = 0;
-    }else if (this.location.path().match(/\/warnmanage/)||this.location.path().match(/\/warnrlue/)){
+    }else if (this.location.path().match(/\/warnmanage/)||this.location.path().match(/\/warnrlue/)||this.location.path().match(/\/warntime/)){
       this.focusTab = 6;
       // this.needhide = 0;
     }else if (this.location.isCurrentPathEqualTo('/overviewmap')||this.location.path().match(/\/overviewmap/) ) {

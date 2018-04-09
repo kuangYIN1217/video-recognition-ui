@@ -55,11 +55,13 @@ export class CreateTextComponent {
   offlineObj:any={};
   warnChanChecked:any[]=[];
   warnChecked:any[]=[];
+  choose:string='video';
+  choosed:string='video';
   constructor(private warnService: WarnService,private offlineService: OfflineService,private router:Router,private route: ActivatedRoute) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
-    console.log(this.appId);
-    console.log(this.appCate);
+    //console.log(this.appId);
+    //console.log(this.appCate);
     this.warnService.getWarnRules(this.appId)
       .subscribe(result=>{
         this.warnChanArr = result.content;
@@ -72,36 +74,81 @@ export class CreateTextComponent {
     method: "POST",
     itemAlias: "file",
   });
-  selectedFileOnChanged(){
-    console.log(this.uploader.queue);
-    for(let j=0;j<this.uploader.queue.length;j++){
-      this.size = this.uploader.queue[j].file.size;
-      if((this.size/1024/1024)>500){
-        this.deleteIndex =1;
-        this.tip_title = '提示';
-        this.tip_content = this.uploader.queue[j].file.name +'文件大于500M！';
-        return false;
+  onlyUploadOne(type){
+    this.size = this.uploader.queue[0].file.size;
+    if((this.size/1024/1024/1024)>1){
+      this.deleteIndex =1;
+      this.tip_title = '提示';
+      this.tip_content = this.uploader.queue[0].file.name +'文件大于1GB！';
+      return false;
+    }
+    if(this.showFile.length>0){
+      return false
+    }
+    if(this.uploader.queue.length>1){
+      this.uploader.queue[1].remove();
+    }else{
+      let name = this.uploader.queue[0].file.name;
+      if(type=='video'){
+        if(name.substring(name.length-3,name.length)!='mp4'&&name.substring(name.length-3,name.length)!='avi'){
+          this.uploader.queue[0].remove();
+          return
+        };
+      }else if(type=='zip'){
+        if(name.substring(name.length-3,name.length)!='zip'&&name.substring(name.length-3,name.length)!='ZIP'){
+          this.uploader.queue[0].remove();
+          return
+        };
       }
-      if(Number(j)>0){
-        this.uploader.queue[1].remove();
-        j-=1;
-        continue
-      }else{
-        let bool = this.isInArray(this.showArr,this.uploader.queue[j]);
-        if(bool==false){
-          this.showArr.push(this.uploader.queue[j]);
-          this.getProgress(j);
-          //this.getSuccess(j);
-        }else{
-          continue;
-        }
+      let bool = this.isInArray(this.showArr,this.uploader.queue[0]);
+      if(bool==false){
+        this.showArr.push(this.uploader.queue[0]);
+        this.getProgress(0);
       }
     }
-    //this.uploader.queue[0].upload();
+  }
+  selectedFileOnChanged(event,getType){
+    if(getType=='video'){
+      this.onlyUploadOne(getType);
+    }else if(getType=='image'){
+      for(let j=0;j<this.uploader.queue.length;j++){
+        if(this.showFile.length>0&&(this.uploader.queue.length+this.showFile.length)>10){
+          return false
+        }else{
+          this.size = this.uploader.queue[j].file.size;
+          if((this.size/1024/1024/1024)>1){
+            this.deleteIndex =1;
+            this.tip_title = '提示';
+            this.tip_content = this.uploader.queue[j].file.name +'文件大于1GB！';
+            return false;
+          }
+          if(Number(j)>9){
+            this.uploader.queue[9].remove();
+            j-=1;
+            continue
+          }else{
+            let name = this.uploader.queue[j].file.name;
+            if(name.substring(name.length-3,name.length)!='png'&&name.substring(name.length-3,name.length)!='jpg'){
+              this.uploader.queue[j].remove();
+              return
+            };
+            let bool = this.isInArray(this.showArr,this.uploader.queue[j]);
+            if(bool==false){
+              this.showArr.push(this.uploader.queue[j]);
+              this.getProgress(j);
+            }else{
+              continue;
+            }
+          }
+        }
+      }
+    }else if(getType=='zip'){
+      this.onlyUploadOne(getType);
+    }
   }
   getProgress(j){
-    if(j>0){
-      this.showArr.splice(1,1);
+    if(j>9){
+      this.showArr.splice(9,1);
       return
     }else{
       this.uploader.onProgressItem=(fileItem: FileItem, progress: any)=>{
@@ -113,15 +160,31 @@ export class CreateTextComponent {
         }
       };
       this.uploader.queue[j].onSuccess = (response: any, status: any, headers: any) => {
-        console.log(response);
-        this.offlineObj = { "fileName":this.uploader.queue[j].file.name,"inputPath":response };
-        this.offlineFiles.push(this.offlineObj);
-/*        this.inputPathArr.push(response);
-        this.fileNameArr.push(this.uploader.queue[j].file.name);
-        if(j==this.uploader.queue.length-1){
-        this.inputPath = this.inputPathArr.join(',');
-        this.fileName = this.fileNameArr.join(',');
-        }*/
+        //console.log(response);
+        if(this.choose=="zip"){
+          let arr = response.split(',');
+          for(let i=0;i<arr.length;i++){
+            let obj:any={};
+            obj = { "fileName":this.uploader.queue[j].file.name,"inputPath":arr[i] };
+            this.offlineFiles.push(obj);
+          }
+        }else{
+          this.offlineObj = { "fileName":this.uploader.queue[j].file.name,"inputPath":response };
+          this.offlineFiles.push(this.offlineObj);
+        }
+        /*        this.inputPathArr.push(response);
+         this.fileNameArr.push(this.uploader.queue[j].file.name);
+         if(j==this.uploader.queue.length-1){
+         this.inputPath = this.inputPathArr.join(',');
+         this.fileName = this.fileNameArr.join(',');
+         }*/
+      };
+      this.uploader.queue[j].onError = (response: any, status: any, headers: any)=>{
+        this.deleteIndex =1;
+        this.tip_title = '提示';
+        this.tip_content = '压缩文件内格式不正确！';
+        this.uploader.queue[0].remove();
+        this.showArr=[];
       };
       this.uploader.queue[j].upload();
     }
@@ -142,10 +205,6 @@ export class CreateTextComponent {
   analysis(i){
     let index = this.uploader.getIndexOfItem(this.uploader.queue[i]);
     this.offlineFiles.splice(index,1);
-/*    this.inputPathArr.splice(index,1);
-    this.fileNameArr.splice(index,1);
-    this.inputPath = this.inputPathArr.join(',');
-    this.fileName = this.fileNameArr.join(',');*/
   }
   isInArray(arr,value){
     for(var i = 0; i < arr.length; i++){
@@ -164,9 +223,11 @@ export class CreateTextComponent {
       this.required1 = 0;
       this.required2 = 0;
       this.required3 = 0;
-      if(JSON.stringify(params) != "{}"){
+      if((params['taskName'])!=undefined){
         this.taskTitle = params['taskTitle'];
         this.taskName = params['taskName'];
+        this.choose = params['fileType'];
+        this.choosed = params['fileType'];
         this.warnRule = '';
         this.warnRuleId = '';
         //this.inputPath = params['inputPath'];
@@ -174,12 +235,8 @@ export class CreateTextComponent {
         //this.fileNames = params['fileNames'];
         if(params['alarmRules']){
           this.warnRuleArr = JSON.parse(params['alarmRules']);
-          console.log(this.warnRuleArr);
           this.warnChanChecked = this.warnRuleArr;
         }
-/*        if(params['offlineFiles']){
-          this.offlineFiles = JSON.parse(params['offlineFiles']);
-        }*/
         this.taskId = params['taskId'];
         for(let i=0;i<this.warnRuleArr.length;i++){
           if(this.warnRule==''){
@@ -193,45 +250,39 @@ export class CreateTextComponent {
             this.warnRuleId += ','+this.warnRuleArr[i].ruleId;
           }
         }
-/*        for(let j=0;j<this.offlineFiles.length;j++){
+        /*        for(let j=0;j<this.offlineFiles.length;j++){
 
-        }*/
-/*        console.log(this.fileNames);
-        if(this.fileNames){
-          this.showName = this.fileNames.split(',');
-        }*/
-    if(this.taskId){
-        this.offlineService.getSize(this.taskId)
-          .subscribe(result=>{
-            console.log(result);
-            let name:string='';
-            let path:string='';
-            for(let i=0;i<result.fileSize.length;i++){
-              this.fileObj = {};
-              this.fileObj.fileName = result.offlineTasks.offlineFiles[i].fileName;
-              name +=result.offlineTasks.offlineFiles[i].fileName+',';
-              this.fileObj.inputPath = result.offlineTasks.offlineFiles[i].inputPath;
-              path +=result.offlineTasks.offlineFiles[i].inputPath+',';
-              this.fileObj.size = result.fileSize[i];
-              this.showFile.push(this.fileObj);
-            }
-            console.log(this.showFile);
-/*            this.fileNames = name.substring(0,name.length-1);
-            this.inputPath = path.substring(0,path.length-1);
-            console.log(this.fileNames);
-            console.log(this.inputPath);*/
-          })
-}
+         }*/
+        /*        console.log(this.fileNames);
+         if(this.fileNames){
+         this.showName = this.fileNames.split(',');
+         }*/
+        if(this.taskId){
+          this.offlineService.getSize(this.taskId)
+            .subscribe(result=>{
+              //console.log(result);
+              //console.log(result);
+              let name:string='';
+              let path:string='';
+              for(let i=0;i<result.offlineFiles.length;i++){
+                this.fileObj = {};
+                this.fileObj.fileName = result.offlineFiles[i].fileName;
+                name +=result.offlineFiles[i].fileName+',';
+                this.fileObj.inputPath = result.offlineFiles[i].inputPath;
+                path +=result.offlineFiles[i].inputPath+',';
+                this.fileObj.size = result.offlineFiles[i].fileSize;
+                this.showFile.push(this.fileObj);
+              }
+            })
+        }
         this.lookIndex = 1;
       }
-
     });
 
   }
   deleteChange(event){
-  this.deleteIndex = event;
-}
-
+    this.deleteIndex = event;
+  }
   create(){
     if(!this.taskName){
       this.required1 = 1;
@@ -252,7 +303,6 @@ export class CreateTextComponent {
       this.required3 = 0;
     }
     for(let i=0;i<this.uploader.queue.length;i++){
-      console.log(this.uploader.queue[i]);
       if(this.uploader.queue[i].progress!=100){
         this.required3 = 1;
         return false;
@@ -260,52 +310,24 @@ export class CreateTextComponent {
         this.required3 = 0;
       }
     }
-/*    for(let i in this.warnChanArr){
-      if(this.ruleId==undefined){
-        this.ruleId = this.warnChanArr[0].ruleId;
-      }else{
-        this.ruleId += ','+this.warnChanArr[i].ruleId;
-      }
-    }*/
-    //console.log(this.ruleId);
     this.fileNumber = this.uploader.queue.length;
-    console.log(this.warnRuleId);
-    console.log(this.offlineFiles);
-    this.offlineService.create(this.appId,this.warnRuleId,this.taskName,this.offlineFiles,this.fileNumber)
+    //console.log(this.offlineFiles);
+
+    this.offlineService.create(this.appId,this.warnRuleId,this.taskName,this.choosed,this.offlineFiles,this.fileNumber)
       .subscribe(result=>{
-        console.log(result);
         this.router.navigate(['../taskmanage']);
       })
   }
   warnChanCheckedChange(event){
-    console.log(event);
     this.warnChecked = event;
   }
   chanChange(event){
-    console.log(event);
     this.warnRule = event.join(',');
-    console.log(this.warnRule);
   }
   chanChangeId(event){
-    console.log(event);
     this.warnRuleId = event.join(',');
-    console.log(this.warnRuleId);
   }
   update(){
-    console.log(this.warnRuleId);
-    /*  let tem:any[]=[];
-    let temp:any[]=[];
-    tem = this.inputPath.split(',');
-    for(let i=0;i<tem.length;i++){
-      this.inputPathArr.unshift(tem[i]);
-    }
-    temp = this.fileNames.split(',');
-    for(let i=0;i<temp.length;i++){
-      this.fileNameArr.unshift(temp[i]);
-    }
-    this.inputPath = this.inputPathArr.join(',');
-    this.fileName = this.fileNameArr.join(',');
-    this.fileNumber = this.inputPathArr.length;*/
     if(!this.taskName){
       this.required1 = 1;
       return false;
@@ -334,10 +356,10 @@ export class CreateTextComponent {
       obj = { "fileName":this.offlineFiles[j].fileName,"inputPath":this.offlineFiles[j].inputPath };
       this.upOfflineFiles.push(obj);
     }
-    console.log(this.upOfflineFiles);
-    this.offlineService.update(this.warnRuleId,this.taskId,this.upOfflineFiles,this.taskName,this.fileNumber)
+    //console.log(this.upOfflineFiles);
+    this.offlineService.update(this.warnRuleId,this.taskId,this.upOfflineFiles,this.choosed,this.taskName,this.upOfflineFiles.length)
       .subscribe(result=>{
-        console.log(result);
+        //console.log(result);
         this.router.navigate(['../taskmanage']);
       })
   }
@@ -351,5 +373,54 @@ export class CreateTextComponent {
 
   hide(){
     this.checked = 0;
+  }
+  deleteUploader(){
+    if(this.showFile.length==0){
+      if(this.choose!=this.choosed&&this.showArr.length>0){
+        this.choose = this.choosed;
+        return false
+      }else{
+        return true
+      }
+    }else{
+      if(this.choose!=this.choosed){
+        this.choose = this.choosed;
+        return false
+      }else{
+        return true
+      }
+    }
+  }
+  getTipContent(){
+    this.deleteIndex =1;
+    this.tip_title = '提示';
+    this.tip_content = '对不起，您已上传文件，请先删除！';
+  }
+  checkRadio(type){
+    if(type=='video'){
+      this.choose = 'video';
+      if(this.deleteUploader()){
+        this.choosed = 'video';
+      }else{
+        this.getTipContent();
+        return false
+      }
+    }else if(type=='image'){
+      this.choose = 'image';
+      if(this.deleteUploader()){
+        this.choosed = 'image';
+      }else{
+        this.getTipContent();
+        return false
+      }
+    }else if(type=='zip'){
+      this.choose = 'zip';
+      if(this.deleteUploader()){
+        this.choosed = 'zip';
+      }else{
+        this.getTipContent();
+        return false
+      }
+    }
   }
 }

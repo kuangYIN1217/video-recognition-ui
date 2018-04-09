@@ -56,7 +56,11 @@ export class WarnComponent{
   _realTime:any[]=[];
   _offline:any[]=[];
   taskId:number=0;
-
+  showTime:boolean = true;
+  once:string='';
+  alarmRules:any[]=[];
+  alarmsId:any[]=[];
+  init:boolean = false;
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -73,6 +77,18 @@ export class WarnComponent{
         }
         this.session();
         this.getRuleId();
+        let start = $("#start").val();
+        let end = $("#end").val();
+        if(start==""){
+          start = null;
+        }else{
+          start = start+" 000";
+        };
+        if(end==""){
+          end = null;
+        }else{
+          end = end+" 000";
+        };
         if(this.pageNow){
           if(this.taskId>0){
             this.searchWarn(this.appId,this.taskId,this.chanName,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
@@ -94,6 +110,18 @@ export class WarnComponent{
         }
         this.session();
         this.getRuleId();
+        let start = $("#start").val();
+        let end = $("#end").val();
+        if(start==""){
+          start = null;
+        }else{
+          start = start+" 000";
+        };
+        if(end==""){
+          end = null;
+        }else{
+          end = end+" 000";
+        };
         if(this.pageNow){
           if(this.taskId>0){
             this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,null,null);
@@ -109,11 +137,61 @@ export class WarnComponent{
         }
       }, 360000);
     }
-    this.warnService.getWarnRules(this.appId)
+    if(this.appCate=="实时流分析"){
+      this.warnService.getWarnRules(this.appId)
+        .subscribe(result=>{
+          this.warnRlueArr = result.content;
+          this.warnRlueArr.unshift({"ruleId":-1,"ruleName":'全部'});
+          //console.log(this.warnRlueArr);
+          if(this.warnRlueArr.length>0){
+            this.warnRlue = this.warnRlueArr[0].ruleName;
+            this.ruleId = this.warnRlueArr[0].ruleId;
+          }
+        });
+      this.warnService.getChanName(this.appId)
+        .subscribe(result=>{
+          this.chanNameArr=result;
+          //console.log(this.chanNameArr);
+          this.chanNameArr.unshift('全部');
+          this.chanName = this.chanNameArr[0];
+        });
+    }else{
+      this.warnService.getWarnTask(this.appId,"all")
+        .subscribe(result=>{
+          this.warnTaskArr = result;
+          //console.log(this.warnTaskArr);
+          if(this.warnTaskArr.length>0&&this.once!="true"){
+            this.warnTask = this.warnTaskArr[0].taskName;
+            if(this.warnTaskArr[0].alarmRules.length>0){
+              this.warnRlueArr = this.warnTaskArr[0].alarmRules;
+              this.warnRlue = this.warnTaskArr[0].alarmRules[0].ruleName;
+              this.ruleId = this.warnTaskArr[0].alarmRules[0].ruleId;
+            }
+          }else{
+            for(let i=0;i<this.warnTaskArr.length;i++){
+              if(this.warnTaskArr[i].taskId==this.taskId){
+                this.warnRlueArr = this.warnTaskArr[i].alarmRules;
+                break;
+              }
+            }
+            this.warnRlue = this.alarmRules[0].ruleName;
+            this.ruleId = this.alarmRules[0].ruleId;
+          };
+          if(this.warnTaskArr[0].fileType=='image'||this.warnTaskArr[0].fileType=='zip'){
+            this.showTime = false;
+          }else{
+            this.showTime = true;
+          }
+          if(this.once!="true"){
+            this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+          }
+        });
+    }
+/*    this.warnService.getWarnRules(this.appId)
       .subscribe(result=>{
         this.warnRlueArr = result.content;
         this.warnRlueArr.unshift({"ruleId":-1,"ruleName":'全部'});
-        console.log(this.warnRlueArr);
+        //console.log(this.warnRlueArr);
         if(this.warnRlueArr.length>0){
           this.warnRlue = this.warnRlueArr[0].ruleName;
           this.ruleId = this.warnRlueArr[0].ruleId;
@@ -134,39 +212,32 @@ export class WarnComponent{
         if(this.warnTaskArr.length>0){
           this.warnTask = this.warnTaskArr[0].taskName;
         }
-      })
+      })*/
     this.warnStatus = this.statusArr[0];
-    this.route.params.subscribe((param) => {
-      if(JSON.stringify(param) != "{}"){
-        console.log(param);
-        this.warnStatus = param['status'];
-        console.log(this.warnStatus);
-        if(this.appCate=='实时流分析'){
-          this.searchWarn(this.appId,0,this.chanName,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
-        }else{
-          this.searchWarn(this.appId,0,this.warnTask,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
-        }
+    if(this.appCate=="实时流分析"){
+      if(this.taskId<=0){
+        this.searchWarn(this.appId,0,'全部',-1,'全部',this.page-1,this.pageMaxItem,null,null);
       }
-    });
-    this.route.queryParams.subscribe(params => {
-      if(JSON.stringify(params) != "{}"&& !params.pageNo){
-        console.log(params);
-        this.taskName = params['taskName'];
-        this.taskId = params['taskId'];
-        this.warnService.searchOffWarns(this.appId,this.taskId,this.taskName,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null)
-          .subscribe(result=>{
-            this.warnTask = this.taskName;
-            this.getWarnList(result);
-          })
-      }
-    });
-    if(this.taskId<=0){
-      this.searchWarn(this.appId,0,'全部',-1,'全部',this.page-1,this.pageMaxItem,null,null);
     }
+
   }
   ngAfterViewInit(){
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
-
+  }
+  changeWarnTask(){
+    for(let i=0;i<this.warnTaskArr.length;i++){
+      if(this.warnTaskArr[i].taskName==this.warnTask){
+        if(this.warnTaskArr[i].fileType=='image'||this.warnTaskArr[i].fileType=='zip'){
+          this.showTime = false;
+        }else{
+          this.showTime = true;
+        }
+        this.warnRlueArr = this.warnTaskArr[i].alarmRules;
+        this.warnRlue = this.warnTaskArr[i].alarmRules[0].ruleName;
+        this.ruleId = this.warnTaskArr[i].alarmRules[0].ruleId;
+        break;
+      }
+    }
   }
   session(){
     if(sessionStorage.getItem("rule")){
@@ -186,28 +257,64 @@ export class WarnComponent{
     clearInterval(this.interval);
   }
   ngOnInit() {
+    this.route.params.subscribe((param) => {
+      if(JSON.stringify(param) != "{}"){
+        //console.log(param);
+        this.warnStatus = param['status'];
+        //console.log(this.warnStatus);
+        if(this.appCate=='实时流分析'){
+          this.searchWarn(this.appId,0,this.chanName,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+        }else{
+          this.getRuleId();
+          this.searchWarn(this.appId,0,this.warnTask,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
+        }
+      }
+    });
+    this.route.queryParams.subscribe(params => {
+      if(JSON.stringify(params) != "{}"&& !params.pageNo){
+        //console.log(params);
+        this.taskName = params['taskName'];
+        this.taskId = params['taskId'];
+        this.once = params['once'];
+        this.alarmRules = JSON.parse(params['alarmRules']);
+        this.warnRlue = this.alarmRules[0].ruleName;
+        this.ruleId = this.alarmRules[0].ruleId;
+        this.warnService.searchOffWarns(this.appId,this.taskId,this.taskName,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null)
+          .subscribe(result=>{
+            this.warnTask = this.taskName;
+            this.getWarnList(result);
+          })
+      }
+    });
     calc_height(document.getElementById('warn-content'));
-    $("#start").jeDate({
-      isinitVal:true,
-      festival: false,
-      format: 'YYYY-MM-DD hh:mm:ss',
-    });
-    $("#end").jeDate({
-      isinitVal:true,
-      festival: false,
-      format: 'YYYY-MM-DD hh:mm:ss'
-    });
+    if(this.appCate=="实时流分析"){
+      $("#start").jeDate({
+        isinitVal:true,
+        festival: false,
+        format: 'YYYY-MM-DD hh:mm:ss'
+      });
+      $("#end").jeDate({
+        isinitVal:true,
+        festival: false,
+        format: 'YYYY-MM-DD hh:mm:ss'
+      });
+    }else{
+      $("#start").jeDate({
+        isinitVal:true,
+        festival: false,
+        format: 'hh:mm:ss'
+      });
+      $("#end").jeDate({
+        isinitVal:true,
+        festival: false,
+        format: 'hh:mm:ss'
+
+      });
+    }
 
     this.startTime = $('#start').val("");
     this.endTime = $('#end').val("");
   }
-/*  getAllWarn(id,page,size){
-    this.warnService.getAllWarn(id,page,size)
-      .subscribe(result=>{
-        console.log(result.content);
-        this.getWarnList(result);
-      })
-  }*/
   allSel(){
     for(var i in this.allWarn){
       if(this.allFlag==false){
@@ -242,7 +349,13 @@ export class WarnComponent{
     // this.router.navigate(['../warndetail'],{queryParams: {'detailList':item}});
     this.lookIndex=1;
     this.detaillist = item;
-    console.log(this.detaillist);
+    //console.log(this.detaillist);
+  }
+  slicePath(url){
+    return url.slice(17)
+  }
+  output(item){
+    return item.substring(17);
   }
   thumbnail(){
     this.seeIndex = 2;
@@ -250,7 +363,7 @@ export class WarnComponent{
   seePhoto(url){
     console.log(url);
     this.seeIndex = 1;
-    this.imageUrl = url;
+    this.imageUrl = url.slice(17);
   }
   downPhoto(url){
     this.downUrl = url;
@@ -340,10 +453,16 @@ export class WarnComponent{
       return time[1].substring(0,8);
     }
   }
-  getTime(item){
+  getTime(item?){
+    if(item){
+      let re = item.split('-');
+      return re[2].substring(2);
+    }
+  }
+/*  getTime(item){
     var d = new Date(item);
     return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + ((d.getHours()<10)?('0'+d.getHours()):d.getHours()) + ':' + ((d.getMinutes()<10)?('0'+d.getMinutes()):d.getMinutes()) + ':' + ((d.getSeconds()<10)?('0'+d.getSeconds()):d.getSeconds());
-  }
+  }*/
   duraTime(time){
     if(time){
       return Number(time).toFixed(2);
@@ -417,13 +536,13 @@ export class WarnComponent{
       this.tip_content = "请选择任务！";
       return false
     }
-    console.log(this.alarmIds.substring(0,this.alarmIds.length-1));
-    console.log(this.sourcePaths.substring(0,this.sourcePaths.length-1));
+    //console.log(this.alarmIds.substring(0,this.alarmIds.length-1));
+    //console.log(this.sourcePaths.substring(0,this.sourcePaths.length-1));
     this.warnService.alarmExport(this.appId,this.appCate,this.alarmIds.substring(0,this.alarmIds.length-1),this.sourcePaths.substring(0,this.sourcePaths.length-1))
      .subscribe(result=>{
        console.log(result.text());
        let url = decodeURIComponent(result.text());
-       console.log(SERVER_URL+url);
+       //console.log(SERVER_URL+url);
        window.open(SERVER_URL+"/"+url);
      })
   }
@@ -516,6 +635,81 @@ export class WarnComponent{
         this.searchWarn(this.appId,this.taskId,'全部',-1,'全部',this.page-1,this.pageMaxItem,null,null);
       }else{
         this.searchWarn(this.appId,0,'全部',-1,'全部',this.page-1,this.pageMaxItem,null,null);
+      }
+    }
+  }
+  getMaxHeight(){
+    if($("#img").length>0){
+      return
+    }else{
+      let imgObj = new Image();
+      imgObj.src = $("#image").attr("src");
+      imgObj.id = "img";
+      $(".showImage").append(imgObj);
+      //console.log($("#img").width());
+      imgObj.addEventListener("load",this.getWH);
+      $("#img").css("display","none");
+    }
+  }
+  getWH(){
+    let obj:any;
+    obj = document.getElementById("image");
+    obj.className = "";
+    let width = $("#img").width();
+    let height = $("#img").height();
+    let x = (970-parseInt(width))/2;
+    let y = (545-parseInt(height))/2;
+    if(parseInt(width)>parseInt(height)){
+      if(parseInt(width)>=970){
+        obj.style.width = "970px";
+        obj.style.position = "absolute";
+        obj.style.height = parseInt(height)*970/parseInt(width)+"px";
+        obj.style.left = "0";
+        obj.style.right = "0";
+        obj.style.top = "50%";
+        obj.style.marginTop = -(obj.offsetHeight/2)+'px';
+        let y1 = (545-parseInt(obj.offsetHeight))/2;
+        $(".closeImage").css("right","-17px");
+        $(".closeImage").css("top",y1-17+'px');
+        return
+      }else{
+        obj.className = "show-img";
+        obj.style.position = "absolute";
+        obj.style.width = width+"px";
+        obj.style.height = height+"px";
+        obj.style.top = "50%";
+        obj.style.left = "50%";
+        obj.style.marginTop = -(height/2)+'px';
+        obj.style.marginLeft = -(width/2)+'px';
+        $(".closeImage").css("right",x-17+'px');
+        $(".closeImage").css("top",y-17+'px');
+        return
+      }
+    }else if(parseInt(width)<=parseInt(height)){
+      if(parseInt(height)>=545){
+        obj.style.width = parseInt(width)*545/parseInt(height)+"px";
+        obj.style.height = "545px";
+        obj.style.position = "relative";
+        obj.style.top = "0";
+        obj.style.bottom = "0";
+        obj.style.left = "50%";
+        obj.style.marginLeft = -(obj.offsetWidth/2)+'px';
+        let x1 = (970-parseInt(obj.offsetWidth))/2;
+        $(".closeImage").css("right",x1-17+'px');
+        $(".closeImage").css("top","-17px");
+        return
+      }else{
+        obj.className = "show-img";
+        obj.style.position = "absolute";
+        obj.style.width = width+"px";
+        obj.style.height = height+"px";
+        obj.style.top = "50%";
+        obj.style.left = "50%";
+        obj.style.marginTop = -(height/2)+'px';
+        obj.style.marginLeft = -(width/2)+'px';
+        $(".closeImage").css("right",x-17+'px');
+        $(".closeImage").css("top",y-17+'px');
+        return
       }
     }
   }

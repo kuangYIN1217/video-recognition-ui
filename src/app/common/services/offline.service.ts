@@ -25,11 +25,12 @@ export class OfflineService {
     headers.append('Authorization', this.getAuthorization());
     return headers;
   }
-  create(appId,ruleId,taskName,offlineFiles,fileNumber) {
+  create(appId,ruleId,taskName,type,offlineFiles,fileNumber) {
     let path = "/api/createOfflineTask";
     let body = JSON.stringify({
       "offlineFiles":offlineFiles ,
       "fileNumber": fileNumber,
+      "fileType": type,
       "taskName": taskName
     });
     let headers = this.getHeaders();
@@ -44,12 +45,13 @@ export class OfflineService {
         }
       });
   }
-  update(ruleId,taskId,offlineFiles,taskName,fileNumber){
+  update(ruleId,taskId,offlineFiles,type,taskName,fileNumber){
     let path = "/api/updateOfflineTask";
     let body = JSON.stringify({
       "taskId": taskId,
       "offlineFiles":offlineFiles ,
       "fileNumber": fileNumber,
+      "fileType":type,
       "taskName": taskName
     });
     let headers = this.getHeaders();

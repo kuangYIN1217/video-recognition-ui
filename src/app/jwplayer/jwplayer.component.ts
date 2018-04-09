@@ -10,9 +10,9 @@ declare var jwplayer: any;
 })
 export class JWplayerComponent {
   @Input() url: string ;
-  @Input() ckID: string = this.uuid(8 , 16); // 产生随机uuid
+  //@Input() ckID: string = this.uuid(8 , 16); // 产生随机uuid
   ngAfterViewInit() {
-    var playerInstance = jwplayer(this.ckID);
+    var playerInstance = jwplayer("ckID");
     //初始化视频
     playerInstance.setup({
       file: this.url,
@@ -29,7 +29,10 @@ export class JWplayerComponent {
       controls: false
     });
   }
-
+  ngOnChanges(...args: any[]){
+    console.log(this.url);
+    jwplayer("ckID").load([{'file': this.url}]);
+  }
   /* 生成uuid */
   uuid(len, radix) {
     var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');

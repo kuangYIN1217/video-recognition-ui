@@ -12,12 +12,13 @@ import {AppManageService} from "../../common/services/appmanage.service";
 import {nextTick} from "q";
 import {SERVER_URL} from "../../app.constants";
 import {FileUploader} from "ng2-file-upload";
+import {WarnService} from "../../common/services/warn.service";
 declare var $:any;
 @Component({
   selector: 'video-analysis',
   styleUrls: ['./css/video.analysis.component.css'],
   templateUrl: './template/video.analysis.component.html',
-  providers: [ChannelService , RecognitionService, AppManageService]
+  providers: [ChannelService , RecognitionService, AppManageService,WarnService]
 })
 export class VideoAnalysisComoponent {
   addDialog: number=0;
@@ -58,13 +59,202 @@ export class VideoAnalysisComoponent {
   heightIndex:number = 0;
   saveFeature:any[]=[];
   saveColor:number = 0;
+  deleteIndex:number=0;
+  tip_title:string;
+  tip_content:string;
+  switch:string='end';
+  create_show:boolean = false;
+  btn_show:boolean = true;
+  ruleName:string='';
+  ruleNameMust:number = 0;
+  rulesInfo:any[]=[];
+  fileRecognition:any[]=[];
+  warnObjArr:any[]=[];
+  warnObj:string;
+  warnObjDetailArr:any[]=[];
+  warnObjDetail:string='';
+  identifyName:string='';
+  personName:string;
+  cateId:number;
+  code:string;
+  photoUrl:string='';
+  streamType:string='';
+  leftbar:boolean=false;
   radio(i){
     this.radioIndex = i;
   }
-
+  switchToggle(status){
+    if(this.create_show){
+      return false
+    }else{
+      if(status=='start'){
+        this.switch = status;
+        this.btn_show = true;
+      }else if(status=='end'){
+        this.switch = status;
+        this.btn_show = true;
+      }
+    }
+  }
   cancel(){
     this.addDialog = 0;
     this.createFlag = true;
+  }
+  checkName(){
+    if(this.ruleName==''){
+      this.ruleNameMust = 0;
+      this.chanRequired1 = 1;
+    }else{
+      this.warnService.checkRuleName(this.d_applicationId,this.ruleName)
+        .subscribe(
+          (result=>{
+            this.chanRequired1 = 0;
+            this.ruleNameMust = 0;
+          }),
+          (error=>{
+            if(error.status==400){
+              this.chanRequired1 = 0;
+              this.ruleNameMust = 1;
+            }
+          })
+        )
+    }
+  }
+  getOpenRule(){
+    this.warnService.searchRules(this.d_applicationId,null,-1,'开启',0,1000000)
+      .subscribe(result=>{
+        this.rulesInfo = result.content;
+        if(this.fileRecognition.length>0){
+          for(let i=0;i<this.rulesInfo.length;i++){
+            if(this.rulesInfo[i].ruleId==this.fileRecognition[0].ruleId){
+              this.rulesInfo[i].selected = true;
+            }
+          }
+        }
+      });
+  }
+  choose_rule(item){
+    if(this.create_show){
+      return false
+    }else{
+      for(let i=0;i<this.rulesInfo.length;i++){
+        this.rulesInfo[i].selected = false;
+      }
+      item.selected = true;
+    }
+  }
+  createRule(){
+    this.create_show = true;
+    this.btn_show = false;
+    this.warnService.getWarnObjOne()
+      .subscribe(result=>{
+        this.warnObjArr=result;
+        this.warnObj = this.warnObjArr[0].classificationName;
+        this.changeWarn();
+      });
+  }
+  saveRule(){
+    if(this.validation()==false){
+      return false;
+    };
+    this.photoUrl=this.getPhoto();
+    if(!this.createFlag) {
+      return;
+    }
+    this.createFlag = false;
+    var myDate = new Date();
+    //获取当前年
+    var year=myDate.getFullYear();
+    //获取当前月
+    var month=myDate.getMonth()+1;
+    //获取当前日
+    var date=myDate.getDate();
+    var h=myDate.getHours();       //获取当前小时数(0-23)
+    var m=myDate.getMinutes();     //获取当前分钟数(0-59)
+    var s=myDate.getSeconds();
+    var now=year+'-'+this.p(month)+"-"+this.p(date)+" "+this.p(h)+':'+this.p(m)+":"+this.p(s)+" 000";
+    if(this.identifyName=='人'){
+      if(this.photoUrl.length>0&&(this.personName!=''&&this.personName!=null&&this.personName!=undefined)){
+
+      }else{
+        this.deleteIndex =1;
+        this.tip_title = '提示';
+        this.tip_content = '告警对象为人，特征名称和特征图片不能为空！';
+        this.createFlag = true;
+        return false
+      }
+    }
+    this.warnService.createWarn(this.d_applicationId,this.ruleName,this.cateId,this.code,this.personName,'开启',this.photoUrl,now)
+      .subscribe(result=>{
+        this.create_show = false;
+        this.ruleName = '';
+        this.personName = '';
+        this.photoContainer=[];
+        this.getOpenRule();
+        this.createFlag = true;
+        this.btn_show = true;
+      })
+  }
+  p(s) {
+    return s < 10 ? '0' + s: s;
+  }
+  getPhoto(){
+    let temp='';
+    for(let i=0;i<this.photoContainer.length;i++){
+      temp=temp+this.photoContainer[i]+",";
+    }
+    return temp.substring(0,temp.length -1);
+  }
+  validation(){
+    if(this.ruleName==''){
+      this.chanRequired1=1;
+      return false;
+    }else{
+      this.chanRequired1=0;
+    }
+    if(this.ruleNameMust==1){
+      return false;
+    }
+    if(this.personName==undefined){
+      this.personName=null;
+    }
+    for(let i in this.warnObjArr){
+      if(this.warnObj==this.warnObjArr[i].classificationName){
+        for(let j=0;j<this.warnObjArr[i].recognitionCategories.length;j++){
+          if(this.warnObjDetail==this.warnObjArr[i].recognitionCategories[j].name){
+            this.cateId = this.warnObjArr[i].recognitionCategories[j].cateId;
+            this.code = this.warnObjArr[i].recognitionCategories[j].code;
+            return
+          }
+        }
+      }
+    }
+  }
+  getSideBarHeight(){
+    let height = window.innerHeight;
+    return{
+      height:(height-180)+'px'
+    }
+  }
+  show_rule(){
+    this.leftbar = !this.leftbar;
+    if(this.leftbar){
+      $(".analysis-rule").removeClass("analysis-shrikage");
+      $(".analysis-rule").addClass("analysis-an");
+      setTimeout(()=>{
+        document.getElementById("toggleLeft").style.display="block";
+        document.getElementById("toggleRight").style.display="none";
+      },1000)
+    }else{
+      $(".analysis-rule").removeClass("analysis-an");
+      $(".analysis-rule").addClass("analysis-shrikage");
+      setTimeout(()=>{
+        document.getElementById("toggleLeft").style.display="none";
+        document.getElementById("toggleRight").style.display="block";
+        /*  this.rulesInfo=[];
+         this.switch = 'end';*/
+      },1000)
+    }
   }
   create(){
     let chanAddr = this.chanAddr;
@@ -91,14 +281,21 @@ export class VideoAnalysisComoponent {
       return;
     }
     this.createFlag = false;
-    this.channelService.createChannel(this.appId,chanAddr,chanName,protocol,channelType,videoAddress,status)
+    this.channelService.createChannel(this.d_applicationId,chanAddr,chanName,protocol,channelType,videoAddress,status)
       .subscribe(result=>{
-        this.show = 1;
-        this.addDialog = 0;
-        this.getPages(this.appId,this.page-1,this.pageMaxItem);
-        this.createFlag = true;
-        // todo refresh
-        this.initChannels()
+        if(result.text().substring(0,2)=='NO'){
+          this.deleteIndex =1;
+          this.tip_title = '提示';
+          this.tip_content = '该通道地址已存在，画面顺序为'+result.text().substring(3)+'！';
+          this.createFlag = true;
+        }else{
+          this.show = 1;
+          this.addDialog = 0;
+          this.getPages(this.d_applicationId,this.page-1,this.pageMaxItem);
+          this.createFlag = true;
+          // todo refresh
+          this.initChannels()
+        }
       })
   }
   getPages(id,page,size){
@@ -116,9 +313,9 @@ export class VideoAnalysisComoponent {
 
   /* add video end */
   ngOnInit() {
-    console.log(window.navigator.plugins)
+    //console.log(window.navigator.plugins)
   }
-  constructor (private channelService: ChannelService , private recognitionService: RecognitionService, private toastyService:ToastyService, private appManageService: AppManageService) {
+  constructor (private warnService:WarnService,private channelService: ChannelService , private recognitionService: RecognitionService, private toastyService:ToastyService, private appManageService: AppManageService) {
     this.d_applicationId = parseInt(window.sessionStorage.getItem('applicationId'));
     this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
     for(let i=0;i<this._realTime.length;i++){
@@ -130,6 +327,8 @@ export class VideoAnalysisComoponent {
     this.initRecognitions();
     /* 初始化channel */
     this.initChannels();
+    /*查询开启的规则*/
+    this.getOpenRule();
 
     this.appManageService.getProtocol()
       .subscribe(protocols=>{
@@ -140,6 +339,40 @@ export class VideoAnalysisComoponent {
         this.channelTypes=result;
       });
     this.appId = window.sessionStorage.getItem("applicationId");
+  }
+  changeWarn(){
+    this.identifyName = '';
+    for(let i=0;i<this.warnObjArr.length;i++){
+      if(this.warnObjArr[i].classificationName==this.warnObj){
+        this.warnObjDetailArr=this.warnObjArr[i].recognitionCategories;
+        this.warnObjDetailArr.sort(function(a,b){
+          return parseInt(b.cateId) - parseInt(a.cateId)
+        })
+        //this.warnObjDetailArr.reverse();
+        this.warnObjDetail = this.warnObjDetailArr[0].name;
+      }
+    }
+    this.changeDetail();
+  }
+  changeDetail(){
+    if(this.warnObjDetail=='人'){
+      this.identifyName = '人';
+    }else{
+      this.identifyName = '';
+    }
+  }
+  cancelRule(){
+    this.ruleName = '';
+    this.ruleNameMust = 0;
+    this.chanRequired1 = 0;
+    this.warnObj = this.warnObjArr[0].classificationName;
+    this.warnObjDetail = this.warnObjDetailArr[0].name;
+    this.identifyName = '';
+    this.personName = '';
+    this.photoContainer = [];
+    this.create_show = false;
+    this.createFlag = true;
+    this.btn_show = true;
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
@@ -296,31 +529,7 @@ export class VideoAnalysisComoponent {
   }
   $popup_toggle () {
     this.s_popup_show = !this.s_popup_show;
-   // console.log(this.d_analysis_options);
-    //console.log(this.d_video_list);
-    //console.log(this.arr);
-/*    for(let j=0;j<this.d_video_list.length;j++){
-      if(this.d_video_list[j].targets.length>0){
-        for(let i=0;i<this.d_video_list[j].targets.length;i++){
-            this.saveFeature.push(this.d_video_list[j].targets[i]);
-        }
-      }
-    }
-    console.log(this.saveFeature);
-    let temp:any[]=[];
-    for(let i in this.saveFeature){
-      if(temp.indexOf(this.saveFeature[i].targetId)==-1){
-        temp.push(this.saveFeature[i]);
-      }
-    }
-    console.log(temp);
-    for(let i=0;i<temp.length;i++){
-      let obj:any={};
-      obj.targetFeature = temp[i].targetFeature;
-      obj.photoContainer = temp[i].targetImages.split(",");
-      this.arr.push(obj);
-      this.arr.splice(0,1);
-    }*/
+
     for(let i=0;i<this.d_analysis_options[0].recognitionCategories.length;i++){
       if(this.d_analysis_options[0].recognitionCategories[i].cateId==1&&this.d_analysis_options[0].recognitionCategories[i].selected){
         this.showFeature = 1;
@@ -331,8 +540,6 @@ export class VideoAnalysisComoponent {
     }
   }
   getHeight(){
-    console.log($(".analysis-popup").height());
-    console.log($(".feature-people").height()+103);
     if($(".feature-people").height()+103>$(".analysis-popup").height()){
       $(".feature-people").height($(".analysis-popup").height());
       this.heightIndex = 1;
@@ -348,7 +555,7 @@ export class VideoAnalysisComoponent {
       }
     }
   }
-  $popup_select_toggle (i,j) {
+/*  $popup_select_toggle (i,j) {
     if (this.s_popup_allselect) {
       this.s_popup_allselect = !this.s_popup_allselect;
     }
@@ -400,7 +607,7 @@ export class VideoAnalysisComoponent {
     }else{
       this.d_analysis_options[i].recognitionCategories[j].selected = !this.d_analysis_options[i].recognitionCategories[j].selected;
     }
-  }
+  }*/
   arrow_toggle(index: number){
     if(this.d_analysis_options[index].selected){
       this.d_analysis_options[index].selected = !this.d_analysis_options[index].selected;
@@ -411,7 +618,7 @@ export class VideoAnalysisComoponent {
       this.d_analysis_options[index].selected = !this.d_analysis_options[index].selected;
     }
   }
-  $popup_select_all_toggle () {
+/*  $popup_select_all_toggle () {
     this.s_popup_allselect = !this.s_popup_allselect;
     if(this.s_popup_allselect){
       for(let i=0;i<this.d_analysis_options.length;i++){
@@ -426,7 +633,7 @@ export class VideoAnalysisComoponent {
       }
       //console.log(this.d_analysis_options);
     }
-  }
+  }*/
 
   $fullscreen_click (index: number , $event) {
     $event = $event || window.event;
@@ -478,30 +685,51 @@ export class VideoAnalysisComoponent {
     console.log(this.targetSet);
     return this.targetSet;
   }
+  getRuleId(){
+    let rulesId:string='';
+    for(let i=0;i<this.rulesInfo.length;i++){
+      if(this.rulesInfo[i].selected){
+        rulesId += this.rulesInfo[i].ruleId+',';
+      }
+    }
+    return rulesId.substring(0,rulesId.length-1);
+  }
+  $cancel_analysis_submit(){
+    for(let i=0;i<this.rulesInfo.length;i++){
+      this.rulesInfo[i].selected = false;
+    }
+    this.recognitionService.setRecognitions( this.getAllChannelID(),null).subscribe(rep => {
+      this.streamType = "RTMP";
+    })
+  }
   $change_analysis_submit() {
-    if(this.saveColor == 0){
+    if(this.saveColor==0||(this.getRuleId().length==0)){
       return false;
     }else{
       addWaitToast(this.toastyService ,'等待视频源重新加载','保存成功');
       // todo request
-      this.showFeature = 0;
-      this.s_popup_show = false;
+      //this.showFeature = 0;
+      //this.s_popup_show = false;
+      this.create_show = false;
+      this.show_rule();
       if (this.s_selected_grid === 0) {
         // 当前所有
-        this.recognitionService.setRecognitions( this.getAllChannelID() , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
-          console.log(rep);
+        //this.recognitionService.setRecognitions( this.getAllChannelID() , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
+        this.recognitionService.setRecognitions( this.getAllChannelID(),this.getRuleId()).subscribe(rep => {
+          //console.log(rep);
+          this.streamType = "RTSP";
           this.d_video_list= rep.sort(function(a,b){
             return parseInt(a.channelOrder) - parseInt(b.channelOrder)
           });
         });
       } else {
-        //
-        this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
-          console.log(rep);
+        //this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
+        this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getRuleId()).subscribe(rep => {
+          //console.log(rep);
           this.d_video_list[this.s_selected_grid -1].recognitionCategory = rep[0].recognitionCategory;
         });
+        //this.s_popup_show = false;
       }
-      //this.s_popup_show = false;
     }
   }
   /* 获得当前为true的 recognition */
@@ -526,7 +754,7 @@ export class VideoAnalysisComoponent {
           arr.push(this.d_video_list[i]);
       }
     }
-    console.log(arr);
+    //console.log(arr);
     for (let i = 0 ; i < arr.length ; i++) {
       channelIDS += arr[i].channelId + ',';
     }
@@ -534,8 +762,14 @@ export class VideoAnalysisComoponent {
   }
   //------
   get_ckplayer_url (index: number) {
-    if (this.d_video_list && this.d_video_list.length >= index) {
-      return this.d_video_list[index-1].channelOut
+    if(this.streamType=="RTSP"){
+      if (this.d_video_list && this.d_video_list.length >= index) {
+        return this.d_video_list[index-1].channelOut
+      }
+    }else if(this.streamType=="RTMP"){
+      if (this.d_video_list && this.d_video_list.length >= index) {
+        return this.d_video_list[index-1].channelAddress
+      }
     }
     return null;
   }
@@ -703,22 +937,37 @@ export class VideoAnalysisComoponent {
   }
 
   initRecognitions() {
-    this.recognitionService.getRecognition().subscribe(rep => {
-      //console.log(rep);
-      this.d_analysis_options = rep;
-      for(let i=0;i<this.d_analysis_options.length;i++){
-        this.d_analysis_options[i].recognitionCategories.sort(function(a,b){
-          return parseInt(b.cateId) - parseInt(a.cateId)
-        })
-      }
-      this.d_analysis_options[0].selected=true;
-      //this.d_analysis_options_detail= rep ;
-    })
+    //this.recognitionService.getRecognition().subscribe(rep => {
+    //console.log(rep);
+    //this.d_analysis_options = rep;
+    this.recognitionService.getRecognitionFile(this.d_applicationId)
+      .subscribe((result)=>{
+          //console.log(result);
+          this.fileRecognition = result;
+          //this.switchToggle('start');
+        },
+        (error)=>{
+          if(error.status==404){
+            this.fileRecognition = [];
+          }
+        }
+      );
+    /*      for(let i=0;i<this.d_analysis_options.length;i++){
+     this.d_analysis_options[i].recognitionCategories.sort(function(a,b){
+     return parseInt(b.cateId) - parseInt(a.cateId)
+     })
+     }*/
+    //this.d_analysis_options[0].selected=true;
+    //this.d_analysis_options_detail= rep ;
+    //})
+  }
+  deleteChange(event){
+    this.deleteIndex = event;
   }
   initChannelsNoSort(){
     this.channelService.getOpenChannelById(this.d_applicationId).subscribe(rep => {
       this.d_video_list = rep;
-      console.log(rep);
+      //console.log(rep);
       this.d_video_list.sort(function(a,b){
         return parseInt(a.channelOrder) - parseInt(b.channelOrder)
       });
@@ -737,10 +986,17 @@ export class VideoAnalysisComoponent {
     }
     this.channelService.getOpenChannelById(this.d_applicationId).subscribe(rep => {
       this.d_video_list = rep;
-      console.log(rep);
       this.d_video_list.sort(function(a,b){
         return parseInt(a.channelOrder) - parseInt(b.channelOrder)
-      })
+      });
+      if(this.d_video_list.length>0){
+        this.streamType = this.d_video_list[0].channelProtocol;
+      }
+      if(this.fileRecognition.length>0){
+        this.streamType = "RTSP";
+      }else{
+        this.streamType = "RTMP";
+      }
       this.init_grid_number(rep.length ? rep.length : 0);
       this.getChannelId();
     });
@@ -775,18 +1031,20 @@ export class VideoAnalysisComoponent {
     method: "POST",
     itemAlias: "file",
   });
-  selectedFileOnChanged(event,item){
-    console.log(item);
+  selectedFileOnChanged(event){
+    if(this.uploader.queue.length>0){
+      $("#upload").css("display","block");
+    }
     for(let i=0;i<this.uploader.queue.length;i++){
       this.uploader.queue[i].onSuccess = (response: any, status: any, headers: any) => {
-        item.photoContainer.push(response);
-        console.log(item.photoContainer);
+        this.photoContainer.push(response);
+        //console.log(this.photoContainer);
       };
     }
     this.uploader.uploadAll(); // 开始上传
   }
   getInput(i){
-    console.log(i);
+    //console.log(i);
     //document.getElementById("file").setAttribute("id",i).click();
     $(`#${i}`).attr("id",i).click();
   }
@@ -802,7 +1060,7 @@ export class VideoAnalysisComoponent {
     obj.targetImages = '';
     obj.photoContainer=[];
     this.arr.push(obj);
-    console.log(this.arr);
+    //console.log(this.arr);
     this.getHeight();
   }
 }

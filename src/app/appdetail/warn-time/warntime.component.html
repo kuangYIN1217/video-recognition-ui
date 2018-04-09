@@ -1,32 +1,29 @@
 <div class="container">
   <div class="warn-wrapper" [style.display]="lookIndex==0?'':'none'">
     <div class="tabs">
-    <div class="tab_item" routerLinkActive="active" routerLink="/warntime">时间段告警</div>
-    <div class="tab_item focus" routerLinkActive="active" routerLink="/warnmanage">告警明细</div>
-    <div class="tab_item" routerLinkActive="active" routerLink="/warnrlue">告警规则</div>
-  </div>
+      <div class="tab_item focus" routerLinkActive="active" routerLink="/warntime">时间段告警</div>
+      <div class="tab_item" routerLinkActive="active" routerLink="/warnmanage">告警明细</div>
+      <div class="tab_item" routerLinkActive="active" routerLink="/warnrlue">告警规则</div>
+    </div>
     <div class="search-content">
       <div class="search-select">
         <div class="search-info" *ngIf="appCate=='实时流分析'">
           <label>通道名称：</label>
-          <select [(ngModel)]="chanName" (ngModelChange)="chanName=$event;">
+          <select [(ngModel)]="chanName1" (ngModelChange)="chanName1=$event;">
             <option *ngFor="let item of chanNameArr" value="{{item}}">{{item}}</option>
           </select>
         </div>
         <div class="search-info" *ngIf="appCate=='离线文件分析'">
           <label>告警任务：</label>
-          <select [(ngModel)]="warnTask" (ngModelChange)="warnTask=$event;changeWarnTask()">
+          <select [(ngModel)]="warnTask1" (ngModelChange)="warnTask1=$event;changeWarnTask()">
             <option *ngFor="let item of warnTaskArr" value="{{item.taskName}}">{{item.taskName}}</option>
           </select>
         </div>
         <div class="search-info">
           <label>告警规则：</label>
-          <select [(ngModel)]="warnRlue" (ngModelChange)="warnRlue=$event;">
+          <select [(ngModel)]="warnRlue1" (ngModelChange)="warnRlue1=$event;">
             <option *ngFor="let item of warnRlueArr" value="{{item.ruleName}}">{{item.ruleName}}</option>
           </select>
-        </div>
-        <div class="search-info"  [style.display]="showTime?'none':''" style="float: right;">
-          <a href="#" onclick="return false" class="btn bgco" (click)="search()" style="margin-top: 0;">查询</a>
         </div>
 <!--        <div class="search-info">
           <label>告警状态：</label>
@@ -35,19 +32,28 @@
           </select>
         </div>-->
       </div>
-      <div class="search-time"  [style.display]="showTime?'':'none'">
+      <div class="search-time">
         <div class="search-info no-margin">
           <label>告警时间：</label>
-          <input type="text" id="start" class="time" readonly placeholder="请选择时间"/>
+          <input type="text" id="start1" class="time" readonly placeholder="请选择时间"/>
           <span>至</span>
-          <input type="text" id="end" class="time" readonly placeholder="请选择时间" style="margin-left: 0"/>
+          <input type="text" id="end1" class="time" readonly placeholder="请选择时间" style="margin-left: 0"/>
+        </div>
+        <div class="search-info periodTime">
+          <label>目标时段：</label>
+          <select [(ngModel)]="periodTime" (ngModelChange)="periodTime=$event;changePeriodTime()" style="width:18vw">
+            <option *ngFor="let item of periodTimeArr" value="{{item}}">{{item}}</option>
+          </select>
         </div>
         <a href="#" onclick="return false" class="btn bgco" (click)="search()">查询</a>
       </div>
     </div>
     <div class="warn-content" id="warn-content">
-      <a href="#" onclick="return false" class="btn bgcg" (click)="export()" *ngIf="authority">导出</a>
-      <a href="#" onclick="return false" class="btn bgcg" *ngIf="!authority">导出</a>
+      <div class="playVideo" *ngIf="videoUrl!=''">
+        <video src="{{SERVER_URL}}/download/{{filterUrl(videoUrl)}}" #offlinePeriodVideo (pause)="videoPause()" controls controlsList="nodownload nofullscreen noremoteplayback"></video>
+      </div>
+      <!--<jwplayer [url]="get_ckplayer_url1()"></jwplayer>-->
+      <a href="#" onclick="return false" class="btn bgcg" (click)="export()">导出</a>
       <div class="table-margin" >
         <table class="channelTable" cellspacing="0">
           <tr>
@@ -58,34 +64,33 @@
             <th class="task">{{appCate=='实时流分析'?'通道名称':'告警任务'}}</th>
             <th class="rule">告警规则</th>
             <th class="file" *ngIf="appCate=='离线文件分析'">告警文件</th>
-            <th class="time" *ngIf="showTime">告警时间</th>
+            <th class="time">告警时间</th>
             <!--<th class="durtion">时长(s)</th>-->
             <th class="photo">快照</th>
-            <th class="status">状态</th>
+            <!--<th class="status">状态</th>-->
             <th class="operation">操作</th>
           </tr>
           <tr *ngFor="let item of allWarn let i=index;">
             <td class="checked">
-              <img [src]="item.selected?'assets/appdetail/way.manage/checked.png':'assets/appdetail/way.manage/unchecked.png'" class="middle" (click)="check(item)"/>
+              <img src="../assets/appdetail/way.manage/unchecked.png" class="middle" (click)="check(item)" *ngIf="item.flag!=1"/>
+              <img src="../assets/appdetail/way.manage/checked.png" class="middle" (click)="check(item)" *ngIf="item.flag==1"/>
             </td>
             <td *ngIf="appCate=='实时流分析'" title="{{item.channelName}}">{{item.channelName}}</td>
             <td *ngIf="appCate=='离线文件分析'" title="{{item.taskName}}">{{item.taskName}}</td>
             <td title="{{item.ruleName}}">{{item.ruleName}}</td>
             <td *ngIf="appCate=='离线文件分析'" title="{{item.alarmFileName}}">{{item.alarmFileName}}</td>
-            <td title="{{item.alarmTime}}" *ngIf="appCate=='实时流分析'&&showTime">{{item.alarmTime}}</td>
-            <td title="{{getTime(item.alarmTime)}}" *ngIf="appCate=='离线文件分析'&&showTime">{{getTime(item.alarmTime)}}</td>
-       <!--     <td title="{{date(item.alarmTime)}}" *ngIf="appCate=='实时流分析'">{{date(item.alarmTime)}}</td>
-            <td title="{{date1(item.alarmTime)}}" *ngIf="appCate=='离线文件分析'">{{date1(item.alarmTime)}}</td>
-            <td title="{{duraTime(item.duration)}}">{{duraTime(item.duration)}}</td>-->
+            <td title="{{item.alarmTime}}" *ngIf="appCate=='实时流分析'">{{item.alarmTime}}</td>
+            <td title="{{getTime(item.alarmTime)}}" *ngIf="appCate=='离线文件分析'">{{getTime(item.alarmTime)}}</td>
+            <!--<td title="{{duraTime(item.duration)}}">{{duraTime(item.duration)}}</td>-->
             <td>
               <img src="../assets/warn/chakan.png" class="mrgr" (click)="seePhoto(item.imagePath)" title="查看快照"/>
               <!--<img src="../assets/warn/xiazai.png" class="mrgr"  title="下载快照" onclick="document.getElementById('down').click();"/>-->
-              <a href="{{SERVER_URL}}/download/{{item.imagePath}}" download title="下载快照" class="downImage"></a>
+              <a href="{{SERVER_URL}}/download/{{getDownPath(item.imagePath)}}" download title="下载快照" class="downImage"></a>
             </td>
-            <td title="{{item.alarmStatus}}">{{item.alarmStatus}}</td>
+            <!--<td title="{{item.alarmStatus}}">{{item.alarmStatus}}</td>-->
             <td>
-              <img src="../assets/warn/chuli.png" class="mrgr" (click)="handling(item)" *ngIf="item.alarmStatus=='未处理'" title="处理"/>
-              <img src="../assets/warn/chuli--hui.png" class="mrgr" *ngIf="item.alarmStatus=='已处理'" title="处理"/>
+              <!--<img src="../assets/warn/chuli.png" class="mrgr" (click)="handling(item)" *ngIf="item.alarmStatus=='未处理'" title="处理"/>
+              <img src="../assets/warn/chuli&#45;&#45;hui.png" class="mrgr" *ngIf="item.alarmStatus=='已处理'" title="处理"/>-->
               <img src="../assets/warn/chakanxiangqing.png" class="mrgr" (click)="lookPhoto(item)" title="查看详情"/>
             </td>
           </tr>
@@ -101,7 +106,7 @@
       <app-tips [style.display]="deleteIndex==1?'':'none'" [tip_title]="tip_title" [tip_content]="tip_content" [deleteIndex]="deleteIndex" [tip_btn]="tip_btn" (deleteChange)="deleteChange($event)" (deletedChange)="deletedChange($event)"></app-tips>
     </div>
   </div>
-  <div class="lookDetail" [style.display]="lookIndex==1?'':'none'">
+  <div class="lookDetail" [style.display]="lookIndex==1?'':'none'" [ngStyle]="getHeight()">
     <div class="detail_title">告警详情</div>
     <div class="detail_content" id="detail_content">
       <div class="detail_info">
@@ -127,32 +132,32 @@
       <div class="detail_info">
         <span class="info_name">告警时间：</span>
         <span class="info_content" *ngIf="appCate=='实时流分析'">{{detaillist.alarmTime}}</span>
-        <span class="info_content" *ngIf="appCate=='离线文件分析'">{{getTime(detaillist.alarmTime)}}</span>
+        <span class="info_content" *ngIf="appCate=='离线文件分析'">{{getTime(detaillist?.alarmTime)}}</span>
       </div>
-<!--      <div class="detail_info">
-        <span class="info_name">告警时长：</span>
-        <span class="info_content">{{duraTime(detaillist.duration)}}(s)</span>
-      </div>-->
-      <div class="detail_info" style="line-height: 32px;">
-        <span class="info_name">告警状态：</span>
-        <span class="info_content">{{detaillist.alarmStatus}}</span>
-        <a class="btn bgcg inline" (click)="lookHandling(detaillist)" *ngIf="detaillist.alarmStatus=='未处理'">处理</a>
-      </div>
-      <div class="detail_info">
-        <span class="info_name">处理时间：</span>
-        <span class="info_content">{{detaillist.processTime}}</span>
-      </div>
+      <!--      <div class="detail_info">
+              <span class="info_name">告警时长：</span>
+              <span class="info_content">{{duraTime(detaillist.duration)}}(s)</span>
+            </div>
+            <div class="detail_info" style="line-height: 32px;">
+              <span class="info_name">告警状态：</span>
+              <span class="info_content">{{detaillist.alarmStatus}}</span>
+              <a class="btn bgcg inline" (click)="lookHandling(detaillist)" *ngIf="detaillist.alarmStatus=='未处理'">处理</a>
+            </div>
+            <div class="detail_info">
+              <span class="info_name">处理时间：</span>
+              <span class="info_content">{{detaillist.processTime}}</span>
+            </div>-->
       <div class="detail_info">
         <span class="info_name">创建时间：</span>
         <span class="info_content">{{detaillist.createTime}}</span>
       </div>
       <div class="detail_info">
         <span class="info_name">告警快照：</span>
-        <span class="info_content"><img src="{{SERVER_URL}}/download/{{slicePath(detaillist?.imagePath)}}" *ngIf="detaillist.imagePath" (click)="thumbnail()"/></span>
+        <span class="info_content"><img src="{{SERVER_URL}}/download/{{slicePath(detaillist.imagePath)}}" *ngIf="detaillist.imagePath" (click)="thumbnail()"/></span>
       </div>
       <div class="detail_info">
         <span class="info_name"></span>
-        <span class="info_content"><a href="{{SERVER_URL}}/download/{{slicePath(detaillist?.imagePath)}}" *ngIf="detaillist.imagePath" class="downPhoto" download>下载快照</a></span>
+        <span class="info_content"><a href="{{SERVER_URL}}/download/{{slicePath(detaillist.imagePath)}}" *ngIf="detaillist.imagePath" class="downPhoto" download>下载快照</a></span>
       </div>
       <div class="detail_info">
         <span class="info_name"></span>
@@ -169,5 +174,6 @@
         </span>
       </div>
     </div>
-    </div>
+  </div>
+
 </div>

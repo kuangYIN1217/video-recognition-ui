@@ -44,9 +44,10 @@
   float: right;
 }
 .upload{
-  margin-left: 34px;
+  margin-left: 110px;
+  clear: left;
 }
-#file1{
+#file1,#file2,#file3{
   display: none;
 }
 .upText{
@@ -101,8 +102,11 @@
   right:0;
 }
 .uploadShow{
-  width:490px;
+  display: block;
+  width:500px;
   margin-left:107px;
+  max-height: 330px;
+  overflow: auto;
 }
 .importDown{
   float: left;
@@ -176,5 +180,22 @@ td{
   height:18px;
   /*box-shadow:0px 2px 2px #ccc inset;*/
   margin:0 1px;
+}
+.middle{
+  vertical-align: middle;
+  display: inline-block;
+}
+.choseType{
+  line-height: 30px;
+  margin-left: 34px;
+  margin-bottom: 20px;
+}
+.singleType{
+  display: inline-block;
+  margin-right: 50px;
+}
+.singleType img{
+  margin-right: 8px;
+  cursor: pointer;
 }
 

@@ -46,8 +46,8 @@ export class WarnRlueComponent{
   constructor(private warnService: WarnService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
-    console.log(this.appId);
-    console.log(this.appCate);
+    //console.log(this.appId);
+    //console.log(this.appCate);
     if(this.appCate=="实时流分析"){
       this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
       for(let i=0;i<this._realTime.length;i++){
@@ -59,7 +59,7 @@ export class WarnRlueComponent{
         .subscribe(channel=>{
           this.warnChanArr=channel;
           this.warnChanArr.unshift({"channelId":-1,"channelName":'全部'});
-          console.log(this.warnChanArr);
+          //console.log(this.warnChanArr);
           if(this.warnChanArr.length>0)
           this.warnChan = this.warnChanArr[0].channelName;
         });
@@ -75,7 +75,7 @@ export class WarnRlueComponent{
       .subscribe(result=>{
         this.warnObjArr=result;
         this.warnObjArr.unshift({"cateId":-1, "name": "全部"});
-        console.log(this.warnObjArr);
+        //console.log(this.warnObjArr);
         if(this.warnObjArr){
           this.warnRule = this.warnObjArr[0].name;
         }
@@ -108,7 +108,7 @@ export class WarnRlueComponent{
         }
         this.rulesInfo = tem1.concat(tem2);*/
         this.rulesInfo = result.content;
-        console.log(this.rulesInfo);
+        //console.log(this.rulesInfo);
         let page = new Page();
         page.pageMaxItem = result.size;
         page.curPage = result.number+1;
@@ -155,16 +155,19 @@ export class WarnRlueComponent{
     }
   }
   deletedChange(event){
-    console.log(event);
+    //console.log(event);
     if(event==1){
       for(let i in this.deleteIdArr){
-        console.log(this.deleteIdArr[i]);
+        //console.log(this.deleteIdArr[i]);
           this.warnService.deleteRule(this.deleteIdArr[i].ruleId)
             .subscribe(result=>{
               if(result.text().substring(0,2)=='Ok'){
                 this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
               }else if(result.text().substring(0,2)=='No'){
-                alert("该规则下有开启通道！");
+                this.deleteIndex =1;
+                this.tip_title = '提示';
+                this.tip_content = '该规则下有开启通道！';
+                this.tip_btn = "确定";
               }
             })
       }
@@ -205,7 +208,7 @@ export class WarnRlueComponent{
     if(this.ruleName==''||this.ruleName==undefined){
       this.ruleName = null;
     }
-    this.warnService.searchRules(this.appId,this.ruleName,this.warnChanId,this.cateId,this.warnStatus,this.page-1,this.pageMaxItem)
+    this.warnService.searchRules(this.appId,this.ruleName,this.cateId,this.warnStatus,this.page-1,this.pageMaxItem)
       .subscribe(result=>{
         this.rulesInfo = result.content;
         //console.log(result);
@@ -223,42 +226,49 @@ export class WarnRlueComponent{
     }else if(item.alarmRuleStatus=='开启'){
       item.alarmRuleStatus='关闭';
     }
-    console.log(item);
+    //console.log(item);
     if(this.appCate=='实时流分析'){
-      this.warnService.warnRuleSwitch(item.ruleId,item.alarmRuleStatus,this.appCate)
-        .subscribe(reply =>{
-          console.log(reply.text());
-          if(reply.text().substring(0,2)=='No'){
-            this.deleteIndex = 1;
-            this.tip_title = "提示";
-            this.tip_content = "该告警下没有开启通道！";
-            this.tip_btn = "开启通道";
-          }else if(reply.text().substring(0,2)=='Er'){
-            this.deleteIndex = 1;
-            this.tip_title = "提示";
-            this.tip_content = "运行过程发生意外啦，请您重试！";
-          }
-            this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
-          //this.start_reply(reply);
-        });
-    }else{
-      this.warnService.warnRuleSwitch(item.ruleId,item.alarmRuleStatus,this.appCate)
-        .subscribe(reply =>{
-          console.log(reply.text());
-          if(reply.text().substring(0,2)=='No'){
-            this.deleteIndex = 1;
-            this.tip_title = "提示";
-            this.tip_content = "请先关闭离线任务！";
-          }else if(reply.text().substring(0,2)=='Er'){
-            this.deleteIndex = 1;
-            this.tip_title = "提示";
-            this.tip_content = "运行过程发生意外啦，请您重试！";
-          }
+      this.warnService.editRuleSave(item.ruleId,item.ruleName,item.recognitionCategory.cateId,item.recognitionCategory.code,item.targetFeature,item.alarmRuleStatus,item.targetImages)
+        .subscribe(result=>{
           this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
-          //this.start_reply(reply);
         });
+      /*      this.warnService.warnRuleSwitch(item.ruleId,item.alarmRuleStatus,this.appCate)
+       .subscribe(reply =>{
+       //console.log(reply.text());
+       if(reply.text().substring(0,2)=='No'){
+       this.deleteIndex = 1;
+       this.tip_title = "提示";
+       this.tip_content = "该告警下没有开启通道！";
+       this.tip_btn = "开启通道";
+       }else if(reply.text().substring(0,2)=='Er'){
+       this.deleteIndex = 1;
+       this.tip_title = "提示";
+       this.tip_content = "运行过程发生意外啦，请您重试！";
+       }
+       this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
+       //this.start_reply(reply);
+       });*/
+    }else{
+      this.warnService.editRuleSave1(item.ruleId,item.ruleName,item.recognitionCategory.cateId,item.recognitionCategory.code,item.targetFeature,item.alarmRuleStatus,item.targetImages)
+        .subscribe(result=>{
+          this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
+        });
+      /*      this.warnService.warnRuleSwitch(item.ruleId,item.alarmRuleStatus,this.appCate)
+       .subscribe(reply =>{
+       //console.log(reply.text());
+       if(reply.text().substring(0,2)=='No'){
+       this.deleteIndex = 1;
+       this.tip_title = "提示";
+       this.tip_content = "请先关闭离线任务！";
+       }else if(reply.text().substring(0,2)=='Er'){
+       this.deleteIndex = 1;
+       this.tip_title = "提示";
+       this.tip_content = "运行过程发生意外啦，请您重试！";
+       }
+       this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
+       //this.start_reply(reply);
+       });*/
     }
-
   }
   start_reply(reply){
     if(reply.status==200){
@@ -281,7 +291,7 @@ export class WarnRlueComponent{
     this.createIndex=1;
     this.warn_title="规则详情";
     this.ruleList = item;
-    console.log(this.ruleList);
+    //console.log(this.ruleList);
   }
   indexChange(event){
     this.createIndex = event;
