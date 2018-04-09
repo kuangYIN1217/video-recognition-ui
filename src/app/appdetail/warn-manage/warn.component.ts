@@ -58,6 +58,7 @@ export class WarnComponent{
   alarmRules:any[]=[];
   alarmsId:any[]=[];
   init:boolean = false;
+  fileType:string="";
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -168,11 +169,14 @@ export class WarnComponent{
             this.warnRlue = this.alarmRules[0].ruleName;
             this.ruleId = this.alarmRules[0].ruleId;
           };
-          if(this.warnTaskArr[0].fileType=='image'||this.warnTaskArr[0].fileType=='zip'){
+          if(!this.fileType){
+            if(this.warnTaskArr[0].fileType=='image'||this.warnTaskArr[0].fileType=='zip'){
               this.showTime = false;
-          }else{
-            this.showTime = true;
+            }else{
+              this.showTime = true;
+            }
           }
+          console.log(this.showTime);
           if(this.once!="true"){
             this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
           }
@@ -267,6 +271,12 @@ export class WarnComponent{
         this.taskId = params['taskId'];
         this.once = params['once'];
         this.alarmRules = JSON.parse(params['alarmRules']);
+        this.fileType = params['fileType'];
+        if(this.fileType=='image'||this.fileType=='zip'){
+          this.showTime = false;
+        }else{
+          this.showTime = true;
+        }
         this.warnRlue = this.alarmRules[0].ruleName;
         this.ruleId = this.alarmRules[0].ruleId;
         this.warnService.searchOffWarns(this.appId,this.taskId,this.taskName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null)
@@ -629,6 +639,7 @@ export class WarnComponent{
   }
   getWH(){
     let obj:any;
+document.getElementById("image")
     obj = document.getElementById("image");
     obj.className = "";
     let width = $("#img").width();

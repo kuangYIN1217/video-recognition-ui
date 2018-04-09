@@ -415,7 +415,7 @@ export class TaskManageComponent {
   }
   look(item){
    // console.log(JSON.stringify(item.alarmRules));
-    this.router.navigate(['../warnmanage'],{queryParams: {'taskName':item.taskName,'taskId':item.taskId,"once":"true","alarmRules":JSON.stringify(item.alarmRules)}});
+    this.router.navigate(['../warnmanage'],{queryParams: {'taskName':item.taskName,'taskId':item.taskId,"once":"true","alarmRules":JSON.stringify(item.alarmRules),"fileType":item.fileType}});
   }
   dia(){
     for(let i in this.taskList){
