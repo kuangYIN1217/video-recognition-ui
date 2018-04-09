@@ -306,13 +306,6 @@ export class WarnComponent{
     this.endTime = $('#end').val("");
 
   }
-/*  getAllWarn(id,page,size){
-    this.warnService.getAllWarn(id,page,size)
-      .subscribe(result=>{
-        console.log(result.content);
-        this.getWarnList(result);
-      })
-  }*/
   allSel(){
     let arr:any[]=[];
     for(var i in this.allWarn){
