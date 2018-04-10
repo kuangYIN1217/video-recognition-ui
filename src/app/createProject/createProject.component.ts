@@ -15,6 +15,7 @@ export class CreateProjectComponent {
   @Input()newProject:boolean;
   required:number=0;
   userId:string;
+  createFlag:boolean = true;
   @Output() newProjectChange: EventEmitter<any> = new EventEmitter();
   constructor(private appManageService: AppManageService){
     this.userId = sessionStorage.getItem('userId');
@@ -31,6 +32,10 @@ export class CreateProjectComponent {
     }else{
       this.required = 0;
     }
+    if(!this.createFlag) {
+      return;
+    }
+    this.createFlag = false;
     this.appManageService.createApplication(this.projectName,this.projectCate,this.userId)
       .subscribe(result=>{
         this.back();
@@ -39,5 +44,8 @@ export class CreateProjectComponent {
   back(){
     this.newProject = false;
     this.newProjectChange.emit(this.newProject);
+    this.projectName = '';
+    this.projectCate = this.projectCates[0];
+    this.createFlag = true;
   }
 }
