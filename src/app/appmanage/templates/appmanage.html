@@ -92,8 +92,8 @@
               <span class="index_operation">
                   <img src="../assets/appmanage/xiugai.png" class="edit" (click)="editTitle(item)" *ngIf="item.flag==undefined||item.flag!=1"/>
                   <img src="../assets/appmanage/shouyexiugai.png" class="edit" *ngIf="item.flag==1"/>
-                  <img src="../assets/appmanage/shanchu--hui.png" *ngIf="(item.totalTask!=item.finishTask)||item.notProcessAlarmCount!=0"/>
-                  <img src="../assets/appmanage/shanchu.png" *ngIf="(item.totalTask==item.finishTask)&&item.notProcessAlarmCount==0" (click)="dia(item)"/>
+                  <img src="../assets/appmanage/shanchu--hui.png" *ngIf="item.flawCount!=0"/>
+                  <img src="../assets/appmanage/shanchu.png" *ngIf="item.flawCount==0" (click)="dia(item)"/>
                 </span>
             </div>
             <table class="appModel_content">

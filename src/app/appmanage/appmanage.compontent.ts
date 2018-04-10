@@ -146,21 +146,21 @@ export class AppManageComponent {
       this._realTime.push(obj);
     };
     sessionStorage.setItem("_realTime" , JSON.stringify(this._realTime));
-    console.log(this._realTime);
+    //console.log(this._realTime);
     for(let i=11;i<16;i=i+2){
       let obj:any={};
       obj.projectAuthorityId = i;
       this._offline.push(obj);
     };
     sessionStorage.setItem("_offline" , JSON.stringify(this._offline));
-    console.log(this._offline);
+    //console.log(this._offline);
     for(let i=18;i<5;i=i+2){
       let obj:any={};
       obj.projectAuthorityId = i;
       this._electric.push(obj);
     };
     sessionStorage.setItem("_electric" , JSON.stringify(this._electric));
-    console.log(this._electric);
+    //console.log(this._electric);
   }
   Headers: Headers = this.appManageService.getHeaders();
   public uploader:FileUploader = new FileUploader({
@@ -170,7 +170,7 @@ export class AppManageComponent {
   });
 
   selectedFileOnChanged(event:any) {
-    console.log(event.target.value);
+    //console.log(event.target.value);
     this.upload();
 /*    if(this.btnIndex==0){
       $('#image').attr('src','');
@@ -198,47 +198,49 @@ export class AppManageComponent {
     this.getAll();
   }
   getAllInfo(result){
+    this.appManageService.getAppInfo()
+      .subscribe((result)=>{
         this.id1="";
         this.id2="";
         this.id3="";
         this.type1="";
         this.type2="";
         this.type3="";
-          for(let i in result){
-            if(result[i].applicationType=="实时流分析"){
-              if(!this.id1){
-                this.id1 = result[i].applicationId;
-                this.type1 = result[i].applicationType;
-              }else{
-                this.id1 += ','+result[i].applicationId;
-              }
-            }else if(result[i].applicationType=="离线文件分析"){
-              if(!this.id2){
-                this.id2 = result[i].applicationId;
-                this.type2 = result[i].applicationType;
-              }else{
-                this.id2 += ','+result[i].applicationId;
-              }
-            }else if(result[i].applicationType=="电力巡检分析"){
-              if(!this.id3){
-                this.id3 = result[i].applicationId;
-                this.type3 = result[i].applicationType;
-              }else{
-                this.id3 += ','+result[i].applicationId;
-              }
+        for(let i in result){
+          if(result[i].applicationType=="实时流分析"){
+            if(!this.id1){
+              this.id1 = result[i].applicationId;
+              this.type1 = result[i].applicationType;
+            }else{
+              this.id1 += ','+result[i].applicationId;
             }
-          };
-          if(this.type1){
-            this.appManageService.getAllDate(this.type1,this.id1)
-             .subscribe(date=>{
-               this.realTime = date;
-             });
+          }else if(result[i].applicationType=="离线文件分析"){
+            if(!this.id2){
+              this.id2 = result[i].applicationId;
+              this.type2 = result[i].applicationType;
+            }else{
+              this.id2 += ','+result[i].applicationId;
+            }
+          }else if(result[i].applicationType=="电力巡检分析"){
+            if(!this.id3){
+              this.id3 = result[i].applicationId;
+              this.type3 = result[i].applicationType;
+            }else{
+              this.id3 += ','+result[i].applicationId;
+            }
           }
+        };
+        if(this.type1){
+          this.appManageService.getAllDate(this.type1,this.id1)
+            .subscribe(date=>{
+              this.realTime = date;
+            });
+        }
         if(this.type2){
           this.appManageService.getAllDate(this.type2,this.id2)
-           .subscribe(date=>{
-             this.offline = date;
-           });
+            .subscribe(date=>{
+              this.offline = date;
+            });
         }
         if(this.type3){
           this.appManageService.getAllDate(this.type3,this.id3)
@@ -246,6 +248,12 @@ export class AppManageComponent {
               this.electric = date;
             });
         }
+      },(error)=>{
+        if(error.status==401){
+          localStorage['authenticationToken'] = '';
+          this.router.navigate(['/login']);
+        }
+      })
 /*        this.appManageService.getAllDate("实时流分析",id1)
          .subscribe(date=>{
          });*/
