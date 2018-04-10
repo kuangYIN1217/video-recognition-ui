@@ -46,6 +46,7 @@ export class CreateProjectComponent {
     this.newProject = false;
     this.newProjectChange.emit(this.newProject);
     this.projectName = '';
+    this.projectCate = this.projectCates[0];
     this.createFlag = true;
   }
 }

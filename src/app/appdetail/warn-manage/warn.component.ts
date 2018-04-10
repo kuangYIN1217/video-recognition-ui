@@ -5,6 +5,7 @@ import {OfflineService} from "../../common/services/offline.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SERVER_URL} from "../../app.constants";
 import {calc_height} from "app/common/ts/calc_height";
+import {buffer} from "rxjs/operators";
 declare var $:any;
 @Component({
   selector: 'apt-warn',
@@ -341,6 +342,21 @@ export class WarnComponent{
 
       })
   }
+/*  downImage(item){
+    var blob = new Blob([`${this.SERVER_URL}/download/${this.getDownPath(item.imagePath)}`], {
+      "type":"text/image-png"
+    });
+    var link = document.createElement("a");
+
+    if (link.download !== undefined) { // feature detection
+      // Browsers that support HTML5 download attribute
+      link.setAttribute("href", window.URL.createObjectURL(blob));
+      link.setAttribute("download", "download");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }*/
   check(item){
     if(item.selected!=true){
       item.selected = true;
