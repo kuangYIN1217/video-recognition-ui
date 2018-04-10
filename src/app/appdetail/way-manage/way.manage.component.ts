@@ -319,6 +319,12 @@ export class WayManageComponent {
     }else{
       this.chanRequired2 = 0;
     }
+    let rtsp = new RegExp(/^rtsp/);
+    console.log(chanAddr);
+    let lower = chanAddr.toLowerCase();
+    if(rtsp.test(lower)){
+      return false
+    }
       //console.log(chanName,chanAddr);
       this.show = 0;
     if(!this.createFlag) {
@@ -399,10 +405,10 @@ export class WayManageComponent {
       for(let i=0;i<this.channelInfo.length;i++){
         if(this.channelInfo[i].channelStatus==1){
           j++;
-          if(j>8){
+          if(j>0){
             this.deleteIndex =1;
             this.tip_title = '提示';
-            this.tip_content = '对不起，通道开启数超过9个，请先关闭其他通道！';
+            this.tip_content = '仅支持开启一个通道！';
             return
           }
         }
@@ -426,6 +432,7 @@ export class WayManageComponent {
     this.addDialog = 0;
     this.delSysDialog = 0;
     this.delDialog = 0;
+    this.upadteFlag = true;
     this.createFlag = true;
   }
   deleteChange(event){
