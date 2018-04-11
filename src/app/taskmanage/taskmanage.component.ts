@@ -374,13 +374,13 @@ export class TaskManageComponent {
             clearInterval(this.interval);
           }
         }*/
-      if(!this.init){
-        for(let i=0;i<this.taskList.length;i++){
-          this.taskList[i].selected = false;
-          this.taskIds.push(this.taskList[i].taskId);
+        if(!this.init){
+          for(let i=0;i<this.taskList.length;i++){
+            this.taskList[i].selected = false;
+            this.taskIds.push(this.taskList[i].taskId);
+          }
+          this.setOfflineTaskCheck(this.taskIds,false);
         }
-        this.setOfflineTaskCheck(this.taskIds,false);
-      }
         this.init = false;
         if(this.alarmStatus=='进行中'){
             if(this.taskName==undefined){
