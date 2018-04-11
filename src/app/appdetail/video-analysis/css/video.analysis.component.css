@@ -668,7 +668,6 @@ input{
   bottom:30px;
   left:-480px;
   overflow-y: auto;
-  z-index: 999;
 }
 .analysis-an{
   animation: myfirst 1s;
