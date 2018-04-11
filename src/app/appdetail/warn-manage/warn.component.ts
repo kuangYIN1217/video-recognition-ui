@@ -719,7 +719,6 @@ document.getElementById("image")
 
   downloadFile(item) {
     let path = item.imagePath;
-    path = "/home/deepviewer/dataset/dog.jpg";
     this.warnService.downloadFile(path).subscribe(data => {
       var tempPathArr = path.split("/");
       var name = tempPathArr[tempPathArr.length - 1];
