@@ -1,4 +1,4 @@
-import {Headers, Http, Response} from "@angular/http";
+import {Headers, Http, Response, ResponseContentType} from "@angular/http";
 import {Injectable} from "@angular/core";
 
 import "rxjs/add/operator/map";
@@ -322,6 +322,6 @@ export class WarnService {
   downloadFile(path) {
     path = "/api/fileDownLoad?filePath=" + path;
     let headers = this.getHeaders();
-    return this.http.post(this.SERVER_URL+path,{},{ headers: headers});
+    return this.http.post(this.SERVER_URL+path, {}, {headers: headers, responseType: ResponseContentType.Blob});
   }
 }
