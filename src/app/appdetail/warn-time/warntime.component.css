@@ -73,11 +73,22 @@
   margin-top: 0;
   margin-bottom: 20px;
 }
-.search-time .search-info span{
+.search-time .search-info .text{
   float: left;
   line-height: 36px;
-  margin-left: 4px;
-  margin-right: 10px;
+  margin-right: 14px;
+}
+.search-time .search-info .shishi-text{
+   float: left;
+   line-height: 36px;
+   margin-left: 4px;
+   margin-right: 10px;
+ }
+.search-time .search-info .maohao{
+  float: left;
+  line-height: 36px;
+  display: inline-block;
+  margin-right: 14px;
 }
 .search-time .search-info .time-select{
   margin-left: 0;
@@ -316,4 +327,10 @@ input{
 }
 video{
   width: 100%;
+}
+.search-info .time-choose{
+  width:60px !important;
+  margin-left: 0;
+  margin-right: 14px;
+  padding-left: 12px;
 }

@@ -46,8 +46,6 @@ export class WarnRlueComponent{
   constructor(private warnService: WarnService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
-    //console.log(this.appId);
-    //console.log(this.appCate);
     if(this.appCate=="实时流分析"){
       this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
       for(let i=0;i<this._realTime.length;i++){
@@ -59,7 +57,6 @@ export class WarnRlueComponent{
         .subscribe(channel=>{
           this.warnChanArr=channel;
           this.warnChanArr.unshift({"channelId":-1,"channelName":'全部'});
-          //console.log(this.warnChanArr);
           if(this.warnChanArr.length>0)
           this.warnChan = this.warnChanArr[0].channelName;
         });

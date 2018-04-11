@@ -25,7 +25,7 @@
         <img (mousedown)="$fullscreen_click(1 , $event)" [style.display]="fullscreenIndex1==1&&d_video_list.length>=1?'':'none'" [src]="get_fullscreen_icon_url(1)" alt="" class="item-fullscreen" title="全屏" *ngIf="s_fullscreen_grid!=1">
         <img (mousedown)="$fullscreen_click(1 , $event)" [style.display]="fullscreenIndex1==1?'':'none'" [src]="get_fullscreen_icon_url(1)" alt="" class="item-fullscreen" title="缩小" *ngIf="s_fullscreen_grid===1">
         <img (mousedown)="$add_video_click(1 , $event)" *ngIf="ngIfaddVideo(1)" src="assets/appdetail/video-analysis/add_video.png" alt="" class="item-add-video" title="新增通道">
-        <jwplayer *ngIf="get_ckplayer_exist(1)"></jwplayer>
+        <jwplayer *ngIf="get_ckplayer_exist(1)" [url]="get_ckplayer_url(1)"></jwplayer>
       </div>
       <!--<div (mousedown)="$grid_click(2 , $event)" [ngStyle]="ngStyle_grid_selected(2)" class="player-item index2" [ngClass]="ngClass_grid(2)" *ngIf="s_grid_number > 1" (mouseenter)="showFull(2)" (mouseleave)="hideFull(0)">
         <label class="item-title">{{get_ckplayer_index(2)}}</label>

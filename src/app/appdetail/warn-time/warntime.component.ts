@@ -5,7 +5,6 @@ import {OfflineService} from "../../common/services/offline.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SERVER_URL} from "../../app.constants";
 import {calc_height} from "app/common/ts/calc_height";
-import { HostListener } from '@angular/core';
 declare var $:any;
 @Component({
   selector: 'warn-time',
@@ -65,6 +64,15 @@ export class WarnTimeComponent{
   myVideo:any;
   _endTime:string='';
   currentTime:string='';
+  all_time_date:any[]=[];
+  startHour:string="";
+  startMinute:string="";
+  startSecond:string="";
+  endHour:string="";
+  endMinute:string="";
+  endSecond:string="";
+  offline_startTime:string="";
+  offline_endTime:string="";
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router){
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -96,18 +104,11 @@ export class WarnTimeComponent{
         }
         this.session();
         this.getRuleId();
+        this.getTaskId();
         if(this.pageNow){
-          if(this.taskId>0){
-            this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,this.getPeriodTime()[0],this.getPeriodTime()[1]);
-          }else{
-            this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,this.getPeriodTime()[0],this.getPeriodTime()[1]);
-          }
+          this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,this.getPeriodTime()[0],this.getPeriodTime()[1]);
         }else{
-          if(this.taskId>0){
-            this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.getPeriodTime()[0],this.getPeriodTime()[1]);
-          }else{
-            this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.getPeriodTime()[0],this.getPeriodTime()[1]);
-          }
+          this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.getPeriodTime()[0],this.getPeriodTime()[1]);
         }
       }, 360000);
     }
@@ -129,30 +130,42 @@ export class WarnTimeComponent{
           this.warnService.getChanName(this.appId)
             .subscribe(result=>{
               this.chanNameArr=result;
-              //console.log(this.chanNameArr);
               this.chanName1 = this.chanNameArr[0];
               this.searchWarn(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
             });
         });
     }else{
+      for(let n:any=0;n<60;n++){
+        if(n<10){
+          n = "0"+n;
+        }
+        this.all_time_date.push(String(n));
+      }
       this.warnService.getWarnTask(this.appId,"video")
         .subscribe(result=>{
           this.warnTaskArr = result;
           if(this.warnTaskArr.length>0){
             this.warnTaskArr = this.filterPerson(this.warnTaskArr);
+            console.log(this.warnTaskArr);
             this.warnTask1 = this.warnTaskArr[0].taskName;
             this.videoUrl = this.warnTaskArr[0].outputPath;
-            if(this.warnTaskArr[0].alarmRules.length>0){
-              this.warnTaskArr[0].alarmRules = this.filterPerson(this.warnTaskArr)[0].alarmRules;
-              this.warnRlueArr = this.warnTaskArr[0].alarmRules;
-              this.warnRlue1 = this.warnTaskArr[0].alarmRules[0].ruleName;
-              this.ruleId = this.warnTaskArr[0].alarmRules[0].ruleId;
-              if(this.warnRlue1==""||this.warnRlue1==undefined){
-                this.searchWarn(this.appId,0,this.warnTask1,0,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
-              }else{
-                this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
-              }
-            }
+            this.taskId = this.warnTaskArr[0].taskId;
+            this.offlineService.getOfflineVideoTime(this.taskId)
+              .subscribe((result)=>{
+                this.removeMillisecond(result.start);
+                this.startHour = this.removeMillisecond(result.start)[0];
+                this.startMinute = this.removeMillisecond(result.start)[1];
+                this.startSecond = this.removeMillisecond(result.start)[2];
+                this.endHour = this.removeMillisecond(result.end)[0];
+                this.endMinute = this.removeMillisecond(result.end)[1];
+                this.endSecond = this.removeMillisecond(result.end)[2];
+                this.initRuleAndTime();
+              },
+                (error)=>{
+                  if(error==400){
+                    this.initRuleAndTime();
+                  }
+                })
           };
         });
     }
@@ -184,6 +197,48 @@ export class WarnTimeComponent{
       }
     });
   }
+  getTaskId(){
+    for(let i=0;i<this.warnTaskArr.length;i++){
+      if(this.warnTaskArr[i].taskName==this.warnTask1){
+        this.taskId = this.warnTaskArr[i].taskId;
+        break
+      }
+    }
+  }
+  initRuleAndTime(){
+    if(this.warnTaskArr[0].alarmRules.length>0){
+      this.warnTaskArr[0].alarmRules = this.filterPerson(this.warnTaskArr)[0].alarmRules;
+      this.warnRlueArr = this.warnTaskArr[0].alarmRules;
+      this.warnRlue1 = this.warnTaskArr[0].alarmRules[0].ruleName;
+      this.ruleId = this.warnTaskArr[0].alarmRules[0].ruleId;
+      this.offline_startTime = this.handleOfflineTime()[0];
+      this.offline_endTime = this.handleOfflineTime()[1];
+      this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
+    }
+    this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
+  }
+  removeMillisecond(time){
+    let arr:any[]=time.split(".")[0].split(":");
+    return arr
+  }
+  handleOfflineTime(){
+    let startTime;
+    let endTime;
+    let arr:any[]=[];
+    if(this.startHour=='00'&&this.startMinute=='00'&&this.startSecond=='00'){
+      startTime="00:00:00 000";
+    }else{
+      startTime=this.startHour+":"+this.startMinute+":"+this.startSecond+" 000";
+    }
+    if(this.endHour=='00'&&this.endMinute=='00'&&this.endSecond=='00'){
+      endTime="00:00:00 000";
+    }else{
+      endTime=this.endHour+":"+this.endMinute+":"+this.endSecond+" 000";
+    }
+    arr.push(startTime);
+    arr.push(endTime);
+    return arr
+  }
   filterPerson(arr){
     let taskArr:any[]=[];
     for(let k=0;k<arr.length;k++){
@@ -191,6 +246,7 @@ export class WarnTimeComponent{
         for(let i=0;i<arr[k].alarmRules.length;i++){
           if(arr[k].alarmRules[i].recognitionCategory.name!="全部"&&arr[k].alarmRules[i].targetImages!=''){
             taskArr.push(arr[k]);
+            break
           }
         }
       }
@@ -210,7 +266,7 @@ export class WarnTimeComponent{
         };
         if(this.warnTaskArr[i].outputPath!=null){
           this.videoUrl = this.warnTaskArr[i].outputPath;
-          console.log(this.videoUrl);
+          //console.log(this.videoUrl);
         }else{
           this.videoUrl = '';
         }
@@ -229,6 +285,31 @@ export class WarnTimeComponent{
           this.warnRlue1 = '';
           this.ruleId = 0;
         }
+        this.taskId = this.warnTaskArr[i].taskId;
+        this.offlineService.getOfflineVideoTime(this.taskId)
+          .subscribe(
+            (result)=>{
+              this.removeMillisecond(result.start);
+              this.startHour = this.removeMillisecond(result.start)[0];
+              this.startMinute = this.removeMillisecond(result.start)[1];
+              this.startSecond = this.removeMillisecond(result.start)[2];
+              this.endHour = this.removeMillisecond(result.end)[0];
+              this.endMinute = this.removeMillisecond(result.end)[1];
+              this.endSecond = this.removeMillisecond(result.end)[2];
+              this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
+            },
+            (error)=>{
+              if(error.status==400){
+                this.startHour = "00";
+                this.startMinute = "00";
+                this.startSecond = "00";
+                this.endHour = "00";
+                this.endMinute = "00";
+                this.endSecond = "00";
+                this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
+              }
+            });
+        this.sessionSet();
         break;
       }
     }
@@ -326,11 +407,24 @@ export class WarnTimeComponent{
     if(sessionStorage.getItem("status")){
       this.warnStatus = sessionStorage.getItem("status");
     }
-    if(sessionStorage.getItem("start1")){
-      $('#start1').val(sessionStorage.getItem("start1"));
-    }
-    if(sessionStorage.getItem("end1")){
-      $('#end1').val(sessionStorage.getItem("end1"));
+    if(this.appCate=="实时流分析"){
+      if(sessionStorage.getItem("start1")){
+        $('#start1').val(sessionStorage.getItem("start1"));
+      }
+      if(sessionStorage.getItem("end1")){
+        $('#end1').val(sessionStorage.getItem("end1"));
+      }
+    }else{
+      if(sessionStorage.getItem("start1")){
+        this.startHour = sessionStorage.getItem("start1").split(":")[0];
+        this.startMinute = sessionStorage.getItem("start1").split(":")[1];
+        this.startSecond = sessionStorage.getItem("start1").split(":")[2].split(" ")[0];
+      }
+      if(sessionStorage.getItem("end1")){
+        this.endHour = sessionStorage.getItem("end1").split(":")[0];
+        this.endMinute = sessionStorage.getItem("end1").split(":")[1];
+        this.endSecond = sessionStorage.getItem("end1").split(":")[2].split(" ")[0];
+      }
     }
     if(sessionStorage.getItem("periodTime")){
       this.periodTime = sessionStorage.getItem("periodTime");
@@ -338,6 +432,11 @@ export class WarnTimeComponent{
     if(sessionStorage.getItem("periodTimeArr")){
       this.periodTimeArr = sessionStorage.getItem("periodTimeArr").split(",");
     }
+  }
+  changeOfflineTime(){
+    this.getTaskId();
+    this.getRuleId();
+    this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
   }
   ngOnDestroy(){
     clearInterval(this.interval);
@@ -516,6 +615,8 @@ export class WarnTimeComponent{
   }
   getPageData(paraParam){
     if(this.appCate=="实时流分析"){
+      this.startTime = $('#start1').val();
+      this.endTime = $('#end1').val();
       this.validation();
       this.sessionSet();
       this.session();
@@ -527,7 +628,6 @@ export class WarnTimeComponent{
           this.searchWarn(this.appId,0,this.chanName1,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
         }
       }else{
-        this.judgeTime();
         if(this.taskId>0){
           this.searchWarn(this.appId,this.taskId,this.chanName1,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
         }else{
@@ -538,21 +638,7 @@ export class WarnTimeComponent{
       this.validation();
       this.sessionSet();
       this.session();
-      if(this.warnRlue1=='全部'){
-        this.judgeTime();
-        if(this.taskId>0){
-          this.searchWarn(this.appId,this.taskId,this.warnTask1,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
-        }else{
-          this.searchWarn(this.appId,0,this.warnTask1,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
-        }
-      }else{
-        this.judgeTime();
-        if(this.taskId>0){
-          this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
-        }else{
-          this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
-        }
-      }
+      this.searchWarn(this.appId,this.taskId,this.warnTask1,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
     }
     this.pageNow=paraParam.curPage;
     this.pageChange = Number(paraParam.pageMaxItem);
@@ -625,15 +711,18 @@ export class WarnTimeComponent{
       })
   }
   sessionSet(){
-    console.log($('#start1').val(),$('#end1').val());
-    sessionStorage.setItem("rule" , this.sessionRules);
     sessionStorage.setItem("status" , this.warnStatus);
-    sessionStorage.setItem("start1" , $('#start1').val());
-    sessionStorage.setItem("end1" , $('#end1').val());
+    if(this.appCate=="实时流分析"){
+      sessionStorage.setItem("rule" , this.sessionRules);
+      sessionStorage.setItem("start" , this.startTime);
+      sessionStorage.setItem("end" , this.endTime);
+    }else{
+      sessionStorage.setItem("rule" , this.warnRlue1);
+      sessionStorage.setItem("start" , this.offline_startTime);
+      sessionStorage.setItem("end" , this.offline_endTime);
+    }
   }
   validation(){
-    this.startTime = $('#start1').val();
-    this.endTime = $('#end1').val();
     if(this.warnRlue1!=''&&this.warnRlue1!=undefined){
       for(let i=0;i<this.warnRlueArr.length;i++){
         //console.log(this.warnRlueArr[i].ruleName);
@@ -707,6 +796,8 @@ export class WarnTimeComponent{
     this.deleteIndex = 1;
     this.tip_title = "提示";
     this.tip_content = "该时间段没有告警！";
+    this.periodTime="";
+    this.periodTimeArr=[];
   }
   handleTime(result){
     this.periodTimeArr=[];
@@ -785,6 +876,8 @@ export class WarnTimeComponent{
     if(this.appCate=='实时流分析'){
       if(this.dateCompare(start,end)){
         this.validation();
+        this.startTime = $('#start1').val();
+        this.endTime = $('#end1').val();
           sessionStorage.setItem("name" , this.chanName1);
           this.sessionSet();
           start = start+" 000";
@@ -848,11 +941,7 @@ export class WarnTimeComponent{
     }else{
       sessionStorage.setItem("task" , this.warnTask1);
       this.sessionSet();
-      if(this.taskId>0){
-        this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
-      }else{
-        this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
-      }
+      this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
     }
   }
   get_ckplayer_url1(){
