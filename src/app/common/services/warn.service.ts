@@ -318,4 +318,10 @@ export class WarnService {
         }
       });
   }
+
+  downloadFile(path) {
+    path = "/api/fileDownLoad?filePath=" + path;
+    let headers = this.getHeaders();
+    return this.http.post(this.SERVER_URL+path,{},{ headers: headers});
+  }
 }

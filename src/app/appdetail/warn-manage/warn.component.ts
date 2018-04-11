@@ -716,4 +716,18 @@ document.getElementById("image")
       }
     }
   }
+
+  downloadFile(item) {
+    let path = item.imagePath;
+    this.warnService.downloadFile(path).subscribe(data => {
+      var blob = new Blob([data], {type: "application/octet-stream"});
+      var objectUrl = URL.createObjectURL(blob);
+      var tempPathArr = path.split("/");
+      var name = tempPathArr[tempPathArr.length - 1];
+      var a_temp = $("<a><span class='forDownload'>下载</span></a>").attr("href",objectUrl).attr("download", name);
+      $("body").append(a_temp);
+      $(".forDownload").click();
+      a_temp.remove();
+    });
+  }
 }
