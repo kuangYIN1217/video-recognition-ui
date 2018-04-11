@@ -156,6 +156,9 @@ label{
 .lookResult{
   background: url('../../../assets/appdetail/way.manage/jieguo.png') no-repeat center;
 }
+.noLookResult{
+  background: url('../../../assets/taskStatus/no_see_result.png') no-repeat center;
+}
 select{
   background: url("../../../assets/appdetail/way.manage/selectDown.png") no-repeat right 6px center;
   outline: none;

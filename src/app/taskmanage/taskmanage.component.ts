@@ -43,6 +43,11 @@ export class TaskManageComponent {
   outputPath:string;
   nameTem:string;
   tip_btn:string;
+  photoShow:boolean = false;
+  picturesNumber:any[]=[];
+  photoIndex:number = 0;
+  init:boolean = false;
+  taskIds:any[]=[];
   @ViewChild('offlineVideo') offlineVideo: any;
   constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
@@ -59,14 +64,19 @@ export class TaskManageComponent {
     //console.log(this.appCate);
     this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
     this.interval = setInterval(() => {
+      this.init = true;
+      if(this.taskName!=''&&this.taskName!=undefined){
+        this.getTask(this.appId,this.taskName,'全部',this.page-1,this.pageMaxItem);
+      }else{
         this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
+      }
     }, 10000);
     this.alarmStatus = this.alarmStatusArr[0];
     this.route.params.subscribe((param) => {
       if(JSON.stringify(param) != "{}"){
-        console.log(param);
+        //console.log(param);
         this.alarmStatus = param['status'];
-        console.log(this.alarmStatus);
+        //console.log(this.alarmStatus);
         this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
       }
     });
@@ -114,17 +124,43 @@ export class TaskManageComponent {
       })
   }*/
   lookResult(item){
-    this.playShow=true;
-    this.outputPath = item.outputPath;
+    this.picturesNumber=[];
+    this.photoIndex = 0;
+    if(item.fileType=="video"){
+      this.outputPath = item.outputPath;
+      this.playShow=true;
+    }else if(item.fileType=="image"||item.fileType=="zip"){
+      let allImage = item.outputPath.split(',');
+      this.picturesNumber = allImage;
+      this.photoShow = true;
+    }
+  }
+  clickLeft(){
+    if(this.photoIndex==0){
+      return false
+    }else{
+      this.photoIndex--;
+    }
+  }
+  clickRight(){
+    if(this.photoIndex==this.picturesNumber.length-1){
+      return false
+    }else{
+      this.photoIndex++;
+    }
   }
   closeVideo(){
     this.playShow=false;
     this.showBtn = false;
   }
+  closePhtot(){
+    this.photoShow = false;
+  }
   show(){
-    this.videoBtn = 1;
+    this.offlineVideo.nativeElement.controls = true;
   }
   hide(){
+    this.offlineVideo.nativeElement.controls = false;
     this.videoBtn = 2;
     this.showBtn = false;
   }
@@ -139,7 +175,14 @@ export class TaskManageComponent {
 
   }
   output1(item){
-    return item.substring(23,item.length);
+    if(item.length>0){
+      return item.substring(23,item.length);
+    }
+  }
+  output2(item){
+    if(item.length>0){
+      return item.substring(17,item.length);
+    }
   }
   running(item){
     //console.log(item);
@@ -173,28 +216,44 @@ export class TaskManageComponent {
     return ruleName.substring(0,ruleName.length-1);
   }
   allSel(){
+    let arr:any[]=[];
     for(var i in this.taskList){
       if(this.allFlag==false){
-        this.taskList[i]['flag']=1;
+        this.taskList[i].selected=true;
+        arr.push(this.taskList[i].taskId);
       }else{
-        this.taskList[i]['flag']=2;
+        this.taskList[i].selected=false;
+        arr.push(this.taskList[i].taskId);
       }
     }
     if(this.allFlag==false){
       this.allFlag=true;
+      this.setOfflineTaskCheck(arr,true);
     }else{
       this.allFlag=false;
+      this.setOfflineTaskCheck(arr,false);
     }
   }
+  setOfflineTaskCheck(taskId,selected){
+    this.offlineService.offlineTaskCheck(taskId,selected)
+      .subscribe(result=>{
+        //console.log(result);
+      })
+  }
   check(item){
-    if(item.flag!=1){
-      item.flag=1;
+    if(item.selected!=true){
+      item.selected = true;
     }else{
-      item.flag=2;
+      item.selected = false;
       this.allFlag=false;
     }
+    this.taskIds=[];
+    this.taskIds.push(item.taskId);
+    this.setOfflineTaskCheck(this.taskIds,item.selected);
+    this.allFlag=false;
+
     for(var i in this.taskList){
-      if(this.taskList['flag']!=1){
+      if(!this.taskList['selected']){
         this.allFlag=false;
         return;
       }else{
@@ -285,6 +344,14 @@ export class TaskManageComponent {
             clearInterval(this.interval);
           }
         }*/
+        if(!this.init){
+          for(let i=0;i<this.taskList.length;i++){
+            this.taskList[i].selected = false;
+            this.taskIds.push(this.taskList[i].taskId);
+          }
+          this.setOfflineTaskCheck(this.taskIds,false);
+        }
+        this.init = false;
         if(this.alarmStatus=='进行中'){
             if(this.taskName==undefined){
               this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
@@ -314,22 +381,20 @@ export class TaskManageComponent {
     this.router.navigate(['../createtext'],{queryParams: {'taskTitle':"新建任务"}});
   }
   edit(item){
-    //console.log(item);
     this.router.navigate(['../createtext'],{queryParams: {'taskId':item.taskId,'taskName':item.taskName,'fileType':item.fileType,'alarmRules':JSON.stringify(item.alarmRules),'taskTitle':"修改任务"}});
   }
   look(item){
-    //console.log(item);
+    // console.log(JSON.stringify(item.alarmRules));
     this.router.navigate(['../warnmanage'],{queryParams: {'taskName':item.taskName,'taskId':item.taskId,"once":"true","alarmRules":JSON.stringify(item.alarmRules),"fileType":item.fileType}});
   }
-
   dia(){
     for(let i in this.taskList){
-      if(this.taskList[i]['flag'] == '1'&&this.taskList[i].taskStatus=='进行中'){
+      if(this.taskList[i].selected&&this.taskList[i].taskStatus=='进行中'){
         this.deleteIndex =1;
         this.tip_title = '提示';
         this.tip_content = '该任务不可删除！';
         return false;
-      }else if(this.taskList[i]['flag'] == '1'&&this.taskList[i].taskStatus!='进行中'){
+      }else if(this.taskList[i].selected&&this.taskList[i].taskStatus!='进行中'){
         this.deleteIdArr.push(this.taskList[i]);
       }
     }
@@ -341,10 +406,10 @@ export class TaskManageComponent {
     this.deleteIndex = event;
   }
   deletedChange(event){
-    console.log(event);
+    //console.log(event);
     if(event==1){
       for(let i in this.deleteIdArr){
-        console.log(this.deleteIdArr[i]);
+        //console.log(this.deleteIdArr[i]);
         this.offlineService.delete(this.deleteIdArr[i].taskId)
           .subscribe(result=>{
             this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
