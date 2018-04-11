@@ -162,8 +162,8 @@ export class WarnComponent{
             this.taskId = this.warnTaskArr[0].taskId;
             this.offlineService.getOfflineVideoTime(this.taskId)
               .subscribe((result)=>{
-                this.removeMillisecond(result.start);
-                this.startHour = this.removeMillisecond(result.start)[0];
+                 this.removeMillisecond(result.start);
+                 this.startHour = this.removeMillisecond(result.start)[0];
                  this.startMinute = this.removeMillisecond(result.start)[1];
                  this.startSecond = this.removeMillisecond(result.start)[2];
                  this.endHour = this.removeMillisecond(result.end)[0];
@@ -173,6 +173,7 @@ export class WarnComponent{
               },
                 (error)=>{
                   if(error.status==400){
+                    this.initTime();
                     this.initRule();
                   }
                 });
@@ -252,18 +253,21 @@ export class WarnComponent{
           },
             (error)=>{
               if(error.status==400){
-                this.startHour = "00";
-                this.startMinute = "00";
-                this.startSecond = "00";
-                this.endHour = "00";
-                this.endMinute = "00";
-                this.endSecond = "00";
+                this.initTime();
                 this.sessionSet();
               }
             });
         break;
       }
     }
+  }
+  initTime(){
+    this.startHour = "00";
+    this.startMinute = "00";
+    this.startSecond = "00";
+    this.endHour = "00";
+    this.endMinute = "00";
+    this.endSecond = "00";
   }
   session(){
     if(sessionStorage.getItem("rule")){

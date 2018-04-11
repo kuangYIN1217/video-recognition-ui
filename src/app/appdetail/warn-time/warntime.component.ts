@@ -110,7 +110,7 @@ export class WarnTimeComponent{
         }else{
           this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.getPeriodTime()[0],this.getPeriodTime()[1]);
         }
-      }, 360000);
+      }, 15000);
     }
     if(this.appCate=="实时流分析"){
       this.warnService.getWarnRules(this.appId)
@@ -163,6 +163,7 @@ export class WarnTimeComponent{
               },
                 (error)=>{
                   if(error==400){
+                    this.initTime();
                     this.initRuleAndTime();
                   }
                 })
@@ -286,7 +287,7 @@ export class WarnTimeComponent{
           this.ruleId = 0;
         }
         this.taskId = this.warnTaskArr[i].taskId;
-        this.offlineService.getOfflineVideoTime(this.taskId)
+        this.offlineService.getOfflineVideoTime(this.warnTaskArr[i].taskId)
           .subscribe(
             (result)=>{
               this.removeMillisecond(result.start);
@@ -300,12 +301,7 @@ export class WarnTimeComponent{
             },
             (error)=>{
               if(error.status==400){
-                this.startHour = "00";
-                this.startMinute = "00";
-                this.startSecond = "00";
-                this.endHour = "00";
-                this.endMinute = "00";
-                this.endSecond = "00";
+                this.initTime();
                 this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
               }
             });
@@ -313,6 +309,14 @@ export class WarnTimeComponent{
         break;
       }
     }
+  }
+  initTime(){
+    this.startHour = "00";
+    this.startMinute = "00";
+    this.startSecond = "00";
+    this.endHour = "00";
+    this.endMinute = "00";
+    this.endSecond = "00";
   }
   getPeriodTime(){
     this.saveTime=[];
