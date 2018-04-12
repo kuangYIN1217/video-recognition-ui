@@ -191,6 +191,7 @@ export class WarnTimeComponent{
         for(let i=0;i<arr[k].alarmRules.length;i++){
           if(arr[k].alarmRules[i].recognitionCategory.name!="全部"&&arr[k].alarmRules[i].targetImages!=''){
             taskArr.push(arr[k]);
+            break
           }
         }
       }
