@@ -365,28 +365,36 @@ export class WarnComponent{
     this.endTime = $('#end').val("");
   }
   allSel(){
+    let arr:any[]=[];
     for(var i in this.allWarn){
-      if(this.allFlag==false){
-        this.allWarn[i]['flag']=1;
+      if(!this.allFlag){
+        this.allWarn[i]['selected']=true;
+        arr.push(this.allWarn[i].alarmsId);
       }else{
-        this.allWarn[i]['flag']=2;
+        this.allWarn[i]['selected']=false;
+        arr.push(this.allWarn[i].alarmsId);
       }
     }
-    if(this.allFlag==false){
+    if(!this.allFlag){
       this.allFlag=true;
+      //this.setAlarmCheck(arr,true);
     }else{
       this.allFlag=false;
+      //this.setAlarmCheck(arr,false);
     }
   }
   check(item){
-    if(item.flag!=1){
-      item.flag=1;
+    if(item.selected!=true){
+      item.selected = true;
     }else{
-      item.flag=2;
+      item.selected = false;
       this.allFlag=false;
     }
+    //this.alarmsId=[];
+    //this.alarmsId.push(item.alarmId);
+    //this.setAlarmCheck(this.alarmsId,item.selected);
     for(var i in this.allWarn){
-      if(this.allWarn['flag']!=1){
+      if(!this.allWarn[i].selected){
         this.allFlag=false;
         return;
       }else{

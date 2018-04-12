@@ -286,7 +286,7 @@ export class WayManageComponent {
     this.addDialog = 1;
     this.btnIndex = 0;
     this.protocol = this.protocols[0];
-    this.channelType = this.channelTypes[1];
+    this.channelType = this.channelTypes[0];
     this.chanName = '';
     this.chanAddr = '';
     this.videoAddress = '';
@@ -301,7 +301,7 @@ export class WayManageComponent {
     }
   }
   create(){
-      let chanAddr = this.chanAddr;
+    let chanAddr = this.getChanAddr(this.chanAddr);
       let chanName = this.chanName;
       let protocol = this.protocol;
       let channelType = this.channelType;
@@ -338,7 +338,17 @@ export class WayManageComponent {
             this.deleteIndex =1;
             this.tip_title = '提示';
             this.tip_content = '该通道地址已存在，画面顺序为'+result.text().substring(3)+'！';
-          }else{
+            this.createFlag = true;
+          }if(result.text().substring(0,2)=='Ex'){
+            this.deleteIndex =1;
+            this.tip_title = '提示';
+            this.tip_content = '创建成功，仅支持开启一个通道！';
+            this.createFlag = true;
+            this.addDialog = 0;
+            this.show=1;
+            this.getAllChannel(this.appId,null,null,this.page-1,this.pageMaxItem);
+          }
+          else{
             this.show=1;
             this.addDialog = 0;
             this.getAllChannel(this.appId,null,null,this.page-1,this.pageMaxItem);
@@ -355,7 +365,7 @@ export class WayManageComponent {
       this.addDialog = 1;
       this.btnIndex = 1;
       this.chanName = item.channelName;
-      this.chanAddr = item.channelAddress;
+      this.chanAddr = this.getChanAddr(item.channelAddress);
       this.protocol = item.channelProtocol;
       this.channelType = item.channelType;
       this.videoAddress = item.videoAddress;
@@ -368,6 +378,9 @@ export class WayManageComponent {
         this.radioIndex = 0;
       }
   }
+  }
+  getChanAddr(chanAddr){
+    return chanAddr.replace(/(^\s*)|(\s*$)/g, "");
   }
   editSave(){
     if(this.chanName==''){
