@@ -77,7 +77,7 @@
             <td>
               <img src="../assets/warn/chakan.png" class="mrgr" (click)="seePhoto(item.imagePath)" title="查看快照"/>
               <!--<img src="../assets/warn/xiazai.png" class="mrgr"  title="下载快照" onclick="document.getElementById('down').click();"/>-->
-              <a href="assets/appmanage/add.png" download title="下载快照" class="downImage" id="downImage"></a>
+              <span title="下载快照" class="downImage" id="downImage" (click)="downloadFile(item)"></span>
               <!--<span (click)="downImage(item)" class="downImage" id="downImage"></span>-->
             </td>
             <!--<td title="{{item.alarmStatus}}">{{item.alarmStatus}}</td>-->
