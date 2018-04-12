@@ -636,9 +636,6 @@ export class WarnComponent{
       this.backWarn(this.warnTask);
     }
   }
-  getImageStyle(obj,width,height,img,x,y){
-
-  }
   getMaxHeight(id){
     if($("#img").length>0){
       return

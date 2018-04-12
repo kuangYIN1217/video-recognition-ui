@@ -348,7 +348,7 @@ export class CreateTextComponent {
     }
     if(this.showFile.length!=0){
       for(let i=0;i<this.showFile.length;i++){
-        this.offlineFiles.unshift(this.showFile[this.showFile.length-1]);
+        this.offlineFiles.unshift(this.showFile[i]);
       }
     }
     for(let j=0;j<this.offlineFiles.length;j++){

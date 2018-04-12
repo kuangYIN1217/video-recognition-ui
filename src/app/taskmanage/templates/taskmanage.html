@@ -94,9 +94,9 @@
   </div>
 <div class="videoPlayer" *ngIf="photoShow">
   <img src="assets/offline/task_close.png" class="videoClose" (click)="closePhtot()"/>
-  <img [src]="photoIndex==0?'assets/offline/bukedianji_zuo.png':'assets/offline/zuo.png'" class="leftArrow" (click)="clickLeft()"/>
+  <img [src]="photoIndex==0?'assets/offline/zuo.png':'assets/offline/bukedianji_zuo.png'" class="leftArrow" (click)="clickLeft()"/>
     <div class="showArea">
       <img src="{{SERVER_URL}}/download/{{output2(picturesNumber[photoIndex])}}"/>
     </div>
-  <img [src]="photoIndex==picturesNumber.length-1?'assets/offline/bukedianji_you.png':'assets/offline/you.png'" class="rightArrow" (click)="clickRight()"/>
+  <img [src]="photoIndex==picturesNumber.length-1?'assets/offline/you.png':'assets/offline/bukedianji_you.png'" class="rightArrow" (click)="clickRight()"/>
 </div>
