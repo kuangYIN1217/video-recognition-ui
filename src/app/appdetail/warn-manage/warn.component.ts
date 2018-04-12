@@ -338,8 +338,26 @@ export class WarnComponent{
         this.fileType = params['fileType'];
         if(this.fileType=='image'||this.fileType=='zip'){
           this.showTime = false;
+          this.initTime();
         }else{
           this.showTime = true;
+          this.offlineService.getOfflineVideoTime(this.taskId)
+            .subscribe((result)=>{
+                this.removeMillisecond(result.start);
+                this.startHour = this.removeMillisecond(result.start)[0];
+                this.startMinute = this.removeMillisecond(result.start)[1];
+                this.startSecond = this.removeMillisecond(result.start)[2];
+                this.endHour = this.removeMillisecond(result.end)[0];
+                this.endMinute = this.removeMillisecond(result.end)[1];
+                this.endSecond = this.removeMillisecond(result.end)[2];
+                this.initRule();
+              },
+              (error)=>{
+                if(error.status==400){
+                  this.initTime();
+                  this.initRule();
+                }
+              });
         }
         this.warnRlue = this.alarmRules[0].ruleName;
         this.ruleId = this.alarmRules[0].ruleId;
