@@ -827,4 +827,18 @@ export class WarnComponent{
       }
     }
   }
+
+  downloadFile(item) {
+    let path = item.imagePath;
+    this.warnService.downloadFile(path).subscribe(data => {
+      var tempPathArr = path.split("/");
+      var name = tempPathArr[tempPathArr.length - 1];
+      var a = document.createElement("a");
+      document.body.appendChild(a);
+      a.download = name;
+      a.href  = URL.createObjectURL(data.blob());
+      a.click();
+      a.remove();
+    });
+  }
 }
