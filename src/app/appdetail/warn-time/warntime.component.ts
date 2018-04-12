@@ -110,7 +110,7 @@ export class WarnTimeComponent{
         }else{
           this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.getPeriodTime()[0],this.getPeriodTime()[1]);
         }
-      }, 15000);
+      }, 360000);
     }
     if(this.appCate=="实时流分析"){
       this.warnService.getWarnRules(this.appId)

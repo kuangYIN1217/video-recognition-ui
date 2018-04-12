@@ -341,23 +341,7 @@ export class WarnComponent{
           this.initTime();
         }else{
           this.showTime = true;
-          this.offlineService.getOfflineVideoTime(this.taskId)
-            .subscribe((result)=>{
-                this.removeMillisecond(result.start);
-                this.startHour = this.removeMillisecond(result.start)[0];
-                this.startMinute = this.removeMillisecond(result.start)[1];
-                this.startSecond = this.removeMillisecond(result.start)[2];
-                this.endHour = this.removeMillisecond(result.end)[0];
-                this.endMinute = this.removeMillisecond(result.end)[1];
-                this.endSecond = this.removeMillisecond(result.end)[2];
-                this.initRule();
-              },
-              (error)=>{
-                if(error.status==400){
-                  this.initTime();
-                  this.initRule();
-                }
-              });
+
         }
         this.warnRlue = this.alarmRules[0].ruleName;
         this.ruleId = this.alarmRules[0].ruleId;
@@ -684,12 +668,12 @@ export class WarnComponent{
     let endTime;
     let arr:any[]=[];
     if(this.startHour=='00'&&this.startMinute=='00'&&this.startSecond=='00'){
-      startTime="00:00:00 000";
+      startTime=null;
     }else{
       startTime=this.startHour+":"+this.startMinute+":"+this.startSecond+" 000";
     }
     if(this.endHour=='00'&&this.endMinute=='00'&&this.endSecond=='00'){
-      endTime="00:00:00 000";
+      endTime=null;
     }else{
       endTime=this.endHour+":"+this.endMinute+":"+this.endSecond+" 000";
     }
