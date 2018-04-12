@@ -19,7 +19,6 @@ export class NavigationComponent {
   username: string = "";
   online: boolean = true;
   elector:boolean = true;
-  // location: Location;
   systemAuthority:string;
   changeCollapse() {
     this.collapse = 1 - this.collapse;

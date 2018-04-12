@@ -177,7 +177,7 @@ export class WarnComponent{
               this.showTime = true;
             }
           }
-          console.log(this.showTime);
+          //console.log(this.showTime);
           if(this.once!="true"){
             this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
           }
