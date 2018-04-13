@@ -157,20 +157,24 @@ export class WarnRlueComponent{
   deletedChange(event){
     //console.log(event);
     if(event==1){
+      let ids:string="";
       for(let i in this.deleteIdArr){
-        //console.log(this.deleteIdArr[i]);
-          this.warnService.deleteRule(this.deleteIdArr[i].ruleId)
-            .subscribe(result=>{
-              if(result.text().substring(0,2)=='Ok'){
-                this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
-              }else if(result.text().substring(0,2)=='No'){
-                this.deleteIndex =1;
-                this.tip_title = '提示';
-                this.tip_content = '该规则下有开启通道！';
-                this.tip_btn = "确定";
-              }
-            })
+        ids+=this.deleteIdArr[i].ruleId+',';
       }
+      ids = ids.substring(0,ids.length-1);
+      this.warnService.deleteRule(ids)
+        .subscribe(result=>{
+          this.deleteIdArr = [];
+          if(result.text().substring(0,2)=='Ok'){
+
+          }else if(result.text().substring(0,2)!='Ok'){
+            this.deleteIndex =1;
+            this.tip_title = '提示';
+            this.tip_content = '对不起，该规则已产生告警不可删除！';
+            this.tip_btn = "确定";
+          };
+          this.getAllRlues(this.appId,this.page-1,this.pageMaxItem);
+        })
     }
   }
   dia(){

@@ -444,6 +444,7 @@ export class TaskManageComponent {
       taskIds.substring(0,taskIds.length-1);
       this.offlineService.delete(taskIds)
         .subscribe(result=>{
+          this.deleteIdArr = [];
           this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
         })
     }
