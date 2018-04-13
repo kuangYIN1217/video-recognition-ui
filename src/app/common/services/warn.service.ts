@@ -96,6 +96,12 @@ export class WarnService {
       });
   }
   createWarn(appId,name,obj,code,car,status,photoArr,createTime){
+    let targetFeature:string="";
+    if(car==null||car==undefined){
+      targetFeature = "";
+    }else{
+      targetFeature = car;
+    }
     let path = "/api/alarmRule";
     let body = JSON.stringify({
       "alarmRuleStatus": status,
@@ -107,7 +113,7 @@ export class WarnService {
       "ruleId": 0,
       "ruleName":name ,
       "applicationChannels":null,
-      "targetFeature": car,
+      "targetFeature": targetFeature,
       "targetImages": photoArr
     });
     let headers = this.getHeaders();

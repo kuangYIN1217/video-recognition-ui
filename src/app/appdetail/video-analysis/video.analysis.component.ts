@@ -68,7 +68,7 @@ export class VideoAnalysisComoponent {
   leftbar:boolean=false;
   rulesInfo:any[]=[];
   ruleName:string='';
-  personName:string;
+  personName:string="";
   cateId:number;
   code:string;
   photoUrl:string='';
