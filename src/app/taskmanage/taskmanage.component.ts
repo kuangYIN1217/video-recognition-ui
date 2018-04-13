@@ -436,15 +436,16 @@ export class TaskManageComponent {
     this.deleteIndex = event;
   }
   deletedChange(event){
-    //console.log(event);
     if(event==1){
+      let taskIds:string='';
       for(let i in this.deleteIdArr){
-        //console.log(this.deleteIdArr[i]);
-        this.offlineService.delete(this.deleteIdArr[i].taskId)
-          .subscribe(result=>{
-            this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
-          })
+        taskIds+=this.deleteIdArr[i].taskId+',';
       }
+      taskIds.substring(0,taskIds.length-1);
+      this.offlineService.delete(taskIds)
+        .subscribe(result=>{
+          this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
+        })
     }
   }
   ngAfterViewInit() {
