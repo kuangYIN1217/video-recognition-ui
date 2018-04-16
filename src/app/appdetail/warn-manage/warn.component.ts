@@ -160,23 +160,7 @@ export class WarnComponent{
           if(this.warnTaskArr.length>0&&this.once!="true"){
             this.warnTask = this.warnTaskArr[0].taskName;
             this.taskId = this.warnTaskArr[0].taskId;
-            this.offlineService.getOfflineVideoTime(this.taskId)
-              .subscribe((result)=>{
-                 this.removeMillisecond(result.start);
-                 this.startHour = this.removeMillisecond(result.start)[0];
-                 this.startMinute = this.removeMillisecond(result.start)[1];
-                 this.startSecond = this.removeMillisecond(result.start)[2];
-                 this.endHour = this.removeMillisecond(result.end)[0];
-                 this.endMinute = this.removeMillisecond(result.end)[1];
-                 this.endSecond = this.removeMillisecond(result.end)[2];
-                 this.initRule();
-              },
-                (error)=>{
-                  if(error.status==400){
-                    this.initTime();
-                    this.initRule();
-                  }
-                });
+            this.getVideoTime();
           }else{
             for(let i=0;i<this.warnTaskArr.length;i++){
               if(this.warnTaskArr[i].taskId==this.taskId){
@@ -202,6 +186,25 @@ export class WarnComponent{
         this.searchWarn(this.appId,0,'全部',-1,'全部',this.page-1,this.pageMaxItem,null,null);
       }
     }
+  }
+  getVideoTime(){
+    this.offlineService.getOfflineVideoTime(this.taskId)
+      .subscribe((result)=>{
+          this.removeMillisecond(result.start);
+          this.startHour = this.removeMillisecond(result.start)[0];
+          this.startMinute = this.removeMillisecond(result.start)[1];
+          this.startSecond = this.removeMillisecond(result.start)[2];
+          this.endHour = this.removeMillisecond(result.end)[0];
+          this.endMinute = this.removeMillisecond(result.end)[1];
+          this.endSecond = this.removeMillisecond(result.end)[2];
+          this.initRule();
+        },
+        (error)=>{
+          if(error.status==400){
+            this.initTime();
+            this.initRule();
+          }
+        });
   }
   initRule(){
     if(this.warnTaskArr[0].alarmRules.length>0){
@@ -341,7 +344,7 @@ export class WarnComponent{
           this.initTime();
         }else{
           this.showTime = true;
-
+          this.getVideoTime();
         }
         this.warnRlue = this.alarmRules[0].ruleName;
         this.ruleId = this.alarmRules[0].ruleId;
@@ -576,7 +579,7 @@ export class WarnComponent{
   }
   getWarnList(result){
     this.allWarn = result.content;
-    console.log(this.allWarn);
+    //console.log(this.allWarn);
     let page = new Page();
     page.pageMaxItem = result.size;
     page.curPage = result.number+1;
