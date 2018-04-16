@@ -6,7 +6,7 @@
         <input type="text" name="taskName" [(ngModel)]="taskName"/>
       </div>
       <div class="title_warnStatus fl">
-        <label>告警状态：</label>
+        <label>任务状态：</label>
         <select [(ngModel)]="alarmStatus" (ngModelChange)="alarmStatus=$event;">
           <option *ngFor="let item of alarmStatusArr" value="{{item}}">{{item}}</option>
         </select>
