@@ -337,6 +337,7 @@ export class TaskManageComponent {
           }else{
             clearInterval(this.interval);
             this.websocket.stopWebsocket();
+            this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
           }
         }
 
@@ -382,13 +383,13 @@ export class TaskManageComponent {
           this.setOfflineTaskCheck(this.taskIds,false);
         }
         this.init = false;
-        if(this.alarmStatus=='进行中'){
+/*        if(this.alarmStatus=='进行中'){
             if(this.taskName==undefined){
               this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
             }
             this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
 
-        };
+        };*/
         let page = new Page();
         page.pageMaxItem = result.size;
         page.curPage = result.number+1;
