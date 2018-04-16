@@ -1,4 +1,4 @@
-import {Headers, Http, Response} from "@angular/http";
+import {Headers, Http, Response, ResponseContentType} from "@angular/http";
 import {Injectable} from "@angular/core";
 
 import "rxjs/add/operator/map";
@@ -98,7 +98,7 @@ export class WarnService {
       });
   }
   getAllRlues(id,page=0,size=10){
-    let path = "/api/alarmRules/"+id+"?page="+page+"&size="+size;
+    let path = "/api/getAllRule/"+id+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path, { headers : headers})
       .map((response: Response) => {
@@ -318,5 +318,11 @@ export class WarnService {
             return response;
         }
       });
+  }
+
+  downloadFile(path) {
+    path = "/api/fileDownLoad?filePath=" + path;
+    let headers = this.getHeaders();
+    return this.http.post(this.SERVER_URL+path, {}, {headers: headers, responseType: ResponseContentType.Blob});
   }
 }
