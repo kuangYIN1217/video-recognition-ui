@@ -52,7 +52,7 @@ export class TaskManageComponent {
   constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
-      console.log(window.sessionStorage.getItem("_offline"));
+      //console.log(window.sessionStorage.getItem("_offline"));
       this._offline = JSON.parse(window.sessionStorage.getItem("_offline"));
       //console.log(this._offline);
       for(let i=0;i<this._offline.length;i++){
