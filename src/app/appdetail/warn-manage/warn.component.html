@@ -35,12 +35,43 @@
           </select>
         </div>-->
       </div>
-      <div class="search-time"  [style.display]="showTime?'':'none'">
+      <div class="search-time"  [style.display]="showTime&&appCate=='实时流分析'?'':'none'">
         <div class="search-info no-margin">
-          <label>告警时间：</label>
-          <input type="text" id="start" class="time" readonly placeholder="请选择时间"/>
-          <span>至</span>
-          <input type="text" id="end" class="time" readonly placeholder="请选择时间" style="margin-left: 0"/>
+          <div class="search-info no-margin">
+            <label>告警时间：</label>
+            <input type="text" id="start" class="time" readonly placeholder="请选择时间"/>
+            <span class="shishi-text">至</span>
+            <input type="text" id="end" class="time" readonly placeholder="请选择时间" style="margin-left: 0"/>
+          </div>
+        </div>
+        <a href="#" onclick="return false" class="btn bgco" (click)="search()">查询</a>
+      </div>
+      <div class="search-time" [style.display]="showTime&&appCate=='离线文件分析'?'':'none'">
+        <div class="search-info no-margin">
+          <label style="margin-right: 1.67vw">告警时间：</label>
+          <select class="time-choose"[(ngModel)]="startHour" (ngModelChange)="startHour=$event">
+            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+          </select>
+          <span class="maohao">:</span>
+          <select class="time-choose" [(ngModel)]="startMinute" (ngModelChange)="startMinute=$event">
+            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+          </select>
+          <span class="maohao">:</span>
+          <select class="time-choose" [(ngModel)]="startSecond" (ngModelChange)="startSecond=$event">
+            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+          </select>
+          <span class="text">至</span>
+          <select class="time-choose" [(ngModel)]="endHour" (ngModelChange)="endHour=$event">
+            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+          </select>
+          <span class="maohao">:</span>
+          <select class="time-choose" [(ngModel)]="endMinute" (ngModelChange)="endMinute=$event">
+            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+          </select>
+          <span class="maohao">:</span>
+          <select class="time-choose" [(ngModel)]="endSecond" (ngModelChange)="endSecond=$event">
+            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+          </select>
         </div>
         <a href="#" onclick="return false" class="btn bgco" (click)="search()">查询</a>
       </div>

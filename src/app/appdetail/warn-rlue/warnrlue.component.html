@@ -11,12 +11,6 @@
           <label>规则名称：</label>
           <input type="text" [(ngModel)]="ruleName" (ngModelChange)="ruleName=$event;"/>
         </div>
-<!--        <div class="search-info" *ngIf="appCate=='实时流分析'">
-          <label>告警通道：</label>
-          <select [(ngModel)]="warnChan" (ngModelChange)="warnChan=$event;">
-            <option *ngFor="let item of warnChanArr" value="{{item.channelName}}">{{item.channelName}}</option>
-          </select>
-        </div>-->
         <div class="search-info">
           <label>告警对象：</label>
           <select [(ngModel)]="warnRule" (ngModelChange)="warnRule=$event;">

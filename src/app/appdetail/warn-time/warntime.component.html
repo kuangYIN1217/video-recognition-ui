@@ -33,11 +33,37 @@
         </div>-->
       </div>
       <div class="search-time">
-        <div class="search-info no-margin">
+        <div class="search-info no-margin" *ngIf="appCate=='实时流分析'">
           <label>告警时间：</label>
           <input type="text" id="start1" class="time" readonly placeholder="请选择时间"/>
-          <span>至</span>
+          <span class="shishi-text">至</span>
           <input type="text" id="end1" class="time" readonly placeholder="请选择时间" style="margin-left: 0"/>
+        </div>
+        <div class="search-info no-margin" *ngIf="appCate=='离线文件分析'">
+          <label style="margin-right: 1.67vw">告警时间：</label>
+          <select class="time-choose"[(ngModel)]="startHour" (ngModelChange)="startHour=$event;changeOfflineTime()">
+            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+          </select>
+          <span class="maohao">:</span>
+          <select class="time-choose" [(ngModel)]="startMinute" (ngModelChange)="startMinute=$event;changeOfflineTime()">
+            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+          </select>
+          <span class="maohao">:</span>
+          <select class="time-choose" [(ngModel)]="startSecond" (ngModelChange)="startSecond=$event;changeOfflineTime()">
+            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+          </select>
+          <span class="text">至</span>
+          <select class="time-choose" [(ngModel)]="endHour" (ngModelChange)="endHour=$event;changeOfflineTime()">
+            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+          </select>
+          <span class="maohao">:</span>
+          <select class="time-choose" [(ngModel)]="endMinute" (ngModelChange)="endMinute=$event;changeOfflineTime()">
+            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+          </select>
+          <span class="maohao">:</span>
+          <select class="time-choose" [(ngModel)]="endSecond" (ngModelChange)="endSecond=$event;changeOfflineTime()">
+            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+          </select>
         </div>
         <div class="search-info periodTime">
           <label>目标时段：</label>

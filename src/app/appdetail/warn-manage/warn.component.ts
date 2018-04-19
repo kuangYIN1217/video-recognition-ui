@@ -60,6 +60,15 @@ export class WarnComponent{
   alarmsId:any[]=[];
   init:boolean = false;
   fileType:string="";
+  all_time_date:any[]=[];
+  startHour:string="";
+  startMinute:string="";
+  startSecond:string="";
+  endHour:string="";
+  endMinute:string="";
+  endSecond:string="";
+  offline_startTime:string="";
+  offline_endTime:string="";
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -103,30 +112,11 @@ export class WarnComponent{
         }
         this.session();
         this.getRuleId();
-        let start = $("#start").val();
-        let end = $("#end").val();
-        if(start==""){
-          start = null;
-        }else{
-          start = start+" 000";
-        };
-        if(end==""){
-          end = null;
-        }else{
-          end = end+" 000";
-        };
+        this.getTaskId();
         if(this.pageNow){
-          if(this.taskId>0){
-            this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,start,end);
-          }else{
-            this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,start,end);
-          }
+          this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.pageNow-1,this.pageChange,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
         }else{
-          if(this.taskId>0){
-            this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
-          }else{
-            this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,start,end);
-          }
+          this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
         }
       }, 360000);
     }
@@ -149,17 +139,20 @@ export class WarnComponent{
           this.chanName = this.chanNameArr[0];
         });
     }else{
+      for(let n:any=0;n<60;n++){
+        if(n<10){
+          n = "0"+n;
+        }
+        this.all_time_date.push(String(n));
+      }
       this.warnService.getWarnTask(this.appId,"all")
         .subscribe(result=>{
           this.warnTaskArr = result;
           //console.log(this.warnTaskArr);
           if(this.warnTaskArr.length>0&&this.once!="true"){
             this.warnTask = this.warnTaskArr[0].taskName;
-            if(this.warnTaskArr[0].alarmRules.length>0){
-              this.warnRlueArr = this.warnTaskArr[0].alarmRules;
-              this.warnRlue = this.warnTaskArr[0].alarmRules[0].ruleName;
-              this.ruleId = this.warnTaskArr[0].alarmRules[0].ruleId;
-            }
+            this.taskId = this.warnTaskArr[0].taskId;
+            this.getVideoTime();
           }else{
             for(let i=0;i<this.warnTaskArr.length;i++){
                 if(this.warnTaskArr[i].taskId==this.taskId){
@@ -177,10 +170,7 @@ export class WarnComponent{
               this.showTime = true;
             }
           }
-          //console.log(this.showTime);
-          if(this.once!="true"){
-            this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,null,null);
-          }
+
         });
     }
     this.warnStatus = this.statusArr[0];
@@ -190,6 +180,55 @@ export class WarnComponent{
         this.searchWarn(this.appId,0,'全部',-1,'全部',this.page-1,this.pageMaxItem,null,null);
       }
     }
+  }
+  getVideoTime(){
+    this.offlineService.getOfflineVideoTime(this.taskId)
+      .subscribe((result)=>{
+          this.removeMillisecond(result.start);
+          this.startHour = this.removeMillisecond(result.start)[0];
+          this.startMinute = this.removeMillisecond(result.start)[1];
+          this.startSecond = this.removeMillisecond(result.start)[2];
+          this.endHour = this.removeMillisecond(result.end)[0];
+          this.endMinute = this.removeMillisecond(result.end)[1];
+          this.endSecond = this.removeMillisecond(result.end)[2];
+          this.initRule();
+        },
+        (error)=>{
+          if(error.status==400){
+            this.initTime();
+            this.initRule();
+          }
+        });
+  }
+  initRule(){
+    if(this.warnTaskArr[0].alarmRules.length>0){
+      this.warnRlueArr = this.warnTaskArr[0].alarmRules;
+      this.warnRlue = this.warnTaskArr[0].alarmRules[0].ruleName;
+      this.ruleId = this.warnTaskArr[0].alarmRules[0].ruleId;
+    }
+    if(this.once!="true"){
+      this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
+    }
+  }
+  initTime(){
+    this.startHour = "00";
+    this.startMinute = "00";
+    this.startSecond = "00";
+    this.endHour = "00";
+    this.endMinute = "00";
+    this.endSecond = "00";
+  }
+  getTaskId(){
+    for(let i=0;i<this.warnTaskArr.length;i++){
+      if(this.warnTaskArr[i].taskName==this.warnTask){
+        this.taskId = this.warnTaskArr[i].taskId;
+        break
+      }
+    }
+  }
+  removeMillisecond(time){
+    let arr:any[]=time.split(".")[0].split(":");
+    return arr
   }
   changeWarnTask(){
     for(let i=0;i<this.warnTaskArr.length;i++){
@@ -213,6 +252,24 @@ export class WarnComponent{
   output(item){
     return item.substring(17);
   }
+  handleOfflineTime(){
+    let startTime;
+    let endTime;
+    let arr:any[]=[];
+    if(this.startHour=='00'&&this.startMinute=='00'&&this.startSecond=='00'){
+      startTime=null;
+    }else{
+      startTime=this.startHour+":"+this.startMinute+":"+this.startSecond+" 000";
+    }
+    if(this.endHour=='00'&&this.endMinute=='00'&&this.endSecond=='00'){
+      endTime=null;
+    }else{
+      endTime=this.endHour+":"+this.endMinute+":"+this.endSecond+" 000";
+    }
+    arr.push(startTime);
+    arr.push(endTime);
+    return arr
+  }
   session(){
     if(sessionStorage.getItem("rule")){
       this.warnRlue = sessionStorage.getItem("rule");
@@ -220,11 +277,24 @@ export class WarnComponent{
     if(sessionStorage.getItem("status")){
       this.warnStatus = sessionStorage.getItem("status");
     }
-    if(sessionStorage.getItem("start")){
-      $('#start').val(sessionStorage.getItem("start"));
-    }
-    if(sessionStorage.getItem("end")){
-      $('#end').val(sessionStorage.getItem("end"));
+    if(this.appCate=="实时流分析"){
+      if(sessionStorage.getItem("start")){
+        (sessionStorage.getItem("start"));
+      }
+      if(sessionStorage.getItem("end")){
+        $('#end').val(sessionStorage.getItem("end"));
+      }
+    }else{
+      if(sessionStorage.getItem("start")){
+        this.startHour = sessionStorage.getItem("start").split(":")[0];
+        this.startMinute = sessionStorage.getItem("start").split(":")[1];
+        this.startSecond = sessionStorage.getItem("start").split(":")[2].split(" ")[0];
+      }
+      if(sessionStorage.getItem("end")){
+        this.endHour = sessionStorage.getItem("end").split(":")[0];
+        this.endMinute = sessionStorage.getItem("end").split(":")[1];
+        this.endSecond = sessionStorage.getItem("end").split(":")[2].split(" ")[0];
+      }
     }
   }
   ngOnDestroy(){
@@ -275,8 +345,10 @@ export class WarnComponent{
         this.fileType = params['fileType'];
         if(this.fileType=='image'||this.fileType=='zip'){
           this.showTime = false;
+          this.initTime();
         }else{
           this.showTime = true;
+          this.getVideoTime();
         }
         this.warnRlue = this.alarmRules[0].ruleName;
         this.ruleId = this.alarmRules[0].ruleId;
@@ -289,7 +361,6 @@ export class WarnComponent{
       }
     });
     calc_height(document.getElementById('warn-content'));
-    if(this.appCate=="实时流分析"){
       $("#start").jeDate({
         isinitVal:true,
         festival: false,
@@ -300,19 +371,6 @@ export class WarnComponent{
         festival: false,
         format: 'YYYY-MM-DD hh:mm:ss'
       });
-    }else{
-      $("#start").jeDate({
-        isinitVal:true,
-        festival: false,
-        format: 'hh:mm:ss'
-      });
-      $("#end").jeDate({
-        isinitVal:true,
-        festival: false,
-        format: 'hh:mm:ss'
-
-      });
-    }
     this.startTime = $('#start').val("");
     this.endTime = $('#end').val("");
 
@@ -407,9 +465,13 @@ export class WarnComponent{
   }
   getPageData(paraParam){
     if(this.appCate=="实时流分析"){
+      this.startTime = $('#start').val();
+      this.endTime = $('#end').val();
       this.validation();
       this.sessionSet();
       this.session();
+      this.startTime = $('#start').val();
+      this.endTime = $('#end').val();
       if(this.warnRlue=='全部'){
         this.judgeTime();
         if(this.taskId>0){
@@ -430,18 +492,16 @@ export class WarnComponent{
       this.sessionSet();
       this.session();
       if(this.warnRlue=='全部'){
-        this.judgeTime();
         if(this.taskId>0){
-          this.searchWarn(this.appId,this.taskId,this.warnTask,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+          this.searchWarn(this.appId,this.taskId,this.warnTask,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
         }else{
-          this.searchWarn(this.appId,0,this.warnTask,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+          this.searchWarn(this.appId,0,this.warnTask,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
         }
       }else{
-        this.judgeTime();
         if(this.taskId>0){
-          this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+          this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
         }else{
-          this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+          this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
         }
       }
     }
@@ -572,13 +632,12 @@ export class WarnComponent{
         this.searchWarn(this.appId,0,this.chanName,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
       }
     }else{
+      this.offline_startTime = this.handleOfflineTime()[0];
+      this.offline_endTime = this.handleOfflineTime()[1];
       sessionStorage.setItem("task" , this.warnTask);
       this.sessionSet();
-      if(this.taskId>0){
-        this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
-      }else{
-        this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,startTime,endTime);
-      }
+      this.getTaskId();
+      this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
     }
   }
   searchWarn(id,taskId,nameTask,ruleId,status,page,size,start,end){
