@@ -239,7 +239,6 @@ export class WarnRlueComponent{
     }else if(item.alarmRuleStatus=='开启'){
       item.alarmRuleStatus='关闭';
     }
-    console.log(item);
     if(this.appCate=='实时流分析'){
       this.warnService.editRuleSave(item.ruleId,item.ruleName,item.recognitionCategory.cateId,item.recognitionCategory.code,item.targetFeature,item.alarmRuleStatus,item.targetImages)
         .subscribe(result=>{
@@ -282,7 +281,6 @@ export class WarnRlueComponent{
           //this.start_reply(reply);
         });*/
     }
-
   }
   start_reply(reply){
     if(reply.status==200){

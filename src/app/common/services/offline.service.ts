@@ -79,6 +79,16 @@ export class OfflineService {
         }
       });
   }
+  getOfflineVideoTime(taskId){
+    let path = "/api/videoTimezone/"+taskId;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers})
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
   searchTask(id,name,status,page=0,size=10){
     let path = "/api/getOfflineTaskDynamic/"+id+"/"+name+"/"+status+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
