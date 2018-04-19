@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="warn-wrapper">
+    <div class="tabs">
+      <div class="tab_item" routerLinkActive="active" routerLink="/warntime">时间段告警</div>
+      <div class="tab_item" routerLinkActive="active" routerLink="/warnmanage">告警明细</div>
+      <div class="tab_item focus" routerLinkActive="active" routerLink="/warnrlue">告警规则</div>
+    </div>
+    <div class="search-content">
+      <div class="search-select">
+        <div class="search-info">
+          <label>规则名称：</label>
+          <input type="text" [(ngModel)]="ruleName" (ngModelChange)="ruleName=$event;"/>
+        </div>
+<!--        <div class="search-info" *ngIf="appCate=='实时流分析'">
+          <label>告警通道：</label>
+          <select [(ngModel)]="warnChan" (ngModelChange)="warnChan=$event;">
+            <option *ngFor="let item of warnChanArr" value="{{item.channelName}}">{{item.channelName}}</option>
+          </select>
+        </div>-->
+        <div class="search-info">
+          <label>告警对象：</label>
+          <select [(ngModel)]="warnRule" (ngModelChange)="warnRule=$event;">
+            <option *ngFor="let item of warnObjArr" value="{{item.name}}">{{item.name}}</option>
+          </select>
+        </div>
+        <div class="search-info">
+          <label>告警状态：</label>
+          <select [(ngModel)]="warnStatus" (ngModelChange)="warnStatus=$event;">
+            <option *ngFor="let item of statusArr" value="{{item}}">{{item}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="search">
+        <a href="#" onclick="return false" class="btn bgco" (click)="searchRule()">查询</a>
+      </div>
+    </div>
+    <div class="warn-content" id="warn-content">
+      <a href="#" onclick="return false" class="btn bgcg" (click)="dia()" *ngIf="authority">删除</a>
+      <a href="#" onclick="return false" class="btn bgcg" *ngIf="!authority">删除</a>
+      <a href="#" onclick="return false" class="btn bgcg" style="margin-right: 0" (click)="createWarn()" *ngIf="authority">新建</a>
+      <a href="#" onclick="return false" class="btn bgcg" style="margin-right: 0" *ngIf="!authority">新建</a>
+      <div class="table-margin">
+        <table class="channelTable" cellspacing="0">
+          <tr>
+            <th class="checked">
+              <img src="../assets/appdetail/way.manage/unchecked.png" *ngIf="allFlag==false" class="middle" (click)="allSel()"/>
+              <img src="../assets/appdetail/way.manage/checked.png" *ngIf="allFlag==true" class="middle" (click)="allSel()"/>
+            </th>
+            <th class="rule">规则名称</th>
+            <!--<th class="channel" *ngIf="appCate=='实时流分析'">告警通道</th>-->
+            <th class="alarm">告警对象</th>
+            <th class="feature">对象特征</th>
+            <th class="status">告警状态</th>
+            <th class="operation">操作</th>
+          </tr>
+          <tr *ngFor="let item of rulesInfo let i=index;">
+            <td class="checked">
+              <img src="../assets/appdetail/way.manage/unchecked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag!=1"/>
+              <img src="../assets/appdetail/way.manage/checked.png" class="middle pad" (click)="check(item)" *ngIf="item.flag==1"/>
+            </td>
+            <td>{{item.ruleName}}</td>
+            <!--<td *ngIf="appCate=='实时流分析'" class="channel" title="{{filterName(item.applicationChannels)}}">{{filterName(item.applicationChannels)}}</td>-->
+            <td>{{getRecognitionCategor(item.recognitionCategory)}}</td>
+            <td>{{item.targetFeature==''||item.targetFeature==null?'无':item.targetFeature}}</td>
+            <td>{{item.alarmRuleStatus}}</td>
+            <td>
+              <a class="operationBtn stop" *ngIf="item.alarmRuleStatus=='开启'&&authority" (click)="runRule(item)" title="暂停"></a>
+              <a class="operationBtn start" *ngIf="item.alarmRuleStatus=='关闭'&&authority" (click)="runRule(item)" title="开始"></a>
+              <a class="operationBtn stop" *ngIf="!authority" title="暂停"></a>
+              <a class="operationBtn start" title="开始" *ngIf="!authority"></a>
+              <a class="operationBtn look" (click)="lookRule(item)" title="查看"></a>
+              <a class="operationBtn edit" *ngIf="item.alarmRuleStatus=='关闭'&&authority" (click)="edit(item)" title="修改"></a>
+              <a class="operationBtn unedit" *ngIf="item.alarmRuleStatus=='开启'&&authority" (click)="edit(item)" title="修改"></a>
+              <a class="operationBtn unedit" title="修改" *ngIf="!authority"></a>
+            </td>
+          </tr>
+        </table>
+        <page [pageParams]="pageParams" (changeCurPage)="getPageData($event)" class="page"></page>
+      </div>
+    </div>
+    <warn-window [style.display]="createIndex==1?'':'none'" [warn_title]="warn_title" [(createIndex)]="createIndex" (indexChange)="indexChange($event)" [(ruleList)]="ruleList"></warn-window>
+    <app-tips [style.display]="deleteIndex==1?'':'none'" [tip_title]="tip_title" [tip_content]="tip_content" [deleteIndex]="deleteIndex" [tip_btn]="tip_btn" (deleteChange)="deleteChange($event)" (deletedChange)="deletedChange($event)"></app-tips>
+  </div>
+</div>
