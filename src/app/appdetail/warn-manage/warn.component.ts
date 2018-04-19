@@ -202,6 +202,7 @@ export class WarnComponent{
         (error)=>{
           if(error.status==400){
             this.initTime();
+            this.initRule();
           }
         });
   }

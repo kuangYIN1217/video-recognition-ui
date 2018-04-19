@@ -315,6 +315,14 @@ export class CreateTextComponent {
     });
 
   }
+  setMinHeight(){
+    if(this.choose=='zip'){
+      return{
+        "min-height":"330px"
+      }
+    }
+    return
+  }
   deleteChange(event){
     this.deleteIndex = event;
   }
