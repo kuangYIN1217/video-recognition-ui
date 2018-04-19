@@ -57,6 +57,8 @@ export class CreateTextComponent {
   warnChecked:any[]=[];
   choose:string='video';
   choosed:string='video';
+  videoSize:number=0;
+  videoSizeArr:any[]=[];
   constructor(private warnService: WarnService,private offlineService: OfflineService,private router:Router,private route: ActivatedRoute) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -89,12 +91,7 @@ export class CreateTextComponent {
       this.uploader.queue[1].remove();
     }else{
       let name = this.uploader.queue[0].file.name;
-      if(type=='video'){
-        if(name.substring(name.length-3,name.length)!='mp4'&&name.substring(name.length-3,name.length)!='avi'){
-          this.uploader.queue[0].remove();
-          return
-        };
-      }else if(type=='zip'){
+      if(type=='zip'){
         if(name.substring(name.length-3,name.length)!='zip'&&name.substring(name.length-3,name.length)!='ZIP'){
           this.uploader.queue[0].remove();
           return
@@ -109,7 +106,41 @@ export class CreateTextComponent {
   }
   selectedFileOnChanged(event,getType){
     if(getType=='video'){
-      this.onlyUploadOne(getType);
+      for(let j=0;j<this.uploader.queue.length;j++){
+        this.size = this.uploader.queue[j].file.size;
+        if((this.size/1024/1024)>300){
+          this.deleteIndex =1;
+          this.tip_title = '提示';
+          this.tip_content = this.uploader.queue[j].file.name +'文件大于300M！';
+          this.uploader.queue[j].remove();
+          return false;
+        }else{
+            let name = this.uploader.queue[j].file.name;
+              if(name.substring(name.length-3,name.length)!='mp4'&&name.substring(name.length-3,name.length)!='avi'){
+                this.uploader.queue[j].remove();
+                return
+              };
+            let bool = this.isInArray(this.showArr,this.uploader.queue[j]);
+            if(bool==false){
+              let size = this.uploader.queue[j].file.size;
+              this.videoSize += size/1024/1024;
+              if(this.videoSize>300){
+                this.deleteIndex =1;
+                this.tip_title = '提示';
+                this.tip_content = '视频总大小大于300M！';
+                this.uploader.queue[j].remove();
+                this.videoSize = this.videoSize - size/1024/1024;
+                return false;
+              }
+              this.videoSizeArr.push(size/1024/1024);
+              this.showArr.push(this.uploader.queue[j]);
+              this.getProgress(j);
+            }else{
+              continue;
+            }
+        }
+      }
+      //this.onlyUploadOne(getType);
     }else if(getType=='image'){
       for(let j=0;j<this.uploader.queue.length;j++){
         if(this.showFile.length>0&&(this.uploader.queue.length+this.showFile.length)>10){
@@ -191,9 +222,13 @@ export class CreateTextComponent {
   }
   removeArr(i){
     this.showFile.splice(i,1);
+    let size = this.videoSizeArr[i];
+    this.videoSize = this.videoSize - size;
   }
   remove(i){
     this.showArr.splice(i,1);
+    let size = this.videoSizeArr[i];
+    this.videoSize = this.videoSize - size;
     if(this.uploader.queue[i].isUploading){
       this.uploader.queue[i].cancel();
       this.uploader.queue[i].remove();
@@ -230,9 +265,6 @@ export class CreateTextComponent {
         this.choosed = params['fileType'];
         this.warnRule = '';
         this.warnRuleId = '';
-        //this.inputPath = params['inputPath'];
-        //console.log(this.inputPath);
-        //this.fileNames = params['fileNames'];
         if(params['alarmRules']){
           this.warnRuleArr = JSON.parse(params['alarmRules']);
           this.warnChanChecked = this.warnRuleArr;
@@ -250,14 +282,10 @@ export class CreateTextComponent {
             this.warnRuleId += ','+this.warnRuleArr[i].ruleId;
           }
         }
-        /*        for(let j=0;j<this.offlineFiles.length;j++){
 
-         }*/
-        /*        console.log(this.fileNames);
-         if(this.fileNames){
-         this.showName = this.fileNames.split(',');
-         }*/
         if(this.taskId){
+          this.videoSizeArr = [];
+          this.videoSize = 0;
           this.offlineService.getSize(this.taskId)
             .subscribe(result=>{
               //console.log(result);
@@ -271,6 +299,8 @@ export class CreateTextComponent {
                 this.fileObj.inputPath = result.offlineFiles[i].inputPath;
                 path +=result.offlineFiles[i].inputPath+',';
                 this.fileObj.size = result.offlineFiles[i].fileSize;
+                this.videoSize+=parseFloat(result.offlineFiles[i].fileSize);
+                this.videoSizeArr.push(parseFloat(result.offlineFiles[i].fileSize));
                 this.showFile.push(this.fileObj);
               }
             })
