@@ -465,9 +465,13 @@ export class WarnComponent{
   }
   getPageData(paraParam){
     if(this.appCate=="实时流分析"){
+      this.startTime = $('#start').val();
+      this.endTime = $('#end').val();
       this.validation();
       this.sessionSet();
       this.session();
+      this.startTime = $('#start').val();
+      this.endTime = $('#end').val();
       if(this.warnRlue=='全部'){
         this.judgeTime();
         if(this.taskId>0){
@@ -488,18 +492,16 @@ export class WarnComponent{
       this.sessionSet();
       this.session();
       if(this.warnRlue=='全部'){
-        this.judgeTime();
         if(this.taskId>0){
-          this.searchWarn(this.appId,this.taskId,this.warnTask,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+          this.searchWarn(this.appId,this.taskId,this.warnTask,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
         }else{
-          this.searchWarn(this.appId,0,this.warnTask,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+          this.searchWarn(this.appId,0,this.warnTask,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
         }
       }else{
-        this.judgeTime();
         if(this.taskId>0){
-          this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+          this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
         }else{
-          this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start,this.end);
+          this.searchWarn(this.appId,0,this.warnTask,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
         }
       }
     }
