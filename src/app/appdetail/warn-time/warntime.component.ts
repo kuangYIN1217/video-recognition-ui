@@ -146,7 +146,7 @@ export class WarnTimeComponent{
           this.warnTaskArr = result;
           if(this.warnTaskArr.length>0){
             this.warnTaskArr = this.filterPerson(this.warnTaskArr);
-            console.log(this.warnTaskArr);
+            //console.log(this.warnTaskArr);
             this.warnTask1 = this.warnTaskArr[0].taskName;
             this.videoUrl = this.warnTaskArr[0].outputPath;
             this.taskId = this.warnTaskArr[0].taskId;

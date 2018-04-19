@@ -83,17 +83,17 @@ export class AlarmRluesComponent {
               //console.log(this.warnChanArr);
               if(this.warnChanChecked[i].ruleId == this.warnChanArr[j].ruleId){
                 this.warnChanArr[j].flag = 1;
-                if(this.bool == true) {
-                  this.bool = false;
+                //if(this.bool == true) {
+                  //this.bool = false;
                   this.warnChan.push(this.warnChanArr[j].ruleName);
                   this.warnChanId.push(this.warnChanArr[j].ruleId);
                   this.warnChanCheckedArr.push(this.warnChanArr[j]);
-                }
+                //}
               }
             }
           }
         }
-        //console.log(this.warnChanCheckedArr);
+        console.log(this.warnChanCheckedArr);
         //console.log(this.warnChanArr)
         this.warnChanCheckedChange.emit(this.warnChanCheckedArr);
       }

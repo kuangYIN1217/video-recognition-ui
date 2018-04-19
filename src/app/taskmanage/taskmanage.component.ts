@@ -52,7 +52,7 @@ export class TaskManageComponent {
   constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
-      console.log(window.sessionStorage.getItem("_offline"));
+      //console.log(window.sessionStorage.getItem("_offline"));
       this._offline = JSON.parse(window.sessionStorage.getItem("_offline"));
       //console.log(this._offline);
       for(let i=0;i<this._offline.length;i++){
@@ -307,10 +307,9 @@ export class TaskManageComponent {
           }else{
             clearInterval(this.interval);
             this.websocket.stopWebsocket();
+            this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
           }
         }
-
-        //this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
         //this.start_reply(reply);
       } );
 
@@ -332,8 +331,7 @@ export class TaskManageComponent {
   }
   search(){
     this.searchTask();
-      this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
-
+    this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
   }
   getTask(id,name,status,page,size){
     this.offlineService.searchTask(id,name,status,page,size)
@@ -352,13 +350,13 @@ export class TaskManageComponent {
           this.setOfflineTaskCheck(this.taskIds,false);
         }
         this.init = false;
-        if(this.alarmStatus=='进行中'){
+/*        if(this.alarmStatus=='进行中'){
             if(this.taskName==undefined){
               this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
             }
             this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
 
-        };
+        };*/
         let page = new Page();
         page.pageMaxItem = result.size;
         page.curPage = result.number+1;
@@ -406,15 +404,16 @@ export class TaskManageComponent {
     this.deleteIndex = event;
   }
   deletedChange(event){
-    //console.log(event);
     if(event==1){
+      let taskIds:string='';
       for(let i in this.deleteIdArr){
-        //console.log(this.deleteIdArr[i]);
-        this.offlineService.delete(this.deleteIdArr[i].taskId)
-          .subscribe(result=>{
-            this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
-          })
+        taskIds+=this.deleteIdArr[i].taskId+',';
       }
+      taskIds.substring(0,taskIds.length-1);
+      this.offlineService.delete(taskIds)
+        .subscribe(result=>{
+          this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
+        })
     }
   }
   ngAfterViewInit() {
