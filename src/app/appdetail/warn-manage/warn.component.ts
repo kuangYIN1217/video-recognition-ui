@@ -170,9 +170,11 @@ export class WarnComponent{
               this.showTime = true;
             }
           }
+
         });
     }
     this.warnStatus = this.statusArr[0];
+
     if(this.appCate=="实时流分析"){
       if(this.taskId<=0){
         this.searchWarn(this.appId,0,'全部',-1,'全部',this.page-1,this.pageMaxItem,null,null);
@@ -194,6 +196,7 @@ export class WarnComponent{
         (error)=>{
           if(error.status==400){
             this.initTime();
+            this.initRule();
           }
         });
   }
