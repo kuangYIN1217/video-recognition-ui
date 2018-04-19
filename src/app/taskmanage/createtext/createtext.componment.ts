@@ -299,8 +299,13 @@ export class CreateTextComponent {
                 this.fileObj.inputPath = result.offlineFiles[i].inputPath;
                 path +=result.offlineFiles[i].inputPath+',';
                 this.fileObj.size = result.offlineFiles[i].fileSize;
-                this.videoSize+=parseFloat(result.offlineFiles[i].fileSize);
-                this.videoSizeArr.push(parseFloat(result.offlineFiles[i].fileSize));
+                if(result.offlineFiles[i].fileSize.indexOf("KB")>-1){
+                  this.videoSize+=parseFloat(result.offlineFiles[i].fileSize)/1024;
+                  this.videoSizeArr.push(parseFloat(result.offlineFiles[i].fileSize)/1024);
+                }else if(result.offlineFiles[i].fileSize.indexOf("MB")>-1){
+                  this.videoSize+=parseFloat(result.offlineFiles[i].fileSize);
+                  this.videoSizeArr.push(parseFloat(result.offlineFiles[i].fileSize));
+                }
                 this.showFile.push(this.fileObj);
               }
             })
