@@ -817,8 +817,7 @@ export class WarnComponent{
 
   downloadFile(item) {
     let path = item.imagePath;
-    let alarmId = item.alarmId;
-    this.warnService.downloadFile(alarmId, path).subscribe(data => {
+    this.warnService.downloadFile(path).subscribe(data => {
       var name = this.getDateFormat() + item.frameNo + item.alarmRule.recognitionCategory.name;
       var tempPathArr = path.split(".");
       var suffix = tempPathArr[tempPathArr.length - 1];

@@ -320,8 +320,8 @@ export class WarnService {
       });
   }
 
-  downloadFile(alarmId, path) {
-    path = "/api/fileDownLoad?filePath=" + path + "&alarmId=" + alarmId;
+  downloadFile(path) {
+    path = "/api/fileDownLoad?filePath=" + path;
     let headers = this.getHeaders();
     return this.http.post(this.SERVER_URL+path, {}, {headers: headers, responseType: ResponseContentType.Blob});
   }
