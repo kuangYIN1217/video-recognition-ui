@@ -181,7 +181,7 @@
       </div>
       <div class="detail_info">
         <span class="info_name"></span>
-        <span class="info_content"><a href="{{SERVER_URL}}/download/{{slicePath(detaillist?.imagePath)}}" *ngIf="detaillist.imagePath" class="downPhoto" download>下载快照</a></span>
+        <span class="info_content"><span *ngIf="detaillist.imagePath" class="downPhoto" (click)="downloadFile(detaillist)">下载快照</span></span>
       </div>
       <div class="detail_info">
         <span class="info_name"></span>
