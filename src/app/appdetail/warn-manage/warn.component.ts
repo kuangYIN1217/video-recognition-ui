@@ -777,6 +777,8 @@ document.getElementById("image")
     let path = item.imagePath;
     this.warnService.downloadFile(path).subscribe(data => {
       var name = this.getDateFormat() + item.frameNo + item.alarmRule.recognitionCategory.name;
+      console.log(this.getDateFormat());
+      console.log(name);
       var tempPathArr = path.split(".");
       var suffix = tempPathArr[tempPathArr.length - 1];
       name = name + "." + suffix;
