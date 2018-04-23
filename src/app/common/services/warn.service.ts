@@ -260,7 +260,7 @@ export class WarnService {
       });
   }
   searchWarns(id,name,ruleId,status,page=0,size=10,start,end){
-    let path = "/api/findAlarmLiveDynamic/"+id+"/"+name+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size+"&sort=alarmTime,desc";
+    let path = "/api/findAlarmLiveDynamic/"+id+"/"+name.replace(/\//g,'%2F')+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size+"&sort=alarmTime,desc";
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {
@@ -284,7 +284,7 @@ export class WarnService {
       });
   }
   searchOffWarns(id,taskId,task,ruleId,status,page=0,size=10,start,end){
-    let path = "/api/findAlarmListDynamic/"+id+"/"+taskId+"/"+task+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size;
+    let path = "/api/findAlarmListDynamic/"+id+"/"+taskId+"/"+task.replace(/\//g,'%2F')+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path,{ headers: headers })
       .map((response: Response) => {

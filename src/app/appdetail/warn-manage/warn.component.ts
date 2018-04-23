@@ -152,7 +152,12 @@ export class WarnComponent{
           if(this.warnTaskArr.length>0&&this.once!="true"){
             this.warnTask = this.warnTaskArr[0].taskName;
             this.taskId = this.warnTaskArr[0].taskId;
-            this.getVideoTime();
+            if(this.warnTaskArr[0].fileType=="video"){
+              this.getVideoTime();
+            }else{
+              this.initTime();
+              this.initRule();
+            }
           }else{
             for(let i=0;i<this.warnTaskArr.length;i++){
                 if(this.warnTaskArr[i].taskId==this.taskId){
