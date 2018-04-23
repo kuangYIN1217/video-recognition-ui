@@ -241,6 +241,24 @@ export class WarnComponent{
         this.warnRlueArr = this.warnTaskArr[i].alarmRules;
         this.warnRlue = this.warnTaskArr[i].alarmRules[0].ruleName;
         this.ruleId = this.warnTaskArr[i].alarmRules[0].ruleId;
+        this.offlineService.getOfflineVideoTime(this.warnTaskArr[i].taskId)
+          .subscribe(
+            (result)=>{
+              this.removeMillisecond(result.start);
+              this.startHour = this.removeMillisecond(result.start)[0];
+              this.startMinute = this.removeMillisecond(result.start)[1];
+              this.startSecond = this.removeMillisecond(result.start)[2];
+              this.endHour = this.removeMillisecond(result.end)[0];
+              this.endMinute = this.removeMillisecond(result.end)[1];
+              this.endSecond = this.removeMillisecond(result.end)[2];
+              this.sessionSet();
+            },
+            (error)=>{
+              if(error.status==400){
+                this.initTime();
+                this.sessionSet();
+              }
+            });
         break;
       }
     }
