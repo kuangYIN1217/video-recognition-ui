@@ -160,7 +160,12 @@ export class WarnComponent{
           if(this.warnTaskArr.length>0&&this.once!="true"){
             this.warnTask = this.warnTaskArr[0].taskName;
             this.taskId = this.warnTaskArr[0].taskId;
-            this.getVideoTime();
+            if(this.warnTaskArr[0].fileType=="video"){
+              this.getVideoTime();
+            }else{
+              this.initTime();
+              this.initRule();
+            }
           }else{
             for(let i=0;i<this.warnTaskArr.length;i++){
               if(this.warnTaskArr[i].taskId==this.taskId){
@@ -176,6 +181,15 @@ export class WarnComponent{
               this.showTime = false;
             }else{
               this.showTime = true;
+            }
+          }else{
+            if(this.fileType=='image'||this.fileType=='zip'){
+              this.showTime = false;
+              this.initTime();
+              this.initRule();
+            }else{
+              this.showTime = true;
+              this.getVideoTime();
             }
           }
         });
@@ -339,13 +353,6 @@ export class WarnComponent{
         this.once = params['once'];
         this.alarmRules = JSON.parse(params['alarmRules']);
         this.fileType = params['fileType'];
-        if(this.fileType=='image'||this.fileType=='zip'){
-          this.showTime = false;
-          this.initTime();
-        }else{
-          this.showTime = true;
-          this.getVideoTime();
-        }
         this.warnRlue = this.alarmRules[0].ruleName;
         this.ruleId = this.alarmRules[0].ruleId;
         this.warnService.searchOffWarns(this.appId,this.taskId,this.taskName,-1,this.warnStatus,this.page-1,this.pageMaxItem,null,null)
@@ -686,8 +693,6 @@ export class WarnComponent{
   }
   searchWarn(id,taskId,nameTask,ruleId,status,page,size,start,end){
     if(this.appCate=='实时流分析'){
-      //console.log(this.appId);
-      //console.log(this.ruleId);
       this.warnService.searchWarns(id,nameTask,ruleId,status,page,size,start,end)
         .subscribe(result=>{
           this.getWarnList(result);
