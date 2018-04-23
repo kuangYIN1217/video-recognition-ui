@@ -1,11 +1,10 @@
-import {Component , OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {WarnService} from "../../common/services/warn.service";
 import {Page} from "app/common/defs/resources";
 import {OfflineService} from "../../common/services/offline.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SERVER_URL} from "../../app.constants";
 import {calc_height} from "app/common/ts/calc_height";
-import { HostListener } from '@angular/core';
 declare var $:any;
 @Component({
   selector: 'warn-time',
@@ -16,14 +15,12 @@ declare var $:any;
 export class WarnTimeComponent{
   SERVER_URL = SERVER_URL;
   allFlag:boolean=false;
-  channelInfo:any[]=[];
   chanNameArr:any[]=[];
   warnRlueArr:any[]=[];
   appId:string;
   warnRlue1:string;
   chanName1:string;
   warnStatus:string;
-  warnInfo:any[]=[];
   pageParams = new Page();
   page: number = 1;
   pageMaxItem: number = 10;
@@ -143,11 +140,10 @@ export class WarnTimeComponent{
         }
         this.all_time_date.push(String(n));
       }
-      this.warnService.getWarnTask(this.appId,"video")
+      this.warnService.getWarnTaskWithTargetFeature(this.appId)
         .subscribe(result=>{
           this.warnTaskArr = result;
           if(this.warnTaskArr.length>0){
-            this.warnTaskArr = this.filterPerson(this.warnTaskArr);
             this.warnTask1 = this.warnTaskArr[0].taskName;
             this.videoUrl = this.warnTaskArr[0].outputPath;
             this.taskId = this.warnTaskArr[0].taskId;
@@ -163,10 +159,8 @@ export class WarnTimeComponent{
                   this.initRuleAndTime();
                 },
                 (error)=>{
-                  if(error==400){
-                    this.initTime();
-                    this.initRuleAndTime();
-                  }
+                  this.initTime();
+                  this.initRuleAndTime();
                 })
           };
         });
@@ -209,7 +203,6 @@ export class WarnTimeComponent{
   }
   initRuleAndTime(){
     if(this.warnTaskArr[0].alarmRules.length>0){
-      this.warnTaskArr[0].alarmRules = this.filterPerson(this.warnTaskArr)[0].alarmRules;
       this.warnRlueArr = this.warnTaskArr[0].alarmRules;
       this.warnRlue1 = this.warnTaskArr[0].alarmRules[0].ruleName;
       this.ruleId = this.warnTaskArr[0].alarmRules[0].ruleId;
@@ -241,20 +234,6 @@ export class WarnTimeComponent{
     arr.push(endTime);
     return arr
   }
-  filterPerson(arr){
-    let taskArr:any[]=[];
-    for(let k=0;k<arr.length;k++){
-      if(arr[k].alarmRules.length>0){
-        for(let i=0;i<arr[k].alarmRules.length;i++){
-          if(arr[k].alarmRules[i].recognitionCategory.name!="全部"&&arr[k].alarmRules[i].targetImages!=''){
-            taskArr.push(arr[k]);
-            break
-          }
-        }
-      }
-    }
-    return taskArr
-  }
   filterUrl(url?){
     return url.substring(17);
   }
@@ -268,18 +247,10 @@ export class WarnTimeComponent{
         };
         if(this.warnTaskArr[i].outputPath!=null){
           this.videoUrl = this.warnTaskArr[i].outputPath;
-          //console.log(this.videoUrl);
         }else{
           this.videoUrl = '';
         }
         this.warnRlueArr = this.warnTaskArr[i].alarmRules;
-        let tempArr:any[]=[];
-        for(let j=0;j<this.warnRlueArr.length;j++){
-          if(this.warnRlueArr[j].recognitionCategory.name!="全部"&&this.warnRlueArr[j].recognitionCategory.targetImages!=""){
-            tempArr.push(this.warnRlueArr[j]);
-          }
-        }
-        this.warnRlueArr = tempArr;
         if(this.warnRlueArr.length>0){
           this.warnRlue1 = this.warnTaskArr[i].alarmRules[0].ruleName;
           this.ruleId = this.warnTaskArr[i].alarmRules[0].ruleId;
@@ -778,7 +749,6 @@ export class WarnTimeComponent{
         .subscribe(
           (result)=>{
             this.handleTime(result);
-          //this.getWarnList(result);
         },
           (error)=>{
             if(error.status==404){
