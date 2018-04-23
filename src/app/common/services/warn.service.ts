@@ -254,6 +254,20 @@ export class WarnService {
         }
       });
   }
+
+  getWarnTaskWithTargetFeature(id){
+    let path = "/api/video_offline_task/target_feature/" + id;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, {headers: headers})
+      .map((response: Response) => {
+        if(response && response.json()) {
+          if(response.status == 200) {
+            return response.json();
+          }
+        }
+      })
+  }
+
   setAlarmCheck(alarmsId,selected){
     let path = "/api/alarmCheck";
     let alarmDTO = JSON.stringify({
