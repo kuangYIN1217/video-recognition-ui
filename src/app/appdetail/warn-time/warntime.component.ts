@@ -1082,4 +1082,36 @@ export class WarnTimeComponent{
       }
     }
   }
+
+  downloadFile(item) {
+    let path = item.imagePath;
+    this.warnService.downloadFile(path).subscribe(data => {
+      var name = this.getDateFormat() + item.frameNo + item.alarmRule.recognitionCategory.name;
+      var tempPathArr = path.split(".");
+      var suffix = tempPathArr[tempPathArr.length - 1];
+      name = name + "." + suffix;
+      var a = document.createElement("a");
+      document.body.appendChild(a);
+      a.download = name;
+      a.href  = URL.createObjectURL(data.blob());
+      a.click();
+      a.remove()
+    });
+  }
+
+  getDateFormat = () => {
+    let date = new Date();
+    let dateStr = date.getFullYear() + "" + this.leftPad0((date.getMonth() + 1), 2) + "" + this.leftPad0(date.getDate(), 2);
+    dateStr = dateStr + this.leftPad0(date.getHours(), 2) + this.leftPad0(date.getMinutes(), 2) + this.leftPad0(date.getSeconds(), 2);
+    return dateStr;
+  }
+
+  leftPad0 = (str, num) => {
+    str = "" + str;
+    if(str.length >=num) return str;
+    for(let i = 0; i< num-str.length; i++){
+      str = "0" + str;
+    }
+    return str;
+  }
 }
