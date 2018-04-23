@@ -1,22 +1,22 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn install
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js install -g @angular/cli
 
 PATH: 
-  /usr/local/cuda/bin:/opt/jdk1.8.0_111/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/local/cuda/bin:/opt/jdk1.8.0_111/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin
+  D:\ProgramFiles\Python36\Scripts\;D:\ProgramFiles\Python36\;C:\app\lenovo\product\11.2.0\dbhome_1\bin;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Java\jdk1.8.0_101\bin;C:\Program Files\Java\jdk1.8.0_101\jre\bin;D:\apache-maven-3.3.9\bin;C:\Program Files\Git\cmd;D:\ProgramFiles\SlikSvn\bin;C:\Program Files\TortoiseSVN\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\redis;C:\Program Files\nodejs\;C:\Program Files\OpenVPN\bin;.;C:\Program Files (x86)\IDM Computer Solutions\UltraEdit;C:\Program Files\IDM Computer Solutions\UltraCompare;C:\Program Files (x86)\Yarn\bin\;D:\ProgramFiles\Ruby23-x64\bin;C:\Users\lenovo\AppData\Local\Microsoft\WindowsApps;C:\Users\lenovo\AppData\Roaming\npm;D:\ProgramFiles\Docker Toolbox;C:\Users\lenovo\AppData\Local\Yarn\bin
 
 Yarn version: 
-  0.27.5
+  1.5.1
 
 Node version: 
-  7.6.0
+  8.9.2
 
 Platform: 
-  linux x64
+  win32 x64
 
 npm manifest: 
   {
     "name": "deep-thinker-ui",
-    "version": "0.0.0",
+    "version": "5.0.1",
     "license": "MIT",
     "scripts": {
       "ng": "ng",
@@ -28,30 +28,33 @@ npm manifest:
     },
     "private": true,
     "dependencies": {
-      "@angular/common": "^4.0.0",
-      "@angular/compiler": "^4.0.0",
-      "@angular/core": "^4.0.0",
-      "@angular/forms": "^4.0.0",
-      "@angular/http": "^4.0.0",
-      "@angular/platform-browser": "^4.0.0",
-      "@angular/platform-browser-dynamic": "^4.0.0",
-      "@angular/router": "^4.0.0",
+      "@angular/common": "^4.0.1",
+      "@angular/compiler": "^4.0.1",
+      "@angular/core": "^4.0.1",
+      "@angular/forms": "^4.0.1",
+      "@angular/http": "^4.0.1",
+      "@angular/platform-browser": "^4.0.1",
+      "@angular/platform-browser-dynamic": "^4.0.1",
+      "@angular/router": "^4.0.1",
       "amcharts3-angular2": "^1.2.1",
       "class-transformer": "^0.1.6",
       "core-js": "^2.4.1",
       "d3": "^4.8.0",
+      "echarts": "^3.8.5",
+      "echarts-ng2": "^1.4.1",
       "es6-shim": "^0.35.3",
       "ng2-file-upload": "^1.2.1",
       "ng2-stomp-service-fixed": "^1.2.3",
-      "rxjs": "^5.1.0",
+      "ngx-amap": "^1.0.1",
+      "rxjs": "5.5.2",
       "sockjs-client": "^1.0.0",
       "stompjs": "^2.3.3",
-      "typescript": "^2.3.3",
+      "typescript": "2.3.4",
       "zone.js": "^0.8.4"
     },
     "devDependencies": {
       "@angular/cli": "1.1.1",
-      "@angular/compiler-cli": "^4.0.0",
+      "@angular/compiler-cli": "^4.0.1",
       "@types/jasmine": "2.5.45",
       "@types/node": "~6.0.60",
       "codelyzer": "~3.0.1",
@@ -66,7 +69,7 @@ npm manifest:
       "protractor": "~5.1.2",
       "ts-node": "~3.0.4",
       "tslint": "~5.3.2",
-      "typescript": "~2.3.3",
+      "typescript": "~2.3.4",
       "ng2-toasty": "~4.0.2"
     }
   }
@@ -78,4 +81,10 @@ Lockfile:
   No lockfile
 
 Trace: 
-  Error: https://registry.yarnpkg.com/jschardet/-/jschardet-1.6.0.tgz: ENOENT: no such file or directory, utime '/home/ligang/.cache/yarn/v1/npm-jschardet-1.6.0-c7d1a71edcff2839db2f9ec30fc5d5ebd3c1a678/dist/jschardet.js'
+  Error: `--global` has been deprecated. Please run "yarn global add @angular/cli" instead.
+      at new MessageError (C:\Program Files (x86)\Yarn\lib\cli.js:186:110)
+      at Object.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:21987:13)
+      at Generator.next (<anonymous>)
+      at step (C:\Program Files (x86)\Yarn\lib\cli.js:98:30)
+      at C:\Program Files (x86)\Yarn\lib\cli.js:109:13
+      at <anonymous>
