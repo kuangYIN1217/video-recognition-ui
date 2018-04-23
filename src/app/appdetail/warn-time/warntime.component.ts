@@ -141,12 +141,10 @@ export class WarnTimeComponent{
         }
         this.all_time_date.push(String(n));
       }
-      this.warnService.getWarnTask(this.appId,"video")
+      this.warnService.getWarnTaskWithTargetFeature(this.appId)
         .subscribe(result=>{
           this.warnTaskArr = result;
           if(this.warnTaskArr.length>0){
-            this.warnTaskArr = this.filterPerson(this.warnTaskArr);
-            //console.log(this.warnTaskArr);
             this.warnTask1 = this.warnTaskArr[0].taskName;
             this.videoUrl = this.warnTaskArr[0].outputPath;
             this.taskId = this.warnTaskArr[0].taskId;
@@ -161,12 +159,10 @@ export class WarnTimeComponent{
                 this.endSecond = this.removeMillisecond(result.end)[2];
                 this.initRuleAndTime();
               },
-                (error)=>{
-                  if(error==400){
-                    this.initTime();
-                    this.initRuleAndTime();
-                  }
-                })
+              (error)=>{
+                this.initTime();
+                this.initRuleAndTime();
+              })
           };
         });
     }
@@ -208,7 +204,6 @@ export class WarnTimeComponent{
   }
   initRuleAndTime(){
     if(this.warnTaskArr[0].alarmRules.length>0){
-      this.warnTaskArr[0].alarmRules = this.filterPerson(this.warnTaskArr)[0].alarmRules;
       this.warnRlueArr = this.warnTaskArr[0].alarmRules;
       this.warnRlue1 = this.warnTaskArr[0].alarmRules[0].ruleName;
       this.ruleId = this.warnTaskArr[0].alarmRules[0].ruleId;
@@ -240,20 +235,7 @@ export class WarnTimeComponent{
     arr.push(endTime);
     return arr
   }
-  filterPerson(arr){
-    let taskArr:any[]=[];
-    for(let k=0;k<arr.length;k++){
-      if(arr[k].alarmRules.length>0){
-        for(let i=0;i<arr[k].alarmRules.length;i++){
-          if(arr[k].alarmRules[i].recognitionCategory.name!="全部"&&arr[k].alarmRules[i].targetImages!=''){
-            taskArr.push(arr[k]);
-            break
-          }
-        }
-      }
-    }
-    return taskArr
-  }
+
   filterUrl(url?){
     return url.substring(17);
   }
@@ -267,18 +249,11 @@ export class WarnTimeComponent{
         };
         if(this.warnTaskArr[i].outputPath!=null){
           this.videoUrl = this.warnTaskArr[i].outputPath;
-          //console.log(this.videoUrl);
         }else{
           this.videoUrl = '';
         }
         this.warnRlueArr = this.warnTaskArr[i].alarmRules;
-        let tempArr:any[]=[];
-        for(let j=0;j<this.warnRlueArr.length;j++){
-          if(this.warnRlueArr[j].recognitionCategory.name!="全部"&&this.warnRlueArr[j].recognitionCategory.targetImages!=""){
-            tempArr.push(this.warnRlueArr[j]);
-          }
-        }
-        this.warnRlueArr = tempArr;
+
         if(this.warnRlueArr.length>0){
           this.warnRlue1 = this.warnTaskArr[i].alarmRules[0].ruleName;
           this.ruleId = this.warnTaskArr[i].alarmRules[0].ruleId;
@@ -300,10 +275,8 @@ export class WarnTimeComponent{
               this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
             },
             (error)=>{
-              if(error.status==400){
-                this.initTime();
-                this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
-              }
+              this.initTime();
+              this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
             });
         this.sessionSet();
         break;
@@ -1081,5 +1054,37 @@ export class WarnTimeComponent{
         return
       }
     }
+  }
+
+  downloadFile(item) {
+    let path = item.imagePath;
+    this.warnService.downloadFile(path).subscribe(data => {
+      var name = this.getDateFormat() + item.frameNo + item.alarmRule.recognitionCategory.name;
+      var tempPathArr = path.split(".");
+      var suffix = tempPathArr[tempPathArr.length - 1];
+      name = name + "." + suffix;
+      var a = document.createElement("a");
+      document.body.appendChild(a);
+      a.download = name;
+      a.href  = URL.createObjectURL(data.blob());
+      a.click();
+      a.remove()
+    });
+  }
+
+  getDateFormat = () => {
+    let date = new Date();
+    let dateStr = date.getFullYear() + "" + this.leftPad0((date.getMonth() + 1), 2) + "" + this.leftPad0(date.getDate(), 2);
+    dateStr = dateStr + this.leftPad0(date.getHours(), 2) + this.leftPad0(date.getMinutes(), 2) + this.leftPad0(date.getSeconds(), 2);
+    return dateStr;
+  }
+
+  leftPad0 = (str, num) => {
+    str = "" + str;
+    if(str.length >=num) return str;
+    for(let i = 0; i< num-str.length; i++){
+      str = "0" + str;
+    }
+    return str;
   }
 }
