@@ -110,8 +110,7 @@
             <!--<td title="{{duraTime(item.duration)}}">{{duraTime(item.duration)}}</td>-->
             <td>
               <img src="../assets/warn/chakan.png" class="mrgr" (click)="seePhoto(item.imagePath)" title="查看快照"/>
-              <!--<img src="../assets/warn/xiazai.png" class="mrgr"  title="下载快照" onclick="document.getElementById('down').click();"/>-->
-              <a href="{{SERVER_URL}}/download/{{getDownPath(item.imagePath)}}" download title="下载快照" class="downImage"></a>
+              <span title="下载快照" class="downImage" id="downImage" (click)="downloadFile(item)"></span>
             </td>
             <!--<td title="{{item.alarmStatus}}">{{item.alarmStatus}}</td>-->
             <td>
@@ -183,7 +182,7 @@
       </div>
       <div class="detail_info">
         <span class="info_name"></span>
-        <span class="info_content"><a href="{{SERVER_URL}}/download/{{slicePath(detaillist.imagePath)}}" *ngIf="detaillist.imagePath" class="downPhoto" download>下载快照</a></span>
+        <span class="info_content"><span *ngIf="detaillist.imagePath" class="downPhoto" (click)="downloadFile(detaillist)">下载快照</span></span>
       </div>
       <div class="detail_info">
         <span class="info_name"></span>
