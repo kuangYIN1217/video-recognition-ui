@@ -123,8 +123,7 @@ export class CreateTextComponent {
             return false;
           }
           if(Number(j)>9){
-            this.uploader.queue[9].remove();
-            j-=1;
+            this.uploader.queue[10].remove();
             continue
           }else{
             let name = this.uploader.queue[j].file.name;
@@ -148,7 +147,7 @@ export class CreateTextComponent {
   }
   getProgress(j){
     if(j>9){
-      this.showArr.splice(9,1);
+      this.showArr.splice(10,1);
       return
     }else{
       this.uploader.onProgressItem=(fileItem: FileItem, progress: any)=>{
