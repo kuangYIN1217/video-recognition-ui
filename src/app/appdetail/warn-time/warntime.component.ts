@@ -1082,7 +1082,6 @@ export class WarnTimeComponent{
 
   downloadFile(item) {
     let path = item.imagePath;
-    path = "/home/deepviewer/dataset/dog.jpg";
     this.warnService.downloadFile(path).subscribe(data => {
       var name = this.getDateFormat() + item.frameNo + item.alarmRule.recognitionCategory.name;
       var tempPathArr = path.split(".");
