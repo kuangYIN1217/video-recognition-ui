@@ -143,11 +143,10 @@ export class WarnTimeComponent{
         }
         this.all_time_date.push(String(n));
       }
-      this.warnService.getWarnTask(this.appId,"video")
+      this.warnService.getWarnTaskWithTargetFeature(this.appId)
         .subscribe(result=>{
           this.warnTaskArr = result;
           if(this.warnTaskArr.length>0){
-            this.warnTaskArr = this.filterPerson(this.warnTaskArr);
             this.warnTask1 = this.warnTaskArr[0].taskName;
             this.videoUrl = this.warnTaskArr[0].outputPath;
             this.taskId = this.warnTaskArr[0].taskId;
@@ -209,7 +208,6 @@ export class WarnTimeComponent{
   }
   initRuleAndTime(){
     if(this.warnTaskArr[0].alarmRules.length>0){
-      this.warnTaskArr[0].alarmRules = this.filterPerson(this.warnTaskArr)[0].alarmRules;
       this.warnRlueArr = this.warnTaskArr[0].alarmRules;
       this.warnRlue1 = this.warnTaskArr[0].alarmRules[0].ruleName;
       this.ruleId = this.warnTaskArr[0].alarmRules[0].ruleId;
@@ -241,20 +239,6 @@ export class WarnTimeComponent{
     arr.push(endTime);
     return arr
   }
-  filterPerson(arr){
-    let taskArr:any[]=[];
-    for(let k=0;k<arr.length;k++){
-      if(arr[k].alarmRules.length>0){
-        for(let i=0;i<arr[k].alarmRules.length;i++){
-          if(arr[k].alarmRules[i].recognitionCategory.name!="全部"&&arr[k].alarmRules[i].targetImages!=''){
-            taskArr.push(arr[k]);
-            break
-          }
-        }
-      }
-    }
-    return taskArr
-  }
   filterUrl(url?){
     return url.substring(17);
   }
@@ -268,7 +252,6 @@ export class WarnTimeComponent{
         };
         if(this.warnTaskArr[i].outputPath!=null){
           this.videoUrl = this.warnTaskArr[i].outputPath;
-          //console.log(this.videoUrl);
         }else{
           this.videoUrl = '';
         }
@@ -778,7 +761,6 @@ export class WarnTimeComponent{
         .subscribe(
           (result)=>{
             this.handleTime(result);
-          //this.getWarnList(result);
         },
           (error)=>{
             if(error.status==404){
