@@ -159,12 +159,10 @@ export class WarnTimeComponent{
                 this.endSecond = this.removeMillisecond(result.end)[2];
                 this.initRuleAndTime();
               },
-                (error)=>{
-                  if(error==400){
-                    this.initTime();
-                    this.initRuleAndTime();
-                  }
-                })
+              (error)=>{
+                this.initTime();
+                this.initRuleAndTime();
+              })
           };
         });
     }
@@ -255,13 +253,7 @@ export class WarnTimeComponent{
           this.videoUrl = '';
         }
         this.warnRlueArr = this.warnTaskArr[i].alarmRules;
-        let tempArr:any[]=[];
-        for(let j=0;j<this.warnRlueArr.length;j++){
-          if(this.warnRlueArr[j].recognitionCategory.name!="全部"&&this.warnRlueArr[j].recognitionCategory.targetImages!=""){
-            tempArr.push(this.warnRlueArr[j]);
-          }
-        }
-        this.warnRlueArr = tempArr;
+
         if(this.warnRlueArr.length>0){
           this.warnRlue1 = this.warnTaskArr[i].alarmRules[0].ruleName;
           this.ruleId = this.warnTaskArr[i].alarmRules[0].ruleId;
@@ -283,10 +275,8 @@ export class WarnTimeComponent{
               this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
             },
             (error)=>{
-              if(error.status==400){
-                this.initTime();
-                this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
-              }
+              this.initTime();
+              this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page-1,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
             });
         this.sessionSet();
         break;
