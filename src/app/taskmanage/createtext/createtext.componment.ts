@@ -16,7 +16,6 @@ export class CreateTextComponent {
   SERVER_URL = SERVER_URL;
   taskTitle:string="新建任务";
   checked:number=0;
-  warnRlue:string;
   warnChanArr:any[]=[];
   appId:string;
   appCate:string;
@@ -29,21 +28,15 @@ export class CreateTextComponent {
   ruleId:string;
   showArr:any[]=[];
   progress:number=0;
-  inputPathArr:any[]=[];
   inputPath:string;
   fileName:string;
-  fileNameArr:any[]=[];
   fileNumber:number;
-  tasklist:any={};
   size:number=0;
   deleteIndex:number=0;
   tip_title:string;
   tip_content:string;
-  fileNames:string;
-  temArr:any[]=[];
   warnRuleArr:any[]=[];
   lookIndex:number=0;
-  showName:any[]=[];
   taskId:number;
   fileSize:any[]=[];
   showFile:any[]=[];
@@ -62,13 +55,9 @@ export class CreateTextComponent {
   constructor(private warnService: WarnService,private offlineService: OfflineService,private router:Router,private route: ActivatedRoute) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
-    //console.log(this.appId);
-    //console.log(this.appCate);
     this.warnService.getWarnRules(this.appId)
       .subscribe(result=>{
         this.warnChanArr = result.content;
-        //this.warnRule = this.warnChanArr[0].ruleName;
-        //console.log(this.warnChanArr);
       })
   }
   public uploader:FileUploader = new FileUploader({
@@ -190,7 +179,6 @@ export class CreateTextComponent {
         }
       };
       this.uploader.queue[j].onSuccess = (response: any, status: any, headers: any) => {
-        //console.log(response);
         if(this.choose=="zip"){
           let arr = response.split(',');
           for(let i=0;i<arr.length;i++){
@@ -202,12 +190,6 @@ export class CreateTextComponent {
           this.offlineObj = { "fileName":this.uploader.queue[j].file.name,"inputPath":response };
           this.offlineFiles.push(this.offlineObj);
         }
-        /*        this.inputPathArr.push(response);
-         this.fileNameArr.push(this.uploader.queue[j].file.name);
-         if(j==this.uploader.queue.length-1){
-         this.inputPath = this.inputPathArr.join(',');
-         this.fileName = this.fileNameArr.join(',');
-         }*/
       };
       this.uploader.queue[j].onError = (response: any, status: any, headers: any)=>{
         this.deleteIndex =1;
@@ -220,6 +202,7 @@ export class CreateTextComponent {
     }
   }
   removeArr(i){
+    if(this.choose == 'zip') this.offlineFiles = [];
     this.showFile.splice(i,1);
     let size = this.videoSizeArr[i];
     this.videoSize = this.videoSize - size;
@@ -237,8 +220,12 @@ export class CreateTextComponent {
     this.analysis(i);
   }
   analysis(i){
-    let index = this.uploader.getIndexOfItem(this.uploader.queue[i]);
-    this.offlineFiles.splice(index,1);
+    if(this.choose == 'zip')
+      this.offlineFiles = [];
+    else {
+      let index = this.uploader.getIndexOfItem(this.uploader.queue[i]);
+      this.offlineFiles.splice(index,1);
+    }
   }
   isInArray(arr,value){
     for(var i = 0; i < arr.length; i++){
@@ -281,31 +268,40 @@ export class CreateTextComponent {
             this.warnRuleId += ','+this.warnRuleArr[i].ruleId;
           }
         }
-
         if(this.taskId){
           this.videoSizeArr = [];
           this.videoSize = 0;
           this.offlineService.getSize(this.taskId)
             .subscribe(result=>{
-              //console.log(result);
-              //console.log(result);
-              let name:string='';
-              let path:string='';
-              for(let i=0;i<result.offlineFiles.length;i++){
+              if(this.choose === 'zip'){
                 this.fileObj = {};
-                this.fileObj.fileName = result.offlineFiles[i].fileName;
-                name +=result.offlineFiles[i].fileName+',';
-                this.fileObj.inputPath = result.offlineFiles[i].inputPath;
-                path +=result.offlineFiles[i].inputPath+',';
-                this.fileObj.size = result.offlineFiles[i].fileSize;
-                if(result.offlineFiles[i].fileSize.indexOf("KB")>-1){
-                  this.videoSize+=parseFloat(result.offlineFiles[i].fileSize)/1024;
-                  this.videoSizeArr.push(parseFloat(result.offlineFiles[i].fileSize)/1024);
-                }else if(result.offlineFiles[i].fileSize.indexOf("MB")>-1){
-                  this.videoSize+=parseFloat(result.offlineFiles[i].fileSize);
-                  this.videoSizeArr.push(parseFloat(result.offlineFiles[i].fileSize));
+                this.fileObj.size = 0;
+                for(let i = 0 ; i < result.offlineFiles.length; i++){
+                  let size = result.offlineFiles[i].fileSize;
+                  size = this.convertSizeToBT(size);
+                  this.fileObj.size += size;
+                  let obj = { "fileName":result.offlineFiles[i].fileName,"inputPath":result.offlineFiles[i].inputPath };
+                  this.offlineFiles.push(obj);
                 }
+                this.fileObj.fileName = result.offlineFiles[0].fileName;
+                this.fileObj.inputPath = "";
+                this.fileObj.size = this.convertSizeToSuitableUnit(this.fileObj.size);
                 this.showFile.push(this.fileObj);
+              }else {
+                for (let i = 0; i < result.offlineFiles.length; i++) {
+                  this.fileObj = {};
+                  this.fileObj.fileName = result.offlineFiles[i].fileName;
+                  this.fileObj.inputPath = result.offlineFiles[i].inputPath;
+                  this.fileObj.size = result.offlineFiles[i].fileSize;
+                  if (result.offlineFiles[i].fileSize.indexOf("KB") > -1) {
+                    this.videoSize += parseFloat(result.offlineFiles[i].fileSize) / 1024;
+                    this.videoSizeArr.push(parseFloat(result.offlineFiles[i].fileSize) / 1024);
+                  } else if (result.offlineFiles[i].fileSize.indexOf("MB") > -1) {
+                    this.videoSize += parseFloat(result.offlineFiles[i].fileSize);
+                    this.videoSizeArr.push(parseFloat(result.offlineFiles[i].fileSize));
+                  }
+                  this.showFile.push(this.fileObj);
+                }
               }
             })
         }
@@ -314,14 +310,22 @@ export class CreateTextComponent {
     });
 
   }
-  setMinHeight(){
-    if(this.choose=='zip'){
-      return{
-        "min-height":"330px"
-      }
-    }
-    return
+
+  convertSizeToBT(size){
+    if(size == null || size.length <=0) return 0;
+    if(size.indexOf("BT") >= 0) return Number(size.replace("BT", ""));
+    if(size.indexOf("KB") >= 0) return Number(size.replace("KB", "")) * 1000;
+    if(size.indexOf("MB") >= 0) return Number(size.replace("MB", "")) * 1000000;
+    if(size.indexOf("GB") >= 0) return Number(size.replace("GB", "")) * 1000000000;
   }
+
+  convertSizeToSuitableUnit(size){
+    if(size > 1000000000) return size / 1000000000.0 + "GB";
+    if(size > 1000000) return size / 1000000.0 + "MB";
+    if(size > 1000) return size / 1000.0 + "KB";
+    return size + "BT";
+  }
+
   deleteChange(event){
     this.deleteIndex = event;
   }
