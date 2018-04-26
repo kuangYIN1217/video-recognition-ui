@@ -14,4 +14,5 @@ MAINTAINER Jermine.hu@qq.com
 WORKDIR $APP_HOME
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=0 $APP_HOME/dist .
-CMD sed -i "s/&REPLACEHOST&/$hostip/g" ./main.bundle.js; nginx -g "daemon off;"
+CMD sed -i "s/&REPLACE_HOST&/$HOST_IP/g" ./main.bundle.js; nginx -g "daemon off;"
+CMD sed -i "s/&REPLACE_PORT&/$HOST_PORT/g" ./main.bundle.js; nginx -g "daemon off;"
