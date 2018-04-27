@@ -324,9 +324,12 @@ export class WayManageComponent {
       this.chanRequired2 = 0;
     }
     let rtsp = new RegExp(/^rtsp/);
-    console.log(chanAddr);
     let lower = chanAddr.toLowerCase();
     if(rtsp.test(lower)){
+      this.deleteIndex =1;
+      this.tip_title = '提示';
+      this.tip_content = '目前只支持RTMP';
+      this.createFlag = true;
       return false
     }
       //console.log(chanName,chanAddr);

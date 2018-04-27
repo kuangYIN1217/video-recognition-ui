@@ -147,49 +147,6 @@ export class TaskManageComponent {
   }
   show(){
     this.offlineVideo.nativeElement.controls = true;
-    //this.videoBtn = 1;
-/*    this.offlineVideo.nativeElement.onloadedmetadata=function() {
-      $('.duration').text(this.offlineVideo.nativeElement.duration);
-    };
-    this.offlineVideo.nativeElement.ontimeupdate=function() {
-      $('.current').text(this.offlineVideo.nativeElement.currentTime);
-      var currentPos = this.offlineVideo.nativeElement.currentTime; //Get currenttime
-      var maxduration = this.offlineVideo.nativeElement.duration; //Get video duration
-      var percentage = 100 * currentPos / maxduration; //in %
-      $('.timeBar').css('width', percentage+'%');
-    };*/
-/*    var timeDrag = false;   /!* Drag status *!/
-    $('.progressBar').mousedown(function(e) {
-      timeDrag = true;
-      this.updatebar(e.pageX);
-    });
-    $(document).mouseup(function(e) {
-      if(timeDrag) {
-        timeDrag = false;
-        this.updatebar(e.pageX);
-      }
-    });
-    $(document).mousemove(function(e) {
-      if(timeDrag) {
-        this.updatebar(e.pageX);
-      }
-    });
-  }
-  updatebar(x){
-  var progress = $('.progressBar');
-  var maxduration = this.offlineVideo.nativeElement.duration; //Video duraiton
-  var position = x - progress.offset().left; //Click pos
-  var percentage = 100 * position / progress.width();
-  //Check within range
-  if(percentage > 100) {
-    percentage = 100;
-  }
-  if(percentage < 0) {
-    percentage = 0;
-  }
-  //Update progress bar and video currenttime
-  $('.timeBar').css('width', percentage+'%');
-    this.offlineVideo.nativeElement.currentTime = maxduration * percentage / 100;*/
 }
   hide(){
     this.offlineVideo.nativeElement.controls = false;
