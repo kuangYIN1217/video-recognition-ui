@@ -734,7 +734,6 @@ export class WarnComponent{
   }
   getWH(){
     let obj:any;
-document.getElementById("image")
     obj = document.getElementById("image");
     obj.className = "";
     let width = $("#img").width();
