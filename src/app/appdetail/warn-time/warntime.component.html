@@ -7,13 +7,13 @@
     </div>
     <div class="search-content">
       <div class="search-select">
-        <div class="search-info" *ngIf="appCate=='实时流分析'">
+        <div class="search-info" [style.display]="appCate=='实时流分析'?'':'none'">
           <label>通道名称：</label>
           <select [(ngModel)]="chanName1" (ngModelChange)="chanName1=$event;">
             <option *ngFor="let item of chanNameArr" value="{{item}}">{{item}}</option>
           </select>
         </div>
-        <div class="search-info" *ngIf="appCate=='离线文件分析'">
+        <div class="search-info" [style.display]="appCate=='离线文件分析'?'':'none'">
           <label>告警任务：</label>
           <select [(ngModel)]="warnTask1" (ngModelChange)="warnTask1=$event;changeWarnTask()">
             <option *ngFor="let item of warnTaskArr" value="{{item.taskName}}">{{item.taskName}}</option>
