@@ -33,13 +33,13 @@
         </div>-->
       </div>
       <div class="search-time">
-        <div class="search-info no-margin" *ngIf="appCate=='实时流分析'">
+        <div class="search-info no-margin" [style.display]="appCate=='实时流分析'?'':'none'">
           <label>告警时间：</label>
-          <input type="text" id="start1" class="time" readonly placeholder="请选择时间"/>
+          <input type="text" id="start1" class="time" readonly placeholder="请选择时间" value=""/>
           <span class="shishi-text">至</span>
-          <input type="text" id="end1" class="time" readonly placeholder="请选择时间" style="margin-left: 0"/>
+          <input type="text" id="end1" class="time" readonly placeholder="请选择时间" style="margin-left: 0" />
         </div>
-        <div class="search-info no-margin" *ngIf="appCate=='离线文件分析'">
+        <div class="search-info no-margin" [style.display]="appCate=='离线文件分析'?'':'none'">
           <label style="margin-right: 1.67vw">告警时间：</label>
           <select class="time-choose"[(ngModel)]="startHour" (ngModelChange)="startHour=$event;changeOfflineTime()">
             <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
