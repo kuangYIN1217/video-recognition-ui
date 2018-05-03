@@ -471,7 +471,7 @@ export class WarnComponent{
         }
       }
     }
-    this.page=paraParam.curPage;
+    this.page=paraParam.curPage-1;
     this.pageMaxItem = Number(paraParam.pageMaxItem);
     //console.log(this.pageNow,Number(this.pageChange));
   }
