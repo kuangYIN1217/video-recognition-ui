@@ -567,7 +567,7 @@ export class WarnTimeComponent{
       this.session();
       this.searchWarn(this.appId,this.taskId,this.warnTask1,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
     }
-    this.page=paraParam.curPage;
+    this.page=paraParam.curPage-1;
     this.pageMaxItem = Number(paraParam.pageMaxItem);
     //console.log(this.pageNow,Number(this.pageChange));
   }
