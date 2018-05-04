@@ -124,7 +124,7 @@ export class WarnComponent{
         .subscribe(result=>{
           this.chanNameArr = isNullOrUndefined(result.list) ? null : result.list;
           this.chanNameArr.unshift('全部');
-          this.chanName = isNullOrUndefined(result.current) ? this.chanNameArr[0] : result.current;
+          this.chanName = isNullOrUndefined(result.latestChannel) ? this.chanNameArr[0] : result.latestChannel;
         });
     }else{
       for(let n:any=0;n<60;n++){
