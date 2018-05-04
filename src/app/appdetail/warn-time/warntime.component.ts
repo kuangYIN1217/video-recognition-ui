@@ -132,7 +132,7 @@ export class WarnTimeComponent{
       }
       this.warnService.getWarnTaskWithTargetFeature(this.appId)
         .subscribe(result=>{
-          this.warnTaskArr = result;
+          this.warnTaskArr = isNullOrUndefined(result.list) ? null : result.list;
           if(this.warnTaskArr.length>0){
             this.currentTask = isNullOrUndefined(result.latestTask) ? this.warnTaskArr[0] : result.latestTask;
             this.warnTask1 = this.currentTask.taskName;
@@ -229,7 +229,7 @@ export class WarnTimeComponent{
   }
 
   filterUrl(url?){
-    return url.substring(17);
+    return isNullOrUndefined(url) ? '' : url.substring(17);
   }
   changeWarnTask(){
     for(let i = 0; i < this.warnTaskArr.length; i++){
