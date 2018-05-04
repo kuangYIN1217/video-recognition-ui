@@ -55,13 +55,13 @@
             <p>压缩包文件格式：zip；图片文件格式：png/jpg </p>
           </div>
           <div class="createInfo">
-            <table class="uploadShow" *ngIf="lookIndex==1" [ngStyle]="setMinHeight()">
+            <table class="uploadShow" *ngIf="lookIndex==1">
               <tr *ngFor="let item of showFile;let i =index" class="uploadTr border">
                 <td class="uploadTxt paddingLeft">{{item.fileName}}<span>（{{item.size}}）</span></td>
                 <td class="uploadImg paddingRight"><img src="../assets/appmanage/delete.png" class="imgMiddle" (click)="removeArr(i)" *ngIf="taskTitle=='修改任务'"/></td>
               </tr>
             </table>
-            <table class="uploadShow" *ngIf="showArr.length>0" [ngStyle]="setMinHeight()">
+            <table class="uploadShow" *ngIf="showArr.length>0">
               <tr *ngFor="let item of showArr;let i =index" class="uploadTr" [ngClass]="{border: item.headers.flag==1}">
                 <td class="uploadTxt paddingLeft">
                   <img src="../assets/appmanage/shangchuan.png" class="imgMiddle right" *ngIf="item.progress==0"/>
