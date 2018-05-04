@@ -23,12 +23,10 @@ export class WarnTimeComponent{
   warnRlue1:string;
   chanName1:string;
   warnStatus:string;
-  warnInfo:any[]=[];
   pageParams = new Page();
   page: number = 0;
   pageMaxItem: number = 10;
   pageNow:number;
-  pageChange:number;
   startTime:string;
   endTime:string;
   statusArr:any[]=["全部","已处理","未处理"];
@@ -74,6 +72,7 @@ export class WarnTimeComponent{
   endSecond:string="";
   offline_startTime:string="";
   offline_endTime:string="";
+  currentTask:any={}
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router){
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -120,7 +119,7 @@ export class WarnTimeComponent{
           this.warnService.getChanName(this.appId)
             .subscribe(result=>{
               this.chanNameArr = isNullOrUndefined(result.list) ? null : result.list;
-              this.chanName1 = isNullOrUndefined(result.current) ? this.chanNameArr[0] : result.current;
+              this.chanName1 = isNullOrUndefined(result.latestChannel) ? this.chanNameArr[0] : result.latestChannel;
               this.searchWarn(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,null,null);
             });
         });
@@ -135,9 +134,17 @@ export class WarnTimeComponent{
         .subscribe(result=>{
           this.warnTaskArr = result;
           if(this.warnTaskArr.length>0){
-            this.warnTask1 = this.warnTaskArr[0].taskName;
-            this.videoUrl = this.warnTaskArr[0].outputPath;
-            this.taskId = this.warnTaskArr[0].taskId;
+            this.currentTask = isNullOrUndefined(result.latestTask) ? this.warnTaskArr[0] : result.latestTask;
+            this.warnTask1 = this.currentTask.taskName;
+            this.videoUrl = this.currentTask.outputPath;
+            this.taskId = this.currentTask.taskId;
+
+            if(this.currentTask.alarmRules.length > 0){
+              this.warnRlueArr = this.currentTask.alarmRules;
+              this.warnRlue1 = isNullOrUndefined(result.latestRule) ? this.currentTask.alarmRules[0].ruleName : result.latestRule.ruleName;
+              this.ruleId = isNullOrUndefined(result.latestRule) ? this.currentTask.alarmRules[0].ruleId : result.latestRule.ruleId;
+            }
+
             this.offlineService.getOfflineVideoTime(this.taskId)
               .subscribe((result)=>{
                 this.removeMillisecond(result.start);
@@ -147,11 +154,17 @@ export class WarnTimeComponent{
                 this.endHour = this.removeMillisecond(result.end)[0];
                 this.endMinute = this.removeMillisecond(result.end)[1];
                 this.endSecond = this.removeMillisecond(result.end)[2];
-                this.initRuleAndTime();
+                this.offline_startTime = this.handleOfflineTime()[0];
+                this.offline_endTime = this.handleOfflineTime()[1];
+                this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.offline_startTime,this.offline_endTime);
+                this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.offline_startTime,this.offline_endTime);
               },
               (error)=>{
                 this.initTime();
-                this.initRuleAndTime();
+                this.offline_startTime = this.handleOfflineTime()[0];
+                this.offline_endTime = this.handleOfflineTime()[1];
+                this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.offline_startTime,this.offline_endTime);
+                this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.offline_startTime,this.offline_endTime);
               })
           };
         });
@@ -192,17 +205,6 @@ export class WarnTimeComponent{
       }
     }
   }
-  initRuleAndTime(){
-    if(this.warnTaskArr[0].alarmRules.length>0){
-      this.warnRlueArr = this.warnTaskArr[0].alarmRules;
-      this.warnRlue1 = this.warnTaskArr[0].alarmRules[0].ruleName;
-      this.ruleId = this.warnTaskArr[0].alarmRules[0].ruleId;
-      this.offline_startTime = this.handleOfflineTime()[0];
-      this.offline_endTime = this.handleOfflineTime()[1];
-      this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
-    }
-    this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
-  }
   removeMillisecond(time){
     let arr:any[]=time.split(".")[0].split(":");
     return arr
@@ -230,48 +232,42 @@ export class WarnTimeComponent{
     return url.substring(17);
   }
   changeWarnTask(){
-    for(let i=0;i<this.warnTaskArr.length;i++){
-      if(this.warnTaskArr[i].taskName==this.warnTask1){
-        if(this.warnTaskArr[i].fileType=='image'){
-          this.showTime = false;
-        }else{
-          this.showTime = true;
-        };
-        if(this.warnTaskArr[i].outputPath!=null){
-          this.videoUrl = this.warnTaskArr[i].outputPath;
-        }else{
-          this.videoUrl = '';
-        }
-        this.warnRlueArr = this.warnTaskArr[i].alarmRules;
-
-        if(this.warnRlueArr.length>0){
-          this.warnRlue1 = this.warnTaskArr[i].alarmRules[0].ruleName;
-          this.ruleId = this.warnTaskArr[i].alarmRules[0].ruleId;
-        }else{
-          this.warnRlue1 = '';
-          this.ruleId = 0;
-        }
-        this.taskId = this.warnTaskArr[i].taskId;
-        this.offlineService.getOfflineVideoTime(this.warnTaskArr[i].taskId)
-          .subscribe(
-            (result)=>{
-              this.removeMillisecond(result.start);
-              this.startHour = this.removeMillisecond(result.start)[0];
-              this.startMinute = this.removeMillisecond(result.start)[1];
-              this.startSecond = this.removeMillisecond(result.start)[2];
-              this.endHour = this.removeMillisecond(result.end)[0];
-              this.endMinute = this.removeMillisecond(result.end)[1];
-              this.endSecond = this.removeMillisecond(result.end)[2];
-              this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
-            },
-            (error)=>{
-              this.initTime();
-              this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
-            });
-        this.sessionSet();
+    for(let i = 0; i < this.warnTaskArr.length; i++){
+      if(this.warnTaskArr[i].taskName == this.warnTask1){
+        this.currentTask = this.warnTaskArr[i];
         break;
       }
     }
+    this.showTime = this.currentTask.fileType != 'image';
+    this.videoUrl = this.currentTask.outputPath != null ? this.currentTask.outputPath : '';
+    this.warnRlueArr = this.currentTask.alarmRules;
+    if (this.warnRlueArr.length > 0) {
+      this.warnRlue1 = this.warnRlueArr[0].ruleName;
+      this.ruleId = this.warnRlueArr[0].ruleId;
+    } else {
+      this.warnRlue1 = '';
+      this.ruleId = 0;
+    }
+    this.taskId = this.currentTask.taskId;
+    this.offlineService.getOfflineVideoTime(this.taskId)
+      .subscribe(
+        (result)=> {
+          this.removeMillisecond(result.start);
+          this.startHour = this.removeMillisecond(result.start)[0];
+          this.startMinute = this.removeMillisecond(result.start)[1];
+          this.startSecond = this.removeMillisecond(result.start)[2];
+          this.endHour = this.removeMillisecond(result.end)[0];
+          this.endMinute = this.removeMillisecond(result.end)[1];
+          this.endSecond = this.removeMillisecond(result.end)[2];
+          this.searchPeriod(this.appId, this.taskId, this.warnTask1, this.ruleId, this.warnStatus, this.page, this.pageMaxItem, this.handleOfflineTime()[0], this.handleOfflineTime()[1]);
+        },
+        (error)=> {
+          if (error.status == 400) {
+            this.initTime();
+            this.searchPeriod(this.appId, this.taskId, this.warnTask1, this.ruleId, this.warnStatus, this.page, this.pageMaxItem, this.handleOfflineTime()[0], this.handleOfflineTime()[1]);
+          }
+        });
+    this.sessionSet();
   }
   initTime(){
     this.startHour = "00";
@@ -302,10 +298,6 @@ export class WarnTimeComponent{
       return this.saveTime
     }
   }
-/*  @HostListener('window:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    console.log(event);
-  };*/
   videoPause() {
     this.myVideo = this.offlinePeriodVideo.nativeElement;
     this.currentTime = this.myVideo.currentTime+"";
@@ -350,19 +342,6 @@ export class WarnTimeComponent{
     second>10?String(second):("0"+second);
     time = hour+":"+minute+":"+second+" "+String(start).split(".")[1].substring(0,3);
     return time
-  }
-  changTime(time){
-    if(time<10){
-      time = "0"+time;
-    }else{
-      time = String(time);
-    }
-    return time;
-  }
-  handHighTime(time){
-    let arr:any[]=[];
-    arr = time.split(" ");
-    return (arr[1]+" "+String(Number(arr[2])+50));
   }
   ngAfterViewInit(){
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
@@ -515,13 +494,7 @@ export class WarnTimeComponent{
     this.startTime = $('#start1').val("");
     this.endTime = $('#end1').val("");
   }
-  /*  getAllWarn(id,page,size){
-   this.warnService.getAllWarn(id,page,size)
-   .subscribe(result=>{
-   console.log(result.content);
-   this.getWarnList(result);
-   })
-   }*/
+
   allSel(){
     for(var i in this.allWarn){
       if(this.allFlag==false){
@@ -553,11 +526,8 @@ export class WarnTimeComponent{
     }
   }
   lookPhoto(item){
-    //console.log(item);
-    // this.router.navigate(['../warndetail'],{queryParams: {'detailList':item}});
     this.lookIndex=1;
     this.detaillist = item;
-    //console.log(this.detaillist);
   }
   thumbnail(){
     this.seeIndex = 2;
