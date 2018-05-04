@@ -6,6 +6,7 @@ import "rxjs/add/operator/catch";
 
 import {SERVER_URL} from "../../app.constants";
 import {plainToClass} from "class-transformer";
+import {isNullOrUndefined} from "util";
 
 @Injectable()
 export class WarnService {
@@ -281,6 +282,7 @@ export class WarnService {
       });
   }
   searchWarns(id,name,ruleId,status,page=0,size=10,start,end){
+    if( isNullOrUndefined(name) || name.length == 0) name = '全部';
     let path = "/api/findAlarmLiveDynamic/"+id+"/"+name.replace(/\//g,'%2F')+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size+"&sort=alarmTime,desc";
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path,{ headers: headers })
@@ -305,6 +307,7 @@ export class WarnService {
       });
   }
   searchOffWarns(id,taskId,task,ruleId,status,page=0,size=10,start,end){
+    if(isNullOrUndefined(task) || task.length == 0) task = '全部';
     let path = "/api/findAlarmListDynamic/"+id+"/"+taskId+"/"+task.replace(/\//g,'%2F')+"/"+ruleId+"/"+status+"/"+start+"/"+end+"?page="+page+"&size="+size;
     let headers = this.getHeaders();
     return this.http.get(this.SERVER_URL+path,{ headers: headers })
