@@ -510,15 +510,59 @@ export class WarnTimeComponent{
     this.seeIndex = 0;
     $("#img").remove();
   }
+  getPageData(paraParam){
+    if(this.appCate=="实时流分析"){
+      this.startTime = $('#start1').val();
+      this.endTime = $('#end1').val();
+      this.validation();
+      this.sessionSet();
+      this.session();
+      this.judgeTime();
+      if(this.warnRlue1=='全部'){
+        if(this.taskId>0){
+          this.searchWarn(this.appId,this.taskId,this.chanName1,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
+        }else{
+          this.searchWarn(this.appId,0,this.chanName1,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
+        }
+      }else{
+        if(this.taskId>0){
+          this.searchWarn(this.appId,this.taskId,this.chanName1,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
+        }else{
+          this.searchWarn(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
+        }
+      }
+    }else{
+      this.validation();
+      this.sessionSet();
+      this.session();
+      this.searchWarn(this.appId,this.taskId,this.warnTask1,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
+    }
+    this.page=paraParam.curPage-1;
+    this.pageMaxItem = Number(paraParam.pageMaxItem);
+    //console.log(this.pageNow,Number(this.pageChange));
+  }
   getRuleId(){
     if(this.warnRlue1==''){
       this.ruleId = 0;
     }else{
       for(let i=0;i<this.warnRlueArr.length;i++){
+        //console.log(this.warnRlueArr[i].ruleName);
         if(this.warnRlueArr[i].ruleName == this.warnRlue1){
           this.ruleId = this.warnRlueArr[i].ruleId;
         }
       }
+    }
+  }
+  judgeTime(){
+    if($('#start1').val()==''){
+      this.start1 = null;
+    }else{
+      this.start1 = this.startTime+" 000";
+    }
+    if($('#end1').val()==''){
+      this.end1 = null;
+    }else{
+      this.end1 = this.endTime+" 000";
     }
   }
   output(item){
