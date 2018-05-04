@@ -5,6 +5,7 @@ import {OfflineService} from "../../common/services/offline.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SERVER_URL} from "../../app.constants";
 import {calc_height} from "app/common/ts/calc_height";
+import {isNullOrUndefined} from "util";
 declare var $:any;
 @Component({
   selector: 'warn-time',
@@ -118,8 +119,8 @@ export class WarnTimeComponent{
           };
           this.warnService.getChanName(this.appId)
             .subscribe(result=>{
-              this.chanNameArr=result;
-              this.chanName1 = this.chanNameArr[0];
+              this.chanNameArr = isNullOrUndefined(result.list) ? null : result.list;
+              this.chanName1 = isNullOrUndefined(result.current) ? this.chanNameArr[0] : result.current;
               this.searchWarn(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,null,null);
             });
         });
