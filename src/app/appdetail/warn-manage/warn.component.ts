@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {SERVER_URL} from "../../app.constants";
 import {calc_height} from "app/common/ts/calc_height";
 import {buffer} from "rxjs/operators";
+import {isNullOrUndefined} from "util";
 declare var $:any;
 @Component({
   selector: 'apt-warn',
@@ -121,10 +122,9 @@ export class WarnComponent{
         });
       this.warnService.getChanName(this.appId)
         .subscribe(result=>{
-          this.chanNameArr=result;
-          //console.log(this.chanNameArr);
+          this.chanNameArr = isNullOrUndefined(result.list) ? null : result.list;
           this.chanNameArr.unshift('全部');
-          this.chanName = this.chanNameArr[0];
+          this.chanName = isNullOrUndefined(result.current) ? this.chanNameArr[0] : result.current;
         });
     }else{
       for(let n:any=0;n<60;n++){
@@ -775,9 +775,9 @@ export class WarnComponent{
     let path = item.imagePath;
     this.warnService.downloadFile(path).subscribe(data => {
       if(item.frameNo == 'null' || item.frameNo == null){
-        var frameNo = Math.floor(Math.random() * 1000) + 9000;
+        var frameNo:number = Math.floor(Math.random() * 1000) + 9000;
       }else {
-        var frameNo = item.frameNo;
+        var frameNo:number = item.frameNo;
       }
       var name = this.getDateFormat() + frameNo + item.alarmRule.recognitionCategory.name;
       var tempPathArr = path.split(".");
