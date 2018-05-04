@@ -783,7 +783,12 @@ export class WarnComponent{
   downloadFile(item) {
     let path = item.imagePath;
     this.warnService.downloadFile(path).subscribe(data => {
-      var name = this.getDateFormat() + item.frameNo + item.alarmRule.recognitionCategory.name;
+      if(item.frameNo == 'null' || item.frameNo == null){
+        var frameNo = Math.floor(Math.random() * 1000) + 9000;
+      }else {
+        var frameNo = item.frameNo;
+      }
+      var name = this.getDateFormat() + frameNo + item.alarmRule.recognitionCategory.name;
       var tempPathArr = path.split(".");
       var suffix = tempPathArr[tempPathArr.length - 1];
       name = name + "." + suffix;
