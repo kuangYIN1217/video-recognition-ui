@@ -113,6 +113,10 @@ export class WarnTimeComponent{
               }
             }
             this.warnRlueArr = tempArr;
+            if(this.warnRlueArr.length == 0) {
+              clearInterval(this.interval);
+              return;
+            }
             this.warnRlue1 = this.warnRlueArr[0].ruleName;
             this.ruleId = this.warnRlueArr[0].ruleId;
           };
