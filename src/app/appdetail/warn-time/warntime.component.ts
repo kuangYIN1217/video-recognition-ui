@@ -73,6 +73,7 @@ export class WarnTimeComponent{
   offline_startTime:string="";
   offline_endTime:string="";
   currentTask:any={}
+  currentRule:any={ruleId:0, ruleName:''}
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router){
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -119,11 +120,14 @@ export class WarnTimeComponent{
             }
             this.warnRlue1 = this.warnRlueArr[0].ruleName;
             this.ruleId = this.warnRlueArr[0].ruleId;
-          };
+          }
           this.warnService.getChanName(this.appId)
             .subscribe(result=>{
               this.chanNameArr = isNullOrUndefined(result.list) ? null : result.list;
               this.chanName1 = isNullOrUndefined(result.latestChannel) ? this.chanNameArr[0] : result.latestChannel;
+              this.currentRule = isNullOrUndefined(result.latestRule) ? this.currentRule : result.latestRule;
+              this.warnRlue1 = this.currentRule.ruleName;
+              this.ruleId = this.currentRule.ruleId;
               this.searchWarn(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,null,null);
             });
         });
@@ -145,32 +149,24 @@ export class WarnTimeComponent{
 
             if(this.currentTask.alarmRules.length > 0){
               this.warnRlueArr = this.currentTask.alarmRules;
-              this.warnRlue1 = isNullOrUndefined(result.latestRule) ? this.currentTask.alarmRules[0].ruleName : result.latestRule.ruleName;
-              this.ruleId = isNullOrUndefined(result.latestRule) ? this.currentTask.alarmRules[0].ruleId : result.latestRule.ruleId;
+              this.warnRlue1 = isNullOrUndefined(result.latestRule) ? this.warnRlueArr[0].ruleName : result.latestRule.ruleName;
+              this.ruleId = isNullOrUndefined(result.latestRule) ? this.warnRlueArr[0].ruleId : result.latestRule.ruleId;
             }
 
             this.offlineService.getOfflineVideoTime(this.taskId)
               .subscribe((result)=>{
-                this.removeMillisecond(result.start);
-                this.startHour = this.removeMillisecond(result.start)[0];
-                this.startMinute = this.removeMillisecond(result.start)[1];
-                this.startSecond = this.removeMillisecond(result.start)[2];
-                this.endHour = this.removeMillisecond(result.end)[0];
-                this.endMinute = this.removeMillisecond(result.end)[1];
-                this.endSecond = this.removeMillisecond(result.end)[2];
-                this.offline_startTime = this.handleOfflineTime()[0];
-                this.offline_endTime = this.handleOfflineTime()[1];
-                this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.offline_startTime,this.offline_endTime);
-                this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.offline_startTime,this.offline_endTime);
-              },
-              (error)=>{
-                this.initTime();
-                this.offline_startTime = this.handleOfflineTime()[0];
-                this.offline_endTime = this.handleOfflineTime()[1];
-                this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.offline_startTime,this.offline_endTime);
-                this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.offline_startTime,this.offline_endTime);
+                  let startArr:any[] = result.start.split(".")[0].split(":");
+                  let endArr:any[] = result.end.split(".")[0].split(":");
+                  this.startHour = startArr[0];
+                  this.startMinute = startArr[1];
+                  this.startSecond = startArr[2];
+                  this.endHour = endArr[0];
+                  this.endMinute = endArr[1];
+                  this.endSecond = endArr[2];
+                  this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem, null, null);
+                this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem, null, null);
               })
-          };
+          }
         });
     }
     this.warnStatus = this.statusArr[0];
@@ -209,10 +205,19 @@ export class WarnTimeComponent{
       }
     }
   }
-  removeMillisecond(time){
-    let arr:any[]=time.split(".")[0].split(":");
-    return arr
+
+  getRuleId(){
+    if(this.warnRlue1==''){
+      this.ruleId = 0;
+    }else{
+      for(let i=0;i<this.warnRlueArr.length;i++){
+        if(this.warnRlueArr[i].ruleName == this.warnRlue1){
+          this.ruleId = this.warnRlueArr[i].ruleId;
+        }
+      }
+    }
   }
+
   handleOfflineTime(){
     let startTime;
     let endTime;
@@ -256,31 +261,19 @@ export class WarnTimeComponent{
     this.offlineService.getOfflineVideoTime(this.taskId)
       .subscribe(
         (result)=> {
-          this.removeMillisecond(result.start);
-          this.startHour = this.removeMillisecond(result.start)[0];
-          this.startMinute = this.removeMillisecond(result.start)[1];
-          this.startSecond = this.removeMillisecond(result.start)[2];
-          this.endHour = this.removeMillisecond(result.end)[0];
-          this.endMinute = this.removeMillisecond(result.end)[1];
-          this.endSecond = this.removeMillisecond(result.end)[2];
-          this.searchPeriod(this.appId, this.taskId, this.warnTask1, this.ruleId, this.warnStatus, this.page, this.pageMaxItem, this.handleOfflineTime()[0], this.handleOfflineTime()[1]);
-        },
-        (error)=> {
-          if (error.status == 400) {
-            this.initTime();
-            this.searchPeriod(this.appId, this.taskId, this.warnTask1, this.ruleId, this.warnStatus, this.page, this.pageMaxItem, this.handleOfflineTime()[0], this.handleOfflineTime()[1]);
-          }
+          let startArr:any[] = result.start.split(".")[0].split(":");
+          let endArr:any[] = result.end.split(".")[0].split(":");
+          this.startHour = startArr[0];
+          this.startMinute = startArr[1];
+          this.startSecond = startArr[2];
+          this.endHour = endArr[0];
+          this.endMinute = endArr[1];
+          this.endSecond = endArr[2];
+          this.searchPeriod(this.appId, this.taskId, this.warnTask1, this.ruleId, this.warnStatus, this.page, this.pageMaxItem, null, null);
         });
     this.sessionSet();
   }
-  initTime(){
-    this.startHour = "00";
-    this.startMinute = "00";
-    this.startSecond = "00";
-    this.endHour = "00";
-    this.endMinute = "00";
-    this.endSecond = "00";
-  }
+
   getPeriodTime(){
     this.saveTime=[];
     let start:string='';
@@ -305,7 +298,6 @@ export class WarnTimeComponent{
   videoPause() {
     this.myVideo = this.offlinePeriodVideo.nativeElement;
     this.currentTime = this.myVideo.currentTime+"";
-    //console.log(this.currentTime);
     let start:number;
     let end:number;
     parseFloat(this.currentTime);
@@ -585,18 +577,7 @@ export class WarnTimeComponent{
     this.pageMaxItem = Number(paraParam.pageMaxItem);
     //console.log(this.pageNow,Number(this.pageChange));
   }
-  getRuleId(){
-    if(this.warnRlue1==''){
-      this.ruleId = 0;
-    }else{
-      for(let i=0;i<this.warnRlueArr.length;i++){
-        //console.log(this.warnRlueArr[i].ruleName);
-        if(this.warnRlueArr[i].ruleName == this.warnRlue1){
-          this.ruleId = this.warnRlueArr[i].ruleId;
-        }
-      }
-    }
-  }
+
   judgeTime(){
     if($('#start1').val()==''){
       this.start1 = null;
@@ -755,7 +736,8 @@ export class WarnTimeComponent{
         let key_value = key1 + "-" + value;
         this.periodTimeArr.push(key_value);
       }
-     this.periodTime = this.periodTimeArr[0];
+      if(this.periodTimeArr.length > 0)
+        this.periodTime = this.periodTimeArr[0];
       if(this.periodTime!=''){
         this.playVideo(this.periodTime);
       }
