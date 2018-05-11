@@ -941,7 +941,16 @@ export class WarnTimeComponent{
   downloadFile(item) {
     let path = item.imagePath;
     this.warnService.downloadFile(path).subscribe(data => {
-      var name = this.getDateFormat() + item.frameNo + item.alarmRule.recognitionCategory.name;
+      if(item.frameNo == 'null' || item.frameNo == null){
+        var frameNo:number = Math.floor(Math.random() * 1000) + 9000;
+      }else {
+        var frameNo:number = item.frameNo;
+      }
+      var name = this.getDateFormat() + frameNo;
+      for(var i = 0 ; i < (isNullOrUndefined(item.alarmRules) ? 0 : item.alarmRules.length); i++){
+        name += item.alarmRules[i].recognitionCategory.name;
+        if(i < item.alarmRules.length - 1) name += '-';
+      }
       var tempPathArr = path.split(".");
       var suffix = tempPathArr[tempPathArr.length - 1];
       name = name + "." + suffix;

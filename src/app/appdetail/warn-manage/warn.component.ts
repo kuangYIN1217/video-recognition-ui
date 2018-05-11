@@ -779,7 +779,11 @@ export class WarnComponent{
       }else {
         var frameNo:number = item.frameNo;
       }
-      var name = this.getDateFormat() + frameNo + item.alarmRule.recognitionCategory.name;
+      var name = this.getDateFormat() + frameNo;
+      for(var i = 0 ; i < (isNullOrUndefined(item.alarmRules) ? 0 : item.alarmRules.length); i++){
+        name += item.alarmRules[i].recognitionCategory.name;
+        if(i < item.alarmRules.length - 1) name += '-';
+      }
       var tempPathArr = path.split(".");
       var suffix = tempPathArr[tempPathArr.length - 1];
       name = name + "." + suffix;
