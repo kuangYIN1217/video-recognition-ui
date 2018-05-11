@@ -374,10 +374,10 @@ export class VideoAnalysisComoponent {
   }
   ngAfterViewInit() {
     $('.detail-header-info .title').text(window.sessionStorage.getItem('applicationName'));
-    if (navigator.plugins && navigator.plugins.length > 0) {
+    if (navigator.userAgent.indexOf("Firefox")>0 || navigator.userAgent.indexOf("Chrome")>0) {
       var swf = navigator.plugins["Shockwave Flash"];
       if (!swf) {
-        addWarningToast(this.toastyService ,"请确保安装并开启Flash权限: <a href='https://get.adobe.com/cn/flashplayer/'>https://get.adobe.com/cn/flashplayer/</a>" , "未检测到Flash插件");
+        addWarningToast(this.toastyService ,"请确保安装并开启Flash权限: <a href='assets/flashplayerpp_install_cn.exe'>https://get.adobe.com/cn/flashplayer/</a>" , "未检测到Flash插件");
       }
     }
   }

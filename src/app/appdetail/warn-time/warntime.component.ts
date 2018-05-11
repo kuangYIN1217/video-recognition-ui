@@ -763,7 +763,7 @@ export class WarnTimeComponent{
   }
   judgePeriod(start,end){
     if(this.appCate=='实时流分析'){
-      if(this.dateCompare(start,end)){
+      //if(this.dateCompare(start,end)){
         this.validation();
           sessionStorage.setItem("name" , this.chanName1);
           this.sessionSet();
@@ -774,14 +774,14 @@ export class WarnTimeComponent{
           }else{
             this.searchPeriod(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,start,end);
           }
-      }else{
+      /*   }else{
         this.deleteIndex = 1;
         this.tip_title = "提示";
         this.tip_content = "起始时间大于结束时间/起始时间和结束时间相差大于6小时！";
         $("#start1").val('');
         $("#end1").val('');
         return false
-      }
+      }*/
     }else{
       sessionStorage.setItem("task" , this.warnTask1);
       this.sessionSet();
