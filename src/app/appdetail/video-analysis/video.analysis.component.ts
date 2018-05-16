@@ -661,12 +661,14 @@ export class VideoAnalysisComoponent {
             this.d_video_list= rep.sort(function(a,b){
               return parseInt(a.channelOrder) - parseInt(b.channelOrder)
             });
+            this.initRecognitions();
           });
         } else {
           //this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getSelectedRecognitions(),this.getFeature(this.arr)).subscribe(rep => {
           this.recognitionService.setRecognitions( this.d_video_list[this.s_selected_grid -1].channelId , this.getRuleId()).subscribe(rep => {
           //console.log(rep);
             this.d_video_list[this.s_selected_grid -1].recognitionCategory = rep[0].recognitionCategory;
+            this.initRecognitions();
           });
         //this.s_popup_show = false;
       }
