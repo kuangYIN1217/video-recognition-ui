@@ -304,7 +304,7 @@ input{
   background-color: #23a880;
 }
 .showArea{
-  width:970px;
+  max-width:970px;
   height:545px;
   position: relative;
   left:50%;
@@ -315,6 +315,10 @@ input{
   align-items: center;
   justify-content: center;
   overflow: hidden;
+}
+.showArea img{
+  display: block;
+  width:100%;
 }
 .leftArrow,.rightArrow{
   position: absolute;
