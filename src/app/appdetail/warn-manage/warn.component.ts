@@ -199,7 +199,8 @@ export class WarnComponent{
           this.endHour = this.removeMillisecond(result.end)[0];
           this.endMinute = this.removeMillisecond(result.end)[1];
           this.endSecond = this.removeMillisecond(result.end)[2];
-          this.initRule();
+          if(this.once != "true")
+            this.initRule();
         },
         (error)=>{
           if(error.status==400){
