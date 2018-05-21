@@ -228,8 +228,7 @@ export class WarnComponent{
       if(this.warnTaskArr[i].taskName==this.warnTask){
         if(this.warnTaskArr[i].fileType=='image'||this.warnTaskArr[i].fileType=='zip'){
           this.showTime = false;
-          this.startTime = '';
-          this.endTime = '';
+          this.initTime();
         }else{
           this.showTime = true;
           this.offlineService.getOfflineVideoTime(this.warnTaskArr[i].taskId)
