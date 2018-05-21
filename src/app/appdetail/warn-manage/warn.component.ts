@@ -136,7 +136,6 @@ export class WarnComponent{
       this.warnService.getWarnTask(this.appId,"all")
         .subscribe(result=>{
           this.warnTaskArr = result;
-          //console.log(this.warnTaskArr);
           if(this.warnTaskArr.length>0&&this.once!="true"){
             this.warnTask = this.warnTaskArr[0].taskName;
             this.taskId = this.warnTaskArr[0].taskId;
@@ -155,7 +154,7 @@ export class WarnComponent{
             }
             this.warnRlue = this.alarmRules[0].ruleName;
             this.ruleId = this.alarmRules[0].ruleId;
-          };
+          }
           if(!this.fileType){
             if(this.warnTaskArr[0].fileType=='image'||this.warnTaskArr[0].fileType=='zip'){
               this.showTime = false;
@@ -184,7 +183,8 @@ export class WarnComponent{
           this.endHour = this.removeMillisecond(result.end)[0];
           this.endMinute = this.removeMillisecond(result.end)[1];
           this.endSecond = this.removeMillisecond(result.end)[2];
-          this.initRule();
+          if(this.once != "true")
+            this.initRule();
         },
         (error)=>{
           if(error.status==400){
@@ -348,7 +348,6 @@ export class WarnComponent{
     });
     this.route.queryParams.subscribe(params => {
       if(JSON.stringify(params) != "{}"&& !params.pageNo){
-        //console.log(params);
         this.taskName = params['taskName'];
         this.taskId = params['taskId'];
         this.once = params['once'];
