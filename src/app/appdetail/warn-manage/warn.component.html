@@ -50,27 +50,27 @@
         <div class="search-info no-margin">
           <label style="margin-right: 1.67vw">告警时间：</label>
           <select class="time-choose"[(ngModel)]="startHour" (ngModelChange)="startHour=$event">
-            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+            <option *ngFor="let item of startHourMax" value="{{item}}">{{item}}</option>
           </select>
           <span class="maohao">:</span>
           <select class="time-choose" [(ngModel)]="startMinute" (ngModelChange)="startMinute=$event">
-            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+            <option *ngFor="let item of startMinuteMax" value="{{item}}">{{item}}</option>
           </select>
           <span class="maohao">:</span>
           <select class="time-choose" [(ngModel)]="startSecond" (ngModelChange)="startSecond=$event">
-            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+            <option *ngFor="let item of startSecondMax" value="{{item}}">{{item}}</option>
           </select>
           <span class="text">至</span>
           <select class="time-choose" [(ngModel)]="endHour" (ngModelChange)="endHour=$event">
-            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+            <option *ngFor="let item of endHourMax" value="{{item}}">{{item}}</option>
           </select>
           <span class="maohao">:</span>
           <select class="time-choose" [(ngModel)]="endMinute" (ngModelChange)="endMinute=$event">
-            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+            <option *ngFor="let item of endMinuteMax" value="{{item}}">{{item}}</option>
           </select>
           <span class="maohao">:</span>
           <select class="time-choose" [(ngModel)]="endSecond" (ngModelChange)="endSecond=$event">
-            <option *ngFor="let item of all_time_date" value="{{item}}">{{item}}</option>
+            <option *ngFor="let item of endSecondMax" value="{{item}}">{{item}}</option>
           </select>
         </div>
         <a href="#" onclick="return false" class="btn bgco" (click)="search()">查询</a>

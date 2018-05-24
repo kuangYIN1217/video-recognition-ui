@@ -71,7 +71,12 @@ export class WarnTimeComponent{
   endSecond:string="";
   offline_startTime:string="";
   offline_endTime:string="";
-
+  startHourMax:any[]=[];
+  startMinuteMax:any[]=[];
+  startSecondMax:any[]=[];
+  endHourMax:any[]=[];
+  endMinuteMax:any[]=[];
+  endSecondMax:any[]=[];
   currentTask:any={}
   currentRule:any={ruleId:0, ruleName:''}
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router){
@@ -162,6 +167,13 @@ export class WarnTimeComponent{
                   this.endHour = endArr[0];
                   this.endMinute = endArr[1];
                   this.endSecond = endArr[2];
+
+                  this.startHourMax = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
+                  this.startMinuteMax = this.all_time_date.slice(0,this.getMaxTime(endArr[1]));
+                  this.startSecondMax = this.all_time_date.slice(0,this.getMaxTime(endArr[2]));
+                  this.endHourMax = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
+                  this.endMinuteMax = this.all_time_date.slice(0,this.getMaxTime(endArr[1]));
+                  this.endSecondMax = this.all_time_date.slice(0,this.getMaxTime(endArr[2]));
                   this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem, null, null);
                   this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem, null, null);
                 });
@@ -169,6 +181,13 @@ export class WarnTimeComponent{
         });
     }
     this.warnStatus = this.statusArr[0];
+  }
+  getMaxTime(data){
+    for(let i=0;i<this.all_time_date.length;i++){
+      if(this.all_time_date[i]==data){
+        return i+1;
+      }
+    }
   }
   getTaskId(){
     for(let i=0;i<this.warnTaskArr.length;i++){
@@ -349,7 +368,23 @@ export class WarnTimeComponent{
   changeOfflineTime(){
     this.getTaskId();
     this.getRuleId();
-    this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
+    if(Number(this.startHour)>Number(this.endHour)){
+      this.timeTip();
+      return false
+    }else if(Number(this.startMinute)>Number(this.endMinute)){
+      this.timeTip();
+      return false
+    }else if(Number(this.startSecond)>Number(this.endSecond)){
+      this.timeTip();
+      return false
+    }else{
+      this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
+    }
+  }
+  timeTip(){
+    this.deleteIndex = 1;
+    this.tip_title = "提示";
+    this.tip_content = "起始时间大于结束时间！";
   }
   ngOnDestroy(){
     clearInterval(this.interval);

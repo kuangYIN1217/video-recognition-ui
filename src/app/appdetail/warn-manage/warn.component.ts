@@ -70,6 +70,12 @@ export class WarnComponent{
   endSecond:string="";
   offline_startTime:string="";
   offline_endTime:string="";
+  startHourMax:any[]=[];
+  startMinuteMax:any[]=[];
+  startSecondMax:any[]=[];
+  endHourMax:any[]=[];
+  endMinuteMax:any[]=[];
+  endSecondMax:any[]=[];
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -173,6 +179,16 @@ export class WarnComponent{
       }
     }
   }
+  changeOfflineTime(){
+
+  }
+  getMaxTime(data){
+    for(let i=0;i<this.all_time_date.length;i++){
+      if(this.all_time_date[i]==data){
+        return i+1;
+      }
+    }
+  }
   getVideoTime(){
     this.offlineService.getOfflineVideoTime(this.taskId)
       .subscribe((result)=>{
@@ -183,6 +199,12 @@ export class WarnComponent{
           this.endHour = this.removeMillisecond(result.end)[0];
           this.endMinute = this.removeMillisecond(result.end)[1];
           this.endSecond = this.removeMillisecond(result.end)[2];
+          this.startHourMax = this.all_time_date.slice(0,this.getMaxTime(this.removeMillisecond(result.end)[0]));
+          this.startMinuteMax = this.all_time_date.slice(0,this.getMaxTime(this.removeMillisecond(result.end)[1]));
+          this.startSecondMax = this.all_time_date.slice(0,this.getMaxTime(this.removeMillisecond(result.end)[2]));
+          this.endHourMax = this.all_time_date.slice(0,this.getMaxTime(this.removeMillisecond(result.end)[0]));
+          this.endMinuteMax = this.all_time_date.slice(0,this.getMaxTime(this.removeMillisecond(result.end)[1]));
+          this.endSecondMax = this.all_time_date.slice(0,this.getMaxTime(this.removeMillisecond(result.end)[2]));
           if(this.once != "true")
             this.initRule();
         },
@@ -263,6 +285,11 @@ export class WarnComponent{
   }
   output(item){
     return item.substring(17);
+  }
+  timeTip(){
+    this.deleteIndex = 1;
+    this.tip_title = "提示";
+    this.tip_content = "起始时间大于结束时间！";
   }
   handleOfflineTime(){
     let startTime;
@@ -639,12 +666,23 @@ export class WarnComponent{
       this.sessionSet();
       this.searchWarn(this.appId,this.taskId,this.chanName,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,startTime,endTime);
     }else{
-      this.offline_startTime = this.handleOfflineTime()[0];
-      this.offline_endTime = this.handleOfflineTime()[1];
-      sessionStorage.setItem("task" , this.warnTask);
-      this.sessionSet();
-      this.getTaskId();
-      this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
+      if(Number(this.startHour)>Number(this.endHour)){
+        this.timeTip();
+        return false
+      }else if(Number(this.startMinute)>Number(this.endMinute)){
+        this.timeTip();
+        return false
+      }else if(Number(this.startSecond)>Number(this.endSecond)){
+        this.timeTip();
+        return false
+      }else{
+        this.offline_startTime = this.handleOfflineTime()[0];
+        this.offline_endTime = this.handleOfflineTime()[1];
+        sessionStorage.setItem("task" , this.warnTask);
+        this.sessionSet();
+        this.getTaskId();
+        this.searchWarn(this.appId,this.taskId,this.warnTask,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.handleOfflineTime()[0],this.handleOfflineTime()[1]);
+      }
     }
   }
   searchWarn(id,taskId,nameTask,ruleId,status,page,size,start,end){

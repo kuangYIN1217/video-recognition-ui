@@ -26,12 +26,13 @@ export class JWplayerComponent {
           ]
         }
       ],
+      //levels:[{bitrate: 20,file: this.url}],
       autostart: true,
       controls: false
     });
   }
   ngOnChanges(...args: any[]){
-    console.log(this.url);
+    //console.log(this.url);
     jwplayer("ckID").load([{'file': this.url}]);
   }
   ngOnInit(){
