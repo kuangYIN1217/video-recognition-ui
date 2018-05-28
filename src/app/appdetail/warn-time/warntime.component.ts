@@ -173,14 +173,14 @@ export class WarnTimeComponent{
                   this.endMinuteMax = this.all_time_date.slice(0,this.getMaxTime(endArr[1]));
                   this.endSecondMax = this.all_time_date.slice(0,this.getMaxTime(endArr[2]));
                   if(Number(this.endHour)==0&&Number(this.endMinute)==0&&Number(this.endSecond)>=0){
-                    this.setStartTimeMax(endArr,this.startHour,this.startMinute,this.startSecond,'start');
+                    this.setStartTimeMax(endArr,'start');
                   }else if(Number(this.endHour)==0&&Number(this.endMinute)>=0){
                     if(Number(this.startMinute)==0){
                       this.startHourMax = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
                       this.startMinuteMax = this.all_time_date.slice(0,this.getMaxTime(endArr[1]));
                       this.startSecondMax = this.all_time_date;
                     }else{
-                      this.setStartTimeMax(endArr,this.startHour,this.startMinute,this.startSecond,'start');
+                      this.setStartTimeMax(endArr,'start');
                     }
                   }else if(Number(this.endHour)>0){
                       if(Number(this.startHour)==0&&Number(this.startMinute)==0){
@@ -192,7 +192,7 @@ export class WarnTimeComponent{
                         this.startMinuteMax = this.all_time_date;
                         this.startSecondMax = this.all_time_date;
                       }else if(Number(this.startHour)>0){
-                        this.setStartTimeMax(endArr,this.startHour,this.startMinute,this.startSecond,'start');
+                        this.setStartTimeMax(endArr,'start');
                       }
                   }
                   this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem, null, null);
@@ -203,10 +203,10 @@ export class WarnTimeComponent{
     }
     this.warnStatus = this.statusArr[0];
   }
-  setStartTimeMax(endArr,hour?,minute?,second?,type?){
-    hour = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
-    minute = this.all_time_date.slice(0,this.getMaxTime(endArr[1]));
-    second = this.all_time_date.slice(0,this.getMaxTime(endArr[2]));
+  setStartTimeMax(endArr,type?){
+   let hour:any[] = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
+   let minute:any[] = this.all_time_date.slice(0,this.getMaxTime(endArr[1]));
+   let second:any[] = this.all_time_date.slice(0,this.getMaxTime(endArr[2]));
     if(type=='start'){
       this.startHourMax = hour;
       this.startMinuteMax = minute;
@@ -402,7 +402,7 @@ export class WarnTimeComponent{
   }
   offlinTimeControl(endArr,hour,minute,second,type){
     if(Number(endArr[0])==0&&Number(endArr[1])==0&&Number(endArr[2])>=0){
-      this.setStartTimeMax(endArr,hour,minute,second,type);
+      this.setStartTimeMax(endArr,type);
     }else if(Number(endArr[0])==0&&Number(endArr[1])>=0){
       if(Number(minute)==0){
         if(type=='start'){
@@ -416,7 +416,7 @@ export class WarnTimeComponent{
         }
 
       }else{
-        this.setStartTimeMax(endArr,hour,minute,second,type);
+        this.setStartTimeMax(endArr,type);
       }
     }else if(Number(endArr[0])>0){
       if(Number(hour)==0&&Number(minute)==0){
@@ -440,7 +440,7 @@ export class WarnTimeComponent{
           this.endSecondMax = this.all_time_date;
         }
       }else if(Number(hour)>0){
-        this.setStartTimeMax(endArr,hour,minute,second,type);
+        this.setStartTimeMax(endArr,type);
       }
     }
   }
