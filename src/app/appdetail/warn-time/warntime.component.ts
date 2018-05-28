@@ -78,7 +78,8 @@ export class WarnTimeComponent{
   endMinuteMax:any[]=[];
   endSecondMax:any[]=[];
   currentTask:any={}
-  currentRule:any={ruleId:0, ruleName:''}
+  currentRule:any={ruleId:0, ruleName:''};
+  endArr:any[]=[];
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router){
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -161,19 +162,39 @@ export class WarnTimeComponent{
               .subscribe((result)=>{
                   let startArr:any[] = result.start.split(".")[0].split(":");
                   let endArr:any[] = result.end.split(".")[0].split(":");
+                  this.endArr = endArr;
                   this.startHour = startArr[0];
                   this.startMinute = startArr[1];
                   this.startSecond = startArr[2];
                   this.endHour = endArr[0];
                   this.endMinute = endArr[1];
                   this.endSecond = endArr[2];
-
-                  this.startHourMax = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
-                  this.startMinuteMax = this.all_time_date.slice(0,this.getMaxTime(endArr[1]));
-                  this.startSecondMax = this.all_time_date.slice(0,this.getMaxTime(endArr[2]));
                   this.endHourMax = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
                   this.endMinuteMax = this.all_time_date.slice(0,this.getMaxTime(endArr[1]));
                   this.endSecondMax = this.all_time_date.slice(0,this.getMaxTime(endArr[2]));
+                  if(Number(this.endHour)==0&&Number(this.endMinute)==0&&Number(this.endSecond)>=0){
+                    this.setStartTimeMax(endArr,this.startHour,this.startMinute,this.startSecond,'start');
+                  }else if(Number(this.endHour)==0&&Number(this.endMinute)>=0){
+                    if(Number(this.startMinute)==0){
+                      this.startHourMax = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
+                      this.startMinuteMax = this.all_time_date.slice(0,this.getMaxTime(endArr[1]));
+                      this.startSecondMax = this.all_time_date;
+                    }else{
+                      this.setStartTimeMax(endArr,this.startHour,this.startMinute,this.startSecond,'start');
+                    }
+                  }else if(Number(this.endHour)>0){
+                      if(Number(this.startHour)==0&&Number(this.startMinute)==0){
+                        this.startHourMax = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
+                        this.startMinuteMax = this.all_time_date.slice(0,this.getMaxTime(endArr[1]));
+                        this.startSecondMax = this.all_time_date;
+                      }else if(Number(this.startHour)==0&&Number(this.startMinute)>0){
+                        this.startHourMax = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
+                        this.startMinuteMax = this.all_time_date;
+                        this.startSecondMax = this.all_time_date;
+                      }else if(Number(this.startHour)>0){
+                        this.setStartTimeMax(endArr,this.startHour,this.startMinute,this.startSecond,'start');
+                      }
+                  }
                   this.searchWarn(this.appId,0,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem, null, null);
                   this.searchPeriod(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem, null, null);
                 });
@@ -181,6 +202,20 @@ export class WarnTimeComponent{
         });
     }
     this.warnStatus = this.statusArr[0];
+  }
+  setStartTimeMax(endArr,hour?,minute?,second?,type?){
+    hour = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
+    minute = this.all_time_date.slice(0,this.getMaxTime(endArr[1]));
+    second = this.all_time_date.slice(0,this.getMaxTime(endArr[2]));
+    if(type=='start'){
+      this.startHourMax = hour;
+      this.startMinuteMax = minute;
+      this.startSecondMax = second;
+    }else{
+      this.endHourMax = hour;
+      this.endMinuteMax = minute;
+      this.endSecondMax = second;
+    }
   }
   getMaxTime(data){
     for(let i=0;i<this.all_time_date.length;i++){
@@ -365,16 +400,62 @@ export class WarnTimeComponent{
       this.periodTimeArr = sessionStorage.getItem("periodTimeArr").split(",");
     }
   }
+  offlinTimeControl(endArr,hour,minute,second,type){
+    if(Number(endArr[0])==0&&Number(endArr[1])==0&&Number(endArr[2])>=0){
+      this.setStartTimeMax(endArr,hour,minute,second,type);
+    }else if(Number(endArr[0])==0&&Number(endArr[1])>=0){
+      if(Number(minute)==0){
+        if(type=='start'){
+          this.startHourMax = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
+          this.startMinuteMax = this.all_time_date.slice(0,this.getMaxTime(endArr[1]));
+          this.startSecondMax = this.all_time_date;
+        }else{
+          this.endHourMax = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
+          this.endMinuteMax = this.all_time_date.slice(0,this.getMaxTime(endArr[1]));
+          this.endSecondMax = this.all_time_date;
+        }
+
+      }else{
+        this.setStartTimeMax(endArr,hour,minute,second,type);
+      }
+    }else if(Number(endArr[0])>0){
+      if(Number(hour)==0&&Number(minute)==0){
+        if(type=='start'){
+          this.startHourMax = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
+          this.startMinuteMax = this.all_time_date.slice(0,this.getMaxTime(endArr[1]));
+          this.startSecondMax = this.all_time_date;
+        }else{
+          this.endHourMax = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
+          this.endMinuteMax = this.all_time_date.slice(0,this.getMaxTime(endArr[1]));
+          this.endSecondMax = this.all_time_date;
+        }
+      }else if(Number(hour)==0&&Number(minute)>0){
+        if(type=='start'){
+          this.startHourMax = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
+          this.startMinuteMax = this.all_time_date;
+          this.startSecondMax = this.all_time_date;
+        }else{
+          this.endHourMax = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
+          this.endMinuteMax = this.all_time_date;
+          this.endSecondMax = this.all_time_date;
+        }
+      }else if(Number(hour)>0){
+        this.setStartTimeMax(endArr,hour,minute,second,type);
+      }
+    }
+  }
   changeOfflineTime(){
     this.getTaskId();
     this.getRuleId();
+    this.offlinTimeControl(this.endArr,this.startHour,this.startMinute,this.startSecond,'start');
+    this.offlinTimeControl(this.endArr,this.endHour,this.endMinute,this.endSecond,'end');
     if(Number(this.startHour)>Number(this.endHour)){
       this.timeTip();
       return false
-    }else if(Number(this.startMinute)>Number(this.endMinute)){
+    }else if((Number(this.startHour)==0&&Number(this.endHour)==0)&&(Number(this.startMinute)>Number(this.endMinute))){
       this.timeTip();
       return false
-    }else if(Number(this.startSecond)>Number(this.endSecond)){
+    }else if((Number(this.startHour)==0&&Number(this.endHour)==0)&&(Number(this.startMinute)==0&&Number(this.endMinute)==0)&&(Number(this.startSecond)>Number(this.endSecond))){
       this.timeTip();
       return false
     }else{
