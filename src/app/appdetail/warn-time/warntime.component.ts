@@ -417,9 +417,12 @@ export class WarnTimeComponent{
     }else if(Number(endArr[0])==0&&Number(endArr[1])>=0){
       if(Number(minute)==0){
         this.setTime(type,endArr);
-
       }else{
-        this.setStartTimeMax(endArr,type);
+        if(Number(minute)<Number(this.endMinuteMax[this.endMinuteMax.length-1])){
+         this.setTime(type,endArr);
+         }else{
+         this.setStartTimeMax(endArr,type);
+         }
       }
     }else if(Number(endArr[0])>0){
       if(Number(hour)==0&&Number(minute)==0){
