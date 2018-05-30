@@ -242,7 +242,6 @@ export class WarnTimeComponent{
       }
     }
   }
-
   handleOfflineTime(){
     let startTime;
     let endTime;
@@ -262,8 +261,9 @@ export class WarnTimeComponent{
     return arr
   }
   filterUrl(url?){
-    return isNullOrUndefined(url) ? "" : url.substring(17);
+    return isNullOrUndefined(url) ? "" : url.split('deepviewer')[1].substring(1);
   }
+
   changeWarnTask(){
     for(let i = 0; i < this.warnTaskArr.length; i++){
       if(this.warnTaskArr[i].taskName == this.warnTask1){
@@ -559,7 +559,6 @@ export class WarnTimeComponent{
           }
         }.bind(this)
       });
-      console.log($('#start1'));
     this.startTime = $('#start1').val("");
     this.endTime = $('#end1').val("");
   }
@@ -800,25 +799,43 @@ export class WarnTimeComponent{
       }
       if(this.periodTimeArr.length > 0)
         this.periodTime = this.periodTimeArr[0];
+        this.getOnlineVideo();
       if(this.periodTime!=''){
         this.playVideo(this.periodTime);
+
       }
+  }
+  getOnlineVideo(){
+    if(this.appCate=="实时流分析"){
+      let startTime = this.periodTime.split('-')[0].replace(/\//g, "-");
+      let endTime = this.periodTime.split('-')[1].replace(/\//g, "-");
+      this.warnService.getOnlineVideo(this.appId,'null',this.chanName1,startTime,endTime)
+        .subscribe(result=>{
+          if(result.length>0){
+            this.videoUrl = result[0].videoOutputPath;
+          }else{
+            this.videoUrl = '';
+          }
+        })
+    }
   }
   playVideo(periodtime){
     periodtime.split('-');
     this.playStart = periodtime.split('-')[0];
     this.playEnd = periodtime.split('-')[1];
-    this.myVideo = this.offlinePeriodVideo.nativeElement;
-    this.myVideo.addEventListener("timeupdate",function(){
-      var time = this.myVideo.currentTime+"";
-      /*   document.getElementById("showTime").value=time;*/
-      var ts = time.substring(0,time.indexOf("."));
-      this._endTime = this._endTime.substring(0,time.indexOf("."));
-      if(ts==this._endTime){
-        this.myVideo.pause();
-      }
-    }.bind(this));
-    this.playMedia(this.playStart,this.playEnd);
+    if(this.videoUrl!=''){
+      this.myVideo = this.offlinePeriodVideo.nativeElement;
+      this.myVideo.addEventListener("timeupdate",function(){
+        var time = this.myVideo.currentTime+"";
+        /*   document.getElementById("showTime").value=time;*/
+        var ts = time.substring(0,time.indexOf("."));
+        this._endTime = this._endTime.substring(0,time.indexOf("."));
+        if(ts==this._endTime){
+          this.myVideo.pause();
+        }
+      }.bind(this));
+      this.playMedia(this.playStart,this.playEnd);
+    }
   }
   //视频播放
   playMedia(startTime,endTime){
@@ -849,6 +866,7 @@ export class WarnTimeComponent{
     return String(hour+minute+Number(second))+"."+millisecond;
   }
   changePeriodTime(){
+    this.getOnlineVideo();
       if(this.periodTime!=''){
         this.playVideo(this.periodTime);
       }

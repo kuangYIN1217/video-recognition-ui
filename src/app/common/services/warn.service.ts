@@ -227,6 +227,17 @@ export class WarnService {
         }
       });
   }
+  getOnlineVideo(appId,taskId,chanName,start,end){
+    let path = "/api/video_results/"+appId+"/"+taskId+"/"+chanName+"/"+start+"/"+end;
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path,{ headers: headers })
+      .map((response: Response) => {
+        if (response && response.json()) {
+            return response.json();
+        }
+      });
+
+  }
   getWarnTask(id,type){
     let path = "/api/video_offline_task/"+id+"/"+type;
     let headers = this.getHeaders();
