@@ -80,6 +80,8 @@ export class WarnTimeComponent{
   currentTask:any={}
   currentRule:any={ruleId:0, ruleName:''};
   endArr:any[]=[];
+  videoStart:string='';
+  videoEnd:string='';
   constructor(private warnService: WarnService,private offlineService: OfflineService , private route: ActivatedRoute , private router: Router){
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
@@ -90,11 +92,11 @@ export class WarnTimeComponent{
         }
         this.session();
         this.getRuleId();
-          if(this.taskId>0){
-            this.searchWarn(this.appId,this.taskId,this.chanName1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.getPeriodTime()[0],this.getPeriodTime()[1]);
-          }else{
-            this.searchWarn(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.getPeriodTime()[0],this.getPeriodTime()[1]);
-          }
+        if(this.videoUrl!=''){
+          this.searchWarn(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.videoStart,this.videoEnd);
+        }else{
+          this.searchWarn(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.getPeriodTime()[0],this.getPeriodTime()[1]);
+        }
       }, 15000);
     }else{
       this.interval = setInterval(() => {
@@ -337,6 +339,8 @@ export class WarnTimeComponent{
       let all = hours+minutes+seconds+mill;
       start = all-0.05;
       end = all+0.05;
+      this.videoStart = year+' '+this.changeTime(start);
+      this.videoEnd = year+' '+this.changeTime(end);
       this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,year+' '+this.changeTime(start),year+' '+this.changeTime(end));
     }else{
       start = parseFloat(this.currentTime)-0.05;
@@ -640,17 +644,19 @@ export class WarnTimeComponent{
       this.sessionSet();
       this.session();
       this.judgeTime();
+      let startTime = this.periodTime.split('-')[0].replace(/\//g, "-");
+      let endTime = this.periodTime.split('-')[1].replace(/\//g, "-");
       if(this.warnRlue1=='全部'){
-        if(this.taskId>0){
-          this.searchWarn(this.appId,this.taskId,this.chanName1,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
+        if(this.periodTime==undefined||this.periodTime==''){
+          this.searchOldTime(-1,paraParam,this.start1,this.end1);
         }else{
-          this.searchWarn(this.appId,0,this.chanName1,-1,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
+          this.searchOldTime(-1,paraParam,startTime,endTime);
         }
       }else{
-        if(this.taskId>0){
-          this.searchWarn(this.appId,this.taskId,this.chanName1,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
+        if(this.periodTime==undefined||this.periodTime==''){
+          this.searchOldTime(this.ruleId,paraParam,this.start1,this.end1);
         }else{
-          this.searchWarn(this.appId,0,this.chanName1,this.ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,this.start1,this.end1);
+          this.searchOldTime(this.ruleId,paraParam,startTime,endTime);
         }
       }
     }else{
@@ -662,6 +668,9 @@ export class WarnTimeComponent{
     this.page=paraParam.curPage-1;
     this.pageMaxItem = Number(paraParam.pageMaxItem);
     //console.log(this.pageNow,Number(this.pageChange));
+  }
+  searchOldTime(ruleId,paraParam,start,end){
+      this.searchWarn(this.appId,0,this.chanName1,ruleId,this.warnStatus,paraParam.curPage-1,paraParam.pageMaxItem,start,end);
   }
   judgeTime(){
     if($('#start1').val()==''){
