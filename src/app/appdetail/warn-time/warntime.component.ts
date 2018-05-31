@@ -326,9 +326,23 @@ export class WarnTimeComponent{
     let start:number;
     let end:number;
     parseFloat(this.currentTime);
-    start = parseFloat(this.currentTime)-0.05;
-    end = parseFloat(this.currentTime)+0.05;
-    this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.changeTime(start),this.changeTime(end));
+    if(this.appCate=="实时流分析"){
+      let time = this.periodTime.split("-")[0].replace(/\//g,"-");
+      let year = time.split(' ')[0];
+      let changeTime = time.split(' ')[1];
+      let mill = Number(time.split(' ')[2])/1000;
+      let hours = Number(changeTime.split(":")[0])*3600;
+      let minutes = Number(changeTime.split(":")[1])*60;
+      let seconds = Number(changeTime.split(":")[2]);
+      let all = hours+minutes+seconds+mill;
+      start = all-0.05;
+      end = all+0.05;
+      this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,year+' '+this.changeTime(start),year+' '+this.changeTime(end));
+    }else{
+      start = parseFloat(this.currentTime)-0.05;
+      end = parseFloat(this.currentTime)+0.05;
+      this.searchWarn(this.appId,this.taskId,this.warnTask1,this.ruleId,this.warnStatus,this.page,this.pageMaxItem,this.changeTime(start),this.changeTime(end));
+    }
   }
   changeTime(start){
     let hour:number;
@@ -337,7 +351,7 @@ export class WarnTimeComponent{
     if(Math.floor(start)>3600){
       hour = Math.floor(start/3600);
       minute = Math.floor((start%3600)/60);
-      second = (start%3600)%60;
+      second = Math.floor((start%3600)%60);
       return this.mergeTime(start,hour,minute,second)
     }else if(Math.floor(start)>60){
       hour = 0;
