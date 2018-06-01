@@ -188,18 +188,10 @@ export class WarnComponent{
     }
   }
   getVideoTime(){
+
     this.offlineService.getOfflineVideoTime(this.taskId)
       .subscribe((result)=>{
-          this.removeMillisecond(result.start);
-          this.startHour = this.removeMillisecond(result.start)[0];
-          this.startMinute = this.removeMillisecond(result.start)[1];
-          this.startSecond = this.removeMillisecond(result.start)[2];
-          this.endHour = this.removeMillisecond(result.end)[0];
-          this.endMinute = this.removeMillisecond(result.end)[1];
-          this.endSecond = this.removeMillisecond(result.end)[2];
-          let endArr = this.removeMillisecond(result.end);
-          this.endArr = endArr;
-          this.InitMaxTime(endArr);
+          this.setOfflineTime(result);
           if(this.once != "true")
             this.initRule();
         },
@@ -209,6 +201,18 @@ export class WarnComponent{
             this.initRule();
           }
         });
+  }
+  setOfflineTime(result){
+    this.removeMillisecond(result.start);
+    this.startHour = this.removeMillisecond(result.start)[0];
+    this.startMinute = this.removeMillisecond(result.start)[1];
+    this.startSecond = this.removeMillisecond(result.start)[2];
+    this.endHour = this.removeMillisecond(result.end)[0];
+    this.endMinute = this.removeMillisecond(result.end)[1];
+    this.endSecond = this.removeMillisecond(result.end)[2];
+    let endArr = this.removeMillisecond(result.end);
+    this.endArr = endArr;
+    this.InitMaxTime(endArr);
   }
   InitMaxTime(endArr){
     this.endHourMax = this.all_time_date.slice(0,this.getMaxTime(endArr[0]));
@@ -342,24 +346,18 @@ export class WarnComponent{
           this.initTime();
         }else{
           this.showTime = true;
-          this.offlineService.getOfflineVideoTime(this.warnTaskArr[i].taskId)
-            .subscribe(
-              (result)=>{
-                this.removeMillisecond(result.start);
-                this.startHour = this.removeMillisecond(result.start)[0];
-                this.startMinute = this.removeMillisecond(result.start)[1];
-                this.startSecond = this.removeMillisecond(result.start)[2];
-                this.endHour = this.removeMillisecond(result.end)[0];
-                this.endMinute = this.removeMillisecond(result.end)[1];
-                this.endSecond = this.removeMillisecond(result.end)[2];
-                this.sessionSet();
-              },
-              (error)=>{
-                if(error.status==400){
-                  this.initTime();
-                  this.sessionSet();
-                }
-              });
+        this.offlineService.getOfflineVideoTime(this.warnTaskArr[i].taskId)
+           .subscribe(
+           (result)=>{
+           this.setOfflineTime(result);
+           this.sessionSet();
+           },
+           (error)=>{
+           if(error.status==400){
+           this.initTime();
+           this.sessionSet();
+           }
+           });
         }
         this.warnRlueArr = this.warnTaskArr[i].alarmRules;
         this.warnRlue = this.warnTaskArr[i].alarmRules[0].ruleName;
