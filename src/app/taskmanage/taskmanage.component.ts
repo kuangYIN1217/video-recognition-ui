@@ -5,12 +5,13 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Page} from "app/common/defs/resources";
 import {calc_height} from "../common/ts/calc_height";
 import {WebSocketService} from "../common/services/web-socket.service";
+import {AppManageService} from "../common/services/appmanage.service";
 declare var $:any;
 @Component({
   selector: 'task-manage',
   styleUrls: ['./css/taskmanage.component.css'],
   templateUrl: './templates/taskmanage.html',
-  providers: [OfflineService,WebSocketService]
+  providers: [OfflineService,WebSocketService,AppManageService]
 })
 export class TaskManageComponent {
   SERVER_URL = SERVER_URL;
@@ -46,8 +47,9 @@ export class TaskManageComponent {
   photoIndex:number = 0;
   init:boolean = false;
   taskIds:any[]=[];
+  openningNumber:number=0;
   @ViewChild('offlineVideo') offlineVideo: any;
-  constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService) {
+  constructor(private offlineService:OfflineService, private route: ActivatedRoute ,private router: Router,private websocket: WebSocketService,private appManageService: AppManageService) {
     this.appId = window.sessionStorage.getItem("applicationId");
     this.appCate = window.sessionStorage.getItem("applicationType");
     this.getTask(this.appId,null,'全部',this.page-1,this.pageMaxItem);
@@ -249,25 +251,31 @@ export class TaskManageComponent {
     }
   }
   runChannel(item){
-    let order:number=0;
-    for(let i=0;i<this.taskList.length;i++){
+/*    for(let i=0;i<this.taskList.length;i++){
       if(this.taskList[i].taskStatus=='进行中'&&item.taskStatus!='进行中'){
-          order++;
-          if(order==4){
-            this.deleteIndex = 1;
-            this.tip_title = "提示";
-            this.tip_content = "任务分析仅支持4个并发，请等待其他任务运行完成！";
-            this.tip_btn = 'map';
-            return false;
-          }
+
       }
-    }
+    }*/
     if(item.taskStatus!='进行中'){
-      this.status='进行中';
-      this.alarmStatus = '全部';
+      this.appManageService.searchOpenNumber()
+        .subscribe(result=>{
+          this.openningNumber = result.openningChannelNum+result.openningTaskNum;
+          if(this.openningNumber>=3){
+            this.deleteIndex =1;
+            this.tip_title = '提示';
+            this.tip_content = '对不起，通道及任务仅支持同时开启3个，请注意协调运行！';
+            return false
+          }
+          this.status='进行中';
+          this.alarmStatus = '全部';
+          this.openTask(item);
+        })
     }else if(item.taskStatus=='进行中'){
       this.status='已停止';
+      this.openTask(item);
     }
+  }
+  openTask(item){
     this.offlineService.offlineSwitch(item.taskId,this.status)
       .subscribe(reply =>{
         if(reply.text().substring(0,2)=='No'){
@@ -283,12 +291,12 @@ export class TaskManageComponent {
             if(this.taskName==undefined){
               this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
               this.interval = setInterval(() => {
-                  this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
+                this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
               },10000);
             }else{
               this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
               this.interval = setInterval(() => {
-                  this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
+                this.getTask(this.appId,this.taskName,this.alarmStatus,this.page-1,this.pageMaxItem);
               },10000);
             }
           }else{
@@ -297,11 +305,7 @@ export class TaskManageComponent {
             this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
           }
         }
-
-        //this.getTask(this.appId,null,this.alarmStatus,this.page-1,this.pageMaxItem);
-        //this.start_reply(reply);
       } );
-
   }
   start_reply(reply){
     if(reply.status==200){

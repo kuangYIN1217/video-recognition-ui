@@ -65,6 +65,5 @@ export class CustomComponent {
     this.lineName = '';
     this.unitName = '';
     this.required = 0;
-    console.log(this.unitId);
   }
 }

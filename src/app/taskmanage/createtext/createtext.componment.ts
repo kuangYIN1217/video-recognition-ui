@@ -315,7 +315,6 @@ export class CreateTextComponent {
       }
     }
     this.fileNumber = this.uploader.queue.length;
-    //console.log(this.offlineFiles);
 
     this.offlineService.create(this.appId,this.warnRuleId,this.taskName,this.choosed,this.offlineFiles,this.fileNumber)
       .subscribe(result=>{
@@ -360,10 +359,8 @@ export class CreateTextComponent {
       obj = { "fileName":this.offlineFiles[j].fileName,"inputPath":this.offlineFiles[j].inputPath };
       this.upOfflineFiles.push(obj);
     }
-    //console.log(this.upOfflineFiles);
     this.offlineService.update(this.warnRuleId,this.taskId,this.upOfflineFiles,this.choosed,this.taskName,this.upOfflineFiles.length)
       .subscribe(result=>{
-        //console.log(result);
         this.router.navigate(['../taskmanage']);
       })
   }

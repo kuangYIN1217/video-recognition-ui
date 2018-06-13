@@ -14,6 +14,8 @@ import {SERVER_URL} from "../../app.constants";
 import {FileUploader} from "ng2-file-upload";
 import {WarnService} from "../../common/services/warn.service";
 declare var $:any;
+declare var Streamedian:any;
+
 @Component({
   selector: 'video-analysis',
   styleUrls: ['./css/video.analysis.component.css'],
@@ -78,6 +80,7 @@ export class VideoAnalysisComoponent {
   deleteIndex:number=0;
   tip_title:string;
   tip_content:string;
+  openningNumber:number=0;
   radio(i){
     this.radioIndex = i;
   }
@@ -279,6 +282,24 @@ export class VideoAnalysisComoponent {
       return;
     }
     this.createFlag = false;
+    if(status==1){
+      this.appManageService.searchOpenNumber()
+        .subscribe(result=>{
+          this.openningNumber = result.openningChannelNum+result.openningTaskNum;
+          if(this.openningNumber>=3){
+            this.deleteIndex =1;
+            this.tip_title = '提示';
+            this.tip_content = '对不起，通道及任务仅支持同时开启3个，请注意协调运行！';
+            this.createFlag = true;
+            return false
+          }
+          this.createChannel(chanAddr,chanName,protocol,channelType,videoAddress,status);
+        })
+    }else{
+      this.createChannel(chanAddr,chanName,protocol,channelType,videoAddress,status);
+    }
+  }
+  createChannel(chanAddr,chanName,protocol,channelType,videoAddress,status){
     this.channelService.createChannel(this.d_applicationId,chanAddr,chanName,protocol,channelType,videoAddress,status)
       .subscribe(result=>{
         if(result.text().substring(0,2)=='NO'){
@@ -326,7 +347,6 @@ export class VideoAnalysisComoponent {
     this.initChannels();
     /*查询开启的规则*/
     this.getOpenRule();
-
     this.appManageService.getProtocol()
       .subscribe(protocols=>{
         this.protocols=protocols;
@@ -337,7 +357,26 @@ export class VideoAnalysisComoponent {
       });
     //this.appId = window.sessionStorage.getItem("applicationId");
   }
-
+  isRtsp(index){
+    let rtsp = new RegExp(/^rtsp/);
+    let lower:string='';
+      if(this.streamType=="RTSP"&&this.d_video_list && this.d_video_list.length >= index) {
+        lower = this.d_video_list[index-1].channelOut;
+      }else if (this.streamType=="RTMP"&&this.d_video_list && this.d_video_list.length >= index) {
+        lower = this.d_video_list[index-1].channelAddress;
+    }
+    if(rtsp.test(lower)){
+      return true
+    }else{
+      return false
+    }
+  }
+  getRtspUrl(index:number){
+      if (this.d_video_list && this.d_video_list.length >= index) {
+          Streamedian.player('test_video', {socket:"ws://192.168.16.122:8080/ws/"});
+          return this.d_video_list[index-1].channelAddress
+      }
+  }
   changeWarn(){
     this.identifyName = '';
     for(let i=0;i<this.warnObjArr.length;i++){
@@ -380,6 +419,11 @@ export class VideoAnalysisComoponent {
         addWarningToast(this.toastyService ,"请确保安装并开启Flash权限: <a href='assets/install_flash_player_ppapi.exe'>https://get.adobe.com/cn/flashplayer/</a>" , "未检测到Flash插件");
       }
     }
+/*    setTimeout(()=>{
+      console.log($('#test_video'));
+      $('#test_video').attr("src",'rtsp://admin:1234qwer@192.168.16.199/h264/ch1/sub/av_stream');
+      Streamedian.player('test_video', {socket:"ws://192.168.16.122:8080/ws/"});
+    },1000)*/
   }
   // 状态机命名 s_xxx-------------------------------------------------------------
   s_fullscreen_grid: number = 0;
@@ -937,9 +981,16 @@ export class VideoAnalysisComoponent {
         this.streamType = this.d_video_list[0].channelProtocol;
       }
       if(this.fileRecognition.length>0){
-            this.streamType = "RTSP";
+        this.streamType = "RTSP";
       }else{
         this.streamType = "RTMP";
+      }
+      if(this.isRtsp(1)){
+        var address = this.d_video_list[0].channelAddress;
+        setTimeout(()=>{
+          $('#test_video').attr("src",address);
+          Streamedian.player('test_video', {socket:"ws://192.168.16.122:8080/ws/"});
+        },2000)
       }
       this.init_grid_number(rep.length ? rep.length : 0);
       this.getChannelId();

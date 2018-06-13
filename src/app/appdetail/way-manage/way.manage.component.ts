@@ -65,6 +65,7 @@ export class WayManageComponent {
   pageMax:string;
   authority:boolean = false;
   _realTime:any[]=[];
+  openningNumber:number=0;
   constructor(private appManageService: AppManageService,private channelService: ChannelService , private route: ActivatedRoute , private router: Router) {
     this.appId = window.sessionStorage.getItem("applicationId");
     //this._realTime = JSON.parse(window.sessionStorage.getItem("_realTime"));
@@ -323,45 +324,53 @@ export class WayManageComponent {
     }else{
       this.chanRequired2 = 0;
     }
-    let rtsp = new RegExp(/^rtsp/);
-    let lower = chanAddr.toLowerCase();
-    if(rtsp.test(lower)){
-      this.deleteIndex =1;
-      this.tip_title = '提示';
-      this.tip_content = '目前只支持RTMP！';
-      this.createFlag = true;
-      return false
-    }
-      //console.log(chanName,chanAddr);
       this.show = 0;
     if(!this.createFlag) {
       return;
     }
     this.createFlag = false;
-      this.channelService.createChannel(this.appId,chanAddr,chanName,protocol,channelType,videoAddress,status)
+    if(status==1){
+      this.appManageService.searchOpenNumber()
         .subscribe(result=>{
-          //console.log(result);
-          if(result.text().substring(0,2)=='NO'){
+          this.openningNumber = result.openningChannelNum+result.openningTaskNum;
+          if(this.openningNumber>=3){
             this.deleteIndex =1;
             this.tip_title = '提示';
-            this.tip_content = '该通道地址已存在，画面顺序为'+result.text().substring(3)+'！';
+            this.tip_content = '对不起，通道及任务仅支持同时开启3个，请注意协调运行！';
             this.createFlag = true;
-          }if(result.text().substring(0,2)=='Ex'){
-            this.deleteIndex =1;
-            this.tip_title = '提示';
-            this.tip_content = '创建成功，仅支持开启一个通道！';
-            this.createFlag = true;
-            this.addDialog = 0;
-            this.show=1;
-            this.getAllChannel(this.appId,null,null,this.page-1,this.pageMaxItem);
+            return false
           }
-          else{
-            this.show=1;
-            this.addDialog = 0;
-            this.getAllChannel(this.appId,null,null,this.page-1,this.pageMaxItem);
-            this.createFlag = true;
-          }
+          this.createChannel(chanAddr,chanName,protocol,channelType,videoAddress,status);
         })
+    }else{
+      this.createChannel(chanAddr,chanName,protocol,channelType,videoAddress,status);
+    }
+
+  }
+  createChannel(chanAddr,chanName,protocol,channelType,videoAddress,status){
+    this.channelService.createChannel(this.appId,chanAddr,chanName,protocol,channelType,videoAddress,status)
+      .subscribe(result=>{
+        if(result.text().substring(0,2)=='NO'){
+          this.deleteIndex =1;
+          this.tip_title = '提示';
+          this.tip_content = '该通道地址已存在，画面顺序为'+result.text().substring(3)+'！';
+          this.createFlag = true;
+        }if(result.text().substring(0,2)=='Ex'){
+          this.deleteIndex =1;
+          this.tip_title = '提示';
+          this.tip_content = '创建成功，仅支持开启一个通道！';
+          this.createFlag = true;
+          this.addDialog = 0;
+          this.show=1;
+          this.getAllChannel(this.appId,null,null,this.page-1,this.pageMaxItem);
+        }
+        else{
+          this.show=1;
+          this.addDialog = 0;
+          this.getAllChannel(this.appId,null,null,this.page-1,this.pageMaxItem);
+          this.createFlag = true;
+        }
+      })
   }
   edit(item){
     //console.log(item);
@@ -403,6 +412,24 @@ export class WayManageComponent {
       return
     }
     this.upadteFlag = false;
+    if(this.radioIndex==1){
+      this.appManageService.searchOpenNumber()
+        .subscribe(result=>{
+          this.openningNumber = result.openningChannelNum+result.openningTaskNum;
+          if(this.openningNumber>=3){
+            this.deleteIndex =1;
+            this.tip_title = '提示';
+            this.tip_content = '对不起，通道及任务仅支持同时开启3个，请注意协调运行！';
+            this.createFlag = true;
+            return false
+          }
+          this.editChannel();
+        })
+    }else{
+      this.editChannel();
+    }
+  }
+  editChannel(){
     this.channelService.updateChannel(this.appId,this.chanId,this.chanOrder,this.chanName,this.chanAddr,this.protocol,this.channelType,this.videoAddress,this.radioIndex)
       .subscribe(result=>
       {
@@ -417,7 +444,6 @@ export class WayManageComponent {
       })
   }
   runChannel(item){
-    console.log(item);
     let j=0;
     if(item.channelStatus==0){
       for(let i=0;i<this.channelInfo.length;i++){
@@ -431,15 +457,28 @@ export class WayManageComponent {
           }
         }
       }
-      item.channelStatus=1;
+      this.appManageService.searchOpenNumber()
+        .subscribe(result=>{
+          this.openningNumber = result.openningChannelNum+result.openningTaskNum;
+          if(this.openningNumber>=3){
+            this.deleteIndex =1;
+            this.tip_title = '提示';
+            this.tip_content = '对不起，通道及任务仅支持同时开启3个，请注意协调运行！';
+            return
+          }
+          item.channelStatus=1;
+          this.openChannel(item);
+        })
     }else if(item.channelStatus==1){
       item.channelStatus=0;
+      this.openChannel(item);
     }
-      this.channelService.run(item.channelId,item.channelStatus)
-        .subscribe(reply => this.start_reply(reply));
+  }
+  openChannel(item){
+    this.channelService.run(item.channelId,item.channelStatus)
+      .subscribe(reply => this.start_reply(reply));
   }
   start_reply(reply){
-    console.log(reply);
     //sessionStorage.setItem("stream" , reply.channelProtocol);
     if(reply.status==200){
       //console.log("Start Successfully!");

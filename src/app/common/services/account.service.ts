@@ -45,6 +45,7 @@ export class AccountService {
         }
       });
   }
+
   getAllGroup(username){
     let path = "/api/findGroupsByCreator/"+username;
     let headers = this.getHeaders();

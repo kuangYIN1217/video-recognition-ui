@@ -63,6 +63,16 @@ export class AppManageService {
         return response;
       });
   }
+  searchOpenNumber(){
+    let path = "/api/application/openning_task_num";
+    let headers = this.getHeaders();
+    return this.http.get(this.SERVER_URL+path, { headers : headers} )
+      .map((response: Response) => {
+        if (response && response.json()) {
+          return response.json();
+        }
+      });
+  }
   downTemplate(){
     let path = "/api/template";
     let headers = this.getHeaders();

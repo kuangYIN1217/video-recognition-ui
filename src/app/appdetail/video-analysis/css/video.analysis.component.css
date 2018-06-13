@@ -899,4 +899,8 @@ select{
   top:0;
   right:0;
 }
+video{
+  width:100% !important;
+  height:100% !important;
+}
 
