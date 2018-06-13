@@ -371,12 +371,6 @@ export class VideoAnalysisComoponent {
       return false
     }
   }
-  getRtspUrl(index:number){
-      if (this.d_video_list && this.d_video_list.length >= index) {
-          Streamedian.player('test_video', {socket:"ws://192.168.16.122:8080/ws/"});
-          return this.d_video_list[index-1].channelAddress
-      }
-  }
   changeWarn(){
     this.identifyName = '';
     for(let i=0;i<this.warnObjArr.length;i++){
@@ -385,7 +379,6 @@ export class VideoAnalysisComoponent {
         this.warnObjDetailArr.sort(function(a,b){
           return parseInt(b.cateId) - parseInt(a.cateId)
         })
-        //this.warnObjDetailArr.reverse();
         this.warnObjDetail = this.warnObjDetailArr[0].name;
       }
     }
@@ -684,6 +677,13 @@ export class VideoAnalysisComoponent {
     }
     this.recognitionService.setRecognitions( this.getAllChannelID(),null).subscribe(rep => {
       this.streamType = "RTMP";
+      if(this.isRtsp(1)){
+        var address = this.d_video_list[0].channelAddress;
+        setTimeout(()=>{
+          $('#test_video').attr("src",address);
+          Streamedian.player('test_video', {socket:"ws://192.168.16.122:8080/ws/"});
+        },2000)
+      }
     })
   }
   $change_analysis_submit() {
@@ -940,14 +940,6 @@ export class VideoAnalysisComoponent {
             }
           }
         );
-/*      for(let i=0;i<this.d_analysis_options.length;i++){
-        this.d_analysis_options[i].recognitionCategories.sort(function(a,b){
-          return parseInt(b.cateId) - parseInt(a.cateId)
-        })
-      }*/
-      //this.d_analysis_options[0].selected=true;
-      //this.d_analysis_options_detail= rep ;
-    //})
   }
   deleteChange(event){
     this.deleteIndex = event;
